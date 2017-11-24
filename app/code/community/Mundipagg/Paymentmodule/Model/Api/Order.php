@@ -7,6 +7,18 @@
 
 require_once Mage::getBaseDir('lib') . '/autoload.php';
 
+require_once '/var/www/newmagento.localhost/public_html/.modman/magento/lib/mundipagg/mundiapi/src/Models/GetCustomerResponse.php';
+require_once '/var/www/newmagento.localhost/public_html/.modman/magento/lib/mundipagg/mundiapi/src/Models/GetAddressResponse.php';
+require_once '/var/www/newmagento.localhost/public_html/.modman/magento/lib/mundipagg/mundiapi/src/Models/GetPhonesResponse.php';
+require_once '/var/www/newmagento.localhost/public_html/.modman/magento/lib/mundipagg/mundiapi/src/Models/GetPhoneResponse.php';
+require_once '/var/www/newmagento.localhost/public_html/.modman/magento/lib/mundipagg/mundiapi/src/Models/GetTransactionResponse.php';
+
+class GetCustomerResponse extends \MundiAPILib\Models\GetCustomerResponse{}
+class GetAddressResponse extends \MundiAPILib\Models\GetAddressResponse{}
+class GetPhonesResponse extends \MundiAPILib\Models\GetPhonesResponse{}
+class GetPhoneResponse extends \MundiAPILib\Models\GetPhoneResponse{}
+class GetTransactionResponse extends \MundiAPILib\Models\GetTransactionResponse{}
+
 use MundiAPILib\MundiAPIClient;
 
 class Mundipagg_Paymentmodule_Model_Api_Order
@@ -15,8 +27,8 @@ class Mundipagg_Paymentmodule_Model_Api_Order
     {
         $boleto = Mage::getModel('paymentmodule/api_boleto');
         $orderRequest = $boleto->getCreateOrderRequest($paymentInformation);
-
         $orderController = $this->getOrderController();
+
         return $orderController->createOrder($orderRequest);
     }
 

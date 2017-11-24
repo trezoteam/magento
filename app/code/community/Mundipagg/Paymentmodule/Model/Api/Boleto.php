@@ -66,6 +66,7 @@ class Mundipagg_Paymentmodule_Model_Api_Boleto
         $addressRequest->neighborhood = $addressInfo->getNeighborhood();
         $addressRequest->city = $addressInfo->getCity();
         $addressRequest->state = $addressInfo->getState();
+        $addressRequest->complement = $addressInfo->getComplement();
         $addressRequest->country = $addressInfo->getCountry();
 
         return $addressRequest;

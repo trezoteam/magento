@@ -1,5 +1,0 @@
-<layout version="0.1.0">
-    <default>
-        <block type="page/html" name="root" output="toHtml" template="mundipagg/paymentmodule/simple_page.phtml" />
-    </default>
-</layout>
