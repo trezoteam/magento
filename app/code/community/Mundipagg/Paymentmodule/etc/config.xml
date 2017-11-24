@@ -87,6 +87,14 @@
                 </args>
             </paymentmodule>
         </routers>
+
+        <layout>
+            <updates>
+                <paymentmodule module="Mundipagg_Paymentmodule">
+                    <file>paymentmodule.xml</file>
+                </paymentmodule>
+            </updates>
+        </layout>
     </frontend>
 
 

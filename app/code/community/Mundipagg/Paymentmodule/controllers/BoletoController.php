@@ -17,6 +17,8 @@ class Mundipagg_Paymentmodule_BoletoController extends Mundipagg_Paymentmodule_C
         $paymentInfo->setPaymentInfo($this->getPaymentInformation());
         $paymentInfo->setMetaInfo(Mage::helper('paymentmodule/data')->getMetaData());
 
+
+
         $result = $order->createBoletoPayment($paymentInfo);
         $this->handleSuccessBoletoTransaction($result);
     }
@@ -29,7 +31,7 @@ class Mundipagg_Paymentmodule_BoletoController extends Mundipagg_Paymentmodule_C
      */
     private function handleSuccessBoletoTransaction($resultTransaction)
     {
-//        $this->_redirect('checkout/onepage/success', array('_secure'=>true));
+        $this->_redirect('checkout/onepage/success', array('_secure'=>true));
     }
 
     /**
