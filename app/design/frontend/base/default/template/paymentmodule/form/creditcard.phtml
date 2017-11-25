@@ -1,1 +1,13 @@
-<h1>creditcard</h1>
+<form data-mundicheckout-form>
+    holder_name:<input data-mundicheckout-element="holder_name-0"><br>
+    number:<input data-mundicheckout-element="number-0"> <span data-mundicheckout-element="brand-0"></span><br>
+    exp_month:<input data-mundicheckout-element="exp_month-0"><br>
+    exp_year:<input data-mundicheckout-element="exp_year-0"><br>
+    cvv:<input data-mundicheckout-element="cvv-0"><br>
+
+    <button type="submit">Enviar</button>
+</form>
+<script src="checkoutv2.js" data-mundicheckout-app-id="<?php $this->getPublicKey(); ?>"></script>
+<script>
+    MundiCheckout.init(successCallback,errorCallback);
+</script>
