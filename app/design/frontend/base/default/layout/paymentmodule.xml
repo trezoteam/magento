@@ -9,16 +9,16 @@
         </reference>
 
         <reference name="before_body_end">
+            <block type="core/text" name="mundipagg.cdn.js.checkout">
+                <action method="setText">
+                    <text><![CDATA[<script src="https://commerce.mundipagg.com/checkout.js" id="placeLixo" data-mundicheckout-app-id="placeholder" type="text/javascript"></script>]]></text>
+                </action>
+            </block>
+
             <block type="page/html_head" name="extra_js" as="extra_js" after="-" template="paymentmodule/extras.phtml">
                 <action method="addItem">
                     <type>js</type>
                     <name>mundipagg/paymentmodule.js</name>
-                </action>
-            </block>
-
-            <block type="core/text" name="mundipagg.cdn.js.checkout">
-                <action method="setText">
-                    <text><![CDATA[<script src="https://commerce.mundipagg.com/checkout.js" type="text/javascript"></script>]]></text>
                 </action>
             </block>
         </reference>
