@@ -28,5 +28,20 @@ class Mundipagg_Paymentmodule_Model_Creditcard extends Mundipagg_Paymentmodule_M
     public function assignData($data)
     {
         parent::assignData($data);
+
+        $key = $this->getBaseKey();
+        $info = $this->getInfoInstance();
+        $paymentData = $data->getData();
+
+        $info->setAdditionalInformation($key . 'method', $paymentData['method']);
+        $info->setAdditionalInformation($key . 'holder_name', $paymentData['holderName']);
+        $info->setAdditionalInformation($key . 'token', $paymentData['creditCardToken']);
+
+        return $this;
+    }
+
+    private function getBaseKey()
+    {
+        return 'mundipagg_payment_module_';
     }
 }
