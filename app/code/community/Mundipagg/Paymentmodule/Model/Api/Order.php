@@ -38,7 +38,11 @@ class Mundipagg_Paymentmodule_Model_Api_Order
         $orderRequest = $creditCard->getCreateOrderRequest($paymentInformation);
 
         $orderController = $this->getOrderController();
-        return $orderController->createOrder($orderRequest);
+        try {
+            return $orderController->createOrder($orderRequest);
+        } catch (\Exception $e) {
+            $a = 1;
+        }
     }
 
     private function getOrderController()

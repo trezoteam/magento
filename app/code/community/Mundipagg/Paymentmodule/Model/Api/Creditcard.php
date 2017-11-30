@@ -8,7 +8,8 @@ use MundiAPILib\Models\CreateAddressRequest;
 use MundiAPILib\Models\CreatePhonesRequest;
 use MundiAPILib\Models\CreatePhoneRequest;
 use MundiAPILib\Models\CreatePaymentRequest;
-use MundiAPILib\Models\CreateBoletoPaymentRequest;
+use MundiAPILib\Models\CreateCreditCardPaymentRequest;
+use MundiAPILib\Models\CreateCardRequest;
 
 class Mundipagg_Paymentmodule_Model_Api_Creditcard
 {
@@ -80,7 +81,41 @@ class Mundipagg_Paymentmodule_Model_Api_Creditcard
         );
     }
 
+    /**
+     * Constructor to set initial or default values of member properties
+     * @param integer           $installments           Initialization value for $this->installments
+     * @param string            $statementDescriptor    Initialization value for $this->statementDescriptor
+     * @param CreateCardRequest $card                   Initialization value for $this->card
+     * @param integer           $retries                Initialization value for $this->retries
+     * @param bool              $updateSubscriptionCard Initialization value for $this->updateSubscriptionCard
+     * @param string            $cardId                 Initialization value for $this->cardId
+     * @param string            $cardToken              Initialization value for $this->cardToken
+     * @param bool              $recurrence             Initialization value for $this->recurrence
+     * @param bool              $capture                Initialization value for $this->capture
+     */
     private function getPayments($paymentInfo)
+    {
+        $paymentRequest = new CreatePaymentRequest();
+
+        $creditCardPaymentRequest = new CreateCreditCardPaymentRequest();
+        $creditCardPaymentRequest->installments = '1';
+        $creditCardPaymentRequest->statementDescriptor = 'teste';
+        $creditCardPaymentRequest->cardToken = $paymentInfo->getCreditCardToken();
+
+        $paymentRequest->paymentMethod = 'credit_card';
+        $paymentRequest->creditCard = $creditCardPaymentRequest;
+        $paymentRequest->currency = 'BRL';
+
+        return array($paymentRequest);
+    }
+
+    private function getCard($token)
+    {
+        $cardRequest = new CreateCardRequest();
+//        $cardRequest->
+    }
+
+    private function getPayments2($paymentInfo)
     {
         $paymentRequest = new CreatePaymentRequest();
 
@@ -91,7 +126,6 @@ class Mundipagg_Paymentmodule_Model_Api_Creditcard
 
         $paymentRequest->paymentMethod = 'boleto';
         $paymentRequest->boleto = $boletoPaymentRequest;
-        // @todo this should not be hard coded
         $paymentRequest->currency = 'BRL';
 
         return array($paymentRequest);

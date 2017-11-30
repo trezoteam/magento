@@ -1,25 +1,60 @@
 <?php $_code = $this->getMethodCode(); ?>
 <fieldset>
-    <ul id="payment_form_<?php echo $_code; ?>" style="display:none;"
+    <ul id="payment_form_<?php echo $_code; ?>" style="display:none;">
         <li>
             <div id="paymentmodule_creditcard">
                 <ul >
                     <li style="clear:both">
-                        <div class="input-box" data-mundicheckout-form data-pkkey="<?php echo $this->getPublicKey(); ?>" id="tokenDiv">
+                        <div class="input-box"  id="tokenDiv" data-mundicheckout-app-id="<?php echo $this->getPublicKey(); ?>">
                             <label for="">Holder name<span class="required">*</span></label>
-                            <input type="text" data-mundicheckout-input="holder_name" class="required-entry teste1"><br>
+                            <input
+                                    type="text"
+                                    data-mundicheckout-input="holder_name"
+                                    class="required-entry"
+                                    id="mundicheckout-holdername"
+                                    onkeyup="getFormData()"
+                                    name="payment[holderName]"><br>
 
                             <label for="">Number<span class="required">*</span></label>
-                            <input type="text" data-mundicheckout-input="number" class="required-entry teste2"><span data-mundicheckout-input="brand"></span><br>
+                            <input
+                                    type="text"
+                                    data-mundicheckout-input="number"
+                                    class="required-entry"
+                                    id="mundicheckout-number"
+                                    onkeyup="getFormData()"
+                                    name="payment[creditCardNumber]"><span data-mundicheckout-brand></span><br>
 
                             <label for="">Expiration month<span class="required">*</span></label>
-                            <input type="text" data-mundicheckout-input="exp_month" class="required-entry teste3"><br>
+                            <input
+                                    type="text"
+                                    data-mundicheckout-input="exp_month"
+                                    class="required-entry"
+                                    id="mundicheckout-expmonth"
+                                    onkeyup="getFormData()"
+                                    name="payment[creditCardExpMonth]"><br>
 
                             <label for="">Expiration year<span class="required">*</span></label>
-                            <input type="text" data-mundicheckout-input="exp_year" class="required-entry teste4"><br>
+                            <input
+                                    type="text"
+                                    data-mundicheckout-input="exp_year"
+                                    class="required-entry"
+                                    id="mundicheckout-expyear"
+                                    onkeyup="getFormData()"
+                                    name="payment[creditCardExpYear]"><br>
 
                             <label for="">CVV<span class="required">*</span></label>
-                            <input type="text" data-mundicheckout-input="cvv" class="required-entry teste5"><br>
+                            <input
+                                    type="text"
+                                    data-mundicheckout-input="cvv"
+                                    class="required-entry"
+                                    id="mundicheckout-cvv"
+                                    onkeyup="getFormData()"
+                                    name="payment[creditCardCvv]"><br>
+
+                            <input
+                                    type="hidden"
+                                    id="mundicheckout-token"
+                                    name="payment[creditCardToken]">
                         </div>
                     </li>
                 </ul>

@@ -10,6 +10,9 @@ class Mundipagg_Paymentmodule_CreditcardController extends Mundipagg_Paymentmodu
     {
         $order = Mage::getModel('paymentmodule/api_order');
 
+        $creditCardModel = Mage::getModel('paymentmodule/creditcard');
+//        $creditCardModel->getInfoInstance();
+
         $paymentInfo = new Varien_Object();
 
         $paymentInfo->setItemsInfo($this->getItemsInformation());
