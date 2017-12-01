@@ -9,21 +9,23 @@ class Mundipagg_Paymentmodule_Controller_Payment extends Mage_Core_Controller_Fr
      */
     protected function getCustomerInformation()
     {
-        $customer = Mage::getSingleton('customer/session')->getCustomer();
+        $standard = Mage::getModel('paymentmodule/standard');
+        $customerSession = $standard->getCustomerSession();
+
+        $customer = $customerSession->getCustomer();
+        $customerId = $customer->getId();
 
         $information = new Varien_Object();
+
         $information->setName($customer->getName());
         $information->setEmail($customer->getEmail());
         $information->setDocument(null);
+        // @todo where does it should come from?
         $information->setType('individual');
         $information->setAddress($this->getCustomerAddressInformation());
         $information->setMetadata(null);
         $information->setPhones($this->getCustomerPhonesInformation());
-        $information->setCode(
-            Mage::getSingleton('customer/session')
-                ->getCustomer()
-                ->getId()
-        );
+        $information->setCode($customerId);
 
         return $information;
     }
@@ -35,9 +37,11 @@ class Mundipagg_Paymentmodule_Controller_Payment extends Mage_Core_Controller_Fr
      */
     protected function getCustomerAddressInformation()
     {
-        $orderId = Mage::getSingleton('checkout/session')->getLastOrderId();
-        $order = Mage::getModel("sales/order")->load($orderId);
+        $standard = Mage::getModel('paymentmodule/standard');
+        $checkoutSession = $standard->getCheckoutSession();
 
+        $orderId = $checkoutSession->getLastOrderId();
+        $order = $standard->getOrderByOrderId($orderId);
         $billingAddress = $order->getBillingAddress();
 
         $address = new Varien_Object();
@@ -82,14 +86,18 @@ class Mundipagg_Paymentmodule_Controller_Payment extends Mage_Core_Controller_Fr
     {
         $items = array();
 
-        $orderId = Mage::getSingleton('checkout/session')->getLastOrderId();
-        $order = Mage::getModel("sales/order")->load($orderId);
+        $standard = Mage::getModel('paymentmodule/standard');
+        $checkoutSession = $standard->getCheckoutSession();
+        $orderId = $checkoutSession->getLastRealOrderId();
+
+        $order = $standard->getOrderByIncrementOrderId($orderId);
 
         foreach ($order->getAllItems() as $item) {
-            $itemInfo = new Varien_Object();
-            $itemInfo->setAmount(round($item->getPrice() * 100));
-            $itemInfo->setQuantity((int) $item->getQtyOrdered());
-            $itemInfo->setDescription('item description');
+            $itemInfo = array();
+
+            $itemInfo['amount'] = round($item->getPrice() * 100);
+            $itemInfo['quantity'] = (int) $item->getQtyOrdered();
+            $itemInfo['description'] = 'item description';
 
             $items[] = $itemInfo;
         }

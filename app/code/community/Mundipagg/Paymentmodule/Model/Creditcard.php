@@ -1,5 +1,6 @@
 <?php
 
+
 class Mundipagg_Paymentmodule_Model_Creditcard extends Mundipagg_Paymentmodule_Model_Standard
 {
     protected $_code = 'paymentmodule_creditcard';
@@ -27,12 +28,17 @@ class Mundipagg_Paymentmodule_Model_Creditcard extends Mundipagg_Paymentmodule_M
 
     public function assignData($data)
     {
+        if (!($data instanceof Varien_Object)) {
+            $data = new Varien_Object($data);
+        }
+
         parent::assignData($data);
 
         $key = $this->getBaseKey();
         $info = $this->getInfoInstance();
         $paymentData = $data->getData();
 
+        // @todo possible code exception
         $info->setAdditionalInformation($key . 'method', $paymentData['method']);
         $info->setAdditionalInformation($key . 'holder_name', $paymentData['holderName']);
         $info->setAdditionalInformation($key . 'token', $paymentData['creditCardToken']);

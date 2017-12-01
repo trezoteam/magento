@@ -23,6 +23,11 @@ class Mundipagg_Paymentmodule_Model_Config_Card
         return Mage::getStoreConfig('mundipagg_config/creditcard_group/operation_type');
     }
 
+    public function getOperationTypeFlag()
+    {
+        return $this->getOperationType() === 'AuthAndCapture';
+    }
+
     public function isDefaultConfigurationEnabled()
     {
         return Mage::getStoreConfig('mundipagg_config/installments_group/default_status');

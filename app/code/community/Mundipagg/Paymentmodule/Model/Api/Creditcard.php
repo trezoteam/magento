@@ -9,7 +9,7 @@ use MundiAPILib\Models\CreatePhonesRequest;
 use MundiAPILib\Models\CreatePhoneRequest;
 use MundiAPILib\Models\CreatePaymentRequest;
 use MundiAPILib\Models\CreateCreditCardPaymentRequest;
-use MundiAPILib\Models\CreateCardRequest;
+
 
 class Mundipagg_Paymentmodule_Model_Api_Creditcard
 {
@@ -28,105 +28,82 @@ class Mundipagg_Paymentmodule_Model_Api_Creditcard
 
     private function getCustomerRequest($customerInfo)
     {
-        return new CreateCustomerRequest(
-            $customerInfo->getName(),
-            $customerInfo->getEmail(),
-            $customerInfo->getDocument(),
-            $customerInfo->getType(),
-            $this->getCreateAddressRequest($customerInfo->getAddress()),
-            $customerInfo->getMetadata(),
-            $this->getCreatePhonesRequest($customerInfo->getPhones()),
-            $customerInfo->getCode()
-        );
+        $customerRequest = new CreateCustomerRequest();
+
+        $customerRequest->name = $customerInfo->getName();
+        $customerRequest->document = $customerInfo->getDocument();
+        $customerRequest->email = $customerInfo->getEmail();
+        $customerRequest->type = $customerInfo->getType();
+        $customerRequest->address = $this->getCreateAddressRequest($customerInfo->getAddress());
+        $customerRequest->phones = $this->getCreatePhonesRequest($customerInfo->getPhones());
+        $customerRequest->code = $customerInfo->getCode();
+        $customerRequest->metadata = $customerInfo->getMetadata();
+
+        return $customerRequest;
     }
 
     private function getCreateAddressRequest($addressInfo)
     {
-        return new CreateAddressRequest(
-            $addressInfo->getStreet(),
-            $addressInfo->getNumber(),
-            $addressInfo->getZipCode(),
-            $addressInfo->getNeighborhood(),
-            $addressInfo->getCity(),
-            $addressInfo->getState(),
-            $addressInfo->getCountry(),
-            $addressInfo->getComplement(),
-            $addressInfo->getMetadata()
-        );
+        $addressRequest = new CreateAddressRequest();
+
+        $addressRequest->street = $addressInfo->getStreet();
+        $addressRequest->number = $addressInfo->getNumber();
+        $addressRequest->zipCode = $addressInfo->getZipCode();
+        $addressRequest->neighborhood = $addressInfo->getNeighborhood();
+        $addressRequest->city = $addressInfo->getCity();
+        $addressRequest->state = $addressInfo->getState();
+        $addressRequest->country = $addressInfo->getCountry();
+        $addressRequest->complement = $addressInfo->getComplement();
+        $addressRequest->metadata = $addressInfo->getMetadata();
+
+        return $addressRequest;
     }
 
     private function getCreatePhonesRequest($phonesInfo)
     {
-        return new CreatePhonesRequest(
-            $this->getHomePhone($phonesInfo),
-            $this->getMobilePhone($phonesInfo)
-        );
+        $phonesRequest = new CreatePhonesRequest();
+
+        $phonesRequest->homePhone = $this->getHomePhone($phonesInfo);
+        $phonesRequest->mobilePhone = $this->getMobilePhone($phonesInfo);
+
+        return $phonesRequest;
     }
 
     private function getHomePhone($phonesInfo)
     {
-        return new CreatePhoneRequest(
-            $phonesInfo->getCountryCode(),
-            $phonesInfo->getNumber(),
-            $phonesInfo->getAreacode()
-        );
+        $homePhoneRequest = new CreatePhoneRequest();
+
+        $homePhoneRequest->countryCode = $phonesInfo->getCountryCode();
+        $homePhoneRequest->number = $phonesInfo->getNumber();
+        $homePhoneRequest->areaCode = $phonesInfo->getAreacode();
+
+        return $homePhoneRequest;
     }
 
     private function getMobilePhone($phonesInfo)
     {
-        return new CreatePhoneRequest(
-            $phonesInfo->getCountryCode(),
-            $phonesInfo->getNumber(),
-            $phonesInfo->getAreacode()
-        );
+        $mobilePhoneRequest = new CreatePhoneRequest();
+
+        $mobilePhoneRequest->countryCode = $phonesInfo->getCountryCode();
+        $mobilePhoneRequest->number = $phonesInfo->getNumber();
+        $mobilePhoneRequest->areaCode = $phonesInfo->getAreacode();
+
+        return $mobilePhoneRequest;
     }
 
-    /**
-     * Constructor to set initial or default values of member properties
-     * @param integer           $installments           Initialization value for $this->installments
-     * @param string            $statementDescriptor    Initialization value for $this->statementDescriptor
-     * @param CreateCardRequest $card                   Initialization value for $this->card
-     * @param integer           $retries                Initialization value for $this->retries
-     * @param bool              $updateSubscriptionCard Initialization value for $this->updateSubscriptionCard
-     * @param string            $cardId                 Initialization value for $this->cardId
-     * @param string            $cardToken              Initialization value for $this->cardToken
-     * @param bool              $recurrence             Initialization value for $this->recurrence
-     * @param bool              $capture                Initialization value for $this->capture
-     */
     private function getPayments($paymentInfo)
     {
         $paymentRequest = new CreatePaymentRequest();
 
         $creditCardPaymentRequest = new CreateCreditCardPaymentRequest();
-        $creditCardPaymentRequest->installments = '1';
-        $creditCardPaymentRequest->statementDescriptor = 'teste';
-        $creditCardPaymentRequest->cardToken = $paymentInfo->getCreditCardToken();
+        $creditCardPaymentRequest->installments = $paymentInfo->getInstallmentNumber();
+        $creditCardPaymentRequest->statementDescriptor = $paymentInfo->getInvoiceName();
+        $creditCardPaymentRequest->cardToken = $paymentInfo->getPaymentToken();
+        $creditCardPaymentRequest->capture = $paymentInfo->getOperationType();
 
-        $paymentRequest->paymentMethod = 'credit_card';
+        $paymentRequest->paymentMethod = $paymentInfo->getPaymentMethod();
+        $paymentRequest->currency = $paymentInfo->getCurrency();
         $paymentRequest->creditCard = $creditCardPaymentRequest;
-        $paymentRequest->currency = 'BRL';
-
-        return array($paymentRequest);
-    }
-
-    private function getCard($token)
-    {
-        $cardRequest = new CreateCardRequest();
-//        $cardRequest->
-    }
-
-    private function getPayments2($paymentInfo)
-    {
-        $paymentRequest = new CreatePaymentRequest();
-
-        $boletoPaymentRequest = new CreateBoletoPaymentRequest();
-        $boletoPaymentRequest->bank = $paymentInfo->getBank();
-        $boletoPaymentRequest->instructions = $paymentInfo->getInstructions();
-        $boletoPaymentRequest->dueAt = $paymentInfo->getDueAt();
-
-        $paymentRequest->paymentMethod = 'boleto';
-        $paymentRequest->boleto = $boletoPaymentRequest;
-        $paymentRequest->currency = 'BRL';
 
         return array($paymentRequest);
     }

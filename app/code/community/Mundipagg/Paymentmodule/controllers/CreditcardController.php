@@ -1,17 +1,15 @@
 <?php
 
+
 class Mundipagg_Paymentmodule_CreditcardController extends Mundipagg_Paymentmodule_Controller_Payment
 {
     /**
-     * Gather card transaction information and try to create
-     * payment using sdk api wrapper.
+     * Gather credit card card transaction information and try to create
+     * a payment using the sdk api wrapper.
      */
     public function processPaymentAction()
     {
-        $order = Mage::getModel('paymentmodule/api_order');
-
-        $creditCardModel = Mage::getModel('paymentmodule/creditcard');
-//        $creditCardModel->getInfoInstance();
+        $apiOrder = Mage::getModel('paymentmodule/api_order');
 
         $paymentInfo = new Varien_Object();
 
@@ -20,19 +18,28 @@ class Mundipagg_Paymentmodule_CreditcardController extends Mundipagg_Paymentmodu
         $paymentInfo->setPaymentInfo($this->getPaymentInformation());
         $paymentInfo->setMetaInfo(Mage::helper('paymentmodule/data')->getMetaData());
 
-        $result = $order->createCreditcardPayment($paymentInfo);
-        $this->handleSuccessCreditCardTransaction($result);
+        $result = $apiOrder->createCreditcardPayment($paymentInfo);
+
+        $this->handleCreditCardTransactionResult($result);
     }
 
     /**
      * Take the result from processPaymentTransaction and redirect customer to
      * success page
      *
-     * @param $resultTransaction
+     * @param $result
      */
-    private function handleSuccessCreditCardTransaction($resultTransaction)
+    private function handleCreditCardTransactionResult($result)
     {
-//        $this->_redirect('checkout/onepage/success', array('_secure'=>true));
+        $standard = Mage::getModel('paymentmodule/standard');
+
+        $checkoutSession = $standard->getCheckoutSession();
+        $orderId = $checkoutSession->getLastOrderId();
+        $order = $standard->getOrderByOrderId($orderId);
+
+        $order->setState(Mage_Sales_Model_Order::STATE_PROCESSING, true)->save();
+
+        $this->_redirect('checkout/onepage/success', array('_secure' => true));
     }
 
     /**
@@ -42,14 +49,25 @@ class Mundipagg_Paymentmodule_CreditcardController extends Mundipagg_Paymentmodu
      */
     private function getPaymentInformation()
     {
+        $standard = Mage::getModel('paymentmodule/standard');
         $creditCardConfig = Mage::getModel('paymentmodule/config_card');
 
-        $orderId = Mage::getSingleton('checkout/session')->getLastOrderId();
-        $order = Mage::getModel("sales/order")->load($orderId);
+        $checkoutSession = $standard->getCheckoutSession();
+        $orderId = $checkoutSession->getLastRealOrderId();
+
+        $additionalInformation = $standard->getAdditionalInformationForOrder($orderId);
 
         $payment = new Varien_Object();
 
+        // @todo get this from front end
+        $payment->setInstallmentNumber('1');
         $payment->setPaymentMethod('credit_card');
+        $payment->setInvoiceName($creditCardConfig->getInvoiceName());
+        $payment->setOperationType($creditCardConfig->getOperationTypeFlag());
+        $payment->setPaymentToken($additionalInformation['mundipagg_payment_module_token']);
+        $payment->setHolderName($additionalInformation['mundipagg_payment_module_holder_name']);
+        // @todo get this from store config
+        $payment->setCurrency('BRL');
 
         return $payment;
     }

@@ -30,4 +30,48 @@ class Mundipagg_Paymentmodule_Model_Standard extends Mage_Payment_Model_Method_A
             array('_secure' => false)
         );
     }
+
+    public function authorize(Varien_Object $payment, $amount)
+    {
+    }
+
+    public function getCheckoutSession()
+    {
+        return Mage::getModel('checkout/session');
+    }
+
+    public function getCustomerSession()
+    {
+        return Mage::getModel('customer/session');
+    }
+
+    /**
+     * Increment order ids are those ids in the form '100000104'
+     *
+     * @param string $orderId
+     * @return string
+     */
+    public function getOrderByIncrementOrderId($orderId)
+    {
+        return Mage::getModel('sales/order')->loadByIncrementId($orderId);
+    }
+
+    public function getOrderByOrderId($orderId)
+    {
+        return Mage::getModel('sales/order')->load($orderId);
+    }
+
+    /**
+     * Retrieves additional information for order represented by real order
+     * id passed as argument
+     *
+     * @param string $orderId
+     * @return array
+    */
+    public function getAdditionalInformationForOrder($orderId)
+    {
+        $order = $this->getOrderByIncrementOrderId($orderId);
+
+        return $order->getPayment()->getAdditionalInformation();
+    }
 }
