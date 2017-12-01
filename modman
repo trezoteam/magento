@@ -1,3 +1,18 @@
 #Mundipagg Magento Module
-app/code/local/Mundipagg            app/code/local/Mundipagg
-app/etc/modules/Mundipagg.xml       app/etc/modules/Mundipagg.xml
+
+#App
+app/code/community/Mundipagg/Paymentmodule            app/code/community/Mundipagg/Paymentmodule
+app/etc/modules/Mundipagg_Paymentmodule.xml           app/etc/modules/Mundipagg_Paymentmodule.xml
+
+app/design/frontend/base/default/template/paymentmodule/  app/design/frontend/base/default/template/paymentmodule/
+
+#app/design/frontend/base/default/layout/paymentmodule.xml app/design/frontend/base/default/layout/paymentmodule.xml
+app/design/frontend/base/default/layout/paymentmodule.xml app/design/frontend/base/default/layout/paymentmodule.xml
+
+#Skin
+skin/adminhtml/default/default/images/mundipagg       skin/adminhtml/default/default/images/mundipagg
+skin/frontend/base/default/css/paymentmodule.css      skin/frontend/base/default/css/paymentmodule.css
+
+lib/*                                                 lib/
+
+js/mundipagg/paymentmodule.js                         js/mundipagg/paymentmodule.js

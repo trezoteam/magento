@@ -5,8 +5,8 @@ First off, thanks for taking the time to contribute!
 ### How can I contribute?
 
 * Fork this project;
-* Make your changes / new implementatios;
-* Use the pattern for git commts; 
+* Make your changes / new implementations;
+* Use the pattern for git commits; 
 * Make sure that the acceptance criteria are met (tests, docs, etc);
 * Create a pull request;
 
@@ -42,5 +42,5 @@ Template [PULLREQUEST-TEMPLATE](PULLREQUEST-TEMPLATE.md)
     * :speaker: `:mute:` when adding logging
     * :mute: `:mute:` when reducing logging
     * :facepunch: `:facepunch:` when resolve conflict
-    * :wrench: `:wrench:` when modify Web.config
+    * :wrench: `:wrench:` when modify config
 

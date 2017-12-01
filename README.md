@@ -40,3 +40,4 @@ Open a new Issue following our issue template [ISSUE-TEMPLATE](ISSUE-TEMPLATE.md
 
 # Changelog
 See in [releases](https://github.com/mundipagg/magento/releases)
+

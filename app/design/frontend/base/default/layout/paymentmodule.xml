@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout version="0.1.0">
+    <mundipagg_checkout_handle>
+        <reference name="head">
+            <action method="addItem">
+                <type>skin_css</type>
+                <name>css/paymentmodule.css</name>
+            </action>
+        </reference>
+
+        <reference name="before_body_end">
+            <block type="page/html_head" name="extra_js" as="extra_js" after="-" template="paymentmodule/extras.phtml">
+                <action method="addItem">
+                    <type>js</type>
+                    <name>mundipagg/paymentmodule.js</name>
+                </action>
+            </block>
+        </reference>
+    </mundipagg_checkout_handle>
+
+    <checkout_onepage_index translate="label">
+        <update handle="mundipagg_checkout_handle"/>
+    </checkout_onepage_index>
+
+    <onepagecheckout_index_index translate="label">
+        <update handle="mundipagg_checkout_handle"/>
+    </onepagecheckout_index_index>
+
+    <onestepcheckout_index_index translate="label">
+        <update handle="mundipagg_checkout_handle"/>
+    </onestepcheckout_index_index>
+
+    <opc_index_index translate="label">
+        <update handle="mundipagg_checkout_handle"/>
+    </opc_index_index>
+
+    <idecheckoutvm_index_index translate="label">
+        <update handle="mundipagg_checkout_handle"/>
+    </idecheckoutvm_index_index>
+</layout>
