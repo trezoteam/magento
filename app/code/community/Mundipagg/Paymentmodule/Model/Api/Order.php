@@ -7,11 +7,11 @@
 
 require_once Mage::getBaseDir('lib') . '/autoload.php';
 
-require_once '/var/www/newmagento.localhost/public_html/.modman/magento/lib/mundipagg/mundiapi/src/Models/GetCustomerResponse.php';
-require_once '/var/www/newmagento.localhost/public_html/.modman/magento/lib/mundipagg/mundiapi/src/Models/GetAddressResponse.php';
-require_once '/var/www/newmagento.localhost/public_html/.modman/magento/lib/mundipagg/mundiapi/src/Models/GetPhonesResponse.php';
-require_once '/var/www/newmagento.localhost/public_html/.modman/magento/lib/mundipagg/mundiapi/src/Models/GetPhoneResponse.php';
-require_once '/var/www/newmagento.localhost/public_html/.modman/magento/lib/mundipagg/mundiapi/src/Models/GetTransactionResponse.php';
+require_once '/var/www/m1m1.localhost/public_html/.modman/magento/lib/mundipagg/mundiapi/src/Models/GetCustomerResponse.php';
+require_once '/var/www/m1m1.localhost/public_html/.modman/magento/lib/mundipagg/mundiapi/src/Models/GetAddressResponse.php';
+require_once '/var/www/m1m1.localhost/public_html/.modman/magento/lib/mundipagg/mundiapi/src/Models/GetPhonesResponse.php';
+require_once '/var/www/m1m1.localhost/public_html/.modman/magento/lib/mundipagg/mundiapi/src/Models/GetPhoneResponse.php';
+require_once '/var/www/m1m1.localhost/public_html/.modman/magento/lib/mundipagg/mundiapi/src/Models/GetTransactionResponse.php';
 
 class GetCustomerResponse extends \MundiAPILib\Models\GetCustomerResponse {}
 class GetAddressResponse extends \MundiAPILib\Models\GetAddressResponse {}
