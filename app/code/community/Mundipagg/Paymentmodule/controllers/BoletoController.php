@@ -40,9 +40,10 @@ class Mundipagg_Paymentmodule_BoletoController extends Mundipagg_Paymentmodule_C
     private function getPaymentInformation()
     {
         $boletoConfig = Mage::getModel('paymentmodule/config_boleto');
+        $standard = Mage::getModel('paymentmodule/standard');
 
         $orderId = Mage::getSingleton('checkout/session')->getLastOrderId();
-        $order = Mage::getModel("sales/order")->load($orderId);
+        $order = $standard->getOrderByOrderId($orderId);
         $grandTotal = $order->getGrandTotal();
 
         $payment = new Varien_Object();

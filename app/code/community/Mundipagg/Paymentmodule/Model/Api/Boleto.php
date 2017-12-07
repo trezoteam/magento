@@ -28,10 +28,11 @@ class Mundipagg_Paymentmodule_Model_Api_Boleto
 
     private function getItems($itemsInfo)
     {
-        $items = array();
+        $items = [];
 
         foreach ($itemsInfo as $item) {
             $orderItemRequest = new CreateOrderItemRequest();
+
             $orderItemRequest->amount = $item->getAmount();
             $orderItemRequest->quantity = $item->getQuantity();
             $orderItemRequest->description = $item->getDescription();
@@ -112,6 +113,6 @@ class Mundipagg_Paymentmodule_Model_Api_Boleto
         // @todo this should not be hard coded
         $paymentRequest->currency = 'BRL';
 
-        return array($paymentRequest);
+        return [$paymentRequest];
     }
 }
