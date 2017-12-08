@@ -6,6 +6,16 @@
                 <ul >
                     <li style="clear:both">
                         <div class="input-box"  id="tokenDiv" data-mundicheckout-app-id="<?php echo $this->getPublicKey(); ?>">
+
+                            <label for="">Card number<span class="required">*</span></label>
+                            <input
+                                    type="text"
+                                    data-mundicheckout-input="number"
+                                    class="required-entry"
+                                    id="mundicheckout-number"
+                                    onkeyup="getFormData()"
+                                    name="payment[creditCardNumber]"><span data-mundicheckout-brand></span><br>
+
                             <label for="">Holder name<span class="required">*</span></label>
                             <input
                                     type="text"
@@ -15,32 +25,35 @@
                                     onkeyup="getFormData()"
                                     name="payment[holderName]"><br>
 
-                            <label for="">Number<span class="required">*</span></label>
-                            <input
-                                    type="text"
-                                    data-mundicheckout-input="number"
-                                    class="required-entry"
-                                    id="mundicheckout-number"
-                                    onkeyup="getFormData()"
-                                    name="payment[creditCardNumber]"><span data-mundicheckout-brand></span><br>
-
                             <label for="">Expiration month<span class="required">*</span></label>
-                            <input
-                                    type="text"
-                                    data-mundicheckout-input="exp_month"
+                            <select
                                     class="required-entry"
                                     id="mundicheckout-expmonth"
-                                    onkeyup="getFormData()"
-                                    name="payment[creditCardExpMonth]"><br>
+                                    onchange="getFormData()"
+                                    name="payment[creditCardExpMonth]">
 
-                            <label for="">Expiration year<span class="required">*</span></label>
-                            <input
-                                    type="text"
-                                    data-mundicheckout-input="exp_year"
+                                <?php for ($month = 1; $month < 13; $month++ ) { ?>
+                                    <option value="<?php echo $month; ?>">
+                                        <?php
+                                            echo str_pad($month, "2", "0", STR_PAD_LEFT);
+                                        ?>
+                                    </option>
+                                <?php } ?>
+
+                            </select><br>
+
+                            <label for="payment[creditCardExpYear]">Expiration year<span class="required">*</span></label>
+                            <select
                                     class="required-entry"
-                                    id="mundicheckout-expyear"
-                                    onkeyup="getFormData()"
-                                    name="payment[creditCardExpYear]"><br>
+                                id="mundicheckout-expyear"
+                                onchange="getFormData()"
+                                name="payment[creditCardExpYear]">
+
+                                <?php for ($year = date("Y"); $year < date("Y") + 11; $year++ ) { ?>
+                                    <option value="<?php echo $year; ?>"><?php echo $year; ?></option>
+                                <?php } ?>
+
+                            </select><br>
 
                             <label for="">CVV<span class="required">*</span></label>
                             <input
@@ -49,7 +62,9 @@
                                     class="required-entry"
                                     id="mundicheckout-cvv"
                                     onkeyup="getFormData()"
-                                    name="payment[creditCardCvv]"><br>
+                                    name="payment[creditCardCvv]"
+                                    maxlength="4"
+                                    ><br>
 
                             <input
                                     type="hidden"
