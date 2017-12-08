@@ -10,12 +10,11 @@ var toTokenApi = {
 };
 
 function getFormData() {
-    toTokenApi.card.holder_name = document.getElementById('mundicheckout-holdername').value;
-    toTokenApi.card.number = document.getElementById('mundicheckout-number').value;
+    toTokenApi.card.holder_name = cleanHolderName(document.getElementById('mundicheckout-holdername'));
+    toTokenApi.card.number = cleanCardNumber(document.getElementById('mundicheckout-number'));
     toTokenApi.card.exp_month = document.getElementById('mundicheckout-expmonth').value;
     toTokenApi.card.exp_year = document.getElementById('mundicheckout-expyear').value;
-    toTokenApi.card.cvv = document.getElementById('mundicheckout-cvv').value;
-
+    toTokenApi.card.cvv = cleanCvv(document.getElementById('mundicheckout-cvv'));
     callGetCreditCardToken();
 }
 
@@ -79,6 +78,7 @@ function validateCreditCardData() {
         toTokenApi.card.cvv.length > 2 &&
         toTokenApi.card.cvv.length < 5
     ){
+
         return true;
     }else{
         return false;
