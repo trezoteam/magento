@@ -1,5 +1,4 @@
 function cleanHolderName(field) {
-    console.log(field.value);
     var  newValue = removeNumbersAndSpecialCharacters(field.value);
     changeFieldValue(field, newValue);
     return newValue;

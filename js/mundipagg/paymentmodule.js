@@ -5,8 +5,9 @@ var toTokenApi = {
         "holder_name": '',
         "exp_month": '',
         "exp_year": '',
-        "cvv": ''
-    }
+        "cvv": '',
+        "token": false
+    },
 };
 
 function getFormData() {
@@ -20,7 +21,7 @@ function getFormData() {
 
 function callGetCreditCardToken() {
 
-    if(validateCreditCardData()){
+    if (validateCreditCardData()) {
         var key = document.getElementById('tokenDiv').getAttribute('data-mundicheckout-app-id');
         getCreditCardToken(key);
     }
@@ -40,7 +41,8 @@ function apiRequest(url, data) {
 
     xhr.onreadystatechange = function () {
         if (xhr.readyState > 3 && xhr.status == 200) {
-            setTokenToInput(JSON.parse(xhr.responseText));
+            console.log(JSON.parse(xhr.responseText));
+            setToken(JSON.parse(xhr.responseText));
         }
     };
 
@@ -48,10 +50,12 @@ function apiRequest(url, data) {
     return xhr;
 }
 
-function setTokenToInput(apiResponse) {
-    console.log(apiResponse);
-    var tokenElement = document.getElementById('mundicheckout-token');
-    tokenElement.value = apiResponse.id;
+function setToken(token) {
+    if (token.id) {
+        var tokenElement = document.getElementById('mundicheckout-token');
+        tokenElement.value = token.id;
+        toTokenApi.card.token = token.id;
+    }
 }
 
 function getCreditCardToken(pkKey) {
@@ -78,9 +82,9 @@ function validateCreditCardData() {
         toTokenApi.card.cvv.length > 2 &&
         toTokenApi.card.cvv.length < 5
     ){
-
         return true;
     }else{
+
         return false;
     }
 }
@@ -93,3 +97,9 @@ function getCurrentYear() {
     var date = new Date();
     return date.getFullYear();
 }
+
+Payment.prototype.save = Payment.prototype.save.wrap(function(save) {
+    if (toTokenApi.card.token) {
+        save();
+    }
+});
