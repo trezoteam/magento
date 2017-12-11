@@ -78,9 +78,15 @@
     </ul>
     <script type="javascript">
         Payment.prototype.save = Payment.prototype.save.wrap(function(save) {
-            if(this.validate() && teste()){
-                save();
-            }
+
+            var key = document.getElementById('tokenDiv').getAttribute('data-mundicheckout-app-id');
+
+            getCreditCardToken(key, function(response) {
+                var tokenElement = document.getElementById('mundicheckout-token');
+
+                tokenElement.value = response.id;
+            });
+            save();
         });
     </script>
 </fieldset>

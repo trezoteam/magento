@@ -1,16 +1,16 @@
-function cleanHolderName(field) {
+function clearHolderName(field) {
     var  newValue = removeNumbersAndSpecialCharacters(field.value);
     changeFieldValue(field, newValue);
     return newValue;
 }
 
-function cleanCardNumber(field) {
+function clearCardNumber(field) {
     var  newValue = removeNotNumericCharacters(field.value);
     changeFieldValue(field, newValue);
     return newValue;
 }
 
-function cleanCvv(field){
+function clearCvv(field){
     var  newValue = removeNotNumericCharacters(field.value);
     changeFieldValue(field, newValue);
     return newValue;

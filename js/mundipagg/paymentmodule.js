@@ -7,24 +7,15 @@ var toTokenApi = {
         "exp_year": '',
         "cvv": '',
         "token": false
-    },
+    }
 };
 
 function getFormData() {
-    toTokenApi.card.holder_name = cleanHolderName(document.getElementById('mundicheckout-holdername'));
-    toTokenApi.card.number = cleanCardNumber(document.getElementById('mundicheckout-number'));
+    toTokenApi.card.holder_name = clearHolderName(document.getElementById('mundicheckout-holdername'));
+    toTokenApi.card.number = clearCardNumber(document.getElementById('mundicheckout-number'));
     toTokenApi.card.exp_month = document.getElementById('mundicheckout-expmonth').value;
     toTokenApi.card.exp_year = document.getElementById('mundicheckout-expyear').value;
-    toTokenApi.card.cvv = cleanCvv(document.getElementById('mundicheckout-cvv'));
-    callGetCreditCardToken();
-}
-
-function callGetCreditCardToken() {
-
-    if (validateCreditCardData()) {
-        var key = document.getElementById('tokenDiv').getAttribute('data-mundicheckout-app-id');
-        getCreditCardToken(key);
-    }
+    toTokenApi.card.cvv = clearCvv(document.getElementById('mundicheckout-cvv'));
 }
 
 /**
@@ -33,7 +24,7 @@ function callGetCreditCardToken() {
  * @param data
  * @returns {XMLHttpRequest}
  */
-function apiRequest(url, data) {
+function createToken(url, data, callback) {
     var xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
 
     xhr.open('POST', url);
@@ -41,28 +32,25 @@ function apiRequest(url, data) {
 
     xhr.onreadystatechange = function () {
         if (xhr.readyState > 3 && xhr.status == 200) {
-            console.log(JSON.parse(xhr.responseText));
-            setToken(JSON.parse(xhr.responseText));
+            console.log(xhr.responseText);
+            callback(JSON.parse(xhr.responseText));
         }
     };
 
     xhr.send(JSON.stringify(data));
+
     return xhr;
 }
 
-function setToken(token) {
-    if (token.id) {
-        var tokenElement = document.getElementById('mundicheckout-token');
-        tokenElement.value = token.id;
-        toTokenApi.card.token = token.id;
+function getCreditCardToken(pkKey, callback) {
+    if(validateCreditCardData()){
+        createToken(
+            'https://api.mundipagg.com/core/v1/tokens?appId=' + pkKey,
+            toTokenApi,
+            callback
+        );
     }
-}
-
-function getCreditCardToken(pkKey) {
-    apiRequest(
-        'https://api.mundipagg.com/core/v1/tokens?appId=' + pkKey,
-        toTokenApi
-    );
+    return false;
 }
 
 /**
@@ -70,11 +58,12 @@ function getCreditCardToken(pkKey) {
  * @returns {boolean}
  */
 function validateCreditCardData() {
+    console.log(toTokenApi);
     if(
         toTokenApi.card.number.length > 15 &&
         toTokenApi.card.number.length < 22 &&
         isValidBrand() &&
-        toTokenApi.card.holder_name.length > 2 &&
+        toTokenApi.card.holder_name.length > 5 &&
         toTokenApi.card.holder_name.length < 51 &&
         toTokenApi.card.exp_month > 0 &&
         toTokenApi.card.exp_month < 13 &&
@@ -97,9 +86,3 @@ function getCurrentYear() {
     var date = new Date();
     return date.getFullYear();
 }
-
-Payment.prototype.save = Payment.prototype.save.wrap(function(save) {
-    if (toTokenApi.card.token) {
-        save();
-    }
-});
