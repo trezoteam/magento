@@ -11,7 +11,7 @@
                             <input
                                     type="text"
                                     data-mundicheckout-input="number"
-                                    class="required-entry"
+                                    class="required-entry validate-number validate-cc-number"
                                     id="mundicheckout-number"
                                     onkeyup="getFormData()"
                                     name="payment[creditCardNumber]"><span data-mundicheckout-brand></span><br>
@@ -20,7 +20,7 @@
                             <input
                                     type="text"
                                     data-mundicheckout-input="holder_name"
-                                    class="required-entry"
+                                    class="required-entry validate-alpha"
                                     id="mundicheckout-holdername"
                                     onkeyup="getFormData()"
                                     name="payment[holderName]"><br>
@@ -31,7 +31,7 @@
                                     id="mundicheckout-expmonth"
                                     onchange="getFormData()"
                                     name="payment[creditCardExpMonth]">
-
+                                    <option value="">--- Selecione --- </option>
                                 <?php for ($month = 1; $month < 13; $month++ ) { ?>
                                     <option value="<?php echo $month; ?>">
                                         <?php
@@ -44,11 +44,11 @@
 
                             <label for="payment[creditCardExpYear]">Expiration year<span class="required">*</span></label>
                             <select
-                                    class="required-entry"
+                                class="required-entry"
                                 id="mundicheckout-expyear"
                                 onchange="getFormData()"
                                 name="payment[creditCardExpYear]">
-
+                                    <option value="">--- Selecione --- </option>
                                 <?php for ($year = date("Y"); $year < date("Y") + 11; $year++ ) { ?>
                                     <option value="<?php echo $year; ?>"><?php echo $year; ?></option>
                                 <?php } ?>
@@ -59,7 +59,7 @@
                             <input
                                     type="text"
                                     data-mundicheckout-input="cvv"
-                                    class="required-entry"
+                                    class="required-entry validate-number validate-cc-cvn"
                                     id="mundicheckout-cvv"
                                     onkeyup="getFormData()"
                                     name="payment[creditCardCvv]"
@@ -76,4 +76,11 @@
             </div>
         </li>
     </ul>
+    <script type="javascript">
+        Payment.prototype.save = Payment.prototype.save.wrap(function(save) {
+            if(this.validate() && teste()){
+                save();
+            }
+        });
+    </script>
 </fieldset>
