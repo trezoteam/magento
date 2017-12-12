@@ -11,7 +11,7 @@
                             <input
                                     type="text"
                                     data-mundicheckout-input="number"
-                                    class="required-entry validate-number validate-cc-number"
+                                    class="required-entry validate-cc-number"
                                     id="mundicheckout-number"
                                     onkeyup="getFormData()"
                                     name="payment[creditCardNumber]"><span data-mundicheckout-brand></span><br>
@@ -19,8 +19,8 @@
                             <label for="">Holder name<span class="required">*</span></label>
                             <input
                                     type="text"
-                                    data-mundicheckout-input="holder_name"
-                                    class="required-entry validate-alpha"
+                                    data-mundicheckout-input="holder_name "
+                                    class="required-entry"
                                     id="mundicheckout-holdername"
                                     onkeyup="getFormData()"
                                     name="payment[holderName]"><br>
@@ -69,8 +69,15 @@
                             <input
                                     type="hidden"
                                     id="mundicheckout-token"
+                                    class="validate-ajax"
                                     name="payment[creditCardToken]">
                         </div>
+                        <p>
+                            <div class="validation-advice hidden" id="mundipagg-invalid-credit-card" style="">
+                                Cartão de crédito inválido.
+                            </div>
+                        </p>
+
                     </li>
                 </ul>
             </div>
@@ -78,15 +85,21 @@
     </ul>
     <script type="javascript">
         Payment.prototype.save = Payment.prototype.save.wrap(function(save) {
-
             var key = document.getElementById('tokenDiv').getAttribute('data-mundicheckout-app-id');
+            var tokenElement = document.getElementById('mundicheckout-token');
 
-            getCreditCardToken(key, function(response) {
-                var tokenElement = document.getElementById('mundicheckout-token');
-
-                tokenElement.value = response.id;
-            });
-            save();
+            var validator = new Validation(this.form);
+            if (this.validate() && validator.validate()) {
+                getCreditCardToken(key, function (response) {
+                    if (response != false) {
+                        tokenElement.value = response.id;
+                        jQuery("#mundipagg-invalid-credit-card").hide();
+                        save();
+                        return;
+                    }
+                    jQuery("#mundipagg-invalid-credit-card").show();
+                });
+            }
         });
     </script>
 </fieldset>

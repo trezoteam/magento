@@ -6,7 +6,6 @@ var toTokenApi = {
         "exp_month": '',
         "exp_year": '',
         "cvv": '',
-        "token": false
     }
 };
 
@@ -32,8 +31,9 @@ function createToken(url, data, callback) {
 
     xhr.onreadystatechange = function () {
         if (xhr.readyState > 3 && xhr.status == 200) {
-            console.log(xhr.responseText);
             callback(JSON.parse(xhr.responseText));
+        }else{
+            callback(false);
         }
     };
 
@@ -58,12 +58,11 @@ function getCreditCardToken(pkKey, callback) {
  * @returns {boolean}
  */
 function validateCreditCardData() {
-    console.log(toTokenApi);
     if(
         toTokenApi.card.number.length > 15 &&
         toTokenApi.card.number.length < 22 &&
         isValidBrand() &&
-        toTokenApi.card.holder_name.length > 5 &&
+        toTokenApi.card.holder_name.length > 2 &&
         toTokenApi.card.holder_name.length < 51 &&
         toTokenApi.card.exp_month > 0 &&
         toTokenApi.card.exp_month < 13 &&
