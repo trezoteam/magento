@@ -15,4 +15,4 @@ skin/frontend/base/default/css/paymentmodule.css      skin/frontend/base/default
 
 lib/*                                                 lib/
 
-js/mundipagg/paymentmodule.js                         js/mundipagg/paymentmodule.js
+js/mundipagg/*                         js/mundipagg/

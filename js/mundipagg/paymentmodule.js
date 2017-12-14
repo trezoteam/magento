@@ -5,18 +5,24 @@ var toTokenApi = {
         "holder_name": '',
         "exp_month": '',
         "exp_year": '',
-        "cvv": ''
+        "cvv": '',
     }
 };
 
 function getFormData() {
-    toTokenApi.card.holder_name = document.getElementById('mundicheckout-holdername').value;
-    toTokenApi.card.number = document.getElementById('mundicheckout-number').value;
+    toTokenApi.card.holder_name = clearHolderName(document.getElementById('mundicheckout-holdername'));
+    toTokenApi.card.number = clearCardNumber(document.getElementById('mundicheckout-number'));
     toTokenApi.card.exp_month = document.getElementById('mundicheckout-expmonth').value;
     toTokenApi.card.exp_year = document.getElementById('mundicheckout-expyear').value;
-    toTokenApi.card.cvv = document.getElementById('mundicheckout-cvv').value;
+    toTokenApi.card.cvv = clearCvv(document.getElementById('mundicheckout-cvv'));
 }
 
+/**
+ * Call API
+ * @param url string
+ * @param data
+ * @returns {XMLHttpRequest}
+ */
 function createToken(url, data, callback) {
     var xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
 
@@ -26,6 +32,8 @@ function createToken(url, data, callback) {
     xhr.onreadystatechange = function () {
         if (xhr.readyState > 3 && xhr.status == 200) {
             callback(JSON.parse(xhr.responseText));
+        }else{
+            callback(false);
         }
     };
 
@@ -35,20 +43,45 @@ function createToken(url, data, callback) {
 }
 
 function getCreditCardToken(pkKey, callback) {
-    createToken(
-        'https://api.mundipagg.com/core/v1/tokens?appId=' + pkKey,
-        toTokenApi,
-        callback
-    );
+    if(validateCreditCardData()){
+        createToken(
+            'https://api.mundipagg.com/core/v1/tokens?appId=' + pkKey,
+            toTokenApi,
+            callback
+        );
+    }
+    return false;
 }
 
-Payment.prototype.save = Payment.prototype.save.wrap(function(save) {
-    var key = document.getElementById('tokenDiv').getAttribute('data-mundicheckout-app-id');
+/**
+ * Validate input data
+ * @returns {boolean}
+ */
+function validateCreditCardData() {
+    if(
+        toTokenApi.card.number.length > 15 &&
+        toTokenApi.card.number.length < 22 &&
+        isValidBrand() &&
+        toTokenApi.card.holder_name.length > 2 &&
+        toTokenApi.card.holder_name.length < 51 &&
+        toTokenApi.card.exp_month > 0 &&
+        toTokenApi.card.exp_month < 13 &&
+        toTokenApi.card.exp_year >= getCurrentYear() &&
+        toTokenApi.card.cvv.length > 2 &&
+        toTokenApi.card.cvv.length < 5
+    ){
+        return true;
+    }else{
 
-    getCreditCardToken(key, function(response) {
-        var tokenElement = document.getElementById('mundicheckout-token');
+        return false;
+    }
+}
 
-        tokenElement.value = response.id;;
-        save();
-    });
-});
+function isValidBrand() {
+    return true;
+}
+
+function getCurrentYear() {
+    var date = new Date();
+    return date.getFullYear();
+}
