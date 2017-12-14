@@ -13,7 +13,8 @@
                                     data-mundicheckout-input="number"
                                     class="required-entry validate-cc-number"
                                     id="mundicheckout-number"
-                                    onkeyup="getFormData()"
+                                    onkeyup="getFormData(); getBrand(this.value);"
+                                    maxlength="19"
                                     name="payment[creditCardNumber]"><span data-mundicheckout-brand></span><br>
 
                             <label for="">Holder name<span class="required">*</span></label>
@@ -123,8 +124,6 @@
                 return false;
             }
             return true;
-
-
         }
     </script>
 </fieldset>
