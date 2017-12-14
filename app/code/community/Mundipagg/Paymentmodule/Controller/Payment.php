@@ -43,7 +43,7 @@ class Mundipagg_Paymentmodule_Controller_Payment extends Mage_Core_Controller_Fr
         $orderId = $checkoutSession->getLastOrderId();
         $order = $standard->getOrderByOrderId($orderId);
         $billingAddress = $order->getBillingAddress();
-
+        $regionId = $billingAddress->getRegionId();
         $address = new Varien_Object();
 
         // @fixme I'm using this getStreet()[0] here but maybe there's a better way...
@@ -52,12 +52,25 @@ class Mundipagg_Paymentmodule_Controller_Payment extends Mage_Core_Controller_Fr
         $address->setZipCode($billingAddress->getPostcode());
         $address->setNeighborhood('neighborhood');
         $address->setCity($billingAddress->getCity());
-        $address->setState($billingAddress->getRegion());
+        $address->setState($this->getStateByRegionId($regionId));
         $address->setCountry($billingAddress->getCountryId());
         $address->setComplement('complement');
         $address->setMetadata(null);
-
         return $address;
+    }
+
+    /**
+     * Return state code
+     * @example $this->getStateByRegionId(502) //return "RJ"
+     * @param int $regionId
+     * @return string
+     */
+    private function getStateByRegionId($regionId)
+    {
+        $standard = Mage::getModel('paymentmodule/standard');
+        $region = $standard->getRegionModel()->load($regionId);
+
+        return $region->getCode();
     }
 
     /**

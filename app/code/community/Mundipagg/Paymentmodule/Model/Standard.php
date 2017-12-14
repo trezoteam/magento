@@ -45,6 +45,11 @@ class Mundipagg_Paymentmodule_Model_Standard extends Mage_Payment_Model_Method_A
         return Mage::getModel('customer/session');
     }
 
+    public function getRegionModel()
+    {
+        return Mage::getModel('directory/region');
+    }
+
     /**
      * Increment order ids are those ids in the form '100000104'
      *
