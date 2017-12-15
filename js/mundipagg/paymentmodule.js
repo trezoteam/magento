@@ -48,6 +48,7 @@ function apiRequest(url, data, callback, method, json) {
 
 function getCreditCardToken(pkKey, callback) {
     if(validateCreditCardData()){
+
         apiRequest(
             'https://api.mundipagg.com/core/v1/tokens?appId=' + pkKey,
             toTokenApi,
@@ -97,6 +98,7 @@ function getCurrentYear() {
  * @param int creditCardNumber
  */
 function getBrand(creditCardNumber) {
+    clearBrand();
     if (creditCardNumber.length > 5 && !brandName) {
         bin = creditCardNumber.substring(0, 6);
         apiRequest(
@@ -109,8 +111,8 @@ function getBrand(creditCardNumber) {
 
     }
     if (creditCardNumber.length < 5 && brandName) {
-        console.log("limpou");
         brandName = false;
+
     }
 }
 
@@ -119,8 +121,19 @@ function getBrand(creditCardNumber) {
  * @param brand
  */
 function showBrandImage(data) {
-    if (data.brand) {
-        console.log(data.brand);
-        brandName = data.brand;
+    console.log(data.brand);
+    if (data.brand != "" && data.brand != undefined) {
+        html = "<img src='https://dashboard.mundipagg.com/emb/images/brands/" + data.brand + ".jpg' ";
+        html += " class='mundipaggImage' width='26'>";
+
+        jQuery(".mundipaggBrandImage").html(html);
+    }else{
+
+        clearBrand();
     }
+}
+
+function clearBrand(){
+    console.log("limpa");
+    jQuery(".mundipaggBrandImage").html("");
 }
