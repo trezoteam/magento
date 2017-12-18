@@ -65,7 +65,7 @@
                                     name="payment[holderName]"><br>
                             </div>
 
-                            <label for="">Holder name<span class="required">*</span></label>
+                            <label for="">Expiration date<span class="required">*</span></label>
                             <div class="input-box">
                                 <div class="v-fix">
                                     <select
@@ -74,7 +74,7 @@
                                             onchange="getFormData();"
                                             name="payment[creditCardExpMonth]"
                                         >
-                                        <option value="">--- Selecione --- </option>
+                                        <option value="">--- Mês --- </option>
                                         <?php for ($month = 1; $month < 13; $month++ ) { ?>
                                             <option value="<?php echo str_pad($month, "2", "0", STR_PAD_LEFT); ?>">
                                                 <?php
@@ -92,7 +92,7 @@
                                             onchange="getFormData();"
                                             name="payment[creditCardExpYear]"
                                     >
-                                        <option value="">--- Selecione --- </option>
+                                        <option value="">--- Ano --- </option>
                                         <?php for ($year = date("Y"); $year < date("Y") + 11; $year++ ) { ?>
                                             <option value="<?php echo $year; ?>"><?php echo $year; ?></option>
                                         <?php } ?>
@@ -104,6 +104,18 @@
                                     class="validate-mundipagg-creditcard-exp"
                                     id="mundicheckout-expiration-date"
                                     name="payment[creditCardExpDate]"><br>
+
+                            <label for="">Parcelamento<span class="required">*</span></label>
+                            <div class="input-box">
+                                <select
+                                        class="validate-one-required"
+                                        name="payment[creditCardInstallments]"
+                                        onchange="getFormData();"
+                                >
+
+                                </select>
+                                <br>
+                            </div>
 
                             <label for="">CVV<span class="required">*</span></label>
                             <div class="input-box">
