@@ -48,7 +48,7 @@
                                         class="required-entry validate-cc-number mundipaggInput"
                                         id="mundicheckout-number"
                                         onkeyup="getFormData(); getBrand(this.value);"
-                                        onchange="getFormData();"
+                                        onchange="getFormData(); getBrand(this.value);"
                                         maxlength="19"
                                         name="payment[creditCardNumber]"
                                 >
@@ -166,8 +166,7 @@
             var date = new Date();
             var expDate = new Date(year, month - 1, 1);
             var today = new Date(date.getFullYear(), date.getMonth(), 1);
-            console.log(expDate);
-            console.log(today);
+
             if (expDate < today) {
                 return false;
             }
