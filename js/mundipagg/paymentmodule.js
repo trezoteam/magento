@@ -5,9 +5,11 @@ var toTokenApi = {
         "holder_name": '',
         "exp_month": '',
         "exp_year": '',
-        "cvv": '',
+        "cvv": ''
     }
 };
+
+var brandName = false;
 
 function getFormData() {
     toTokenApi.card.holder_name = clearHolderName(document.getElementById('mundicheckout-holdername'));
@@ -23,11 +25,13 @@ function getFormData() {
  * @param data
  * @returns {XMLHttpRequest}
  */
-function createToken(url, data, callback) {
+function apiRequest(url, data, callback, method, json) {
     var xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+    xhr.open(method, url);
 
-    xhr.open('POST', url);
-    xhr.setRequestHeader("content-type", "application/json");
+    if (json) {
+        xhr.setRequestHeader("content-type", "application/json");
+    }
 
     xhr.onreadystatechange = function () {
         if (xhr.readyState > 3 && xhr.status == 200) {
@@ -44,10 +48,12 @@ function createToken(url, data, callback) {
 
 function getCreditCardToken(pkKey, callback) {
     if(validateCreditCardData()){
-        createToken(
+        apiRequest(
             'https://api.mundipagg.com/core/v1/tokens?appId=' + pkKey,
             toTokenApi,
-            callback
+            callback,
+            "POST",
+            true
         );
     }
     return false;
@@ -61,7 +67,6 @@ function validateCreditCardData() {
     if(
         toTokenApi.card.number.length > 15 &&
         toTokenApi.card.number.length < 22 &&
-        isValidBrand() &&
         toTokenApi.card.holder_name.length > 2 &&
         toTokenApi.card.holder_name.length < 51 &&
         toTokenApi.card.exp_month > 0 &&
@@ -77,11 +82,46 @@ function validateCreditCardData() {
     }
 }
 
-function isValidBrand() {
-    return true;
-}
-
 function getCurrentYear() {
     var date = new Date();
     return date.getFullYear();
+}
+
+/**
+ * Get credit card brand
+ * @param int creditCardNumber
+ */
+function getBrand(creditCardNumber) {
+    if (creditCardNumber.length > 5 && !brandName) {
+        bin = creditCardNumber.substring(0, 6);
+        apiRequest(
+            "https://api.mundipagg.com/bin/v1/" + bin,
+            "",
+            showBrandImage,
+            "GET",
+            false
+        )
+
+    }
+    if (creditCardNumber.length < 6) {
+        brandName = false;
+        clearBrand();
+    }
+}
+
+/**
+ * Show credit card brand image
+ * @param brand
+ */
+function showBrandImage(data) {
+    if (data.brand != "" && data.brand != undefined) {
+        html = "<img src='https://dashboard.mundipagg.com/emb/images/brands/" + data.brand + ".jpg' ";
+        html += " class='mundipaggImage' width='26'>";
+
+        jQuery(".mundipaggBrandImage").html(html);
+    }
+}
+
+function clearBrand(){
+    jQuery(".mundipaggBrandImage").html("");
 }
