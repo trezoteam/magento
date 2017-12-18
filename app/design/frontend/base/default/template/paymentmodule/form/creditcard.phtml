@@ -6,7 +6,6 @@
                 <ul >
                     <li style="clear:both">
                         <div class="input-box"  id="tokenDiv" data-mundicheckout-app-id="<?php echo $this->getPublicKey(); ?>">
-                            <?php var_dump($this->getInstallments()); ?>
                             <div class="input-box">
                                 <img
                                         src="https://dashboard.mundipagg.com/emb/images/brands/amex.jpg"
@@ -110,7 +109,7 @@
                                 <select
                                         class=""
                                         name="payment[creditCardInstallments]"
-                                        onchange="getFormData();"
+                                        onchange="getFormData(); getInstallments('<?php echo Mage::getUrl('');?>');"
                                 >
                                     <option value="1">1</option>
                                     <option value="2">2</option>

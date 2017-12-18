@@ -125,3 +125,18 @@ function showBrandImage(data) {
 function clearBrand(){
     jQuery(".mundipaggBrandImage").html("");
 }
+
+function getInstallments(baseUrl) {
+    apiRequest(
+        baseUrl + '/mundipagg/creditcard/getinstallments',
+        '',
+        switchInstallments,
+        "GET",
+        false
+    );
+
+}
+
+function switchInstallments(data) {
+    console.log(data)
+}

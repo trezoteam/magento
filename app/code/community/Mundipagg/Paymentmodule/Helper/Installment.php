@@ -2,7 +2,7 @@
 
 class Mundipagg_Paymentmodule_Helper_Installment extends Mage_Core_Helper_Abstract
 {
-    public function getInstallments($total)
+    public function getInstallments($total, $cards = null)
     {
         $cardConfig = Mage::getModel('paymentmodule/config_card');
 
@@ -10,7 +10,7 @@ class Mundipagg_Paymentmodule_Helper_Installment extends Mage_Core_Helper_Abstra
             return $this->getDefaultInstallments($total);
         }
 
-        return $this->getCardsInstallments($total);
+        return $this->getCardsInstallments($total, $cards);
     }
 
     private function getDefaultInstallments($total)
@@ -30,10 +30,13 @@ class Mundipagg_Paymentmodule_Helper_Installment extends Mage_Core_Helper_Abstra
         );
     }
 
-    private function getCardsInstallments($total)
+    private function getCardsInstallments($total, $cards = nulll)
     {
         $cardConfig = Mage::getModel('paymentmodule/config_card');
-        $cards = array('Visa', 'Master', 'Hiper', 'Diners', 'Amex', 'Elo');
+
+        if(!$cards) {
+            $cards = array('Visa', 'Master', 'Hiper', 'Diners', 'Amex', 'Elo');
+        }
         $installments = array();
 
         foreach ($cards as $card) {
