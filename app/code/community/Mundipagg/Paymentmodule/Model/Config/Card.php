@@ -78,27 +78,27 @@ class Mundipagg_Paymentmodule_Model_Config_Card
         return Mage::getStoreConfig('mundipagg_config/installments_group/visa_incremental_interest');
     }
 
-    public function isMasterEnabled()
+    public function isMastercardEnabled()
     {
         return Mage::getStoreConfig('mundipagg_config/installments_group/mastercard_status');
     }
 
-    public function getMasterInterest()
+    public function getMastercardInterest()
     {
         return Mage::getStoreConfig('mundipagg_config/installments_group/master_interest');
     }
 
-    public function getMasterMaxInstallmentsWithoutInterest()
+    public function getMastercardMaxInstallmentsWithoutInterest()
     {
         return Mage::getStoreConfig('mundipagg_config/installments_group/mastercard_max_no_interest');
     }
 
-    public function getMasterMaxInstallmentsNumber()
+    public function getMastercardMaxInstallmentsNumber()
     {
         return Mage::getStoreConfig('mundipagg_config/installments_group/mastercard_max_installments');
     }
 
-    public function getMasterIncrementalInterest()
+    public function getMastercardIncrementalInterest()
     {
         return Mage::getStoreConfig('mundipagg_config/installments_group/mastercard_incremental_interest');
     }
