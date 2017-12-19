@@ -1,4 +1,5 @@
 <?php $_code = $this->getMethodCode(); ?>
+<input type="hidden" id="baseUrl" value="<?php echo Mage::getUrl('');?>"/>
 <fieldset>
     <ul id="payment_form_<?php echo $_code; ?>" style="display:none;">
         <li>
@@ -38,9 +39,8 @@
                                 Card number<span class="required">*</span>
                             </label>
                             <div class="input-box">
-                                <span class="mundipaggBrandImage">
-
-                                </span>
+                                <span id="mundipaggBrandImage"></span>
+                                <input type="hidden" id="mundipaggBrandName" value="">
                                 <input
                                         type="text"
                                         data-mundicheckout-input="number"
@@ -107,12 +107,10 @@
                             <label for="">Parcelamento<span class="required">*</span></label>
                             <div class="input-box">
                                 <select
-                                        class=""
                                         name="payment[creditCardInstallments]"
-                                        onchange="getFormData(); getInstallments('<?php echo Mage::getUrl('');?>');"
+                                        id="mundicheckout-creditCard-installments"
+                                        onchange="getFormData();"
                                 >
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
                                 </select>
                                 <br>
                             </div>
