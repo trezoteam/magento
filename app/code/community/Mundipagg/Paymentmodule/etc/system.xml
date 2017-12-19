@@ -399,11 +399,23 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </visa_max_installments>
+                        <visa_interest translate="label">
+                            <label><![CDATA[Interest(%)]]></label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>9</sort_order>
+                            <depends>
+                                <default_status>0</default_status>
+                                <visa_status>1</visa_status>
+                            </depends>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </visa_interest>
                         <visa_max_no_interest translate="label">
                             <label>Max installments without interest</label>
                             <frontend_type>select</frontend_type>
                             <source_model>Mundipagg_Paymentmodule_Model_MaxInstallmentsNumber</source_model>
-                            <sort_order>8</sort_order>
+                            <sort_order>9</sort_order>
                             <depends>
                                 <default_status>0</default_status>
                                 <visa_status>1</visa_status>
@@ -415,7 +427,7 @@
                         <visa_incremental_interest translate="label">
                             <label>Incremental interest</label>
                             <frontend_type>text</frontend_type>
-                            <sort_order>9</sort_order>
+                            <sort_order>10</sort_order>
                             <depends>
                                 <default_status>0</default_status>
                                 <visa_status>1</visa_status>
@@ -462,11 +474,23 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </mastercard_max_installments>
+                        <master_interest translate="label">
+                            <label><![CDATA[Interest(%)]]></label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>23</sort_order>
+                            <depends>
+                                <default_status>0</default_status>
+                                <mastercard_status>1</mastercard_status>
+                            </depends>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </master_interest>
                         <mastercard_max_no_interest translate="label">
                             <label>Max installments without interest</label>
                             <frontend_type>select</frontend_type>
                             <source_model>Mundipagg_Paymentmodule_Model_MaxInstallmentsNumber</source_model>
-                            <sort_order>23</sort_order>
+                            <sort_order>24</sort_order>
                             <depends>
                                 <default_status>0</default_status>
                                 <mastercard_status>1</mastercard_status>
@@ -525,11 +549,23 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </hipercard_max_installments>
+                        <hipercard_interest translate="label">
+                            <label><![CDATA[Interest(%)]]></label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>33</sort_order>
+                            <depends>
+                                <default_status>0</default_status>
+                                <hipercard_status>1</hipercard_status>
+                            </depends>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </hipercard_interest>
                         <hipercard_max_no_interest translate="label">
                             <label>Max installments without interest</label>
                             <frontend_type>select</frontend_type>
                             <source_model>Mundipagg_Paymentmodule_Model_MaxInstallmentsNumber</source_model>
-                            <sort_order>33</sort_order>
+                            <sort_order>34</sort_order>
                             <depends>
                                 <default_status>0</default_status>
                                 <hipercard_status>1</hipercard_status>
@@ -541,7 +577,7 @@
                         <hipercard_incremental_interest translate="label">
                             <label>Incremental interest</label>
                             <frontend_type>text</frontend_type>
-                            <sort_order>34</sort_order>
+                            <sort_order>35</sort_order>
                             <depends>
                                 <default_status>0</default_status>
                                 <hipercard_status>1</hipercard_status>
@@ -588,11 +624,23 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </diners_max_installments>
+                        <diners_interest translate="label">
+                            <label><![CDATA[Interest(%)]]></label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>43</sort_order>
+                            <depends>
+                                <default_status>0</default_status>
+                                <diners_status>1</diners_status>
+                            </depends>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </diners_interest>
                         <diners_max_no_interest translate="label">
                             <label>Max installments without interest</label>
                             <frontend_type>select</frontend_type>
                             <source_model>Mundipagg_Paymentmodule_Model_MaxInstallmentsNumber</source_model>
-                            <sort_order>43</sort_order>
+                            <sort_order>44</sort_order>
                             <depends>
                                 <default_status>0</default_status>
                                 <diners_status>1</diners_status>
@@ -604,7 +652,7 @@
                         <diners_incremental_interest translate="label">
                             <label>Incremental interest</label>
                             <frontend_type>text</frontend_type>
-                            <sort_order>44</sort_order>
+                            <sort_order>45</sort_order>
                             <depends>
                                 <default_status>0</default_status>
                                 <diners_status>1</diners_status>
@@ -651,11 +699,23 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </amex_max_installments>
+                        <amex_interest translate="label">
+                            <label><![CDATA[Interest(%)]]></label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>53</sort_order>
+                            <depends>
+                                <default_status>0</default_status>
+                                <amex_status>1</amex_status>
+                            </depends>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </amex_interest>
                         <amex_max_no_interest translate="label">
                             <label>Max installments without interest</label>
                             <frontend_type>select</frontend_type>
                             <source_model>Mundipagg_Paymentmodule_Model_MaxInstallmentsNumber</source_model>
-                            <sort_order>53</sort_order>
+                            <sort_order>54</sort_order>
                             <depends>
                                 <default_status>0</default_status>
                                 <amex_status>1</amex_status>
@@ -667,7 +727,7 @@
                         <amex_incremental_interest translate="label">
                             <label>Incremental interest</label>
                             <frontend_type>text</frontend_type>
-                            <sort_order>54</sort_order>
+                            <sort_order>55</sort_order>
                             <depends>
                                 <default_status>0</default_status>
                                 <amex_status>1</amex_status>
@@ -714,11 +774,23 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </elo_max_installments>
+                        <elo_interest translate="label">
+                            <label><![CDATA[Interest(%)]]></label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>63</sort_order>
+                            <depends>
+                                <default_status>0</default_status>
+                                <elo_status>1</elo_status>
+                            </depends>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </elo_interest>
                         <elo_max_no_interest translate="label">
                             <label>Max installments without interest</label>
                             <frontend_type>select</frontend_type>
                             <source_model>Mundipagg_Paymentmodule_Model_MaxInstallmentsNumber</source_model>
-                            <sort_order>63</sort_order>
+                            <sort_order>64</sort_order>
                             <depends>
                                 <default_status>0</default_status>
                                 <elo_status>1</elo_status>
@@ -730,7 +802,7 @@
                         <elo_incremental_interest translate="label">
                             <label>Incremental interest</label>
                             <frontend_type>text</frontend_type>
-                            <sort_order>64</sort_order>
+                            <sort_order>65</sort_order>
                             <depends>
                                 <default_status>0</default_status>
                                 <elo_status>1</elo_status>

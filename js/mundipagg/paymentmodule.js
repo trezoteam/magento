@@ -92,20 +92,28 @@ function getCurrentYear() {
  * @param int creditCardNumber
  */
 function getBrand(creditCardNumber) {
-    if (creditCardNumber.length > 5 && !brandName) {
+    brandName = jQuery("#mundipaggBrandName").val();
+
+    if (creditCardNumber.length > 5 && brandName == "") {
         bin = creditCardNumber.substring(0, 6);
         apiRequest(
             "https://api.mundipagg.com/bin/v1/" + bin,
             "",
-            showBrandImage,
+            fillBrandData,
             "GET",
             false
         )
 
     }
     if (creditCardNumber.length < 6) {
-        brandName = false;
         clearBrand();
+    }
+}
+
+function fillBrandData(data) {
+    if (data.brand != "" && data.brand != undefined) {
+        showBrandImage(data.brand);
+        getInstallments(jQuery("#baseUrl").val(), data.brandName);
     }
 }
 
@@ -113,15 +121,48 @@ function getBrand(creditCardNumber) {
  * Show credit card brand image
  * @param brand
  */
-function showBrandImage(data) {
-    if (data.brand != "" && data.brand != undefined) {
-        html = "<img src='https://dashboard.mundipagg.com/emb/images/brands/" + data.brand + ".jpg' ";
-        html += " class='mundipaggImage' width='26'>";
+function showBrandImage(brandName) {
+    html = "<img src='https://dashboard.mundipagg.com/emb/images/brands/" + brandName + ".jpg' ";
+    html += " class='mundipaggImage' width='26'>";
 
-        jQuery(".mundipaggBrandImage").html(html);
-    }
+    jQuery("#mundipaggBrandName").val(brandName);
+    jQuery("#mundipaggBrandImage").html(html);
 }
 
 function clearBrand(){
-    jQuery(".mundipaggBrandImage").html("");
+    jQuery("#mundipaggBrandName").val("");
+    jQuery("#mundipaggBrandImage").html("");
+    jQuery("#mundicheckout-creditCard-installments").html("");
+}
+
+function getInstallments(baseUrl, brandName) {
+    apiRequest(
+        baseUrl + '/mundipagg/creditcard/getinstallments/' + brandName,
+        '',
+        switchInstallments,
+        "GET",
+        false
+    );
+}
+
+function switchInstallments(data) {
+    if (data){
+        html = "<option>1x sem juros</option>";
+        jQuery("#mundicheckout-creditCard-installments").html("");
+
+        data.forEach(fillInstallments);
+    }
+}
+
+function fillInstallments(item, index) {
+
+    if (item.interest == 0) {
+        item.interest = " sem juros";
+    } else{
+        item.interest = " com " + item.interest + "% de juros";
+    }
+
+    html = "<option>" + item.times + "x de " + item.amount + item.interest + "</option>";
+
+    jQuery("#mundicheckout-creditCard-installments").append(html);
 }

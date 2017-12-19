@@ -71,4 +71,27 @@ class Mundipagg_Paymentmodule_CreditcardController extends Mundipagg_Paymentmodu
 
         return $payment;
     }
+
+    /**
+     * Only one credit card brand allowed
+     */
+    public function getInstallmentsAction()
+    {
+        $brandName[] = key(Mage::app()->getRequest()->getParams());
+        $installmentConfig = Mage::helper('paymentmodule/installment');
+        $grandTotal = Mage::getModel('checkout/session')->getQuote()->getGrandTotal();
+
+        if (!empty($brandName[0])) {
+            $installments =
+                current(
+                    $installmentConfig->getInstallments(
+                        $grandTotal,
+                        $brandName
+                    )
+                );
+            echo json_encode($installments);
+        } else {
+            echo "";
+        }
+    }
 }
