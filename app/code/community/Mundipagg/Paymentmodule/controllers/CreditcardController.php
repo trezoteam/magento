@@ -78,13 +78,13 @@ class Mundipagg_Paymentmodule_CreditcardController extends Mundipagg_Paymentmodu
     public function getInstallmentsAction()
     {
         $brandName[] = key(Mage::app()->getRequest()->getParams());
-        $cardConfig = Mage::helper('paymentmodule/installment');
+        $installmentConfig = Mage::helper('paymentmodule/installment');
         $grandTotal = Mage::getModel('checkout/session')->getQuote()->getGrandTotal();
 
         if (!empty($brandName[0])) {
             $installments =
                 current(
-                    $cardConfig->getInstallments(
+                    $installmentConfig->getInstallments(
                         $grandTotal,
                         $brandName
                     )

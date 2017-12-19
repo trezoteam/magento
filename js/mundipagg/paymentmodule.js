@@ -92,7 +92,6 @@ function getCurrentYear() {
  * @param int creditCardNumber
  */
 function getBrand(creditCardNumber) {
-
     brandName = jQuery("#mundipaggBrandName").val();
 
     if (creditCardNumber.length > 5 && brandName == "") {
@@ -107,7 +106,6 @@ function getBrand(creditCardNumber) {
 
     }
     if (creditCardNumber.length < 6) {
-
         clearBrand();
     }
 }
@@ -145,7 +143,6 @@ function getInstallments(baseUrl, brandName) {
         "GET",
         false
     );
-
 }
 
 function switchInstallments(data) {
@@ -168,5 +165,4 @@ function fillInstallments(item, index) {
     html = "<option>" + item.times + "x de " + item.amount + item.interest + "</option>";
 
     jQuery("#mundicheckout-creditCard-installments").append(html);
-
 }
