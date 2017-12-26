@@ -17,10 +17,14 @@ class Mundipagg_Paymentmodule_Model_Api_Boleto
     {
         $orderRequest = new CreateOrderRequest();
 
+        $standard = Mage::getModel('paymentmodule/standard');
+        $checkoutSession = $standard->getCheckoutSession();
+        $orderId = $checkoutSession->getLastRealOrderId();
+
         $orderRequest->items = $this->getItems($paymentInformation->getItemsInfo());
         $orderRequest->customer = $this->getCustomerRequest($paymentInformation->getCustomerInfo());
         $orderRequest->payments = $this->getPayments($paymentInformation->getPaymentInfo());
-        $orderRequest->code = 'xxx';
+        $orderRequest->code = $orderId;
         $orderRequest->metadata = $paymentInformation->getMetainfo();
 
         return $orderRequest;
