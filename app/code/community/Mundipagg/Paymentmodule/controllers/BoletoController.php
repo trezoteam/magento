@@ -17,19 +17,8 @@ class Mundipagg_Paymentmodule_BoletoController extends Mundipagg_Paymentmodule_C
         $paymentInfo->setPaymentInfo($this->getPaymentInformation());
         $paymentInfo->setMetaInfo(Mage::helper('paymentmodule/data')->getMetaData());
 
-        $result = $order->createBoletoPayment($paymentInfo);
-        $this->handleSuccessBoletoTransaction($result);
-    }
-
-    /**
-     * Take the result from processPaymentTransaction and redirect customer to
-     * success page
-     *
-     * @param $resultTransaction
-     */
-    private function handleSuccessBoletoTransaction($resultTransaction)
-    {
-        $this->_redirect('checkout/onepage/success', array('_secure'=>true));
+        $response = $order->createBoletoPayment($paymentInfo);
+        $this->handleOrderResponse($response,true);
     }
 
     /**

@@ -1,7 +1,32 @@
 <?php
 
+use MundiAPILib\Models\GetOrderResponse;
+
 class Mundipagg_Paymentmodule_Controller_Payment extends Mage_Core_Controller_Front_Action
 {
+    /**
+     * Take the result from processPaymentTransaction, add the histories and, if $redirect is true,
+     * redirect customer to success page.
+     *
+     * @param GetOrderResponse $response
+     * @param bool $redirect
+     */
+    protected function handleOrderResponse(GetOrderResponse $response, $redirect = false)
+    {
+        //loop through charges and add history for each.
+        $chargeHelper = Mage::helper("paymentmodule/Charge");
+        foreach ($response->charges as $charge) {
+            $chargeHelper->updateStatus($charge);
+        }
+        //add history to order status.
+        $orderHelper = Mage::helper("paymentmodule/Order");
+        $orderHelper->updateStatus($response);
+
+        if ($redirect) {
+            $this->_redirect('checkout/onepage/success', array('_secure' => true));
+        }
+    }
+
     /**
      * Gather information about customer
      *

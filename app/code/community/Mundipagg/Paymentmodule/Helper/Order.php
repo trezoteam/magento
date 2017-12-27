@@ -17,7 +17,7 @@ class Mundipagg_Paymentmodule_Helper_Order extends Mage_Core_Helper_Abstract
         $status = $statusCode;
         if (!$status) {
             $statusMap = $this->getStatusMap();
-            $status = $statusMap[$orderResponse->status];
+            $status = $statusMap[strtolower($orderResponse->status)];
         }
         $newHistory = new Mage_Sales_Model_Order_Status_History();
         $newHistory->setStatus($status);
@@ -36,10 +36,10 @@ class Mundipagg_Paymentmodule_Helper_Order extends Mage_Core_Helper_Abstract
     public function getStatusMap()
     {
         return [
-            'Pending'   => 'pending',
-            'Paid'      => Mage_Sales_Model_Order::STATE_PROCESSING,
-            'Canceled'  => Mage_Sales_Model_Order::STATE_CANCELED,
-            'Failed'    => Mage_Sales_Model_Order::STATE_CANCELED,
+            'pending'   => 'pending',
+            'paid'      => Mage_Sales_Model_Order::STATE_PROCESSING,
+            'canceled'  => Mage_Sales_Model_Order::STATE_CANCELED,
+            'failed'    => Mage_Sales_Model_Order::STATE_CANCELED,
         ];
     }
 }
