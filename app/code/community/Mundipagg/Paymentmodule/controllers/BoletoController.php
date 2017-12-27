@@ -8,7 +8,7 @@ class Mundipagg_Paymentmodule_BoletoController extends Mundipagg_Paymentmodule_C
      */
     public function processPaymentAction()
     {
-        $order = Mage::getModel('paymentmodule/api_order');
+        $apiOrder = Mage::getModel('paymentmodule/api_order');
 
         $paymentInfo = new Varien_Object();
 
@@ -17,8 +17,8 @@ class Mundipagg_Paymentmodule_BoletoController extends Mundipagg_Paymentmodule_C
         $paymentInfo->setPaymentInfo($this->getPaymentInformation());
         $paymentInfo->setMetaInfo(Mage::helper('paymentmodule/data')->getMetaData());
 
-        $response = $order->createBoletoPayment($paymentInfo);
-        $this->handleOrderResponse($response,true);
+        $response = $apiOrder->createBoletoPayment($paymentInfo);
+        $this->handleOrderResponse($response, true);
     }
 
     /**
