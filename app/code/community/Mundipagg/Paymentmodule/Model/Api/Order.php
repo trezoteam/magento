@@ -30,10 +30,17 @@ class Mundipagg_Paymentmodule_Model_Api_Order
         $orderRequest = $boleto->getCreateOrderRequest($paymentInformation);
         $orderController = $this->getOrderController();
 
+        $helperLog = Mage::helper('paymentmodule/log');
+        $helperLog->info("Request");
+        $helperLog->info(json_encode($orderRequest,JSON_PRETTY_PRINT));
         try {
-            return $orderController->createOrder($orderRequest);
+            $response = $orderController->createOrder($orderRequest);
+            $helperLog->info("Response");
+            $helperLog->info(json_encode($response,JSON_PRETTY_PRINT));
+            return $response;
         } catch (\Exception $e) {
-            // @todo log the error message
+            $helperLog->error("Exception: " . $e->getMessage());
+            $helperLog->error(json_encode($e->errors,JSON_PRETTY_PRINT));
             return $e->getMessage();
         }
     }
@@ -54,7 +61,8 @@ class Mundipagg_Paymentmodule_Model_Api_Order
             $helperLog->info(json_encode($response,JSON_PRETTY_PRINT));
             return $response;
         } catch (\Exception $e) {
-            // @todo log the error message
+            $helperLog->error("Exception: " . $e->getMessage());
+            $helperLog->error(json_encode($e->errors,JSON_PRETTY_PRINT));
             return $e->getMessage();
         }
     }

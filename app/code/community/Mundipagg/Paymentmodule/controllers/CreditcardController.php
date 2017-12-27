@@ -1,6 +1,4 @@
 <?php
-
-
 class Mundipagg_Paymentmodule_CreditcardController extends Mundipagg_Paymentmodule_Controller_Payment
 {
     /**
@@ -18,29 +16,10 @@ class Mundipagg_Paymentmodule_CreditcardController extends Mundipagg_Paymentmodu
         $paymentInfo->setPaymentInfo($this->getPaymentInformation());
         $paymentInfo->setMetaInfo(Mage::helper('paymentmodule/data')->getMetaData());
 
-        $result = $apiOrder->createCreditcardPayment($paymentInfo);
-
-        $this->handleCreditCardTransactionResult($result);
+        $response = $apiOrder->createCreditcardPayment($paymentInfo);
+        $this->handleOrderResponse($response, true);
     }
 
-    /**
-     * Take the result from processPaymentTransaction and redirect customer to
-     * success page
-     *
-     * @param $result
-     */
-    private function handleCreditCardTransactionResult($result)
-    {
-        $standard = Mage::getModel('paymentmodule/standard');
-
-        $checkoutSession = $standard->getCheckoutSession();
-        $orderId = $checkoutSession->getLastOrderId();
-        $order = $standard->getOrderByOrderId($orderId);
-
-        $order->setState(Mage_Sales_Model_Order::STATE_PROCESSING, true)->save();
-
-        $this->_redirect('checkout/onepage/success', array('_secure' => true));
-    }
 
     /**
      * Gather information about payment

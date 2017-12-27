@@ -30,9 +30,7 @@ class Mundipagg_Paymentmodule_Model_Config_Boleto
     public function getDueAt()
     {
         $term = Mage::getStoreConfig('mundipagg_config/boleto_group/boleto_due_at');
-        $formattedDate = new DateTime(date('Y-m-d', strtotime('+' . $term . ' days')));
-
-        return $formattedDate->format('c');
+        return new DateTime(date('Y-m-d', strtotime('+' . $term . ' days')));
     }
 
     public function getInstructions()

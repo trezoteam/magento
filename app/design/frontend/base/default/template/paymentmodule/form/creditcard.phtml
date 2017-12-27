@@ -154,6 +154,9 @@
         });
 
         Payment.prototype.save = Payment.prototype.save.wrap(function(save) {
+            if(this.currentMethod !== 'paymentmodule_creditcard') {
+                return save();
+            }
             var key = document.getElementById('tokenDiv').getAttribute('data-mundicheckout-app-id');
             var tokenElement = document.getElementById('mundicheckout-token');
             var validator = new Validation(this.form);
