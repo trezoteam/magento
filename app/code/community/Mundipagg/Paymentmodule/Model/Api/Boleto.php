@@ -21,30 +21,13 @@ class Mundipagg_Paymentmodule_Model_Api_Boleto
         $checkoutSession = $standard->getCheckoutSession();
         $orderId = $checkoutSession->getLastRealOrderId();
 
-        $orderRequest->items = $this->getItems($paymentInformation->getItemsInfo());
+        $orderRequest->items = $paymentInformation->getItemsInfo();
         $orderRequest->customer = $this->getCustomerRequest($paymentInformation->getCustomerInfo());
         $orderRequest->payments = $this->getPayments($paymentInformation->getPaymentInfo());
         $orderRequest->code = $orderId;
         $orderRequest->metadata = $paymentInformation->getMetainfo();
 
         return $orderRequest;
-    }
-
-    private function getItems($itemsInfo)
-    {
-        $items = [];
-
-        foreach ($itemsInfo as $item) {
-            $orderItemRequest = new CreateOrderItemRequest();
-
-            $orderItemRequest->amount = $item->getAmount();
-            $orderItemRequest->quantity = $item->getQuantity();
-            $orderItemRequest->description = $item->getDescription();
-
-            $items[] = $orderItemRequest;
-        }
-
-        return $items;
     }
 
     private function getCustomerRequest($customerInfo)
