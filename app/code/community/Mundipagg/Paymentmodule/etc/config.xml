@@ -75,6 +75,16 @@
                 </observers>
             </mundipagg_payment_start>
         </events>
+
+        <sales>
+            <quote>
+                <totals>
+                    <mundipagg_interest>
+                        <class>Mundipagg_Paymentmodule_Model_Sales_Quote_Address_Total_Interest</class>
+                    </mundipagg_interest>
+                </totals>
+            </quote>
+        </sales>
     </global>
 
     <frontend>
@@ -134,5 +144,9 @@
                 <payment_action>authorize</payment_action>
             </paymentmodule_boleto>
         </payment>
+
+        <totals_sort>
+            <mundipagg_interest>15</mundipagg_interest>
+        </totals_sort>
     </default>
 </config>
