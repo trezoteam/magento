@@ -77,7 +77,8 @@ class Mundipagg_Paymentmodule_Controller_Payment extends Mage_Core_Controller_Fr
         $address->setZipCode($billingAddress->getPostcode());
         $address->setNeighborhood('neighborhood');
         $address->setCity($billingAddress->getCity());
-        $address->setState($this->getStateByRegionId($regionId));
+        //$address->setState($this->getStateByRegionId($regionId)); @todo DEBUG: This most not be a comment line.
+        $address->setState('RJ'); //@todo DEBUG: This line most not exist.
         $address->setCountry($billingAddress->getCountryId());
         $address->setComplement('complement');
         $address->setMetadata(null);
@@ -145,7 +146,8 @@ class Mundipagg_Paymentmodule_Controller_Payment extends Mage_Core_Controller_Fr
         $address->setZipCode($shippingAddress->getPostcode());
         $address->setNeighborhood('neighborhood');
         $address->setCity($shippingAddress->getCity());
-        $address->setState($this->getStateByRegionId($regionId));
+        //$address->setState($this->getStateByRegionId($regionId)); @todo DEBUG: This most not be a comment line.
+        $address->setState('RJ'); //@todo DEBUG: This line most not exist.
         $address->setCountry($shippingAddress->getCountryId());
         $address->setComplement('complement');
         $address->setMetadata(null);
