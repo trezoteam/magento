@@ -1,4 +1,7 @@
 <?php
+
+use MundiAPILib\Models\GetOrderResponse;
+
 class Mundipagg_Paymentmodule_CreditcardController extends Mundipagg_Paymentmodule_Controller_Payment
 {
     /**
@@ -16,8 +19,19 @@ class Mundipagg_Paymentmodule_CreditcardController extends Mundipagg_Paymentmodu
         $paymentInfo->setPaymentInfo($this->getPaymentInformation());
         $paymentInfo->setMetaInfo(Mage::helper('paymentmodule/data')->getMetaData());
 
-        $response = $apiOrder->createCreditcardPayment($paymentInfo);
-        $this->handleOrderResponse($response, true);
+        try {
+            $response = $apiOrder->createCreditcardPayment($paymentInfo);
+
+            if (gettype($response) !== 'object' || get_class($response) != GetOrderResponse::class) {
+               throw new Exception("Response must be object.");
+            }
+
+            $this->handleOrderResponse($response, true);
+        }catch(Exception $e) {
+            $helperLog = Mage::helper('paymentmodule/log');
+            $helperLog->error("Exception: " . $e->getMessage());
+            $helperLog->error(json_encode($response,JSON_PRETTY_PRINT));
+        }
     }
 
 
