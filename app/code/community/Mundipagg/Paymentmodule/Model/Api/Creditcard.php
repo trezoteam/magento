@@ -28,23 +28,6 @@ class Mundipagg_Paymentmodule_Model_Api_Creditcard extends Mundipagg_Paymentmodu
         return $customerRequest;
     }
 
-    protected function getCreateAddressRequest($addressInfo)
-    {
-        $addressRequest = new CreateAddressRequest();
-
-        $addressRequest->street = $addressInfo->getStreet();
-        $addressRequest->number = $addressInfo->getNumber();
-        $addressRequest->zipCode = $addressInfo->getZipCode();
-        $addressRequest->neighborhood = $addressInfo->getNeighborhood();
-        $addressRequest->city = $addressInfo->getCity();
-        $addressRequest->state = $addressInfo->getState();
-        $addressRequest->complement = $addressInfo->getComplement();
-        $addressRequest->country = $addressInfo->getCountry();
-        $addressRequest->metadata = $addressInfo->getMetadata();
-
-        return $addressRequest;
-    }
-
     protected function getCreatePhonesRequest($phonesInfo)
     {
         $phonesRequest = new CreatePhonesRequest();

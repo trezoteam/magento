@@ -1,6 +1,8 @@
 <?php
 
+use MundiAPILib\Models\CreateAddressRequest;
 use MundiAPILib\Models\CreateOrderRequest;
+use MundiAPILib\Models\CreateShippingRequest;
 
 abstract class Mundipagg_Paymentmodule_Model_Api_Standard {
 
@@ -19,6 +21,36 @@ abstract class Mundipagg_Paymentmodule_Model_Api_Standard {
         $orderRequest->metadata = $paymentInformation->getMetainfo();
 
         return $orderRequest;
+    }
+
+    protected function getShippingRequest($shippingInformation) {
+        $shippingRequest = new CreateShippingRequest();
+
+        $shippingRequest->amount = $shippingInformation->getAmount();
+        $shippingRequest->description = $shippingInformation->getDescription();
+        //$shippingRequest->recipientName = ""; @todo
+        //$shippingRequest->recipientPhone = ""; @todo
+        //$shippingRequest->addressId = null; @todo
+        $shippingRequest->address = $this->getCreateAddressRequest($shippingInformation->getAddress());
+
+        return $shippingRequest;
+    }
+
+    protected function getCreateAddressRequest($addressInfo)
+    {
+        $addressRequest = new CreateAddressRequest();
+
+        $addressRequest->street = $addressInfo->getStreet();
+        $addressRequest->number = $addressInfo->getNumber();
+        $addressRequest->zipCode = $addressInfo->getZipCode();
+        $addressRequest->neighborhood = $addressInfo->getNeighborhood();
+        $addressRequest->city = $addressInfo->getCity();
+        $addressRequest->state = $addressInfo->getState();
+        $addressRequest->complement = $addressInfo->getComplement();
+        $addressRequest->country = $addressInfo->getCountry();
+        $addressRequest->metadata = $addressInfo->getMetadata();
+
+        return $addressRequest;
     }
 
 }
