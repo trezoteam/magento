@@ -44,6 +44,18 @@ class Mundipagg_Paymentmodule_Model_Creditcard extends Mundipagg_Paymentmodule_M
         $info->setAdditionalInformation($key . 'token', $paymentData['creditCardToken']);
         $info->setAdditionalInformation($key . 'installments', $paymentData['creditCardInstallments']);
 
+        $interestHelper = Mage::helper("paymentmodule/interest");
+        $interest = $interestHelper->getInterestValue(
+            $paymentData['creditCardInstallments'],
+            $info->getQuote()->getGrandTotal()
+        );
+
+        foreach ($info->getQuote()->getAllAddresses() as $address) {
+            $address->setMundipaggInterest($interest);
+            $address->setGrandTotal($address->getGrandTotal() + $interest);
+            break;
+        }
+
         return $this;
     }
 

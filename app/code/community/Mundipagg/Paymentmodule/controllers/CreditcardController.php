@@ -54,7 +54,7 @@ class Mundipagg_Paymentmodule_CreditcardController extends Mundipagg_Paymentmodu
         $payment = new Varien_Object();
 
         // @todo get this from front end
-        $payment->setInstallmentNumber('1');
+        $payment->setInstallmentNumber($additionalInformation['mundipagg_payment_module_installments']);
         $payment->setPaymentMethod('credit_card');
         $payment->setInvoiceName($creditCardConfig->getInvoiceName());
         $payment->setOperationType($creditCardConfig->getOperationTypeFlag());
