@@ -86,7 +86,7 @@ class Mundipagg_Paymentmodule_Controller_Payment extends Mage_Core_Controller_Fr
 
     protected function getShippingInformation($order = null)
     {
-        if(!$order) {
+        if (!$order) {
             $standard = Mage::getModel('paymentmodule/standard');
             $checkoutSession = $standard->getCheckoutSession();
             $orderId = $checkoutSession->getLastOrderId();
@@ -128,7 +128,7 @@ class Mundipagg_Paymentmodule_Controller_Payment extends Mage_Core_Controller_Fr
 
     protected function getShippingAddressInformation($order = null) {
         // @todo This method is like self::getCustomerAddressInformation. Refact it to one method.
-        if(!$order) {
+        if (!$order) {
             $standard = Mage::getModel('paymentmodule/standard');
             $checkoutSession = $standard->getCheckoutSession();
             $orderId = $checkoutSession->getLastOrderId();
