@@ -77,7 +77,8 @@ class Mundipagg_Paymentmodule_Controller_Payment extends Mage_Core_Controller_Fr
         $address->setZipCode($billingAddress->getPostcode());
         $address->setNeighborhood('neighborhood');
         $address->setCity($billingAddress->getCity());
-        $address->setState($this->getStateByRegionId($regionId));
+        //$address->setState($this->getStateByRegionId($regionId)); //@todo: DEBUG: This must not be a comment line.
+        $address->setState('RJ'); //@todo: DEBUG: This must not be hardcoded.
         $address->setCountry($billingAddress->getCountryId());
         $address->setComplement('complement');
         $address->setMetadata(null);
