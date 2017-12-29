@@ -15,10 +15,22 @@ class Mundipagg_Paymentmodule_BoletoController extends Mundipagg_Paymentmodule_C
         $paymentInfo->setItemsInfo($this->getItemsInformation());
         $paymentInfo->setCustomerInfo($this->getCustomerInformation());
         $paymentInfo->setPaymentInfo($this->getPaymentInformation());
+        $paymentInfo->setShippingInfo($this->getShippingInformation());
         $paymentInfo->setMetaInfo(Mage::helper('paymentmodule/data')->getMetaData());
 
-        $response = $apiOrder->createBoletoPayment($paymentInfo);
-        $this->handleOrderResponse($response, true);
+        try {
+            $response = $apiOrder->createBoletoPayment($paymentInfo);
+
+            if (gettype($response) !== 'object' || get_class($response) != GetOrderResponse::class) {
+                throw new Exception("Response must be object.");
+            }
+
+            $this->handleOrderResponse($response, true);
+        }catch(Exception $e) {
+            $helperLog = Mage::helper('paymentmodule/log');
+            $helperLog->error("Exception: " . $e->getMessage());
+            $helperLog->error(json_encode($response,JSON_PRETTY_PRINT));
+        }
     }
 
     /**

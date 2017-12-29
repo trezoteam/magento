@@ -10,27 +10,9 @@ use MundiAPILib\Models\CreatePhoneRequest;
 use MundiAPILib\Models\CreatePaymentRequest;
 use MundiAPILib\Models\CreateCreditCardPaymentRequest;
 
-
-class Mundipagg_Paymentmodule_Model_Api_Creditcard
+class Mundipagg_Paymentmodule_Model_Api_Creditcard extends Mundipagg_Paymentmodule_Model_Api_Standard
 {
-    public function getCreateOrderRequest($paymentInformation)
-    {
-        $orderRequest = new CreateOrderRequest();
-
-        $standard = Mage::getModel('paymentmodule/standard');
-        $checkoutSession = $standard->getCheckoutSession();
-        $orderId = $checkoutSession->getLastRealOrderId();
-
-        $orderRequest->items = $paymentInformation->getItemsInfo();
-        $orderRequest->customer = $this->getCustomerRequest($paymentInformation->getCustomerInfo());
-        $orderRequest->payments = $this->getPayments($paymentInformation->getPaymentInfo());
-        $orderRequest->code = $orderId;
-        $orderRequest->metadata = $paymentInformation->getMetainfo();
-
-        return $orderRequest;
-    }
-
-    private function getCustomerRequest($customerInfo)
+    protected function getCustomerRequest($customerInfo)
     {
         $customerRequest = new CreateCustomerRequest();
 
@@ -46,24 +28,7 @@ class Mundipagg_Paymentmodule_Model_Api_Creditcard
         return $customerRequest;
     }
 
-    private function getCreateAddressRequest($addressInfo)
-    {
-        $addressRequest = new CreateAddressRequest();
-
-        $addressRequest->street = $addressInfo->getStreet();
-        $addressRequest->number = $addressInfo->getNumber();
-        $addressRequest->zipCode = $addressInfo->getZipCode();
-        $addressRequest->neighborhood = $addressInfo->getNeighborhood();
-        $addressRequest->city = $addressInfo->getCity();
-        $addressRequest->state = $addressInfo->getState();
-        $addressRequest->country = $addressInfo->getCountry();
-        $addressRequest->complement = $addressInfo->getComplement();
-        $addressRequest->metadata = $addressInfo->getMetadata();
-
-        return $addressRequest;
-    }
-
-    private function getCreatePhonesRequest($phonesInfo)
+    protected function getCreatePhonesRequest($phonesInfo)
     {
         $phonesRequest = new CreatePhonesRequest();
 
@@ -73,7 +38,7 @@ class Mundipagg_Paymentmodule_Model_Api_Creditcard
         return $phonesRequest;
     }
 
-    private function getHomePhone($phonesInfo)
+    protected function getHomePhone($phonesInfo)
     {
         $homePhoneRequest = new CreatePhoneRequest();
 
@@ -84,7 +49,7 @@ class Mundipagg_Paymentmodule_Model_Api_Creditcard
         return $homePhoneRequest;
     }
 
-    private function getMobilePhone($phonesInfo)
+    protected function getMobilePhone($phonesInfo)
     {
         $mobilePhoneRequest = new CreatePhoneRequest();
 
@@ -95,7 +60,7 @@ class Mundipagg_Paymentmodule_Model_Api_Creditcard
         return $mobilePhoneRequest;
     }
 
-    private function getPayments($paymentInfo)
+    protected function getPayments($paymentInfo)
     {
         $paymentRequest = new CreatePaymentRequest();
 

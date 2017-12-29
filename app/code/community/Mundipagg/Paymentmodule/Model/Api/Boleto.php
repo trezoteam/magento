@@ -11,26 +11,9 @@ use MundiAPILib\Models\CreatePaymentRequest;
 use MundiAPILib\Models\CreateBoletoPaymentRequest;
 use MundiAPILib\Models\CreateOrderItemRequest;
 
-class Mundipagg_Paymentmodule_Model_Api_Boleto
+class Mundipagg_Paymentmodule_Model_Api_Boleto extends Mundipagg_Paymentmodule_Model_Api_Standard
 {
-    public function getCreateOrderRequest($paymentInformation)
-    {
-        $orderRequest = new CreateOrderRequest();
-
-        $standard = Mage::getModel('paymentmodule/standard');
-        $checkoutSession = $standard->getCheckoutSession();
-        $orderId = $checkoutSession->getLastRealOrderId();
-
-        $orderRequest->items = $paymentInformation->getItemsInfo();
-        $orderRequest->customer = $this->getCustomerRequest($paymentInformation->getCustomerInfo());
-        $orderRequest->payments = $this->getPayments($paymentInformation->getPaymentInfo());
-        $orderRequest->code = $orderId;
-        $orderRequest->metadata = $paymentInformation->getMetainfo();
-
-        return $orderRequest;
-    }
-
-    private function getCustomerRequest($customerInfo)
+    protected function getCustomerRequest($customerInfo)
     {
         $customerRequest = new CreateCustomerRequest();
 
@@ -44,23 +27,7 @@ class Mundipagg_Paymentmodule_Model_Api_Boleto
         return $customerRequest;
     }
 
-    private function getCreateAddressRequest($addressInfo)
-    {
-        $addressRequest = new CreateAddressRequest();
-
-        $addressRequest->street = $addressInfo->getStreet();
-        $addressRequest->number = $addressInfo->getNumber();
-        $addressRequest->zipCode = $addressInfo->getZipCode();
-        $addressRequest->neighborhood = $addressInfo->getNeighborhood();
-        $addressRequest->city = $addressInfo->getCity();
-        $addressRequest->state = $addressInfo->getState();
-        $addressRequest->complement = $addressInfo->getComplement();
-        $addressRequest->country = $addressInfo->getCountry();
-
-        return $addressRequest;
-    }
-
-    private function getCreatePhonesRequest($phonesInfo)
+    protected function getCreatePhonesRequest($phonesInfo)
     {
         return new CreatePhonesRequest(
             $this->getHomePhone($phonesInfo),
@@ -68,7 +35,7 @@ class Mundipagg_Paymentmodule_Model_Api_Boleto
         );
     }
 
-    private function getHomePhone($phonesInfo)
+    protected function getHomePhone($phonesInfo)
     {
         return new CreatePhoneRequest(
             $phonesInfo->getCountryCode(),
@@ -77,7 +44,7 @@ class Mundipagg_Paymentmodule_Model_Api_Boleto
         );
     }
 
-    private function getMobilePhone($phonesInfo)
+    protected function getMobilePhone($phonesInfo)
     {
         return new CreatePhoneRequest(
             $phonesInfo->getCountryCode(),
@@ -86,14 +53,14 @@ class Mundipagg_Paymentmodule_Model_Api_Boleto
         );
     }
 
-    private function getPayments($paymentInfo)
+    protected function getPayments($paymentInfo)
     {
         $paymentRequest = new CreatePaymentRequest();
 
         $boletoPaymentRequest = new CreateBoletoPaymentRequest();
         $boletoPaymentRequest->bank = $paymentInfo->getBank();
         $boletoPaymentRequest->instructions = $paymentInfo->getInstructions();
-        $boletoPaymentRequest->dueAt = $paymentInfo->getDueAt();
+        $boletoPaymentRequest->dueAt = $paymentInfo->getDueAt()->format('c');
 
         $paymentRequest->paymentMethod = 'boleto';
         $paymentRequest->boleto = $boletoPaymentRequest;
