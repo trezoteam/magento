@@ -27,22 +27,6 @@ class Mundipagg_Paymentmodule_Model_Api_Boleto extends Mundipagg_Paymentmodule_M
         return $customerRequest;
     }
 
-    protected function getCreateAddressRequest($addressInfo)
-    {
-        $addressRequest = new CreateAddressRequest();
-
-        $addressRequest->street = $addressInfo->getStreet();
-        $addressRequest->number = $addressInfo->getNumber();
-        $addressRequest->zipCode = $addressInfo->getZipCode();
-        $addressRequest->neighborhood = $addressInfo->getNeighborhood();
-        $addressRequest->city = $addressInfo->getCity();
-        $addressRequest->state = $addressInfo->getState();
-        $addressRequest->complement = $addressInfo->getComplement();
-        $addressRequest->country = $addressInfo->getCountry();
-
-        return $addressRequest;
-    }
-
     protected function getCreatePhonesRequest($phonesInfo)
     {
         return new CreatePhonesRequest(
@@ -76,7 +60,7 @@ class Mundipagg_Paymentmodule_Model_Api_Boleto extends Mundipagg_Paymentmodule_M
         $boletoPaymentRequest = new CreateBoletoPaymentRequest();
         $boletoPaymentRequest->bank = $paymentInfo->getBank();
         $boletoPaymentRequest->instructions = $paymentInfo->getInstructions();
-        $boletoPaymentRequest->dueAt = $paymentInfo->getDueAt();
+        $boletoPaymentRequest->dueAt = $paymentInfo->getDueAt()->format('c');;
 
         $paymentRequest->paymentMethod = 'boleto';
         $paymentRequest->boleto = $boletoPaymentRequest;

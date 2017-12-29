@@ -85,6 +85,76 @@ class Mundipagg_Paymentmodule_Controller_Payment extends Mage_Core_Controller_Fr
         return $address;
     }
 
+    protected function getShippingInformation($order = null)
+    {
+        if(!$order) {
+            $standard = Mage::getModel('paymentmodule/standard');
+            $checkoutSession = $standard->getCheckoutSession();
+            $orderId = $checkoutSession->getLastOrderId();
+            $order = $standard->getOrderByOrderId($orderId);
+        }
+
+        $monetaryHelper = Mage::helper('paymentmodule/monetary');
+        $shipping = new Varien_Object();
+
+        $shipping->setDescription($order->getShippingDescription());
+        $shipping->setBaseAmount($monetaryHelper->toCents($order->getShippingBaseAmount()));
+        $shipping->setBaseCanceled($monetaryHelper->toCents($order->getShippingBaseCanceled()));
+        $shipping->setBaseInvoiced($monetaryHelper->toCents($order->getShippingBaseInvoiced()));
+        $shipping->setBaseRefunded($monetaryHelper->toCents($order->getShippingBaseRefunded()));
+        $shipping->setBaseTaxAmount($monetaryHelper->toCents($order->getShippingBaseTaxAmount()));
+        $shipping->setBaseTaxRefunded($monetaryHelper->toCents($order->getShippingBaseTaxRefunded()));
+        $shipping->setAmount($monetaryHelper->toCents($order->getShippingAmount()));
+        $shipping->setCanceled($monetaryHelper->toCents($order->getShippingCanceled()));
+        $shipping->setInvoiced($monetaryHelper->toCents($order->getShippingInvoiced()));
+        $shipping->setRefunded($monetaryHelper->toCents($order->getShippingRefunded()));
+        $shipping->setTaxAmount($monetaryHelper->toCents($order->getShippingTaxAmount()));
+        $shipping->setTaxRefunded($monetaryHelper->toCents($order->getShippingTaxRefunded()));
+
+        $shipping->setBaseDiscountAmount($monetaryHelper->toCents($order->getBaseShippingDiscountAmount()));
+        $shipping->setDiscountAmount($monetaryHelper->toCents($order->getShippingDiscountAmount()));
+
+        $shipping->setBaseHiddenTaxAmount($monetaryHelper->toCents($order->getBaseShippingHiddenTaxAmount()));
+        $shipping->setHiddenTaxAmount($monetaryHelper->toCents($order->getShippingHiddenTaxAmount()));
+        $shipping->setBaseInclTax($monetaryHelper->toCents($order->getBaseShippingInclTax()));
+        $shipping->setInclTax($monetaryHelper->toCents($order->getShippingInclTax()));
+
+        $shipping->setMethod($order->getShippingMethod());
+
+        $shipping->setAddressId($order->getShippingAddressId());
+        $shipping->setAddress($this->getShippingAddressInformation($order));
+
+        return $shipping;
+    }
+
+    protected function getShippingAddressInformation($order = null) {
+        // @todo This method is like self::getCustomerAddressInformation. Refact it to one method.
+        if(!$order) {
+            $standard = Mage::getModel('paymentmodule/standard');
+            $checkoutSession = $standard->getCheckoutSession();
+            $orderId = $checkoutSession->getLastOrderId();
+            $order = $standard->getOrderByOrderId($orderId);
+        }
+
+        $shippingAddress = $order->getShippingAddress();
+        $regionId = $shippingAddress->getRegionId();
+        $address = new Varien_Object();
+
+        // @fixme I'm using this getStreet()[0] here but maybe there's a better way...
+        $address->setStreet($shippingAddress->getStreet()[0]);
+        $address->setNumber('number');
+        $address->setZipCode($shippingAddress->getPostcode());
+        $address->setNeighborhood('neighborhood');
+        $address->setCity($shippingAddress->getCity());
+        //$address->setState($this->getStateByRegionId($regionId)); //@todo: DEBUG: This must not be a comment line.
+        $address->setState('RJ'); //@todo: DEBUG: This must not be hardcoded.
+        $address->setCountry($shippingAddress->getCountryId());
+        $address->setComplement('complement');
+        $address->setMetadata(null);
+
+        return $address;
+    }
+
     /**
      * Return state code
      * @example $this->getStateByRegionId(502) //return "RJ"

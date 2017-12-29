@@ -15,6 +15,7 @@ class Mundipagg_Paymentmodule_BoletoController extends Mundipagg_Paymentmodule_C
         $paymentInfo->setItemsInfo($this->getItemsInformation());
         $paymentInfo->setCustomerInfo($this->getCustomerInformation());
         $paymentInfo->setPaymentInfo($this->getPaymentInformation());
+        $paymentInfo->setShippingInfo($this->getShippingInformation());
         $paymentInfo->setMetaInfo(Mage::helper('paymentmodule/data')->getMetaData());
 
         try {

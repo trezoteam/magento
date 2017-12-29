@@ -19,6 +19,7 @@ abstract class Mundipagg_Paymentmodule_Model_Api_Standard {
         $orderRequest->payments = $this->getPayments($paymentInformation->getPaymentInfo());
         $orderRequest->code = $orderId;
         $orderRequest->metadata = $paymentInformation->getMetainfo();
+        $orderRequest->shipping = $this->getShippingRequest($paymentInformation->getShippingInfo());
 
         return $orderRequest;
     }
