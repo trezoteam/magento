@@ -50,6 +50,12 @@ class Mundipagg_Paymentmodule_Model_Creditcard extends Mundipagg_Paymentmodule_M
             $info->getQuote()->getGrandTotal()
         );
 
+        $info->setAdditionalInformation($key . 'interest',
+            Mage::helper('paymentmodule/monetary')->toCents($interest));
+        $baseGrandTotal =  $info->getQuote()->getBaseGrandTotal();
+        $info->setAdditionalInformation($key . 'base_grand_total',
+            Mage::helper('paymentmodule/monetary')->toCents($baseGrandTotal));
+
         foreach ($info->getQuote()->getAllAddresses() as $address) {
             $address->setMundipaggInterest($interest);
             $address->setGrandTotal($address->getGrandTotal() + $interest);

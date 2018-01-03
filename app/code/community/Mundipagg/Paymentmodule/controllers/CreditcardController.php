@@ -50,6 +50,8 @@ class Mundipagg_Paymentmodule_CreditcardController extends Mundipagg_Paymentmodu
         $orderId = $checkoutSession->getLastRealOrderId();
 
         $additionalInformation = $standard->getAdditionalInformationForOrder($orderId);
+        $interest = $additionalInformation['mundipagg_payment_module_interest'];
+        $baseGrandTotal = $additionalInformation['mundipagg_payment_module_base_grand_total'];
 
         $payment = new Varien_Object();
 
@@ -60,6 +62,12 @@ class Mundipagg_Paymentmodule_CreditcardController extends Mundipagg_Paymentmodu
         $payment->setOperationType($creditCardConfig->getOperationTypeFlag());
         $payment->setPaymentToken($additionalInformation['mundipagg_payment_module_token']);
         $payment->setHolderName($additionalInformation['mundipagg_payment_module_holder_name']);
+        $payment->setBaseGrandTotal([
+            $baseGrandTotal
+        ]);
+        $payment->setInterest([
+           $interest
+        ]);
         // @todo get this from store config
         $payment->setCurrency('BRL');
 

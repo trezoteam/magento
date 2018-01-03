@@ -73,6 +73,12 @@ class Mundipagg_Paymentmodule_Model_Api_Creditcard extends Mundipagg_Paymentmodu
         $paymentRequest->paymentMethod = $paymentInfo->getPaymentMethod();
         $paymentRequest->currency = $paymentInfo->getCurrency();
         $paymentRequest->creditCard = $creditCardPaymentRequest;
+        $paymentRequest->amount = $paymentInfo->getBaseGrandTotal();
+        $paymentRequest->amount = $paymentRequest->amount[0];
+        //add interest
+        $interest =  $paymentInfo->getInterest();
+        $interest = $interest[0];
+        $paymentRequest->amount += $interest;
 
         return array($paymentRequest);
     }
