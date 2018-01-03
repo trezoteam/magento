@@ -162,7 +162,8 @@ function fillInstallments(item, index) {
         item.interest = " com " + item.interest + "% de juros";
     }
 
-    html = "<option>" + item.times + "x de " + item.amount + item.interest + "</option>";
+    html = "<option value='"+item.times+"'>" +
+            item.times + "x de " + item.amount + item.interest + "</option>";
 
     jQuery("#mundicheckout-creditCard-installments").append(html);
 }

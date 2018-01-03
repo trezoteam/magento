@@ -75,6 +75,16 @@
                 </observers>
             </mundipagg_payment_start>
         </events>
+
+        <sales>
+            <quote>
+                <totals>
+                    <mundipagg_interest>
+                        <class>Mundipagg_Paymentmodule_Model_Sales_Quote_Address_Total_Interest</class>
+                    </mundipagg_interest>
+                </totals>
+            </quote>
+        </sales>
     </global>
 
     <frontend>
