@@ -6,6 +6,7 @@ class Mundipagg_Paymentmodule_Helper_Interest extends Mage_Core_Helper_Abstract
     {
         $installmentHelper = Mage::helper('paymentmodule/installment');
         $allInstallments = $installmentHelper->getInstallments($orderTotal,$cards);
+
         $installmentInterest = 0;
         foreach($allInstallments['default'] as $installment) {
             if ($installment['times'] == $installmentNum) {
@@ -14,6 +15,7 @@ class Mundipagg_Paymentmodule_Helper_Interest extends Mage_Core_Helper_Abstract
             }
         }
         $interest = $orderTotal * ($installmentInterest / 100);
+
         return round($interest,2);
     }
 }

@@ -144,9 +144,5 @@
                 <payment_action>authorize</payment_action>
             </paymentmodule_boleto>
         </payment>
-
-        <totals_sort>
-            <mundipagg_interest>15</mundipagg_interest>
-        </totals_sort>
     </default>
 </config>
