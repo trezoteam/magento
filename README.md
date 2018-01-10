@@ -1,6 +1,9 @@
-# Mundipagg/Magento Integration module
+# Mundipagg/Magento Integration module (development)
 
-This is the official Magento module for new Mundipagg API integration
+This is the official Magento module for new Mundipagg API integration.
+
+*This module is in development. For a functional module, visit our
+[actual Magento module](https://github.com/mundipagg/magento-module)
 
 # Documentation
 Refer to [module documentation](https://github.com/mundipagg/magento/wiki)
