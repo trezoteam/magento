@@ -30,9 +30,6 @@ abstract class Mundipagg_Paymentmodule_Model_Api_Standard {
 
         $shippingRequest->amount = $shippingInformation->getAmount();
         $shippingRequest->description = $shippingInformation->getDescription();
-        //$shippingRequest->recipientName = ""; @todo
-        //$shippingRequest->recipientPhone = ""; @todo
-        //$shippingRequest->addressId = null; @todo
         $shippingRequest->address = $this->getCreateAddressRequest($shippingInformation->getAddress());
 
         return $shippingRequest;
