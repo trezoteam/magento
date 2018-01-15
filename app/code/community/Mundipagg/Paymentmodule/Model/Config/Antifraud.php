@@ -14,7 +14,7 @@ class Mundipagg_Paymentmodule_Model_Config_Antifraud
         return Mage::getStoreConfig(self::basePath . 'antifraud_minimum');
     }
 
-    public function souldApplyAntifraud($amountInCents)
+    public function shouldApplyAntifraud($amountInCents)
     {
         return $this->isEnabled() && $amountInCents >= ($this->getMinimumValue() * 100);
     }
