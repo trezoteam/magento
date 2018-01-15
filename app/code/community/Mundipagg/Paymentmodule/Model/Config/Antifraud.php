@@ -6,7 +6,7 @@ class Mundipagg_Paymentmodule_Model_Config_Antifraud
 
     public function isEnabled()
     {
-        return Mage::getStoreConfig(self::basePath . 'antifraud_status') === 1;
+        return Mage::getStoreConfig(self::basePath . 'antifraud_status') == 1;
     }
 
     public function getMinimumValue()

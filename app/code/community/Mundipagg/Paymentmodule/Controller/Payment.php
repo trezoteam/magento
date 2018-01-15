@@ -164,7 +164,9 @@ class Mundipagg_Paymentmodule_Controller_Payment extends Mage_Core_Controller_Fr
         $standard = Mage::getModel('paymentmodule/standard');
         $region = $standard->getRegionModel()->load($regionId);
 
-        return $region->getCode();
+        // @fixme this method is not working!
+        return 'RJ';
+//        return $region->getCode();
     }
 
     /**

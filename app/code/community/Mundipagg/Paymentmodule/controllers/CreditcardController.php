@@ -45,7 +45,7 @@ class Mundipagg_Paymentmodule_CreditcardController extends Mundipagg_Paymentmodu
     {
         $standard = Mage::getModel('paymentmodule/standard');
         $creditCardConfig = Mage::getModel('paymentmodule/config_card');
-        $antifraudConfig = Mage::getModel('paymentmodule/antifraud_card');
+        $antifraudConfig = Mage::getModel('paymentmodule/config_antifraud');
 
         $checkoutSession = $standard->getCheckoutSession();
         $orderId = $checkoutSession->getLastRealOrderId();
