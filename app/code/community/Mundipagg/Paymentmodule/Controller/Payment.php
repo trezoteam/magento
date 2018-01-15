@@ -8,19 +8,13 @@ class Mundipagg_Paymentmodule_Controller_Payment extends Mage_Core_Controller_Fr
      * Take the result from processPaymentTransaction, add the histories and, if $redirect is true,
      * redirect customer to success page.
      *
-     * @param GetOrderResponse $response
+     * @param $response
      * @param bool $redirect
      */
-    protected function handleOrderResponse(GetOrderResponse $response, $redirect = false)
+    protected function handleOrderResponse($response, $redirect = false)
     {
-        //loop through charges and add history for each.
-        $chargeHelper = Mage::helper("paymentmodule/Charge");
-        foreach ($response->charges as $charge) {
-            $chargeHelper->updateStatus($charge);
-        }
-        //add history to order status.
-        $orderHelper = Mage::helper("paymentmodule/Order");
-        $orderHelper->updateStatus($response);
+        $standard = Mage::getModel('paymentmodule/standard');
+        $standard->addChargeInfoToAdditionalInformation($response->charges, $response->code);
 
         if ($redirect) {
             $this->_redirect('checkout/onepage/success', array('_secure' => true));
@@ -96,31 +90,8 @@ class Mundipagg_Paymentmodule_Controller_Payment extends Mage_Core_Controller_Fr
         $monetaryHelper = Mage::helper('paymentmodule/monetary');
         $shipping = new Varien_Object();
 
-        $shipping->setDescription($order->getShippingDescription());
-        $shipping->setBaseAmount($monetaryHelper->toCents($order->getShippingBaseAmount()));
-        $shipping->setBaseCanceled($monetaryHelper->toCents($order->getShippingBaseCanceled()));
-        $shipping->setBaseInvoiced($monetaryHelper->toCents($order->getShippingBaseInvoiced()));
-        $shipping->setBaseRefunded($monetaryHelper->toCents($order->getShippingBaseRefunded()));
-        $shipping->setBaseTaxAmount($monetaryHelper->toCents($order->getShippingBaseTaxAmount()));
-        $shipping->setBaseTaxRefunded($monetaryHelper->toCents($order->getShippingBaseTaxRefunded()));
         $shipping->setAmount($monetaryHelper->toCents($order->getShippingAmount()));
-        $shipping->setCanceled($monetaryHelper->toCents($order->getShippingCanceled()));
-        $shipping->setInvoiced($monetaryHelper->toCents($order->getShippingInvoiced()));
-        $shipping->setRefunded($monetaryHelper->toCents($order->getShippingRefunded()));
-        $shipping->setTaxAmount($monetaryHelper->toCents($order->getShippingTaxAmount()));
-        $shipping->setTaxRefunded($monetaryHelper->toCents($order->getShippingTaxRefunded()));
-
-        $shipping->setBaseDiscountAmount($monetaryHelper->toCents($order->getBaseShippingDiscountAmount()));
-        $shipping->setDiscountAmount($monetaryHelper->toCents($order->getShippingDiscountAmount()));
-
-        $shipping->setBaseHiddenTaxAmount($monetaryHelper->toCents($order->getBaseShippingHiddenTaxAmount()));
-        $shipping->setHiddenTaxAmount($monetaryHelper->toCents($order->getShippingHiddenTaxAmount()));
-        $shipping->setBaseInclTax($monetaryHelper->toCents($order->getBaseShippingInclTax()));
-        $shipping->setInclTax($monetaryHelper->toCents($order->getShippingInclTax()));
-
-        $shipping->setMethod($order->getShippingMethod());
-
-        $shipping->setAddressId($order->getShippingAddressId());
+        $shipping->setDescription($order->getShippingDescription());
         $shipping->setAddress($this->getShippingAddressInformation($order));
 
         return $shipping;

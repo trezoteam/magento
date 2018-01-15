@@ -79,4 +79,53 @@ class Mundipagg_Paymentmodule_Model_Standard extends Mage_Payment_Model_Method_A
 
         return $order->getPayment()->getAdditionalInformation();
     }
+
+    /**
+     * @param $charges
+     * @param $orderId
+     */
+    public function addChargeInfoToAdditionalInformation($charges, $orderId)
+    {
+        $order = $this->getOrderByIncrementOrderId($orderId);
+        $payment = $order->getPayment();
+        $chargeAdditionalInfo = [];
+
+        foreach ($charges as $charge) {
+            $chargeAdditionalInfo[] = [
+                'amount' => $charge->amount,
+                'status' => $charge->status,
+                'id' => $charge->id
+            ];
+        }
+
+        // @todo mundipagg_paymentmodule_charges must not be hardcoded
+        $payment->setAdditionalInformation(
+            'mundipagg_paymentmodule_charges',
+            $chargeAdditionalInfo
+        );
+
+        $payment->save();
+    }
+
+    /**
+     * @param $orderId
+     * @return mixed
+     */
+    public function getPaymentFromOrder($orderId)
+    {
+        $order = $this->getOrderByOrderId($orderId);
+
+        return $order->getPayment();
+    }
+
+    /**
+     * @param $orderId
+     * @return mixed
+     */
+    public function getChargeInfoFromAdditionalInformation($orderId)
+    {
+        $payment = $this->getPaymentFromOrder($orderId);
+
+        return $payment->getAdditionalInformation();
+    }
 }
