@@ -28,7 +28,7 @@ class Mundipagg_Paymentmodule_CreditcardController extends Mundipagg_Paymentmodu
             }
 
             $this->handleOrderResponse($response, true);
-        }catch(Exception $e) {
+        } catch(Exception $e) {
             $helperLog = Mage::helper('paymentmodule/log');
             $helperLog->error("Exception: " . $e->getMessage());
             $helperLog->error(json_encode($response,JSON_PRETTY_PRINT));
@@ -45,6 +45,7 @@ class Mundipagg_Paymentmodule_CreditcardController extends Mundipagg_Paymentmodu
     {
         $standard = Mage::getModel('paymentmodule/standard');
         $creditCardConfig = Mage::getModel('paymentmodule/config_card');
+        $antifraudConfig = Mage::getModel('paymentmodule/config_antifraud');
 
         $checkoutSession = $standard->getCheckoutSession();
         $orderId = $checkoutSession->getLastRealOrderId();
@@ -62,14 +63,10 @@ class Mundipagg_Paymentmodule_CreditcardController extends Mundipagg_Paymentmodu
         $payment->setOperationType($creditCardConfig->getOperationTypeFlag());
         $payment->setPaymentToken($additionalInformation['mundipagg_payment_module_token']);
         $payment->setHolderName($additionalInformation['mundipagg_payment_module_holder_name']);
-        $payment->setBaseGrandTotal([
-            $baseGrandTotal
-        ]);
-        $payment->setInterest([
-           $interest
-        ]);
-        // @todo get this from store config
-        $payment->setCurrency('BRL');
+        $payment->setBaseGrandTotal([$baseGrandTotal]);
+        $payment->setInterest([$interest]);
+        $payment->setCurrency('BRL'); // @todo get this from store config
+        $payment->setSendToAntiFraud($antifraudConfig->shouldApplyAntifraud($baseGrandTotal));
 
         return $payment;
     }
