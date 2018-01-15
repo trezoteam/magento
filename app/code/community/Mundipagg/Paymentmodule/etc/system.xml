@@ -138,6 +138,47 @@
                     </fields>
                 </general_group>
 
+                <antifraud_group translate="label" module="paymentmodule">
+                    <label><![CDATA[<img title="Antifraude" alt="Antifraude" width="32" style="margin-top:9px;" src=""/> <div style="margin:-29px 0 13px 40px"> Anti-fraud configuration</div>]]></label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>1000</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+
+                    <fields>
+                        <manage_antifraud translate="label">
+                            <label>Anti-fraud configuration</label>
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </manage_antifraud>
+                        <antifraud_status translate="label">
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </antifraud_status>
+
+                        <boleto_due_at translate="label">
+                            <label>Minimum value</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1</sort_order>
+                            <depends>
+                                <antifraud_status>1</antifraud_status>
+                            </depends>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </boleto_due_at>
+                    </fields>
+                </antifraud_group>
+
                 <boleto_group translate="label" module="paymentmodule">
                     <label><![CDATA[<img title="Boleto" alt="Boleto" width="32" style="margin-top:9px;" src="/skin/adminhtml/default/default/images/mundipagg/icons/boleto.png"/> <div style="margin:-29px 0 13px 40px"> Boleto configuration</div>]]></label>
                     <frontend_type>text</frontend_type>
@@ -222,6 +263,7 @@
                         </boleto_instructions>
                     </fields>
                 </boleto_group>
+
                 <creditcard_group translate="label" module="paymentmodule">
                     <label><![CDATA[<img title="Creditcard" alt="Creditcard" width="32" style="margin-top:9px;" src="/skin/adminhtml/default/default/images/mundipagg/icons/creditcard.png"/> <div style="margin:-29px 0 13px 40px"> General credit card configuration</div>]]></label>
                     <frontend_type>text</frontend_type>
