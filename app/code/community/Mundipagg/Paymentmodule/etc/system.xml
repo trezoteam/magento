@@ -165,7 +165,7 @@
                             <show_in_store>1</show_in_store>
                         </antifraud_status>
 
-                        <boleto_due_at translate="label">
+                        <antifraud_minimum translate="label">
                             <label>Minimum value</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>1</sort_order>
@@ -175,7 +175,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </boleto_due_at>
+                        </antifraud_minimum>
                     </fields>
                 </antifraud_group>
 
