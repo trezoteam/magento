@@ -2,7 +2,7 @@
 
 class Mundipagg_Paymentmodule_Model_Config_Antifraud
 {
-    private const basePath = 'mundipagg_config/antifraud_group/';
+    const basePath = 'mundipagg_config/antifraud_group/';
 
     public function isEnabled()
     {

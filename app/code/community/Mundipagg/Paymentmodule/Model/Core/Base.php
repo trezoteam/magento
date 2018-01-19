@@ -24,7 +24,7 @@ class Mundipagg_Paymentmodule_Model_Core_Base
      * @param string $snake
      * @return string
      */
-    private function fromSnakeToCamel(string $snake): string
+    private function fromSnakeToCamel($snake)
     {
         $result = [];
 
