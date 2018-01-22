@@ -12,12 +12,10 @@ class Mundipagg_Paymentmodule_Model_Core_Charge extends Mundipagg_Paymentmodule_
     protected function created($webHook)
     {
         $orderId = $webHook->code;
-        $transactionId = $webHook->id;
-        $amount = $webHook->amount;
 
         $standard = Mage::getModel('paymentmodule/standard');
-        $standard->addChargeInfoToAdditionalInformation($webHook->data, $orderId);
-
+        $charge[] = $webHook;
+        $standard->addChargeInfoToAdditionalInformation($charge, $orderId);
     }
 
     /**
