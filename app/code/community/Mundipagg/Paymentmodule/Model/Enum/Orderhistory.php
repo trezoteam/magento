@@ -4,6 +4,7 @@ class Mundipagg_Paymentmodule_Model_Enum_Orderhistory
 {
     private $chargeCreated  = "MP - Charge created";
     private $chargePaid  = "MP - Charge paid - ";
+    private $chargeOverpaid = "MP - Charge orverpaid - ";
 
     public function __call($name, $arguments)
     {
