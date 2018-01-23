@@ -6,28 +6,12 @@
 class Mundipagg_Paymentmodule_Model_Core_Charge extends Mundipagg_Paymentmodule_Model_Core_Base
 {
     /**
-     * Common operations for all charges
-     * @param string $type charge type (paid, created, etc)
-     * @param $webHook
-     */
-    private function chargeUpdate($type, $webHook)
-    {
-        $orderId = $webHook->code;
-
-        $standard = Mage::getModel('paymentmodule/standard');
-        $charge[] = $webHook;
-        $standard->addChargeInfoToAdditionalInformation($charge, $orderId);
-
-        $this->addOrderHistory($orderId, $webHook->id, $type);
-    }
-
-    /**
      * @param $webHook
      * @throws Exception
      */
     protected function created($webHook)
     {
-        $this->chargeUpdate(__FUNCTION__, $webHook);
+        $this->updateChargeInfo(__FUNCTION__, $webHook);
     }
 
     /**
@@ -35,7 +19,20 @@ class Mundipagg_Paymentmodule_Model_Core_Charge extends Mundipagg_Paymentmodule_
      */
     protected function paid($webHook)
     {
-        $this->chargeUpdate(__FUNCTION__, $webHook);
+        $orderId = $webHook->code;
+        $order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
+        $moneyHelper = Mage::helper('paymentmodule/monetary');
+
+        $chargePaid = $webHook->paid_amount / 100;
+        $comment = "total paid: " . $moneyHelper->moneyFormat($chargePaid);
+
+        $totalPaid = $order->getBaseTotalPaid() + $chargePaid;
+
+        $order->setBaseTotalPaid($totalPaid)
+            ->setTotalPaid($totalPaid)
+            ->save();
+
+        $this->updateChargeInfo(__FUNCTION__, $webHook, $comment);
     }
 
     /**
@@ -54,15 +51,50 @@ class Mundipagg_Paymentmodule_Model_Core_Charge extends Mundipagg_Paymentmodule_
         $payment = $order->getPayment();
     }
 
-    private function addOrderHistory($orderId, $chargeId, $chargeType)
+    /**
+     * Common operations for all charges
+     * @param string $type charge type (paid, created, etc)
+     * @param $webHook full webhook object
+     * @param string $comment additional comments
+     */
+    private function updateChargeInfo($type, $webHook, $comment = '')
     {
-        $standard = Mage::getModel('paymentmodule/enum_orderhistory');
+        $orderId = $webHook->code;
+        $charge[] = $webHook;
 
-        $type = "charge" . ucfirst($chargeType);
+        $standard = Mage::getModel('paymentmodule/standard');
+        $standard->addChargeInfoToAdditionalInformation($charge, $orderId);
 
-        $comment = $standard->{$type}();
+        $comment = $this->joinComments($type, $webHook->id, $comment);
+        $this->addOrderHistory($orderId, $comment);
+    }
+
+    /**
+     * Join comments to insert into order history
+     * @param string $type
+     * @param int $chargeId
+     * @param strin $extraComment
+     * @return string
+     */
+    private function joinComments($type, $chargeId, $extraComment)
+    {
+        $orderEnum = Mage::getModel('paymentmodule/enum_orderhistory');
+
+        $type = "charge" . ucfirst($type);
+        $comment = $orderEnum->{$type}();
+        $comment .= $extraComment;
         $comment .= " (" . $chargeId . ")";
 
+        return $comment;
+    }
+
+    /**
+     * Add comments to order history
+     * @param int $orderId
+     * @param strin $comment
+     */
+    private function addOrderHistory($orderId, $comment)
+    {
         $order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
         $order->addStatusHistoryComment($comment, false);
         $order->save();
