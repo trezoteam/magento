@@ -16,6 +16,7 @@ class Mundipagg_Paymentmodule_Model_Core_Charge extends Mundipagg_Paymentmodule_
         $standard = Mage::getModel('paymentmodule/standard');
         $charge[] = $webHook;
         $standard->addChargeInfoToAdditionalInformation($charge, $orderId);
+        $this->addOrderHistory($orderId, $charge[0]->id);
     }
 
     /**
@@ -45,13 +46,14 @@ class Mundipagg_Paymentmodule_Model_Core_Charge extends Mundipagg_Paymentmodule_
         $payment = $order->getPayment();
     }
 
-    private function addHistory()
+    private function addOrderHistory($orderId, $chargeId)
     {
+        $standard = Mage::getModel('paymentmodule/enum_orderhistory');
+        $comment = $standard::CHARGE_CREATED;
+        $comment .= " (" . $chargeId . ")";
 
-    }
-
-    private function updateCharge()
-    {
-
+        $order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
+        $order->addStatusHistoryComment($comment, false);
+        $order->save();
     }
 }
