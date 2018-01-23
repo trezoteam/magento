@@ -6,17 +6,28 @@
 class Mundipagg_Paymentmodule_Model_Core_Charge extends Mundipagg_Paymentmodule_Model_Core_Base
 {
     /**
+     * Common operations for all charges
+     * @param string $type charge type (paid, created, etc)
      * @param $webHook
-     * @throws Exception
      */
-    protected function created($webHook)
+    private function chargeUpdate($type, $webHook)
     {
         $orderId = $webHook->code;
 
         $standard = Mage::getModel('paymentmodule/standard');
         $charge[] = $webHook;
         $standard->addChargeInfoToAdditionalInformation($charge, $orderId);
-        $this->addOrderHistory($orderId, $charge[0]->id);
+
+        $this->addOrderHistory($orderId, $webHook->id, $type);
+    }
+
+    /**
+     * @param $webHook
+     * @throws Exception
+     */
+    protected function created($webHook)
+    {
+        $this->chargeUpdate(__FUNCTION__, $webHook);
     }
 
     /**
@@ -24,10 +35,7 @@ class Mundipagg_Paymentmodule_Model_Core_Charge extends Mundipagg_Paymentmodule_
      */
     protected function paid($webHook)
     {
-        $orderId = $webHook->code;
-        $amount = $webHook->amount;
-        $transactionId = $webHook->id;
-
+        $this->chargeUpdate(__FUNCTION__, $webHook);
     }
 
     /**
@@ -46,10 +54,13 @@ class Mundipagg_Paymentmodule_Model_Core_Charge extends Mundipagg_Paymentmodule_
         $payment = $order->getPayment();
     }
 
-    private function addOrderHistory($orderId, $chargeId)
+    private function addOrderHistory($orderId, $chargeId, $chargeType)
     {
         $standard = Mage::getModel('paymentmodule/enum_orderhistory');
-        $comment = $standard::CHARGE_CREATED;
+
+        $type = "charge" . ucfirst($chargeType);
+
+        $comment = $standard->{$type}();
         $comment .= " (" . $chargeId . ")";
 
         $order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
