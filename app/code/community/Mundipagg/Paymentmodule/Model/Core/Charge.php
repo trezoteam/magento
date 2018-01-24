@@ -11,12 +11,8 @@ class Mundipagg_Paymentmodule_Model_Core_Charge extends Mundipagg_Paymentmodule_
      */
     protected function created($webHook)
     {
-        $orderId = $webHook->code;
-
-        $standard = Mage::getModel('paymentmodule/standard');
-        $charge[] = $webHook;
-        $standard->addChargeInfoToAdditionalInformation($charge, $orderId);
-        $this->addOrderHistory($orderId, $charge[0]->id);
+        $helper = $this->getHelper();
+        $helper->updateChargeInfo(__FUNCTION__, $webHook);
     }
 
     /**
@@ -24,10 +20,8 @@ class Mundipagg_Paymentmodule_Model_Core_Charge extends Mundipagg_Paymentmodule_
      */
     protected function paid($webHook)
     {
-        $orderId = $webHook->code;
-        $amount = $webHook->amount;
-        $transactionId = $webHook->id;
-
+        $helper = $this->getHelper();
+        $helper->paidMethods(__FUNCTION__, $webHook);
     }
 
     /**
@@ -35,25 +29,21 @@ class Mundipagg_Paymentmodule_Model_Core_Charge extends Mundipagg_Paymentmodule_
      */
     protected function overpaid($webHook)
     {
-        $standard = Mage::getModel('paymentmodule/standard');
-
-        $orderId = $webHook->code;
-        $amount = $webHook->amount;
-        $transactionId = $webHook->id;
-        $paymentMethod = $webHook->payment_method;
-
-        $order = $standard->getOrderByIncrementOrderId($orderId);
-        $payment = $order->getPayment();
+        $helper = $this->getHelper();
+        $helper->paidMethods(__FUNCTION__, $webHook);
     }
 
-    private function addOrderHistory($orderId, $chargeId)
+    /**
+     * @param $webHook
+     */
+    protected function underpaid($webHook)
     {
-        $standard = Mage::getModel('paymentmodule/enum_orderhistory');
-        $comment = $standard::CHARGE_CREATED;
-        $comment .= " (" . $chargeId . ")";
+        $helper = $this->getHelper();
+        $helper->paidMethods(__FUNCTION__, $webHook);
+    }
 
-        $order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
-        $order->addStatusHistoryComment($comment, false);
-        $order->save();
+    private function getHelper()
+    {
+        return Mage::helper('paymentmodule/chargeoperations');
     }
 }
