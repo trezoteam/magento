@@ -17,7 +17,8 @@ class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_A
 
         $totalPaid = $order->getBaseTotalPaid() + $chargePaid;
 
-        $order->setBaseTotalPaid($totalPaid)
+        $order
+            ->setBaseTotalPaid($totalPaid)
             ->setTotalPaid($totalPaid)
             ->save();
 
@@ -27,7 +28,7 @@ class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_A
     /**
      * Common operations for all charges
      * @param string $type charge type (paid, created, etc)
-     * @param $webHook full webhook object
+     * @param stdClass $webHook Full webhook object
      * @param string $comment additional comments
      */
     public function updateChargeInfo($type, $webHook, $comment = '')
@@ -46,17 +47,17 @@ class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_A
      * Join comments to insert into order history
      * @param string $type
      * @param int $chargeId
-     * @param strin $extraComment
+     * @param string $extraComment
      * @return string
      */
     public function joinComments($type, $chargeId, $extraComment)
     {
         $orderEnum = Mage::getModel('paymentmodule/enum_orderhistory');
 
-        $type = "charge" . ucfirst($type);
+        $type = 'charge' . ucfirst($type);
         $comment = $orderEnum->{$type}();
         $comment .= $extraComment;
-        $comment .= " (" . $chargeId . ")";
+        $comment .= ' (' . $chargeId . ')';
 
         return $comment;
     }
@@ -64,7 +65,7 @@ class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_A
     /**
      * Add comments to order history
      * @param int $orderId
-     * @param strin $comment
+     * @param string $comment
      */
     public function addOrderHistory($orderId, $comment)
     {
