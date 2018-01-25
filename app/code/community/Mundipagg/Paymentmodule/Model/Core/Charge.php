@@ -42,6 +42,52 @@ class Mundipagg_Paymentmodule_Model_Core_Charge extends Mundipagg_Paymentmodule_
         $helper->paidMethods(__FUNCTION__, $webHook);
     }
 
+    /**
+     * @param $webHook
+     */
+    protected function canceled($webHook)
+    {
+        $helper = $this->getHelper();
+        $helper->canceledMethods(__FUNCTION__, $webHook);
+    }
+
+    /**
+     * Same as canceled
+     * @param $webHook
+     */
+    protected function refunded($webHook)
+    {
+        $this->canceled($webHook);
+    }
+
+    /**
+     * Same as canceled
+     * @param $webHook
+     */
+    protected function paymentFailed($webHook)
+    {
+        $helper = $this->getHelper();
+        $helper->canceledMethods(__FUNCTION__, $webHook);
+    }
+
+    /**
+     * @param $webHook
+     */
+    protected function partialRefunded($webHook)
+    {
+        $helper = $this->getHelper();
+        $helper->canceledMethods(__FUNCTION__, $webHook);
+    }
+
+    /**
+     * @param $webHook
+     */
+    protected function partialCanceled($webHook)
+    {
+        $helper = $this->getHelper();
+        $helper->canceledMethods(__FUNCTION__, $webHook);
+    }
+
     private function getHelper()
     {
         return Mage::helper('paymentmodule/chargeoperations');
