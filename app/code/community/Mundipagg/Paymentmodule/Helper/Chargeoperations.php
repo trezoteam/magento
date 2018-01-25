@@ -38,7 +38,6 @@ class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_A
         $comment = " Canceled amount: " . $moneyHelper->toCurrencyFormat($canceledAmount);
 
         if ($order->getTotalPaid() > 0) {
-
             $totalRefunded = $order->getTotalRefunded() + $canceledAmount;
             $order
                 ->setTotalRefunded($totalRefunded)
