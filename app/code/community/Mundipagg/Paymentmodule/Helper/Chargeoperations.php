@@ -3,8 +3,8 @@
 class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_Abstract
 {
     /**
-     * @param $methodName
-     * @param $webHook
+     * @param string $methodName
+     * @param stdClass $webHook
      */
     public function paidMethods($methodName, $webHook)
     {
@@ -12,15 +12,39 @@ class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_A
         $order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
         $moneyHelper = Mage::helper('paymentmodule/monetary');
 
-        $chargePaid = $webHook->paid_amount / 100;
-        $comment = "total paid: " . $moneyHelper->moneyFormat($chargePaid);
-
-        $totalPaid = $order->getBaseTotalPaid() + $chargePaid;
+        $paidAmount = $this->getWebHookPaidAmount($webHook);
+        $formatedPaidAmount = $moneyHelper->toCurrencyFormat($paidAmount);
 
         $order
-            ->setBaseTotalPaid($totalPaid)
-            ->setTotalPaid($totalPaid)
+            ->setBaseTotalPaid($paidAmount)
+            ->setTotalPaid($paidAmount)
             ->save();
+
+        $this->updateChargeInfo($methodName, $webHook, $formatedPaidAmount);
+    }
+
+    /**
+     * @param string $methodName
+     * @param stdClass $webHook
+     */
+    public function canceledMethods($methodName, $webHook)
+    {
+        $orderId = $webHook->code;
+        $order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
+
+        $moneyHelper = Mage::helper('paymentmodule/monetary');
+        $canceledAmount = $this->getWebHookCanceledAmount($webHook);
+
+        $comment = " Canceled amount: " . $moneyHelper->toCurrencyFormat($canceledAmount);
+
+        if ($order->getTotalPaid() > 0) {
+
+            $totalRefunded = $order->getTotalRefunded() + $canceledAmount;
+            $order
+                ->setTotalRefunded($totalRefunded)
+                ->setBaseTotalRefunded($totalRefunded)
+                ->save();
+        }
 
         $this->updateChargeInfo($methodName, $webHook, $comment);
     }
@@ -39,25 +63,55 @@ class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_A
         $standard = Mage::getModel('paymentmodule/standard');
         $standard->addChargeInfoToAdditionalInformation($charge, $orderId);
 
-        $comment = $this->joinComments($type, $webHook->id, $comment);
+        $comment = $this->joinComments($type, $webHook, $comment);
         $this->addOrderHistory($orderId, $comment);
     }
 
     /**
+     * @param stdClass $webHook
+     * @return int
+     */
+    private function getWebHookPaidAmount($webHook)
+    {
+        if (isset($webHook->paid_amount)) {
+            return $webHook->paid_amount / 100;
+        }
+
+        return 0;
+    }
+
+    /**
+     * @param stdClass $webHook
+     * @return int
+     */
+    private function getWebHookCanceledAmount($webHook)
+    {
+        if (isset($webHook->canceled_amount)) {
+            return $webHook->canceled_amount / 100;
+        }
+
+        return 0;
+    }
+
+
+    /**
      * Join comments to insert into order history
      * @param string $type
-     * @param int $chargeId
+     * @param stdClass $webHook
      * @param string $extraComment
      * @return string
      */
-    public function joinComments($type, $chargeId, $extraComment)
+    public function joinComments($type, $webHook, $extraComment)
     {
         $orderEnum = Mage::getModel('paymentmodule/enum_orderhistory');
 
         $type = 'charge' . ucfirst($type);
         $comment = $orderEnum->{$type}();
-        $comment .= $extraComment;
-        $comment .= ' (' . $chargeId . ')';
+        $comment .= $extraComment . '<br>';
+        $comment .= 'Webhook Info: <br>';
+        $comment .= 'Charge id: ' . $webHook->id . '<br>';
+        $comment .= 'Order id: ' . $webHook->order->id . '<br>';
+        $comment .= 'Event: ' . $type;
 
         return $comment;
     }
