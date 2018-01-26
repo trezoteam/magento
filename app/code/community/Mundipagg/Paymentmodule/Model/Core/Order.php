@@ -2,6 +2,7 @@
 
 class Mundipagg_Paymentmodule_Model_Core_Order  extends Mundipagg_Paymentmodule_Model_Core_Base
 {
+    //Do nothing
     protected function created($webHook)
     {
     }
@@ -10,6 +11,11 @@ class Mundipagg_Paymentmodule_Model_Core_Order  extends Mundipagg_Paymentmodule_
     {
     }
 
+    /**
+     * Set order status as processing
+     * Order invoice is created by charge webhooks
+     * @param stdClass $webHook
+     */
     protected function paid($webHook)
     {
         $standard = Mage::getModel('paymentmodule/standard');
