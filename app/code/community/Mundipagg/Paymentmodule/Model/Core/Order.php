@@ -62,9 +62,9 @@ class Mundipagg_Paymentmodule_Model_Core_Order  extends Mundipagg_Paymentmodule_
 
     /**
      * @param object $order
-     * @return boolean
      */
-    private function closeOrder($order){
+    private function closeOrder($order)
+    {
         $order->setData('state', Mage_Sales_Model_Order::STATE_CLOSED);
         $order->setStatus(Mage_Sales_Model_Order::STATE_CLOSED);
         $order->sendOrderUpdateEmail();
