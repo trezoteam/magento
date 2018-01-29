@@ -9,31 +9,49 @@ class Mundipagg_Paymentmodule_Model_Core_Order  extends Mundipagg_Paymentmodule_
 
     /**
      * Set order status as processing
-     * Order invoice is created by charge webhooks
+     * Order invoice is created by charge webhook
      * @param stdClass $webHook
      */
     protected function paid($webHook)
     {
         $standard = Mage::getModel('paymentmodule/standard');
         $order = $standard->getOrderByIncrementOrderId($webHook->code);
-        $order->setState(Mage_Sales_Model_Order::STATE_PROCESSING, true, '', true);
+        $order
+            ->setState(
+                Mage_Sales_Model_Order::STATE_PROCESSING,
+                true,
+                '',
+                true
+            );
         $order->save();
     }
 
+    /**
+     * @param stdClass $webHook
+     */
     protected function canceled($webHook)
     {
         $standard = Mage::getModel('paymentmodule/standard');
+        $invoiceHelper = Mage::helper('paymentmodule/invoice');
+
         $order = $standard->getOrderByIncrementOrderId($webHook->code);
 
         if ($order->canUnhold()) {
             $order->unhold();
         }
 
-        if ($this->cancelInvoices($order)) {
+        if ($invoiceHelper->cancelInvoices($order)) {
             $this->closeOrder($order);
         }
 
-        $order->cancel()->save();
+        $order
+            ->setState(
+                Mage_Sales_Model_Order::STATE_CANCELED,
+                true,
+                '',
+                true
+            );
+        $order->save();
     }
 
 
@@ -41,28 +59,6 @@ class Mundipagg_Paymentmodule_Model_Core_Order  extends Mundipagg_Paymentmodule_
     {
     }
 
-    public function cancelInvoices($order)
-    {
-        $invoices = $this->getInvoicesAllowedToCancel($order);
-
-        // Refund invoices and Credit Memo
-        if (!empty($invoices)) {
-
-            $service = Mage::getModel('sales/service_order', $order);
-
-            foreach ($invoices as $invoice) {
-                $this->closeInvoice($invoice);
-                $totalRefunded = $order->getBaseTotalRefunded();
-                if (!$totalRefunded) {
-                    $this->createCreditMemo($invoice, $service);
-                }
-            }
-
-            return true;
-        }
-
-        return false;
-    }
 
     /**
      * @param object $order
@@ -73,40 +69,5 @@ class Mundipagg_Paymentmodule_Model_Core_Order  extends Mundipagg_Paymentmodule_
         $order->setStatus(Mage_Sales_Model_Order::STATE_CLOSED);
         $order->sendOrderUpdateEmail();
         $order->save();
-    }
-
-    /**
-     * @param object $invoice
-     * @return boolean
-     */
-    private function closeInvoice($invoice){
-        $invoice->setState(Mage_Sales_Model_Order_Invoice::STATE_CANCELED);
-        $invoice->save();
-    }
-
-    /**
-     * @param object $invoice
-     * @return boolean
-     */
-    private function createCreditMemo($invoice, $service)
-    {
-        $creditmemo = $service->prepareInvoiceCreditmemo($invoice);
-        $creditmemo->setOfflineRequested(true);
-        $creditmemo->register()->save();
-
-    }
-
-    private function getInvoicesAllowedToCancel($order)
-    {
-        $invoices= [];
-
-        foreach ($order->getInvoiceCollection() as $invoice) {
-            // We check if invoice can be refunded
-            if ($invoice->canRefund() && !$invoice->isCanceled()) {
-                $invoices[] = $invoice;
-            }
-        }
-
-        return $invoices;
     }
 }
