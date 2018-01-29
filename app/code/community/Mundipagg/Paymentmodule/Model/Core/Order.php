@@ -7,10 +7,6 @@ class Mundipagg_Paymentmodule_Model_Core_Order  extends Mundipagg_Paymentmodule_
     {
     }
 
-    protected function canceled($webHook)
-    {
-    }
-
     /**
      * Set order status as processing
      * Order invoice is created by charge webhooks
@@ -23,6 +19,11 @@ class Mundipagg_Paymentmodule_Model_Core_Order  extends Mundipagg_Paymentmodule_
         $order->setState(Mage_Sales_Model_Order::STATE_PROCESSING, true, '', true);
         $order->save();
     }
+    
+    protected function canceled($webHook)
+    {
+    }
+
 
     protected function paymentFailed($webHook)
     {
