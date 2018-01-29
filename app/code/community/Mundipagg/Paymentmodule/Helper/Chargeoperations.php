@@ -13,14 +13,10 @@ class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_A
         $moneyHelper = Mage::helper('paymentmodule/monetary');
 
         $paidAmount = $this->getWebHookPaidAmount($webHook);
-        $formatedPaidAmount = $moneyHelper->toCurrencyFormat($paidAmount);
+        $formattedPaidAmount = $moneyHelper->toCurrencyFormat($paidAmount);
 
-        $order
-            ->setBaseTotalPaid($paidAmount)
-            ->setTotalPaid($paidAmount)
-            ->save();
-
-        $this->updateChargeInfo($methodName, $webHook, $formatedPaidAmount);
+        $this->addInvoiceToOrder($order, $paidAmount);
+        $this->updateChargeInfo($methodName, $webHook, $formattedPaidAmount);
     }
 
     /**
@@ -125,5 +121,21 @@ class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_A
         $order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
         $order->addStatusHistoryComment($comment, false);
         $order->save();
+    }
+
+
+    private function addInvoiceToOrder($order, $amount)
+    {
+        $invoice = Mage::getModel('sales/service_order', $order)->prepareInvoice();
+        $invoice->register();
+        $invoice->setBaseGrandTotal($amount);
+        $invoice->setGrandTotal($amount);
+        $invoice->setRequestedCaptureCase('online')->setCanVoidFlag(false)->pay();
+        $order->save();
+
+        Mage::getModel('core/resource_transaction')
+            ->addObject($invoice)
+            ->addObject($invoice->getOrder())
+            ->save();
     }
 }
