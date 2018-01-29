@@ -57,6 +57,7 @@ class Mundipagg_Paymentmodule_Model_Core_Order  extends Mundipagg_Paymentmodule_
 
     protected function paymentFailed($webHook)
     {
+        $this->canceled($webHook);
     }
 
 

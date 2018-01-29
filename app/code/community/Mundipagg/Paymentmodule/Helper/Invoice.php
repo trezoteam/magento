@@ -27,7 +27,6 @@ class Mundipagg_Paymentmodule_Helper_Invoice extends Mage_Core_Helper_Abstract
         return false;
     }
 
-
     /**
      * @param Mage_Sales_Model_Order_Invoice $invoice
      */
@@ -48,7 +47,6 @@ class Mundipagg_Paymentmodule_Helper_Invoice extends Mage_Core_Helper_Abstract
         $creditmemo = $service->prepareInvoiceCreditmemo($invoice);
         $creditmemo->setOfflineRequested(true);
         $creditmemo->register()->save();
-
     }
 
     /**
