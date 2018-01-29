@@ -13,8 +13,6 @@ class Mundipagg_Paymentmodule_Helper_Invoice extends Mage_Core_Helper_Abstract
         // Refund invoices and Credit Memo
         if (!empty($invoices)) {
 
-
-
             foreach ($invoices as $invoice) {
                 $this->closeInvoice($invoice);
                 $totalRefunded = $order->getBaseTotalRefunded();
