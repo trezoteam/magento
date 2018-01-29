@@ -139,7 +139,7 @@
                 </general_group>
 
                 <antifraud_group translate="label" module="paymentmodule">
-                    <label><![CDATA[<img title="Antifraude" alt="Antifraude" width="32" style="margin-top:9px;" src=""/> <div style="margin:-29px 0 13px 40px"> Anti-fraud configuration</div>]]></label>
+                    <label><![CDATA[Anti-fraud configuration]]></label>
                     <frontend_type>text</frontend_type>
                     <sort_order>1000</sort_order>
                     <show_in_default>1</show_in_default>

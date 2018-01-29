@@ -35,7 +35,7 @@ class Mundipagg_Paymentmodule_Helper_Installment extends Mage_Core_Helper_Abstra
         $cardConfig = Mage::getModel('paymentmodule/config_card');
 
         if(!$cards) {
-            $cards = array('Visa', 'Master', 'Hiper', 'Diners', 'Amex', 'Elo');
+            $cards = array('Visa', 'Mastercard', 'Hiper', 'Diners', 'Amex', 'Elo');
         }
         $installments = array();
 

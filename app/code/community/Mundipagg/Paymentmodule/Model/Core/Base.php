@@ -13,18 +13,19 @@ class Mundipagg_Paymentmodule_Model_Core_Base
      */
     public function __call($name, $arguments)
     {
-        if (!method_exists($this, $this->fromSnakeToCamel($name))) {
+        $methodName = $this->fromSnakeToCamel($name);
+        if (!method_exists($this, $methodName)) {
             throw new \Exception('UNKNOWN WEBHOOK ACTION');
         }
 
-        return $this->{$name}($arguments[0]);
+        return $this->{$methodName}($arguments[0]);
     }
 
     /**
      * @param string $snake
      * @return string
      */
-    private function fromSnakeToCamel(string $snake): string
+    private function fromSnakeToCamel($snake)
     {
         $result = [];
 

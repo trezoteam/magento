@@ -2,12 +2,73 @@
 
 class Mundipagg_Paymentmodule_Model_Core_Order  extends Mundipagg_Paymentmodule_Model_Core_Base
 {
-    public function __call($name, $arguments)
+    //Do nothing
+    protected function created($webHook)
     {
-        if (!method_exists($this, $this->fromSnakeToCamel($name))) {
-            throw new \Exception('UNKNOWN WEBHOOK ACTION');
+    }
+
+    /**
+     * Set order status as processing
+     * Order invoice is created by charge webhook
+     * @param stdClass $webHook
+     */
+    protected function paid($webHook)
+    {
+        $standard = Mage::getModel('paymentmodule/standard');
+        $order = $standard->getOrderByIncrementOrderId($webHook->code);
+        $order
+            ->setState(
+                Mage_Sales_Model_Order::STATE_PROCESSING,
+                true,
+                '',
+                true
+            );
+        $order->save();
+    }
+
+    /**
+     * @param stdClass $webHook
+     */
+    protected function canceled($webHook)
+    {
+        $standard = Mage::getModel('paymentmodule/standard');
+        $invoiceHelper = Mage::helper('paymentmodule/invoice');
+
+        $order = $standard->getOrderByIncrementOrderId($webHook->code);
+
+        if ($order->canUnhold()) {
+            $order->unhold();
         }
 
-        return $this->{$name}($arguments[0]);
+        if ($invoiceHelper->cancelInvoices($order)) {
+            $this->closeOrder($order);
+        }
+
+        $order
+            ->setState(
+                Mage_Sales_Model_Order::STATE_CANCELED,
+                true,
+                '',
+                true
+            );
+        $order->save();
+    }
+
+
+    protected function paymentFailed($webHook)
+    {
+        $this->canceled($webHook);
+    }
+
+
+    /**
+     * @param object $order
+     */
+    private function closeOrder($order)
+    {
+        $order->setData('state', Mage_Sales_Model_Order::STATE_CLOSED);
+        $order->setStatus(Mage_Sales_Model_Order::STATE_CLOSED);
+        $order->sendOrderUpdateEmail();
+        $order->save();
     }
 }

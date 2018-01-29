@@ -11,12 +11,8 @@ class Mundipagg_Paymentmodule_Model_Core_Charge extends Mundipagg_Paymentmodule_
      */
     protected function created($webHook)
     {
-        $orderId = $webHook->code;
-        $transactionId = $webHook->id;
-        $amount = $webHook->amount;
-
-        $this->addTransactionToOrder($orderId, $transactionId);
-        $this->addInvoiceToOrder($orderId, $amount);
+        $helper = $this->getHelper();
+        $helper->updateChargeInfo(__FUNCTION__, $webHook);
     }
 
     /**
@@ -24,11 +20,8 @@ class Mundipagg_Paymentmodule_Model_Core_Charge extends Mundipagg_Paymentmodule_
      */
     protected function paid($webHook)
     {
-        $orderId = $webHook->code;
-        $amount = $webHook->amount;
-        $transactionId = $webHook->id;
-
-        $this->captureTransaction($orderId, $transactionId, $amount);
+        $helper = $this->getHelper();
+        $helper->paidMethods(__FUNCTION__, $webHook);
     }
 
     /**
@@ -36,105 +29,86 @@ class Mundipagg_Paymentmodule_Model_Core_Charge extends Mundipagg_Paymentmodule_
      */
     protected function overpaid($webHook)
     {
-        $standard = Mage::getModel('paymentmodule/standard');
-
-        $orderId = $webHook->code;
-        $amount = $webHook->amount;
-        $transactionId = $webHook->id;
-        $paymentMethod = $webHook->payment_method;
-        $this->getPaymentMethodModel($paymentMethod);
-
-        $order = $standard->getOrderByIncrementOrderId($orderId);
-        $payment = $order->getPayment();
+        $helper = $this->getHelper();
+        $helper->paidMethods(__FUNCTION__, $webHook);
     }
 
     /**
-     * @param $orderId
-     * @param $transactionId
-     * @throws Exception
+     * @param $webHook
      */
-    private function addTransactionToOrder($orderId, $transactionId)
+    protected function underpaid($webHook)
     {
-        $standard = Mage::getModel('paymentmodule/standard');
-        $order = $standard->getOrderByIncrementOrderId($orderId);
-
-        $transaction = Mage::getModel('sales/order_payment_transaction');
-        $transaction->setTxnId($transactionId);
-        $transaction->setOrderPaymentObject($order->getPayment());
-
-        $transaction->save();
+        $helper = $this->getHelper();
+        $helper->paidMethods(__FUNCTION__, $webHook);
     }
 
     /**
-     * @param $orderId
-     * @param $amount
+     * @param $webHook
      */
-    private function addInvoiceToOrder($orderId, $amount)
+    protected function canceled($webHook)
     {
-        $standard = Mage::getModel('paymentmodule/standard');
-        $order = $standard->getOrderByIncrementOrderId($orderId);
-
-        $invoice = Mage::getModel('sales/service_order', $order)->prepareInvoice();
-        $invoice->setGrandTotal($amount/100);
-        $invoice->register();
-        $invoice->getOrder()->setIsInProcess(true);
-        $order->save();
-
-        Mage::getModel('core/resource_transaction')
-            ->addObject($invoice)
-            ->addObject($invoice->getOrder())
-            ->save();
+        $helper = $this->getHelper();
+        $helper->canceledMethods(__FUNCTION__, $webHook);
     }
 
     /**
-     * @param $orderId
-     * @param $transactionId
-     * @param $amount
+     * Same as canceled
+     * @param $webHook
      */
-    private function captureTransaction($orderId, $transactionId, $amount)
+    protected function refunded($webHook)
     {
-        $standard = Mage::getModel('paymentmodule/standard');
-        $order = $standard->getOrderByIncrementOrderId($orderId);
-        $payment = $order->getPayment();
+        $this->canceled($webHook);
     }
 
     /**
-     * @param $orderId
-     * @param $amount
-     * @return mixed
-     * @throws Mage_Core_Exception
+     * Same as canceled
+     * @param $webHook
      */
-    private function createInvoice($orderId, $amount)
+    protected function paymentFailed($webHook)
     {
-        $standard = Mage::getModel('paymentmodule/standard');
-        $order = $standard->getOrderByIncrementOrderId($orderId);
+        $helper = $this->getHelper();
+        $orderEnum = Mage::getModel('paymentmodule/enum_orderhistory');
 
-        if (!$order->canInvoice()) {
-            Mage::throwException('CANNOT CREATE INVOICE');
-        }
+        $helper
+            ->canceledMethods(
+            __FUNCTION__,
+            $webHook,
+            $orderEnum->notAuthorized()
+        );
+    }
 
-        // reset total paid because invoice generation set order total_paid also
-        $order->setBaseTotalPaid(null)->setTotalPaid(null)->save();
-        $invoice = Mage::getModel('sales/service_order', $order)->prepareInvoice();
+    /**
+     * @param $webHook
+     */
+    protected function partialRefunded($webHook)
+    {
+        $helper = $this->getHelper();
+        $orderEnum = Mage::getModel('paymentmodule/enum_orderhistory');
+        $helper
+            ->canceledMethods(
+                __FUNCTION__,
+                $webHook,
+                $orderEnum->chargeRefunded()
+            );
+    }
 
-        if (!$invoice->getTotalQty()) {
-            Mage::throwException('CANNOT CREATE INVOICE WITHOUT PRODUCTS');
-        }
+    /**
+     * @param $webHook
+     */
+    protected function partialCanceled($webHook)
+    {
+        $helper = $this->getHelper();
+        $orderEnum = Mage::getModel('paymentmodule/enum_orderhistory');
 
-        $invoice->setRequestedCaptureCase(Mage_Sales_Model_Order_Invoice::CAPTURE_OFFLINE);
-        $invoice->register();
-        $invoice->getOrder()->setCustomerNoteNotify(false);
-        $invoice->getOrder()->setIsInProcess(true);
-        $invoice->setCanVoidFlag(true);
-        $invoice->pay();
+        $helper->canceledMethods(
+            __FUNCTION__,
+            $webHook,
+            $orderEnum->chargePartialCanceled()
+        );
+    }
 
-        try {
-            $transactionSave = Mage::getModel('core/resource_transaction')->addObject($invoice)->addObject($invoice->getOrder());
-            $transactionSave->save();
-        } catch (Exception $e) {
-            Mage::throwException($e->getMessage());
-        }
-
-        return $invoice;
+    private function getHelper()
+    {
+        return Mage::helper('paymentmodule/chargeoperations');
     }
 }
