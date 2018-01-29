@@ -31,7 +31,8 @@ class Mundipagg_Paymentmodule_Helper_Invoice extends Mage_Core_Helper_Abstract
     /**
      * @param Mage_Sales_Model_Order_Invoice $invoice
      */
-    public function closeInvoice($invoice){
+    public function closeInvoice($invoice)
+    {
         $invoice->setState(Mage_Sales_Model_Order_Invoice::STATE_CANCELED);
         $invoice->save();
     }
