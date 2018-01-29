@@ -6,8 +6,10 @@ class Mundipagg_Paymentmodule_Model_Enum_Orderhistory
     private $chargePaid  = 'MP - Charge paid: ';
     private $chargeOverpaid = 'MP - Charge orverpaid: ';
     private $chargeUnderpaid = 'MP - Charge underpaid: ';
-    private $chargeCanceled = 'MP - Charge canceled. ';
+    private $chargeCanceled = 'MP - Charge canceled: ';
     private $chargeRefunded = 'MP - Charge refunded: ';
+    private $notAuthorized = 'Payment not authorized ';
+    private $chargePartialCanceled = 'MP - Partial canceled amount: ';
 
     public function __call($name, $arguments)
     {

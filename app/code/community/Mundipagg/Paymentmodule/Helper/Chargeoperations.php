@@ -23,15 +23,19 @@ class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_A
      * @param string $methodName
      * @param stdClass $webHook
      */
-    public function canceledMethods($methodName, $webHook)
+    public function canceledMethods($methodName, $webHook, $extraComment = '')
     {
         $orderId = $webHook->code;
-        $order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
+        $order =
+            Mage::getModel('sales/order')
+                ->loadByIncrementId($orderId);
 
         $moneyHelper = Mage::helper('paymentmodule/monetary');
         $canceledAmount = $this->getWebHookCanceledAmount($webHook);
 
-        $comment = " Canceled amount: " . $moneyHelper->toCurrencyFormat($canceledAmount);
+        if ($canceledAmount) {
+            $extraComment .= $moneyHelper->toCurrencyFormat($canceledAmount);
+        }
 
         if ($order->getTotalPaid() > 0) {
             $totalRefunded = $order->getTotalRefunded() + $canceledAmount;
@@ -41,7 +45,7 @@ class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_A
                 ->save();
         }
 
-        $this->updateChargeInfo($methodName, $webHook, $comment);
+        $this->updateChargeInfo($methodName, $webHook, $extraComment);
     }
 
     /**

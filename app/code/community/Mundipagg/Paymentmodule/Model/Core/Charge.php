@@ -67,7 +67,14 @@ class Mundipagg_Paymentmodule_Model_Core_Charge extends Mundipagg_Paymentmodule_
     protected function paymentFailed($webHook)
     {
         $helper = $this->getHelper();
-        $helper->canceledMethods(__FUNCTION__, $webHook);
+        $orderEnum = Mage::getModel('paymentmodule/enum_orderhistory');
+
+        $helper
+            ->canceledMethods(
+            __FUNCTION__,
+            $webHook,
+            $orderEnum->notAuthorized()
+        );
     }
 
     /**
@@ -76,7 +83,13 @@ class Mundipagg_Paymentmodule_Model_Core_Charge extends Mundipagg_Paymentmodule_
     protected function partialRefunded($webHook)
     {
         $helper = $this->getHelper();
-        $helper->canceledMethods(__FUNCTION__, $webHook);
+        $orderEnum = Mage::getModel('paymentmodule/enum_orderhistory');
+        $helper
+            ->canceledMethods(
+                __FUNCTION__,
+                $webHook,
+                $orderEnum->chargeRefunded()
+            );
     }
 
     /**
@@ -85,7 +98,13 @@ class Mundipagg_Paymentmodule_Model_Core_Charge extends Mundipagg_Paymentmodule_
     protected function partialCanceled($webHook)
     {
         $helper = $this->getHelper();
-        $helper->canceledMethods(__FUNCTION__, $webHook);
+        $orderEnum = Mage::getModel('paymentmodule/enum_orderhistory');
+
+        $helper->canceledMethods(
+            __FUNCTION__,
+            $webHook,
+            $orderEnum->chargePartialCanceled()
+        );
     }
 
     private function getHelper()
