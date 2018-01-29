@@ -48,7 +48,6 @@ class Mundipagg_Paymentmodule_Model_Core_Charge extends Mundipagg_Paymentmodule_
     protected function canceled($webHook)
     {
         $helper = $this->getHelper();
-
         $helper->canceledMethods(__FUNCTION__, $webHook);
     }
 
@@ -104,7 +103,7 @@ class Mundipagg_Paymentmodule_Model_Core_Charge extends Mundipagg_Paymentmodule_
         $helper->canceledMethods(
             __FUNCTION__,
             $webHook,
-            $orderEnum
+            $orderEnum->chargePartialCanceled()
         );
     }
 
