@@ -9,15 +9,30 @@ class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_A
     public function paidMethods($methodName, $webHook)
     {
         $orderId = $webHook->code;
-        $order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
-        $moneyHelper = Mage::helper('paymentmodule/monetary');
+        $chargeId = $this->getChargeFromWebHook($webHook);
 
-        $paidAmount = $this->getWebHookPaidAmount($webHook);
-        $formattedPaidAmount = $moneyHelper->toCurrencyFormat($paidAmount);
+        if (!$this->isChargeAlreadyUpdated($chargeId, $orderId, $methodName)) {
+            $order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
 
-        $this->addInvoiceToOrder($order, $paidAmount);
-        $this->updateChargeInfo($methodName, $webHook, $formattedPaidAmount);
+            $moneyHelper = Mage::helper('paymentmodule/monetary');
+            $invoiceHelper = Mage::helper('paymentmodule/invoice');
+
+            $paidAmount = $this->getWebHookPaidAmount($webHook);
+            $formattedPaidAmount = $moneyHelper->toCurrencyFormat($paidAmount);
+
+            $invoiceHelper->addInvoiceToOrder($order, $paidAmount);
+            $this->updateChargeInfo($methodName, $webHook, $formattedPaidAmount);
+        }
     }
+
+    private function getChargeFromWebHook($webHook)
+    {
+        if(!empty($webHook->charges[0]->id)) {
+          return $webHook->charges[0]->id;
+        }
+        return $webHook->id;
+    }
+
 
     /**
      * @param string $methodName
@@ -107,7 +122,6 @@ class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_A
         $type = 'charge' . ucfirst($type);
         $comment = $orderEnum->{$type}();
         $comment .= $extraComment . '<br>';
-        $comment .= 'Webhook Info: <br>';
         $comment .= 'Charge id: ' . $webHook->id . '<br>';
         $comment .= 'Order id: ' . $webHook->order->id . '<br>';
         $comment .= 'Event: ' . $type;
@@ -127,19 +141,25 @@ class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_A
         $order->save();
     }
 
-
-    private function addInvoiceToOrder($order, $amount)
+    public function isChargeAlreadyUpdated($chargeId, $orderId, $chargeType)
     {
-        $invoice = Mage::getModel('sales/service_order', $order)->prepareInvoice();
-        $invoice->register();
-        $invoice->setBaseGrandTotal($amount);
-        $invoice->setGrandTotal($amount);
-        $invoice->setRequestedCaptureCase('online')->setCanVoidFlag(false)->pay();
-        $order->save();
+        $standard = Mage::getModel('paymentmodule/standard');
 
-        Mage::getModel('core/resource_transaction')
-            ->addObject($invoice)
-            ->addObject($invoice->getOrder())
-            ->save();
+        $additionalInfo =
+            $standard->getAdditionalInformationForOrder($orderId);
+
+        if (!empty($additionalInfo['mundipagg_payment_module_charges'][$chargeId])) {
+            $status =
+                $additionalInfo['mundipagg_payment_module_charges'][$chargeId]['status'];
+
+            if (
+                $status === $chargeType ||
+                $chargeType === 'created' && $status != 'created'
+            ) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

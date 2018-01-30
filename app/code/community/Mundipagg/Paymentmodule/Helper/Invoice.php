@@ -66,4 +66,24 @@ class Mundipagg_Paymentmodule_Helper_Invoice extends Mage_Core_Helper_Abstract
 
         return $invoices;
     }
+
+    /**
+     * @param Mage_Sales_Model_Order $order
+     * @param float $amount
+     * @throws Exception
+     */
+    public function addInvoiceToOrder($order, $amount)
+    {
+        $invoice = Mage::getModel('sales/service_order', $order)->prepareInvoice();
+        $invoice->register();
+        $invoice->setBaseGrandTotal($amount);
+        $invoice->setGrandTotal($amount);
+        $invoice->setRequestedCaptureCase('online')->setCanVoidFlag(false)->pay();
+        $order->save();
+
+        Mage::getModel('core/resource_transaction')
+            ->addObject($invoice)
+            ->addObject($invoice->getOrder())
+            ->save();
+    }
 }

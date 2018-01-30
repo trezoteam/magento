@@ -12,7 +12,12 @@ class Mundipagg_Paymentmodule_Model_Core_Charge extends Mundipagg_Paymentmodule_
     protected function created($webHook)
     {
         $helper = $this->getHelper();
-        $helper->updateChargeInfo(__FUNCTION__, $webHook);
+
+        if (
+         !$helper->isChargeAlreadyUpdated($webHook->id, $webHook->code, __FUNCTION__)
+        ) {
+            $helper->updateChargeInfo(__FUNCTION__, $webHook);
+        }
     }
 
     /**

@@ -16,14 +16,17 @@ class Mundipagg_Paymentmodule_Model_Core_Order  extends Mundipagg_Paymentmodule_
     {
         $standard = Mage::getModel('paymentmodule/standard');
         $order = $standard->getOrderByIncrementOrderId($webHook->code);
-        $order
-            ->setState(
-                Mage_Sales_Model_Order::STATE_PROCESSING,
-                true,
-                '',
-                true
-            );
-        $order->save();
+
+        if ($order->getState() != Mage_Sales_Model_Order::STATE_PROCESSING) {
+            $order
+                ->setState(
+                    Mage_Sales_Model_Order::STATE_PROCESSING,
+                    true,
+                    '',
+                    true
+                );
+            $order->save();
+        }
     }
 
     /**
