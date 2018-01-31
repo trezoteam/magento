@@ -23,11 +23,10 @@ class Mundipagg_Paymentmodule_Controller_Payment extends Mage_Core_Controller_Fr
 
             if ($charge->status == 'paid') {
                 $charge->paid_amount = $charge->amount;
+                $moduleModelCharge->paid($charge);
+                $moduleModelOrder->paid($response);
             }
-
-            $moduleModelCharge->paid($charge);
         }
-        $moduleModelOrder->paid($response);
 
         if ($redirect) {
             $this->_redirect('checkout/onepage/success', array('_secure' => true));
