@@ -10,11 +10,23 @@ class Mundipagg_Paymentmodule_Controller_Payment extends Mage_Core_Controller_Fr
      *
      * @param $response
      * @param bool $redirect
+     * @throws Varien_Exception
      */
     protected function handleOrderResponse($response, $redirect = false)
     {
-        $standard = Mage::getModel('paymentmodule/standard');
-        $standard->addChargeInfoToAdditionalInformation($response->charges, $response->code);
+        $moduleModelOrder = Mage::getModel('paymentmodule/core_order');
+        $moduleModelCharge = Mage::getModel('paymentmodule/core_charge');
+
+        foreach ($response->charges as $charge) {
+            $charge->code = $response->code;
+            $charge->order->id = $response->id;
+
+            if ($charge->status == 'paid') {
+                $charge->paid_amount = $charge->amount;
+                $moduleModelCharge->paid($charge);
+                $moduleModelOrder->paid($response);
+            }
+        }
 
         if ($redirect) {
             $this->_redirect('checkout/onepage/success', array('_secure' => true));

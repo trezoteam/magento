@@ -6,65 +6,70 @@
 class Mundipagg_Paymentmodule_Model_Core_Charge extends Mundipagg_Paymentmodule_Model_Core_Base
 {
     /**
-     * @param $webHook
+     * @param $charge
      * @throws Exception
      */
-    protected function created($webHook)
+    protected function created($charge)
     {
         $helper = $this->getHelper();
-        $helper->updateChargeInfo(__FUNCTION__, $webHook);
+
+        if (
+         !$helper->isChargeAlreadyUpdated($charge->id, $charge->code, __FUNCTION__)
+        ) {
+            $helper->updateChargeInfo(__FUNCTION__, $charge);
+        }
     }
 
     /**
-     * @param $webHook
+     * @param $charge
      */
-    protected function paid($webHook)
+    protected function paid($charge)
     {
         $helper = $this->getHelper();
-        $helper->paidMethods(__FUNCTION__, $webHook);
+        $helper->paidMethods(__FUNCTION__, $charge);
     }
 
     /**
-     * @param $webHook
+     * @param $charge
      */
-    protected function overpaid($webHook)
+    protected function overpaid($charge)
     {
         $helper = $this->getHelper();
-        $helper->paidMethods(__FUNCTION__, $webHook);
+        $helper->paidMethods(__FUNCTION__, $charge);
     }
 
     /**
-     * @param $webHook
+     * @param $charge
      */
-    protected function underpaid($webHook)
+    protected function underpaid($charge)
     {
         $helper = $this->getHelper();
-        $helper->paidMethods(__FUNCTION__, $webHook);
+        $helper->paidMethods(__FUNCTION__, $charge);
     }
 
     /**
-     * @param $webHook
+     * @param $charge
      */
-    protected function canceled($webHook)
+    protected function canceled($charge)
     {
         $helper = $this->getHelper();
-        $helper->canceledMethods(__FUNCTION__, $webHook);
+        $helper->canceledMethods(__FUNCTION__, $charge);
     }
 
     /**
      * Same as canceled
-     * @param $webHook
+     * @param $charge
      */
-    protected function refunded($webHook)
+    protected function refunded($charge)
     {
-        $this->canceled($webHook);
+        $this->canceled($charge);
     }
 
     /**
      * Same as canceled
-     * @param $webHook
+     * @param $charge
      */
-    protected function paymentFailed($webHook)
+    protected function paymentFailed($charge)
     {
         $helper = $this->getHelper();
         $orderEnum = Mage::getModel('paymentmodule/enum_orderhistory');
@@ -72,37 +77,37 @@ class Mundipagg_Paymentmodule_Model_Core_Charge extends Mundipagg_Paymentmodule_
         $helper
             ->canceledMethods(
             __FUNCTION__,
-            $webHook,
+            $charge,
             $orderEnum->notAuthorized()
         );
     }
 
     /**
-     * @param $webHook
+     * @param $charge
      */
-    protected function partialRefunded($webHook)
+    protected function partialRefunded($charge)
     {
         $helper = $this->getHelper();
         $orderEnum = Mage::getModel('paymentmodule/enum_orderhistory');
         $helper
             ->canceledMethods(
                 __FUNCTION__,
-                $webHook,
+                $charge,
                 $orderEnum->chargeRefunded()
             );
     }
 
     /**
-     * @param $webHook
+     * @param $charge
      */
-    protected function partialCanceled($webHook)
+    protected function partialCanceled($charge)
     {
         $helper = $this->getHelper();
         $orderEnum = Mage::getModel('paymentmodule/enum_orderhistory');
 
         $helper->canceledMethods(
             __FUNCTION__,
-            $webHook,
+            $charge,
             $orderEnum->chargePartialCanceled()
         );
     }

@@ -4,34 +4,40 @@ class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_A
 {
     /**
      * @param string $methodName
-     * @param stdClass $webHook
+     * @param stdClass $charge
      */
-    public function paidMethods($methodName, $webHook)
+    public function paidMethods($methodName, $charge)
     {
-        $orderId = $webHook->code;
-        $order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
-        $moneyHelper = Mage::helper('paymentmodule/monetary');
+        $orderId = $charge->code;
+        $chargeId = $charge->id;
 
-        $paidAmount = $this->getWebHookPaidAmount($webHook);
-        $formattedPaidAmount = $moneyHelper->toCurrencyFormat($paidAmount);
+        if (!$this->isChargeAlreadyUpdated($chargeId, $orderId, $methodName)) {
+            $order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
 
-        $this->addInvoiceToOrder($order, $paidAmount);
-        $this->updateChargeInfo($methodName, $webHook, $formattedPaidAmount);
+            $moneyHelper = Mage::helper('paymentmodule/monetary');
+            $invoiceHelper = Mage::helper('paymentmodule/invoice');
+
+            $paidAmount = $this->getChargePaidAmount($charge);
+            $formattedPaidAmount = $moneyHelper->toCurrencyFormat($paidAmount);
+
+            $invoiceHelper->addInvoiceToOrder($order, $paidAmount);
+            $this->updateChargeInfo($methodName, $charge, $formattedPaidAmount);
+        }
     }
 
     /**
      * @param string $methodName
-     * @param stdClass $webHook
+     * @param stdClass $charge
      */
-    public function canceledMethods($methodName, $webHook, $extraComment = '')
+    public function canceledMethods($methodName, $charge, $extraComment = '')
     {
-        $orderId = $webHook->code;
+        $orderId = $charge->code;
         $order =
             Mage::getModel('sales/order')
                 ->loadByIncrementId($orderId);
 
         $moneyHelper = Mage::helper('paymentmodule/monetary');
-        $canceledAmount = $this->getWebHookCanceledAmount($webHook);
+        $canceledAmount = $this->getChargeCanceledAmount($charge);
 
         if ($canceledAmount) {
             $extraComment .= $moneyHelper->toCurrencyFormat($canceledAmount);
@@ -45,48 +51,49 @@ class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_A
                 ->save();
         }
 
-        $this->updateChargeInfo($methodName, $webHook, $extraComment);
+        $this->updateChargeInfo($methodName, $charge, $extraComment);
     }
 
     /**
      * Common operations for all charges
      * @param string $type charge type (paid, created, etc)
-     * @param stdClass $webHook Full webhook object
+     * @param stdClass $charge Full webhook object
      * @param string $comment additional comments
+     * @throws Varien_Exception
      */
-    public function updateChargeInfo($type, $webHook, $comment = '')
+    public function updateChargeInfo($type, $charge, $comment = '')
     {
-        $orderId = $webHook->code;
-        $charge[] = $webHook;
+        $orderId = $charge->code;
+        $charges[] = $charge;
 
         $standard = Mage::getModel('paymentmodule/standard');
-        $standard->addChargeInfoToAdditionalInformation($charge, $orderId);
+        $standard->addChargeInfoToAdditionalInformation($charges, $orderId);
 
-        $comment = $this->joinComments($type, $webHook, $comment);
+        $comment = $this->joinComments($type, $charge, $comment);
         $this->addOrderHistory($orderId, $comment);
     }
 
     /**
-     * @param stdClass $webHook
+     * @param stdClass $charge
      * @return int
      */
-    private function getWebHookPaidAmount($webHook)
+    private function getChargePaidAmount($charge)
     {
-        if (isset($webHook->paid_amount)) {
-            return $webHook->paid_amount / 100;
+        if (isset($charge->paid_amount)) {
+            return $charge->paid_amount / 100;
         }
 
         return 0;
     }
 
     /**
-     * @param stdClass $webHook
+     * @param stdClass $charge
      * @return int
      */
-    private function getWebHookCanceledAmount($webHook)
+    private function getChargeCanceledAmount($charge)
     {
-        if (isset($webHook->canceled_amount)) {
-            return $webHook->canceled_amount / 100;
+        if (isset($charge->canceled_amount)) {
+            return $charge->canceled_amount / 100;
         }
 
         return 0;
@@ -96,20 +103,19 @@ class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_A
     /**
      * Join comments to insert into order history
      * @param string $type
-     * @param stdClass $webHook
+     * @param stdClass $charge
      * @param string $extraComment
      * @return string
      */
-    public function joinComments($type, $webHook, $extraComment)
+    public function joinComments($type, $charge, $extraComment)
     {
         $orderEnum = Mage::getModel('paymentmodule/enum_orderhistory');
 
         $type = 'charge' . ucfirst($type);
         $comment = $orderEnum->{$type}();
         $comment .= $extraComment . '<br>';
-        $comment .= 'Webhook Info: <br>';
-        $comment .= 'Charge id: ' . $webHook->id . '<br>';
-        $comment .= 'Order id: ' . $webHook->order->id . '<br>';
+        $comment .= 'Charge id: ' . $charge->id . '<br>';
+        $comment .= 'Order id: ' . $charge->order->id . '<br>';
         $comment .= 'Event: ' . $type;
 
         return $comment;
@@ -127,19 +133,25 @@ class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_A
         $order->save();
     }
 
-
-    private function addInvoiceToOrder($order, $amount)
+    public function isChargeAlreadyUpdated($chargeId, $orderId, $chargeType)
     {
-        $invoice = Mage::getModel('sales/service_order', $order)->prepareInvoice();
-        $invoice->register();
-        $invoice->setBaseGrandTotal($amount);
-        $invoice->setGrandTotal($amount);
-        $invoice->setRequestedCaptureCase('online')->setCanVoidFlag(false)->pay();
-        $order->save();
+        $standard = Mage::getModel('paymentmodule/standard');
 
-        Mage::getModel('core/resource_transaction')
-            ->addObject($invoice)
-            ->addObject($invoice->getOrder())
-            ->save();
+        $additionalInfo =
+            $standard->getAdditionalInformationForOrder($orderId);
+
+        if (!empty($additionalInfo['mundipagg_payment_module_charges'][$chargeId])) {
+            $status =
+                $additionalInfo['mundipagg_payment_module_charges'][$chargeId]['status'];
+
+            if (
+                $status === $chargeType ||
+                $chargeType === 'created' && $status != 'created'
+            ) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
