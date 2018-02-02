@@ -1,3 +1,5 @@
+[![Maintainability](https://api.codeclimate.com/v1/badges/f79be193872380945e80/maintainability)](https://codeclimate.com/github/mundipagg/magento/maintainability)
+
 # Mundipagg/Magento Integration module (development)
 
 This is the official Magento module for new Mundipagg API integration.
