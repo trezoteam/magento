@@ -5,7 +5,7 @@
             <div id="mundipagg_boletocc">
                 <ul >
                     <li style="clear:both">
-                        <div class="input-box"  id="tokenDiv" data-mundicheckout-app-id="<?php echo $this->getPublicKey(); ?>">
+                        <div class="input-box"  id="tokenDiv-boletocc" data-mundicheckout-app-id="<?php echo $this->getPublicKey(); ?>">
                             <h6>Credit Card</h6>
                             <div class="input-box">
                                 <img
@@ -39,15 +39,15 @@
                                 Card number<span class="required">*</span>
                             </label>
                             <div class="input-box">
-                                <span id="mundipaggBrandImage"></span>
-                                <input type="hidden" id="mundipaggBrandName" value="">
+                                <span id="mundipaggBrandImage-boletocc" class="mundipaggBrandImage"></span>
+                                <input type="hidden" id="mundipaggBrandName-boletocc" value="">
                                 <input
                                     type="text"
                                     data-mundicheckout-input="number"
                                     class="required-entry validate-cc-number mundipaggInput"
-                                    id="mundicheckout-number"
-                                    onkeyup="getFormData(); getBrand(this.value);"
-                                    onchange="getFormData(); getBrand(this.value);"
+                                    id="mundicheckout-number-boletocc"
+                                    onkeyup="getFormData('-boletocc'); getBrand(this.value,'-boletocc');"
+                                    onchange="getFormData('-boletocc'); getBrand(this.value,'-boletocc');"
                                     maxlength="19"
                                     name="payment[creditCardNumber]"
                                 >
@@ -59,8 +59,8 @@
                                     type="text"
                                     data-mundicheckout-input="holder_name "
                                     class="required-entry"
-                                    id="mundicheckout-holdername"
-                                    onkeyup="getFormData()"
+                                    id="mundicheckout-holdername-boletocc"
+                                    onkeyup="getFormData('-boletocc')"
                                     name="payment[holderName]"><br>
                             </div>
 
@@ -69,8 +69,8 @@
                                 <div class="v-fix">
                                     <select
                                         class="required-entry"
-                                        id="mundicheckout-expmonth"
-                                        onchange="getFormData();"
+                                        id="mundicheckout-expmonth-boletocc"
+                                        onchange="getFormData('-boletocc');"
                                         name="payment[creditCardExpMonth]"
                                     >
                                         <option value="">--- Mês --- </option>
@@ -87,8 +87,8 @@
                                 <div class="v-fix">
                                     <select
                                         class="required-entry"
-                                        id="mundicheckout-expyear"
-                                        onchange="getFormData();"
+                                        id="mundicheckout-expyear-boletocc"
+                                        onchange="getFormData('-boletocc');"
                                         name="payment[creditCardExpYear]"
                                     >
                                         <option value="">--- Ano --- </option>
@@ -100,7 +100,7 @@
                             </div>
                             <input
                                 type="hidden"
-                                class="validate-mundipagg-creditcard-exp"
+                                class="validate-mundipagg-creditcard-exp-boletocc"
                                 id="mundicheckout-expiration-date"
                                 name="payment[creditCardExpDate]"><br>
 
@@ -108,8 +108,8 @@
                             <div class="input-box">
                                 <select
                                     name="payment[creditCardInstallments]"
-                                    id="mundicheckout-creditCard-installments"
-                                    onchange="getFormData();"
+                                    id="mundicheckout-creditCard-installments-boletocc"
+                                    onchange="getFormData('-boletocc');"
                                 >
                                 </select>
                                 <br>
@@ -121,8 +121,8 @@
                                     type="text"
                                     data-mundicheckout-input="cvv"
                                     class="required-entry validate-number"
-                                    id="mundicheckout-cvv"
-                                    onkeyup="getFormData()"
+                                    id="mundicheckout-cvv-boletocc"
+                                    onkeyup="getFormData('-boletocc')"
                                     name="payment[creditCardCvv]"
                                     maxlength="4"
                                 >
@@ -131,7 +131,7 @@
 
                             <input
                                 type="hidden"
-                                id="mundicheckout-token"
+                                id="mundicheckout-token-boletocc"
                                 name="payment[creditCardToken]">
                         </div>
                         <p>
@@ -147,7 +147,7 @@
                             <label>CPF ou CNPJ<span class="required">*</span></label><br/>
                             <input
                                 type="text"
-                                id="<?php echo $_code ?>_boletocc_taxvat-boletocc"
+                                id="<?php echo $_code ?>_boletocc_taxvat"
                                 name="payment[boletocc_taxvat]"
                                 class="validate-mundipagg-cpf-boletocc"
                                 onkeyup="clearCardNumber(this);"
@@ -207,8 +207,8 @@
             if(this.currentMethod !== 'paymentmodule_creditcard') {
                 return save();
             }
-            var key = document.getElementById('tokenDiv').getAttribute('data-mundicheckout-app-id');
-            var tokenElement = document.getElementById('mundicheckout-token');
+            var key = document.getElementById('tokenDiv-boletocc').getAttribute('data-mundicheckout-app-id');
+            var tokenElement = document.getElementById('mundicheckout-token-boletocc');
             var validator = new Validation(this.form);
             if (this.validate() && validator.validate()) {
                 getCreditCardToken(key, function (response) {
