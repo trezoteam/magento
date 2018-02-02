@@ -1,6 +1,5 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/eedd85c187d14bc6b79958a3e39c5e8a)](https://www.codacy.com/app/mundipagg/magento?utm_source=github.com&utm_medium=referral&utm_content=mundipagg/magento&utm_campaign=badger)
 [![Maintainability](https://api.codeclimate.com/v1/badges/f79be193872380945e80/maintainability)](https://codeclimate.com/github/mundipagg/magento/maintainability)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/5bd038c0044b4da79f6ca7c5a8b130e1)](https://www.codacy.com/app/mundipagg/magento?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=mundipagg/magento&amp;utm_campaign=Badge_Grade)
 
 # Mundipagg/Magento Integration module (development)
 
