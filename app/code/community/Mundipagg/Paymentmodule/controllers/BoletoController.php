@@ -8,28 +8,29 @@ class Mundipagg_Paymentmodule_BoletoController extends Mundipagg_Paymentmodule_C
      */
     public function processPaymentAction()
     {
-        $order = Mage::getModel('paymentmodule/api_order');
+        $apiOrder = Mage::getModel('paymentmodule/api_order');
 
         $paymentInfo = new Varien_Object();
 
         $paymentInfo->setItemsInfo($this->getItemsInformation());
         $paymentInfo->setCustomerInfo($this->getCustomerInformation());
         $paymentInfo->setPaymentInfo($this->getPaymentInformation());
+        $paymentInfo->setShippingInfo($this->getShippingInformation());
         $paymentInfo->setMetaInfo(Mage::helper('paymentmodule/data')->getMetaData());
 
-        $result = $order->createBoletoPayment($paymentInfo);
-        $this->handleSuccessBoletoTransaction($result);
-    }
+        try {
+            $response = $apiOrder->createBoletoPayment($paymentInfo);
 
-    /**
-     * Take the result from processPaymentTransaction and redirect customer to
-     * success page
-     *
-     * @param $resultTransaction
-     */
-    private function handleSuccessBoletoTransaction($resultTransaction)
-    {
-        $this->_redirect('checkout/onepage/success', array('_secure'=>true));
+            if (gettype($response) !== 'object' || get_class($response) != GetOrderResponse::class) {
+                throw new Exception("Response must be object.");
+            }
+
+            $this->handleOrderResponse($response, true);
+        }catch(Exception $e) {
+            $helperLog = Mage::helper('paymentmodule/log');
+            $helperLog->error("Exception: " . $e->getMessage());
+            $helperLog->error(json_encode($response,JSON_PRETTY_PRINT));
+        }
     }
 
     /**

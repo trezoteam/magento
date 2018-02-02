@@ -45,6 +45,11 @@ class Mundipagg_Paymentmodule_Model_Standard extends Mage_Payment_Model_Method_A
         return Mage::getModel('customer/session');
     }
 
+    public function getRegionModel()
+    {
+        return Mage::getModel('directory/region');
+    }
+
     /**
      * Increment order ids are those ids in the form '100000104'
      *
@@ -73,5 +78,50 @@ class Mundipagg_Paymentmodule_Model_Standard extends Mage_Payment_Model_Method_A
         $order = $this->getOrderByIncrementOrderId($orderId);
 
         return $order->getPayment()->getAdditionalInformation();
+    }
+
+    /**
+     * @param $charges
+     * @param $orderId
+     */
+    public function addChargeInfoToAdditionalInformation($charges, $orderId)
+    {
+        $order   = Mage::getModel('sales/order')->loadByIncrementId($orderId);
+        $payment = $order->getPayment();
+
+        foreach ($charges as $charge) {
+            $newInfo[$charge->id] =
+                json_decode(json_encode($charge), true);
+        }
+
+        if (!empty($newInfo)) {
+            $payment->setAdditionalInformation(
+                'mundipagg_payment_module_charges',
+                $newInfo
+            );
+            $payment->save();
+        }
+    }
+
+    /**
+     * @param $orderId
+     * @return mixed
+     */
+    public function getPaymentFromOrder($orderId)
+    {
+        $order = $this->getOrderByOrderId($orderId);
+
+        return $order->getPayment();
+    }
+
+    /**
+     * @param $orderId
+     * @return mixed
+     */
+    public function getChargeInfoFromAdditionalInformation($orderId)
+    {
+        $payment = $this->getPaymentFromOrder($orderId);
+
+        return $payment->getAdditionalInformation();
     }
 }

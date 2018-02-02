@@ -2,7 +2,7 @@
 
 class Mundipagg_Paymentmodule_Helper_Installment extends Mage_Core_Helper_Abstract
 {
-    public function getInstallments($total)
+    public function getInstallments($total, $cards = null)
     {
         $cardConfig = Mage::getModel('paymentmodule/config_card');
 
@@ -10,15 +10,15 @@ class Mundipagg_Paymentmodule_Helper_Installment extends Mage_Core_Helper_Abstra
             return $this->getDefaultInstallments($total);
         }
 
-        return $this->getCardsInstallments($total);
+        return $this->getCardsInstallments($total, $cards);
     }
 
     private function getDefaultInstallments($total)
     {
         $cardConfig = Mage::getModel('paymentmodule/config_card');
 
-        $max = $cardConfig->getDefaultMaxInstallmentsNumber();
-        $maxWithout = $cardConfig->getDefaultMaxInstallmentsWithoutInterest();
+        $max = $cardConfig->getDefaultMaxInstallmentNumber();
+        $maxWithout = $cardConfig->getDefaultMaxInstallmentNumberWithoutInterest();
         $interest = $cardConfig->getDefaultInterest();
         $inc = $cardConfig->getDefaultIncrementalInterest();
 
@@ -30,17 +30,19 @@ class Mundipagg_Paymentmodule_Helper_Installment extends Mage_Core_Helper_Abstra
         );
     }
 
-    private function getCardsInstallments($total)
+    private function getCardsInstallments($total, $cards = nulll)
     {
         $cardConfig = Mage::getModel('paymentmodule/config_card');
-        $cards = array('Visa', 'Master', 'Hiper', 'Diners', 'Amex', 'Elo');
 
+        if(!$cards) {
+            $cards = array('Visa', 'Mastercard', 'Hiper', 'Diners', 'Amex', 'Elo');
+        }
         $installments = array();
 
         foreach ($cards as $card) {
             $enabled = 'is' . $card . 'Enabled';
 
-            if ($cardConfig->$enabled) {
+            if ($cardConfig->$enabled()) {
                 $max = $cardConfig->{'get' . $card . 'MaxInstallmentsNumber'}();
                 $maxWithout = $cardConfig->{'get' . $card . 'MaxInstallmentsWithoutInterest'}();
                 $interest = $cardConfig->{'get' . $card . 'Interest'}();
@@ -52,6 +54,7 @@ class Mundipagg_Paymentmodule_Helper_Installment extends Mage_Core_Helper_Abstra
                 );
             }
         }
+        return $installments;
     }
 
     private function getInstallmentsWithoutInterest($total, $max)
