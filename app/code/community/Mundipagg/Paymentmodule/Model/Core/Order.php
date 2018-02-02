@@ -27,6 +27,7 @@ class Mundipagg_Paymentmodule_Model_Core_Order  extends Mundipagg_Paymentmodule_
                 );
             $order->save();
         }
+        Mage::getUrl('mundipagg/paymentresult/cancel', array('_secure' => true));
     }
 
     /**
