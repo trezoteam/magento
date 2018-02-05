@@ -128,7 +128,7 @@ function fillBrandData(data,argsObj) {
             elementIdSuffix = argsObj.elementIdSuffix;
         }
         showBrandImage(data.brand,elementIdSuffix);
-        getInstallments(jQuery("#baseUrl").val(), data.brandName,elementIdSuffix);
+        getInstallments(jQuery("#baseUrl").val(), data.brandName,argsObj);
     }
 }
 
@@ -155,33 +155,23 @@ function clearBrand(elementIdSuffix){
     jQuery("#mundicheckout-creditCard-installments" + suffix).html("");
 }
 
-function getInstallments(baseUrl, brandName,elementIdSuffix) {
+function getInstallments(baseUrl, brandName,argsObj) {
     apiRequest(
         baseUrl + '/mundipagg/creditcard/getinstallments/' + brandName,
         '',
         switchInstallments,
         "GET",
         false,
-        {elementIdSuffix: elementIdSuffix}
+        argsObj
     );
 }
 
 function switchInstallments(data,argsObj) {
     if (data){
-        var elementIdSuffix = undefined;
-        if (
-            typeof argsObj !== 'undefined' &&
-            typeof argsObj.elementIdSuffix
-        ) {
-            elementIdSuffix = argsObj.elementIdSuffix;
-        }
-        var suffix = typeof elementIdSuffix !== 'undefined' ?
-            elementIdSuffix : '';
-
         html = "<option>1x sem juros</option>";
         jQuery("#mundicheckout-creditCard-installments" + suffix).html("");
 
-        data.forEach(fillInstallments,{elementIdSuffix:elementIdSuffix});
+        data.forEach(fillInstallments,argsObj);
     }
 }
 
@@ -199,4 +189,17 @@ function fillInstallments(item, index) {
         this.elementIdSuffix : '';
 
     jQuery("#mundicheckout-creditCard-installments" + suffix).append(html);
+}
+
+function balanceValues(grandTotal,triggerInput,balanceInputId) {
+    var triggerValue = parseFloat(triggerInput.value.replace(',','.'));
+    triggerValue = Math.abs(triggerValue);
+    triggerValue = Math.round(triggerValue * 100) / 100
+    triggerValue = triggerValue > grandTotal ? grandTotal : triggerValue;
+
+    var balanceValue = grandTotal - triggerValue;
+    balanceValue = Math.round(balanceValue * 100) / 100
+
+    jQuery("#" + balanceInputId).val((balanceValue + '').replace('.',','));
+    jQuery("#" + triggerInput.id).val((triggerValue + '').replace('.',','));
 }

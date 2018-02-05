@@ -5,8 +5,24 @@
             <div id="mundipagg_boletocc">
                 <ul >
                     <li style="clear:both">
+                        Grand total: <?php echo $this->getCurrencySymbol() . ' ' .$this->getGrandTotal(); ?>
+                    </li>
+                    <li style="clear:both">
                         <div class="input-box"  id="tokenDiv-boletocc" data-mundicheckout-app-id="<?php echo $this->getPublicKey(); ?>">
                             <h6>Credit Card</h6>
+                            <div class="input-box">
+                                <label>Value (Ex: 100,50)<span class="required">*</span></label><br/>
+                                <input
+                                        type="text"
+                                        id="<?php echo $_code ?>_creditcard_value-boletocc"
+                                        name="payment[mundipagg_creditcard_value-boletocc]"
+                                        title="Value (Ex: 100,50)"
+                                        class=""
+                                        onchange="balanceValues(<?php echo $this->getFloatGrandTotal(); ?>,
+                                                this,'<?php echo $_code ?>_boleto_value-boletocc');"
+                                        onkeydown=""
+                                        value="">
+                            </div>
                             <div class="input-box">
                                 <img
                                     src="https://dashboard.mundipagg.com/emb/images/brands/amex.jpg"
@@ -139,11 +155,23 @@
                             Cartão de crédito inválido.
                         </div>
                         </p>
-
                     </li>
                     <li style="clear:both">
                         <div class="input-box">
                             <hr/><h6>Boleto</h6>
+                            <label>Value (Ex: 100,50)<span class="required">*</span></label><br/>
+                            <input
+                                    type="text"
+                                    id="<?php echo $_code ?>_boleto_value-boletocc"
+                                    name="payment[mundipagg_boleto_value-boletocc]"
+                                    title="Value (Ex: 100,50)"
+                                    class=""
+                                    onchange="balanceValues(<?php echo $this->getFloatGrandTotal(); ?>,
+                                            this,'<?php echo $_code ?>_creditcard_value-boletocc');"
+                                    onkeydown=""
+                                    value="">
+                        </div>
+                        <div class="input-box">
                             <label>CPF ou CNPJ<span class="required">*</span></label><br/>
                             <input
                                 type="text"
@@ -232,5 +260,6 @@
             }
             return true;
         }
+
     </script>
 </fieldset>
