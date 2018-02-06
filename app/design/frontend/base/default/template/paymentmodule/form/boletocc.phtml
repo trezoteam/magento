@@ -17,7 +17,7 @@
                                         id="<?php echo $_code ?>_creditcard_value-boletocc"
                                         name="payment[mundipagg_creditcard_value-boletocc]"
                                         title="Value (Ex: 100,50)"
-                                        class=""
+                                        class="required-entry"
                                         onchange="balanceValues(<?php echo $this->getFloatGrandTotal(); ?>,
                                                 this,'<?php echo $_code ?>_boleto_value-boletocc');"
                                         onkeydown=""
@@ -60,10 +60,12 @@
                                 <input
                                     type="text"
                                     data-mundicheckout-input="number"
-                                    class="required-entry validate-cc-number mundipaggInput"
+                                    class="required-entry validate-cc-number mundipaggInput balanceCC"
                                     id="mundicheckout-number-boletocc"
-                                    onkeyup="getFormData('-boletocc'); getBrand(this.value,'-boletocc');"
-                                    onchange="getFormData('-boletocc'); getBrand(this.value,'-boletocc');"
+                                    onkeyup="getFormData('-boletocc'); getBrand(this.value,'-boletocc',
+                                            jQuery('#<?php echo $_code ?>_creditcard_value-boletocc').val());"
+                                    onchange="getFormData('-boletocc'); getBrand(this.value,'-boletocc',
+                                            jQuery('#<?php echo $_code ?>_creditcard_value-boletocc').val());"
                                     maxlength="19"
                                     name="payment[creditCardNumber]"
                                 >
@@ -165,7 +167,7 @@
                                     id="<?php echo $_code ?>_boleto_value-boletocc"
                                     name="payment[mundipagg_boleto_value-boletocc]"
                                     title="Value (Ex: 100,50)"
-                                    class=""
+                                    class="required-entry"
                                     onchange="balanceValues(<?php echo $this->getFloatGrandTotal(); ?>,
                                             this,'<?php echo $_code ?>_creditcard_value-boletocc');"
                                     onkeydown=""
@@ -260,6 +262,5 @@
             }
             return true;
         }
-
     </script>
 </fieldset>

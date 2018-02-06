@@ -96,12 +96,13 @@ function getCurrentYear() {
  * Get credit card brand
  * @param int creditCardNumber
  */
-function getBrand(creditCardNumber,elementIdSuffix) {
+function getBrand(creditCardNumber,elementIdSuffix,value) {
     var suffix = typeof elementIdSuffix !== 'undefined' ?
         elementIdSuffix : '';
     brandName = jQuery("#mundipaggBrandName" + suffix).val();
 
-    if (creditCardNumber.length > 5 && brandName == "") {
+    if (creditCardNumber.length > 5 &&
+        (brandName == "" || typeof value !== 'undefined')) {
         bin = creditCardNumber.substring(0, 6);
         apiRequest(
             "https://api.mundipagg.com/bin/v1/" + bin,
@@ -109,9 +110,11 @@ function getBrand(creditCardNumber,elementIdSuffix) {
             fillBrandData,
             "GET",
             false,
-            {elementIdSuffix : elementIdSuffix}
-        )
-
+            {
+                elementIdSuffix : elementIdSuffix,
+                installmentsBaseValue: value
+            }
+        );
     }
     if (creditCardNumber.length < 6) {
         clearBrand(elementIdSuffix);
@@ -123,7 +126,7 @@ function fillBrandData(data,argsObj) {
         var elementIdSuffix = undefined;
         if (
             typeof argsObj !== 'undefined' &&
-            typeof argsObj.elementIdSuffix
+            typeof argsObj.elementIdSuffix !== 'undefined'
         ) {
             elementIdSuffix = argsObj.elementIdSuffix;
         }
@@ -156,8 +159,13 @@ function clearBrand(elementIdSuffix){
 }
 
 function getInstallments(baseUrl, brandName,argsObj) {
+    var value = '';
+    if (typeof argsObj.installmentsBaseValue !== 'undefined') {
+        var tmp = parseFloat(argsObj.installmentsBaseValue.replace(',','.'));
+        value = '?value=' + tmp;
+    }
     apiRequest(
-        baseUrl + '/mundipagg/creditcard/getinstallments/' + brandName,
+        baseUrl + '/mundipagg/creditcard/getinstallments/' + brandName + value,
         '',
         switchInstallments,
         "GET",
@@ -168,6 +176,10 @@ function getInstallments(baseUrl, brandName,argsObj) {
 
 function switchInstallments(data,argsObj) {
     if (data){
+        var suffix = '';
+        if (typeof argsObj.elementIdSuffix !== undefined) {
+            suffix = argsObj.elementIdSuffix;
+        }
         html = "<option>1x sem juros</option>";
         jQuery("#mundicheckout-creditCard-installments" + suffix).html("");
 
@@ -202,4 +214,6 @@ function balanceValues(grandTotal,triggerInput,balanceInputId) {
 
     jQuery("#" + balanceInputId).val((balanceValue + '').replace('.',','));
     jQuery("#" + triggerInput.id).val((triggerValue + '').replace('.',','));
+
+    jQuery(".balanceCC").change();
 }
