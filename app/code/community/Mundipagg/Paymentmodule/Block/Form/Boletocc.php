@@ -28,4 +28,11 @@ class Mundipagg_Paymentmodule_Block_Form_Boletocc extends Mage_Payment_Block_For
         $grandTotal = Mage::getModel('checkout/session')->getQuote()->getGrandTotal();
         return $grandTotal;
     }
+
+    public function getPublicKey()
+    {
+        $generalConfig = Mage::getModel('paymentmodule/config_general');
+        return $generalConfig->getPublicKey();
+    }
 }
+
