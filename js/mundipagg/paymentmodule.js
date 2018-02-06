@@ -97,8 +97,10 @@ function getCurrentYear() {
  * @param int creditCardNumber
  */
 function getBrand(creditCardNumber,elementIdSuffix,value) {
-    var suffix = typeof elementIdSuffix !== 'undefined' ?
-        elementIdSuffix : '';
+    var suffix = '';
+    if (typeof elementIdSuffix !== 'undefined') {
+       suffix = elementIdSuffix;
+    }
     brandName = jQuery("#mundipaggBrandName" + suffix).val();
 
     if (creditCardNumber.length > 5 &&
@@ -143,8 +145,10 @@ function showBrandImage(brandName,elementIdSuffix) {
     html = "<img src='https://dashboard.mundipagg.com/emb/images/brands/" + brandName + ".jpg' ";
     html += " class='mundipaggImage' width='26'>";
 
-    var suffix = typeof elementIdSuffix !== 'undefined' ?
-        elementIdSuffix : '';
+    var suffix = '';
+    if (typeof elementIdSuffix !== 'undefined') {
+        suffix = elementIdSuffix;
+    }
 
     jQuery("#mundipaggBrandName" + suffix).val(brandName);
     jQuery("#mundipaggBrandImage" + suffix).html(html);
