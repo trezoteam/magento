@@ -234,7 +234,8 @@
             return validateCreditCardExpiration(year.value, month.value);
         });
         Payment.prototype.save = Payment.prototype.save.wrap(function(save) {
-            if(this.currentMethod !== 'paymentmodule_creditcard') {
+
+            if(this.currentMethod !== 'paymentmodule_boletocc') {
                 return save();
             }
             var key = document.getElementById('tokenDiv-boletocc').getAttribute('data-mundicheckout-app-id');
