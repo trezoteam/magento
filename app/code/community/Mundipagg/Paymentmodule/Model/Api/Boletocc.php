@@ -11,7 +11,7 @@ use MundiAPILib\Models\CreatePaymentRequest;
 use MundiAPILib\Models\CreateBoletoPaymentRequest;
 use MundiAPILib\Models\CreateOrderItemRequest;
 
-class Mundipagg_Paymentmodule_Model_Api_Boleto extends Mundipagg_Paymentmodule_Model_Api_Standard
+class Mundipagg_Paymentmodule_Model_Api_Boletocc extends Mundipagg_Paymentmodule_Model_Api_Standard
 {
     protected function getCustomerRequest($customerInfo)
     {
@@ -23,6 +23,8 @@ class Mundipagg_Paymentmodule_Model_Api_Boleto extends Mundipagg_Paymentmodule_M
         $customerRequest->type = $customerInfo->getType();
         $customerRequest->address = $this->getCreateAddressRequest($customerInfo->getAddress());
         $customerRequest->phones = $this->getCreatePhonesRequest($customerInfo->getPhones());
+        $customerRequest->code = $customerInfo->getCode();
+        $customerRequest->metadata = $customerInfo->getMetadata();
 
         return $customerRequest;
     }
@@ -53,20 +55,16 @@ class Mundipagg_Paymentmodule_Model_Api_Boleto extends Mundipagg_Paymentmodule_M
         );
     }
 
-    public function getPayments($paymentInfo)
+    protected function getPayments($paymentInfo)
     {
-        $paymentRequest = new CreatePaymentRequest();
+        $boletoApiModel = Mage::getModel('paymentmodule/api_boleto');
+        $creditcardApiModel = Mage::getModel('paymentmodule/api_creditcard');
 
-        $boletoPaymentRequest = new CreateBoletoPaymentRequest();
-        $boletoPaymentRequest->bank = $paymentInfo->getBank();
-        $boletoPaymentRequest->instructions = $paymentInfo->getInstructions();
-        $boletoPaymentRequest->dueAt = $paymentInfo->getDueAt()->format('c');
+        $boletoPayments = $boletoApiModel->getPayments($paymentInfo);
+        $creditcardPayments = $creditcardApiModel->getPayments($paymentInfo);
 
-        $paymentRequest->paymentMethod = 'boleto';
-        $paymentRequest->boleto = $boletoPaymentRequest;
-        // @todo this should not be hard coded
-        $paymentRequest->currency = 'BRL';
-
-        return [$paymentRequest];
+        $boletoPayments[0]->amount = 100;
+        $creditcardPayments[0]->amount = 200;
+       return array_merge($boletoPayments,$creditcardPayments);
     }
 }

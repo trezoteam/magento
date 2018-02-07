@@ -60,7 +60,7 @@ class Mundipagg_Paymentmodule_Model_Api_Creditcard extends Mundipagg_Paymentmodu
         return $mobilePhoneRequest;
     }
 
-    protected function getPayments($paymentInfo)
+    public function getPayments($paymentInfo)
     {
         $paymentRequest = new CreatePaymentRequest();
 
@@ -70,7 +70,7 @@ class Mundipagg_Paymentmodule_Model_Api_Creditcard extends Mundipagg_Paymentmodu
         $creditCardPaymentRequest->cardToken = $paymentInfo->getPaymentToken();
         $creditCardPaymentRequest->capture = $paymentInfo->getOperationType();
 
-        $paymentRequest->paymentMethod = $paymentInfo->getPaymentMethod();
+        $paymentRequest->paymentMethod = 'credit_card';
         $paymentRequest->currency = $paymentInfo->getCurrency();
         $paymentRequest->creditCard = $creditCardPaymentRequest;
         /*
