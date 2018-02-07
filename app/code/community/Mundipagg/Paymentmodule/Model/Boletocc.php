@@ -19,10 +19,13 @@ class Mundipagg_Paymentmodule_Model_Boletocc extends Mundipagg_Paymentmodule_Mod
     protected $_canManageRecurringProfiles = false;
     protected $_allowCurrencyCode = array('BRL', 'USD', 'EUR');
     protected $_isInitializeNeeded = true;
+
     public function isAvailable($quote = null)
     {
-        return true;
+        $boletoCcConfig = Mage::getModel('paymentmodule/config_boletocc');
+        return $boletoCcConfig->isEnabled();
     }
+
     public function assignData($data)
     {
         parent::assignData($data);
