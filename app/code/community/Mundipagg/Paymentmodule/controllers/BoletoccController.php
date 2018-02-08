@@ -35,6 +35,18 @@ class Mundipagg_Paymentmodule_BoletoccController extends Mundipagg_Paymentmodule
         }
     }
 
+    private function initPaymentInfoSources() {
+        $this->standard = Mage::getModel('paymentmodule/standard');
+        $checkoutSession = $this->standard->getCheckoutSession();
+        $this->orderId = $checkoutSession->getLastRealOrderId();
+        $this->additionalInformation = $this->standard->getAdditionalInformationForOrder($this->orderId);
+        $this->boletoCcConfig = Mage::getModel('paymentmodule/config_boletocc');
+
+        $this->orderId = Mage::getSingleton('checkout/session')->getLastOrderId();
+        $this->order = $this->standard->getOrderByOrderId($this->orderId);
+        $this->antifraudConfig = Mage::getModel('paymentmodule/config_antifraud');
+    }
+
     /**
      * Gather information about payment
      *
@@ -42,45 +54,42 @@ class Mundipagg_Paymentmodule_BoletoccController extends Mundipagg_Paymentmodule
      */
     private function getPaymentInformation()
     {
-        $standard = Mage::getModel('paymentmodule/standard');
-        $checkoutSession = $standard->getCheckoutSession();
-        $orderId = $checkoutSession->getLastRealOrderId();
-        $additionalInformation = $standard->getAdditionalInformationForOrder($orderId);
-
-        /** Boleto Payment */
-        $boletoCcConfig = Mage::getModel('paymentmodule/config_boletocc');
-
-        $orderId = Mage::getSingleton('checkout/session')->getLastOrderId();
-        $order = $standard->getOrderByOrderId($orderId);
-        $grandTotal = $order->getGrandTotal();
+        $this->initPaymentInfoSources();
 
         $payment = new Varien_Object();
+        $this->getBoletoPaymentInformation($payment);
+        $this->getCreditcardPaymentInformation($payment);
+
+        return $payment;
+    }
+
+
+    private function getBoletoPaymentInformation(Varien_Object &$payment)
+    {
+        $grandTotal = $this->order->getGrandTotal();
 
         $payment->setPaymentMethod('boletocc');
         $payment->setAmount($grandTotal);
-        $payment->setBank($boletoCcConfig->getBank());
-        $payment->setInstructions($boletoCcConfig->getInstructions());
-        $payment->setDueAt($boletoCcConfig->getDueAt());
-        $payment->setBoletoValue($additionalInformation['mundipagg_payment_module_boleto_value']);
+        $payment->setBank($this->boletoCcConfig->getBank());
+        $payment->setInstructions($this->boletoCcConfig->getInstructions());
+        $payment->setDueAt($this->boletoCcConfig->getDueAt());
+        $payment->setBoletoValue($this->additionalInformation['mundipagg_payment_module_boleto_value']);
+    }
 
-        /** CreditCard Payment */
-        $antifraudConfig = Mage::getModel('paymentmodule/config_antifraud');
+    private function getCreditcardPaymentInformation(Varien_Object &$payment)
+    {
+        $interest = $this->additionalInformation['mundipagg_payment_module_interest'];
+        $baseGrandTotal = $this->additionalInformation['mundipagg_payment_module_base_grand_total'];
 
-        $interest = $additionalInformation['mundipagg_payment_module_interest'];
-        $baseGrandTotal = $additionalInformation['mundipagg_payment_module_base_grand_total'];
-
-        // @todo get this from front end
-        $payment->setInstallmentNumber($additionalInformation['mundipagg_payment_module_installments']);
-        $payment->setInvoiceName($boletoCcConfig->getInvoiceName());
-        $payment->setOperationType($boletoCcConfig->getOperationTypeFlag());
-        $payment->setPaymentToken($additionalInformation['mundipagg_payment_module_token']);
-        $payment->setHolderName($additionalInformation['mundipagg_payment_module_holder_name']);
+        $payment->setInstallmentNumber($this->additionalInformation['mundipagg_payment_module_installments']);
+        $payment->setInvoiceName($this->boletoCcConfig->getInvoiceName());
+        $payment->setOperationType($this->boletoCcConfig->getOperationTypeFlag());
+        $payment->setPaymentToken($this->additionalInformation['mundipagg_payment_module_token']);
+        $payment->setHolderName($this->additionalInformation['mundipagg_payment_module_holder_name']);
         $payment->setBaseGrandTotal([$baseGrandTotal]);
         $payment->setInterest([$interest]);
         $payment->setCurrency('BRL'); // @todo get this from store config
-        $payment->setSendToAntiFraud($antifraudConfig->shouldApplyAntifraud($baseGrandTotal));
-        $payment->setCreditcardValue($additionalInformation['mundipagg_payment_module_creditcard_value']);
-
-        return $payment;
+        $payment->setSendToAntiFraud($this->antifraudConfig->shouldApplyAntifraud($baseGrandTotal));
+        $payment->setCreditcardValue($this->additionalInformation['mundipagg_payment_module_creditcard_value']);
     }
 }
