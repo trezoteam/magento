@@ -42,9 +42,13 @@ class Mundipagg_Paymentmodule_BoletoccController extends Mundipagg_Paymentmodule
      */
     private function getPaymentInformation()
     {
+        $standard = Mage::getModel('paymentmodule/standard');
+        $checkoutSession = $standard->getCheckoutSession();
+        $orderId = $checkoutSession->getLastRealOrderId();
+        $additionalInformation = $standard->getAdditionalInformationForOrder($orderId);
+
         /** Boleto Payment */
         $boletoCcConfig = Mage::getModel('paymentmodule/config_boletocc');
-        $standard = Mage::getModel('paymentmodule/standard');
 
         $orderId = Mage::getSingleton('checkout/session')->getLastOrderId();
         $order = $standard->getOrderByOrderId($orderId);
@@ -57,14 +61,11 @@ class Mundipagg_Paymentmodule_BoletoccController extends Mundipagg_Paymentmodule
         $payment->setBank($boletoCcConfig->getBank());
         $payment->setInstructions($boletoCcConfig->getInstructions());
         $payment->setDueAt($boletoCcConfig->getDueAt());
+        $payment->setBoletoValue($additionalInformation['mundipagg_payment_module_boleto_value']);
 
         /** CreditCard Payment */
         $antifraudConfig = Mage::getModel('paymentmodule/config_antifraud');
 
-        $checkoutSession = $standard->getCheckoutSession();
-        $orderId = $checkoutSession->getLastRealOrderId();
-
-        $additionalInformation = $standard->getAdditionalInformationForOrder($orderId);
         $interest = $additionalInformation['mundipagg_payment_module_interest'];
         $baseGrandTotal = $additionalInformation['mundipagg_payment_module_base_grand_total'];
 
@@ -78,6 +79,7 @@ class Mundipagg_Paymentmodule_BoletoccController extends Mundipagg_Paymentmodule
         $payment->setInterest([$interest]);
         $payment->setCurrency('BRL'); // @todo get this from store config
         $payment->setSendToAntiFraud($antifraudConfig->shouldApplyAntifraud($baseGrandTotal));
+        $payment->setCreditcardValue($additionalInformation['mundipagg_payment_module_creditcard_value']);
 
         return $payment;
     }

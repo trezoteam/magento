@@ -63,8 +63,8 @@ class Mundipagg_Paymentmodule_Model_Api_Boletocc extends Mundipagg_Paymentmodule
         $boletoPayments = $boletoApiModel->getPayments($paymentInfo);
         $creditcardPayments = $creditcardApiModel->getPayments($paymentInfo);
 
-        $boletoPayments[0]->amount = 100;
-        $creditcardPayments[0]->amount = 200;
+        $boletoPayments[0]->amount = $paymentInfo->getBoletoValue();
+        $creditcardPayments[0]->amount = $paymentInfo->getCreditcardValue();
        return array_merge($boletoPayments,$creditcardPayments);
     }
 }

@@ -37,8 +37,26 @@ class Mundipagg_Paymentmodule_Model_Boletocc extends Mundipagg_Paymentmodule_Mod
         $key = $this->getBaseKey();
         $info = $this->getInfoInstance();
         $paymentData = $data->getData();
+        $monetaryHelper = Mage::helper('paymentmodule/monetary');
+
+        $boletoValue = $data->getMundipaggBoletoValueBoletocc();
+        $creditcardValue = $data->getMundipaggCreditcardValueBoletocc();
+        $boletoValue = floatval(str_replace(",",'.',$boletoValue));
+        $creditcardValue = floatval(str_replace(",",'.',$creditcardValue));
+
+        $baseGrandTotal =  $info->getQuote()->getBaseGrandTotal();
+        if($boletoValue + $creditcardValue != $baseGrandTotal) {
+            throw new Exception(
+                "Payment values sum differs from baseGrandTotal."
+            );
+        }
+
+        $boletoValue = $monetaryHelper->toCents($boletoValue);
+        $creditcardValue = $monetaryHelper->toCents($creditcardValue);
 
         // @todo possible code exception
+        $info->setAdditionalInformation($key . 'boleto_value', $boletoValue);
+        $info->setAdditionalInformation($key . 'creditcard_value', $creditcardValue);
         $info->setAdditionalInformation($key . 'method', $paymentData['method']);
         $info->setAdditionalInformation($key . 'holder_name', $paymentData['holderName']);
         $info->setAdditionalInformation($key . 'token', $paymentData['creditCardToken']);
@@ -52,12 +70,12 @@ class Mundipagg_Paymentmodule_Model_Boletocc extends Mundipagg_Paymentmodule_Mod
 
         $info->setAdditionalInformation(
             $key . 'interest',
-            Mage::helper('paymentmodule/monetary')->toCents($interest)
+            $monetaryHelper->toCents($interest)
         );
-        $baseGrandTotal =  $info->getQuote()->getBaseGrandTotal();
+
         $info->setAdditionalInformation(
             $key . 'base_grand_total',
-            Mage::helper('paymentmodule/monetary')->toCents($baseGrandTotal)
+            $monetaryHelper->toCents($baseGrandTotal)
         );
 
         foreach ($info->getQuote()->getAllAddresses() as $address) {
