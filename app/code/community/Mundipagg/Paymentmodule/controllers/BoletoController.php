@@ -1,5 +1,7 @@
 <?php
 
+use MundiAPILib\Models\GetOrderResponse;
+
 class Mundipagg_Paymentmodule_BoletoController extends Mundipagg_Paymentmodule_Controller_Payment
 {
     /**

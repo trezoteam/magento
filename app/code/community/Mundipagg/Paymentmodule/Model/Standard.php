@@ -20,6 +20,9 @@ class Mundipagg_Paymentmodule_Model_Standard extends Mage_Payment_Model_Method_A
             case 'paymentmodule_creditcard':
                 $controller = 'creditcard';
                 break;
+            case 'paymentmodule_boletocc':
+                $controller = 'boletocc';
+                break;
             default:
                 // @todo log error and redirect user to failure page
         }
