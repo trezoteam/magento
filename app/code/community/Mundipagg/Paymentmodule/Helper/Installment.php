@@ -29,7 +29,7 @@ class Mundipagg_Paymentmodule_Helper_Installment extends Mage_Core_Helper_Abstra
             )
         );
     }
-
+    /** TODO FIXME: should be $cards = null */
     private function getCardsInstallments($total, $cards = nulll)
     {
         $cardConfig = Mage::getModel('paymentmodule/config_card');
