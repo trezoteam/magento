@@ -51,21 +51,12 @@ class Mundipagg_Paymentmodule_Model_Boletocc extends Mundipagg_Paymentmodule_Mod
             );
         }
 
-        $boletoValue = $monetaryHelper->toCents($boletoValue);
-        $creditcardValue = $monetaryHelper->toCents($creditcardValue);
-
-        // @todo possible code exception
-        $info->setAdditionalInformation($key . 'boleto_value', $boletoValue);
-        $info->setAdditionalInformation($key . 'creditcard_value', $creditcardValue);
-        $info->setAdditionalInformation($key . 'method', $paymentData['method']);
-        $info->setAdditionalInformation($key . 'holder_name', $paymentData['holderName']);
-        $info->setAdditionalInformation($key . 'token', $paymentData['creditCardToken']);
-        $info->setAdditionalInformation($key . 'installments', $paymentData['creditCardInstallments']);
-
         $interestHelper = Mage::helper("paymentmodule/interest");
         $interest = $interestHelper->getInterestValue(
             $paymentData['creditCardInstallments'],
-            $info->getQuote()->getGrandTotal()
+            $creditcardValue,
+            null,
+            $data->getMundipaggCreditcardBrandNameBoletocc()
         );
 
         $info->setAdditionalInformation(
@@ -83,6 +74,18 @@ class Mundipagg_Paymentmodule_Model_Boletocc extends Mundipagg_Paymentmodule_Mod
             $address->setGrandTotal($address->getGrandTotal() + $interest);
             break;
         }
+
+        $boletoValue = $monetaryHelper->toCents($boletoValue);
+        $creditcardValue = $monetaryHelper->toCents($creditcardValue);
+
+        $interest = $monetaryHelper->toCents($interest);
+        // @todo possible code exception
+        $info->setAdditionalInformation($key . 'boleto_value', $boletoValue);
+        $info->setAdditionalInformation($key . 'creditcard_value', $creditcardValue + $interest);
+        $info->setAdditionalInformation($key . 'method', $paymentData['method']);
+        $info->setAdditionalInformation($key . 'holder_name', $paymentData['holderName']);
+        $info->setAdditionalInformation($key . 'token', $paymentData['creditCardToken']);
+        $info->setAdditionalInformation($key . 'installments', $paymentData['creditCardInstallments']);
 
         return $this;
     }
