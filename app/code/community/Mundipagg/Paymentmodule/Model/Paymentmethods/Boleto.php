@@ -2,13 +2,13 @@
 
 use MundiAPILib\Models\GetOrderResponse;
 
-class Mundipagg_Paymentmodule_BoletoController extends Mundipagg_Paymentmodule_Controller_Payment
+class Mundipagg_Paymentmodule_Model_Paymentmethods_Boleto extends Mundipagg_Paymentmodule_Model_Paymentmethods_Standard
 {
     /**
      * Gather boleto transaction information and try to create
      * payment using sdk api wrapper.
      */
-    public function processPaymentAction()
+    public function processPayment()
     {
         $apiOrder = Mage::getModel('paymentmodule/api_order');
 

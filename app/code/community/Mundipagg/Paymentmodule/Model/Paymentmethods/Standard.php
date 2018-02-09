@@ -2,7 +2,7 @@
 
 ///use MundiAPILib\Models\GetOrderResponse;
 
-class Mundipagg_Paymentmodule_Controller_Payment extends Mage_Core_Controller_Front_Action
+class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mundipagg_Paymentmodule_Model_Standard
 {
     /**
      * Take the result from processPaymentTransaction, add the histories and, if $redirect is true,
