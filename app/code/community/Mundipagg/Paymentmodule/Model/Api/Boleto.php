@@ -13,47 +13,7 @@ use MundiAPILib\Models\CreateOrderItemRequest;
 
 class Mundipagg_Paymentmodule_Model_Api_Boleto extends Mundipagg_Paymentmodule_Model_Api_Standard
 {
-    protected function getCustomerRequest($customerInfo)
-    {
-        $customerRequest = new CreateCustomerRequest();
-
-        $customerRequest->name = $customerInfo->getName();
-        $customerRequest->document = $customerInfo->getDocument();
-        $customerRequest->email = $customerInfo->getEmail();
-        $customerRequest->type = $customerInfo->getType();
-        $customerRequest->address = $this->getCreateAddressRequest($customerInfo->getAddress());
-        $customerRequest->phones = $this->getCreatePhonesRequest($customerInfo->getPhones());
-
-        return $customerRequest;
-    }
-
-    protected function getCreatePhonesRequest($phonesInfo)
-    {
-        return new CreatePhonesRequest(
-            $this->getHomePhone($phonesInfo),
-            $this->getMobilePhone($phonesInfo)
-        );
-    }
-
-    protected function getHomePhone($phonesInfo)
-    {
-        return new CreatePhoneRequest(
-            $phonesInfo->getCountryCode(),
-            $phonesInfo->getNumber(),
-            $phonesInfo->getAreacode()
-        );
-    }
-
-    protected function getMobilePhone($phonesInfo)
-    {
-        return new CreatePhoneRequest(
-            $phonesInfo->getCountryCode(),
-            $phonesInfo->getNumber(),
-            $phonesInfo->getAreacode()
-        );
-    }
-
-    public function getPayments($paymentInfo)
+   public function getPayments($paymentInfo)
     {
         $paymentRequest = new CreatePaymentRequest();
 

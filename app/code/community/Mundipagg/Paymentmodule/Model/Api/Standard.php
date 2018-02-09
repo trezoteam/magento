@@ -1,7 +1,10 @@
 <?php
 
 use MundiAPILib\Models\CreateAddressRequest;
+use MundiAPILib\Models\CreateCustomerRequest;
 use MundiAPILib\Models\CreateOrderRequest;
+use MundiAPILib\Models\CreatePhoneRequest;
+use MundiAPILib\Models\CreatePhonesRequest;
 use MundiAPILib\Models\CreateShippingRequest;
 
 abstract class Mundipagg_Paymentmodule_Model_Api_Standard {
@@ -23,6 +26,24 @@ abstract class Mundipagg_Paymentmodule_Model_Api_Standard {
         $orderRequest->antifraudEnabled = $paymentInformation->getSendToAntiFraud();
 
         return $orderRequest;
+    }
+
+    abstract public function getPayments($paymentInfo);
+
+    protected function getCustomerRequest($customerInfo)
+    {
+        $customerRequest = new CreateCustomerRequest();
+
+        $customerRequest->name = $customerInfo->getName();
+        $customerRequest->document = $customerInfo->getDocument();
+        $customerRequest->email = $customerInfo->getEmail();
+        $customerRequest->type = $customerInfo->getType();
+        $customerRequest->address = $this->getCreateAddressRequest($customerInfo->getAddress());
+        $customerRequest->phones = $this->getCreatePhonesRequest($customerInfo->getPhones());
+        $customerRequest->code = $customerInfo->getCode();
+        $customerRequest->metadata = $customerInfo->getMetadata();
+
+        return $customerRequest;
     }
 
     protected function getShippingRequest($shippingInformation) {
@@ -50,5 +71,31 @@ abstract class Mundipagg_Paymentmodule_Model_Api_Standard {
         $addressRequest->metadata = $addressInfo->getMetadata();
 
         return $addressRequest;
+    }
+
+    protected function getCreatePhonesRequest($phonesInfo)
+    {
+        return new CreatePhonesRequest(
+            $this->getHomePhone($phonesInfo),
+            $this->getMobilePhone($phonesInfo)
+        );
+    }
+
+    protected function getHomePhone($phonesInfo)
+    {
+        return new CreatePhoneRequest(
+            $phonesInfo->getCountryCode(),
+            $phonesInfo->getNumber(),
+            $phonesInfo->getAreacode()
+        );
+    }
+
+    protected function getMobilePhone($phonesInfo)
+    {
+        return new CreatePhoneRequest(
+            $phonesInfo->getCountryCode(),
+            $phonesInfo->getNumber(),
+            $phonesInfo->getAreacode()
+        );
     }
 }
