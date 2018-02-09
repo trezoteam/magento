@@ -47,7 +47,9 @@ class Mundipagg_Paymentmodule_Model_Creditcard extends Mundipagg_Paymentmodule_M
         $interestHelper = Mage::helper("paymentmodule/interest");
         $interest = $interestHelper->getInterestValue(
             $paymentData['creditCardInstallments'],
-            $info->getQuote()->getGrandTotal()
+            $info->getQuote()->getGrandTotal(),
+            null,
+            $data->getMundipaggCreditcardBrandName()
         );
 
         $info->setAdditionalInformation(
