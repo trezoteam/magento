@@ -45,11 +45,17 @@ class Mundipagg_Paymentmodule_Model_Boletocc extends Mundipagg_Paymentmodule_Mod
         $creditcardValue = floatval(str_replace(",",'.',$creditcardValue));
 
         $baseGrandTotal =  $info->getQuote()->getBaseGrandTotal();
-        if($boletoValue + $creditcardValue != $baseGrandTotal) {
+        if ($boletoValue + $creditcardValue != $baseGrandTotal) {
             throw new Exception(
                 "Payment values sum differs from baseGrandTotal."
             );
         }
+        if ($boletoValue < 0 || $creditcardValue < 0) {
+            throw new Exception(
+                "One or more values are less than 0."
+            );
+        }
+
 
         $interestHelper = Mage::helper("paymentmodule/interest");
         $interest = $interestHelper->getInterestValue(
