@@ -10,7 +10,11 @@ class Mundipagg_Paymentmodule_Block_Form_Boletocc extends Mage_Payment_Block_For
 
     public function getGrandTotal()
     {
-        $grandTotal = Mage::getModel('checkout/session')->getQuote()->getGrandTotal();
+        $this->standard = Mage::getModel('paymentmodule/standard');
+        $this->orderId = Mage::getSingleton('checkout/session')->getLastOrderId();
+        $this->order = $this->standard->getOrderByOrderId($this->orderId);
+        $grandTotal = $this->order->getGrandTotal();
+
         return number_format($grandTotal, "2", ",", "");
     }
 
@@ -25,8 +29,12 @@ class Mundipagg_Paymentmodule_Block_Form_Boletocc extends Mage_Payment_Block_For
 
     public function getFloatGrandTotal()
     {
-        $grandTotal = Mage::getModel('checkout/session')->getQuote()->getGrandTotal();
-        return $grandTotal;
+        $this->standard = Mage::getModel('paymentmodule/standard');
+        $this->orderId = Mage::getSingleton('checkout/session')->getLastOrderId();
+        $this->order = $this->standard->getOrderByOrderId($this->orderId);
+        $grandTotal = $this->order->getGrandTotal();
+
+        return floatval($grandTotal);
     }
 
     public function getPublicKey()
