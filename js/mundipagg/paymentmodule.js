@@ -135,7 +135,6 @@ function fillBrandData(data,argsObj) {
         showBrandImage(data.brand,suffix);
         getInstallments(jQuery("#baseUrl").val(), data.brandName,argsObj);
         suffix = typeof suffix !== 'undefined' ? suffix : '';
-        console.log("#mundipagg_creditcard_brand_name" + suffix, jQuery("#mundipagg_creditcard_brand_name" + suffix));
         jQuery("#mundipagg_creditcard_brand_name" + suffix).val(data.brandName);
     }
 }
@@ -213,15 +212,20 @@ function fillInstallments(item, index) {
 
 function balanceValues(grandTotal,triggerInput,balanceInputId) {
     var triggerValue = parseFloat(triggerInput.value.replace(',','.'));
+    if(isNaN(triggerValue)) {
+        triggerValue = 0;
+    }
+
     triggerValue = Math.abs(triggerValue);
     triggerValue = Math.round(triggerValue * 100) / 100
     triggerValue = triggerValue > grandTotal ? grandTotal : triggerValue;
+    triggerValue = triggerValue.toFixed(2);
 
     var balanceValue = grandTotal - triggerValue;
-    balanceValue = Math.round(balanceValue * 100) / 100
+    balanceValue = (Math.round(balanceValue * 100) / 100).toFixed(2);
 
-    jQuery("#" + balanceInputId).val((balanceValue + '').replace('.',','));
-    jQuery("#" + triggerInput.id).val((triggerValue + '').replace('.',','));
+    jQuery("#" + balanceInputId).val(balanceValue);
+    jQuery("#" + triggerInput.id).val(triggerValue);
 
     jQuery(".balanceCC").change();
 }

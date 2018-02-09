@@ -11,9 +11,11 @@
                         <div class="input-box"  id="tokenDiv_boletocc" data-mundicheckout-app-id="<?php echo $this->getPublicKey(); ?>">
                             <h6>Credit Card</h6>
                             <div class="input-box">
-                                <label>Value (Ex: 100,50)<span class="required">*</span></label><br/>
+                                <label>Value (Ex: 100.50)<span class="required">*</span></label><br/>
                                 <input
-                                        type="text"
+                                        type="number"
+                                        step=".01"
+                                        min="0"
                                         id="<?php echo $_code ?>_creditcard_value_boletocc"
                                         name="payment[mundipagg_creditcard_value_boletocc]"
                                         title="Value (Ex: 100,50)"
@@ -164,9 +166,11 @@
                     <li style="clear:both">
                         <div class="input-box">
                             <hr/><h6>Boleto</h6>
-                            <label>Value (Ex: 100,50)<span class="required">*</span></label><br/>
+                            <label>Value (Ex: 100.50)<span class="required">*</span></label><br/>
                             <input
-                                    type="text"
+                                    type="number"
+                                    step=".01"
+                                    min="0"
                                     id="<?php echo $_code ?>_boleto_value_boletocc"
                                     name="payment[mundipagg_boleto_value_boletocc]"
                                     title="Value (Ex: 100,50)"
