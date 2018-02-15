@@ -1,7 +1,5 @@
 <?php
 
-///use MundiAPILib\Models\GetOrderResponse;
-
 class Mundipagg_Paymentmodule_Controller_Payment extends Mage_Core_Controller_Front_Action
 {
     /**

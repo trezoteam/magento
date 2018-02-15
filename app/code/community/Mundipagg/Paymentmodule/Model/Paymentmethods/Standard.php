@@ -47,26 +47,25 @@ abstract class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mun
      */
     protected function handleOrderResponse($response, $redirect = false)
     {
-        $moduleModelOrder = Mage::getModel('paymentmodule/core_order');
-        $moduleModelCharge = Mage::getModel('paymentmodule/core_charge');
-
-        foreach ($response->charges as $charge) {
-            $charge->code = $response->code;
-            $charge->order->id = $response->id;
-
-            if ($charge->status == 'paid') {
-                $charge->paid_amount = $charge->amount;
-                $moduleModelCharge->paid($charge);
-                $moduleModelOrder->paid($response);
-            }
-        }
-
         //@todo get boleto and the rest of success page data
         $data = [];
 
-        $responseRoute = 'checkout/onepage/success';
-        if ($response->status === 'failed') {
-           $responseRoute = 'checkout/onepage/failure';
+        $responseRoute = 'checkout/onepage/failure';
+        if ($response->status !== 'failed') {
+            $moduleModelOrder = Mage::getModel('paymentmodule/core_order');
+            $moduleModelCharge = Mage::getModel('paymentmodule/core_charge');
+
+            foreach ($response->charges as $charge) {
+                $charge->code = $response->code;
+                $charge->order->id = $response->id;
+
+                if ($charge->status == 'paid') {
+                    $charge->paid_amount = $charge->amount;
+                    $moduleModelCharge->paid($charge);
+                    $moduleModelOrder->paid($response);
+                }
+            }
+            $responseRoute = 'checkout/onepage/success';
         }
         Mage::app()->getFrontController()
             ->getResponse()
