@@ -1,6 +1,6 @@
 <?php
 
-class Mundipagg_Paymentmodule_PaymentController extends Mundipagg_Paymentmodule_Controller_Payment
+class Mundipagg_Paymentmodule_PaymentController extends Mage_Core_Controller_Front_Action
 {
     public function processPaymentAction()
     {
@@ -12,6 +12,12 @@ class Mundipagg_Paymentmodule_PaymentController extends Mundipagg_Paymentmodule_
         $controller = end(explode("_",$paymentMethod));
         $controller = 'paymentmodule/paymentmethods_' . $controller;
         $controller = Mage::getModel($controller);
-        $controller->processPayment();
+
+        if($controller !== false) {
+            $controller->processPayment();
+            return;
+        }
+
+        $this->_redirect('checkout/onepage/failure', ['_secure' => true]);
     }
 }

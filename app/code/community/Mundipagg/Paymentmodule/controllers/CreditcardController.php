@@ -2,7 +2,7 @@
 
 use MundiAPILib\Models\GetOrderResponse;
 
-class Mundipagg_Paymentmodule_CreditcardController extends Mundipagg_Paymentmodule_Controller_Payment
+class Mundipagg_Paymentmodule_CreditcardController extends Mage_Core_Controller_Front_Action
 {
     /**
      * Only one credit card brand allowed
