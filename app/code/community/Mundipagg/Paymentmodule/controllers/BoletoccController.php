@@ -21,7 +21,7 @@ class Mundipagg_Paymentmodule_BoletoccController extends Mundipagg_Paymentmodule
         $paymentInfo->setMetaInfo(Mage::helper('paymentmodule/data')->getMetaData());
 
         try {
-            $response = $apiOrder->createBoletoCreditcardPayment($paymentInfo);
+            $response = $apiOrder->createPayment($paymentInfo);
 
             if (gettype($response) !== 'object' || get_class($response) != GetOrderResponse::class) {
                 throw new Exception("Response must be object.");

@@ -21,7 +21,7 @@ class Mundipagg_Paymentmodule_CreditcardController extends Mundipagg_Paymentmodu
         $paymentInfo->setMetaInfo(Mage::helper('paymentmodule/data')->getMetaData());
 
         try {
-            $response = $apiOrder->createCreditcardPayment($paymentInfo);
+            $response = $apiOrder->createPayment($paymentInfo);
 
             if (gettype($response) !== 'object' || get_class($response) != GetOrderResponse::class) {
                throw new Exception("Response must be object.");
