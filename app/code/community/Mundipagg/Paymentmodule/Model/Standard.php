@@ -11,23 +11,9 @@ class Mundipagg_Paymentmodule_Model_Standard extends Mage_Payment_Model_Method_A
      */
     public function getOrderPlaceRedirectUrl()
     {
-        $controller = 'payment';
-
-        switch ($this->getCode()) {
-            case 'paymentmodule_boleto':
-                break;
-            case 'paymentmodule_creditcard':
-                $controller = 'creditcard';
-                break;
-            case 'paymentmodule_boletocc':
-                break;
-            default:
-                // @todo log error and redirect user to failure page
-        }
-
         // @fixme _secure is set to false because we are in dev mode
         return Mage::getUrl(
-            'paymentmodule/' . $controller . '/processpayment',
+            'paymentmodule/payment/processpayment',
             array('_secure' => false)
         );
     }
