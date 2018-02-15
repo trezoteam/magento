@@ -2,13 +2,13 @@
 
 use MundiAPILib\Models\GetOrderResponse;
 
-class Mundipagg_Paymentmodule_BoletoccController extends Mundipagg_Paymentmodule_Controller_Payment
+class Mundipagg_Paymentmodule_Model_Paymentmethods_Boletocc extends Mundipagg_Paymentmodule_Model_Paymentmethods_Standard
 {
     /**
      * Gather boleto transaction information and try to create
      * payment using sdk api wrapper.
      */
-    public function processPaymentAction()
+    public function processPayment()
     {
         $apiOrder = Mage::getModel('paymentmodule/api_order');
 
@@ -26,19 +26,24 @@ class Mundipagg_Paymentmodule_BoletoccController extends Mundipagg_Paymentmodule
             if (gettype($response) !== 'object' || get_class($response) != GetOrderResponse::class) {
                 throw new Exception("Response must be object.");
             }
-
-            $this->handleOrderResponse($response, true);
         } catch(Exception $e) {
             $helperLog = Mage::helper('paymentmodule/log');
-            $helperLog->error("Exception: " . $e->getMessage());
+            $orderId = $this->lastRealOrderId;
+            $helperLog->error("Exception on $orderId: " . $e->getMessage());
             $helperLog->error(json_encode($response,JSON_PRETTY_PRINT));
+
+            $response = new \stdClass();
+            $response->status = 'failed';
         }
+
+        $this->handleOrderResponse($response, true);
     }
 
     private function initPaymentInfoSources() {
         $this->standard = Mage::getModel('paymentmodule/standard');
         $checkoutSession = $this->standard->getCheckoutSession();
         $this->orderId = $checkoutSession->getLastRealOrderId();
+        $this->lastRealOrderId = $this->orderId;
         $this->additionalInformation = $this->standard->getAdditionalInformationForOrder($this->orderId);
         $this->boletoCcConfig = Mage::getModel('paymentmodule/config_boletocc');
 
@@ -60,11 +65,8 @@ class Mundipagg_Paymentmodule_BoletoccController extends Mundipagg_Paymentmodule
         $this->getBoletoPaymentInformation($payment);
         $this->getCreditcardPaymentInformation($payment);
 
-        $test = $this->order->getPayment()->getMethodInstance()->getCode();
-
         return $payment;
     }
-
 
     private function getBoletoPaymentInformation(Varien_Object &$payment)
     {

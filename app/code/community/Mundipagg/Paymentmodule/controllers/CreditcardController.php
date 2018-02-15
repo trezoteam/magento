@@ -27,12 +27,16 @@ class Mundipagg_Paymentmodule_CreditcardController extends Mundipagg_Paymentmodu
                throw new Exception("Response must be object.");
             }
 
-            $this->handleOrderResponse($response, true);
+
         } catch(Exception $e) {
             $helperLog = Mage::helper('paymentmodule/log');
             $helperLog->error("Exception: " . $e->getMessage());
             $helperLog->error(json_encode($response,JSON_PRETTY_PRINT));
+            $response = new \stdClass();
+            $response->status = 'failed';
         }
+
+        $this->handleOrderResponse($response, true);
     }
 
 

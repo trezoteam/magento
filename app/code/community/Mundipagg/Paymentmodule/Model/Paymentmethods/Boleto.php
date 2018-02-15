@@ -26,13 +26,17 @@ class Mundipagg_Paymentmodule_Model_Paymentmethods_Boleto extends Mundipagg_Paym
             if (gettype($response) !== 'object' || get_class($response) != GetOrderResponse::class) {
                 throw new Exception("Response must be object.");
             }
-
-            $this->handleOrderResponse($response, true);
-        }catch(Exception $e) {
+        } catch(Exception $e) {
             $helperLog = Mage::helper('paymentmodule/log');
-            $helperLog->error("Exception: " . $e->getMessage());
+            $orderId = $this->lastRealOrderId;
+            $helperLog->error("Exception on $orderId: " . $e->getMessage());
             $helperLog->error(json_encode($response,JSON_PRETTY_PRINT));
+
+            $response = new \stdClass();
+            $response->status = 'failed';
         }
+
+        $this->handleOrderResponse($response, true);
     }
 
     /**

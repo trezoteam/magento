@@ -31,11 +31,13 @@ class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mundipagg_Pa
         //@todo get boleto and the rest of success page data
         $data = [];
 
+        $responseRoute = 'checkout/onepage/success';
         if ($response->status === 'failed') {
-            $this->_redirect('checkout/onepage/failure', ['_secure' => true]);
-            return;
+           $responseRoute = 'checkout/onepage/failure';
         }
-        $this->_redirect('checkout/onepage/success', ['_secure' => true], $data);
+        Mage::app()->getFrontController()
+            ->getResponse()
+            ->setRedirect(Mage::getUrl($responseRoute, $data));        
     }
 
     /**
