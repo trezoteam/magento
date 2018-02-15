@@ -1,9 +1,42 @@
 <?php
 
-///use MundiAPILib\Models\GetOrderResponse;
+use MundiAPILib\Models\GetOrderResponse;
 
-class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mundipagg_Paymentmodule_Model_Standard
+abstract class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mundipagg_Paymentmodule_Model_Standard
 {
+    /**
+     * Gather boleto transaction information and try to create
+     * payment using sdk api wrapper.
+     */
+    public function processPayment()
+    {
+        $apiOrder = Mage::getModel('paymentmodule/api_order');
+
+        $paymentInfo = new Varien_Object();
+
+        $paymentInfo->setItemsInfo($this->getItemsInformation());
+        $paymentInfo->setCustomerInfo($this->getCustomerInformation());
+        $paymentInfo->setPaymentInfo($this->getPaymentInformation());
+        $paymentInfo->setShippingInfo($this->getShippingInformation());
+        $paymentInfo->setMetaInfo(Mage::helper('paymentmodule/data')->getMetaData());
+
+        $response = $apiOrder->createPayment($paymentInfo);
+
+        if (gettype($response) !== 'object' || get_class($response) != GetOrderResponse::class) {
+            $helperLog = Mage::helper('paymentmodule/log');
+            $orderId = $this->lastRealOrderId;
+            $helperLog->error("Invalid response for order #$orderId: ");
+            $helperLog->error(json_encode($response,JSON_PRETTY_PRINT));
+
+            $response = new \stdClass();
+            $response->status = 'failed';
+        }
+
+        $this->handleOrderResponse($response, true);
+    }
+
+    protected abstract function getPaymentInformation();
+
     /**
      * Take the result from processPaymentTransaction, add the histories and, if $redirect is true,
      * redirect customer to success page.

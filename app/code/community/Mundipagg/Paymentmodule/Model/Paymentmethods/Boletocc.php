@@ -5,38 +5,19 @@ use MundiAPILib\Models\GetOrderResponse;
 class Mundipagg_Paymentmodule_Model_Paymentmethods_Boletocc extends Mundipagg_Paymentmodule_Model_Paymentmethods_Standard
 {
     /**
-     * Gather boleto transaction information and try to create
-     * payment using sdk api wrapper.
+     * Gather information about payment
+     *
+     * @return Varien_Object
      */
-    public function processPayment()
+    protected function getPaymentInformation()
     {
-        $apiOrder = Mage::getModel('paymentmodule/api_order');
+        $this->initPaymentInfoSources();
 
-        $paymentInfo = new Varien_Object();
+        $payment = new Varien_Object();
+        $this->getBoletoPaymentInformation($payment);
+        $this->getCreditcardPaymentInformation($payment);
 
-        $paymentInfo->setItemsInfo($this->getItemsInformation());
-        $paymentInfo->setCustomerInfo($this->getCustomerInformation());
-        $paymentInfo->setPaymentInfo($this->getPaymentInformation());
-        $paymentInfo->setShippingInfo($this->getShippingInformation());
-        $paymentInfo->setMetaInfo(Mage::helper('paymentmodule/data')->getMetaData());
-
-        try {
-            $response = $apiOrder->createPayment($paymentInfo);
-
-            if (gettype($response) !== 'object' || get_class($response) != GetOrderResponse::class) {
-                throw new Exception("Response must be object.");
-            }
-        } catch(Exception $e) {
-            $helperLog = Mage::helper('paymentmodule/log');
-            $orderId = $this->lastRealOrderId;
-            $helperLog->error("Exception on $orderId: " . $e->getMessage());
-            $helperLog->error(json_encode($response,JSON_PRETTY_PRINT));
-
-            $response = new \stdClass();
-            $response->status = 'failed';
-        }
-
-        $this->handleOrderResponse($response, true);
+        return $payment;
     }
 
     private function initPaymentInfoSources() {
@@ -50,22 +31,6 @@ class Mundipagg_Paymentmodule_Model_Paymentmethods_Boletocc extends Mundipagg_Pa
         $this->orderId = Mage::getSingleton('checkout/session')->getLastOrderId();
         $this->order = $this->standard->getOrderByOrderId($this->orderId);
         $this->antifraudConfig = Mage::getModel('paymentmodule/config_antifraud');
-    }
-
-    /**
-     * Gather information about payment
-     *
-     * @return Varien_Object
-     */
-    private function getPaymentInformation()
-    {
-        $this->initPaymentInfoSources();
-
-        $payment = new Varien_Object();
-        $this->getBoletoPaymentInformation($payment);
-        $this->getCreditcardPaymentInformation($payment);
-
-        return $payment;
     }
 
     private function getBoletoPaymentInformation(Varien_Object &$payment)
