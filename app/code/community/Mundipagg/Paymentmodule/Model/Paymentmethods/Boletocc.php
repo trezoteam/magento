@@ -2,57 +2,14 @@
 
 use MundiAPILib\Models\GetOrderResponse;
 
-class Mundipagg_Paymentmodule_BoletoccController extends Mundipagg_Paymentmodule_Controller_Payment
+class Mundipagg_Paymentmodule_Model_Paymentmethods_Boletocc extends Mundipagg_Paymentmodule_Model_Paymentmethods_Standard
 {
-    /**
-     * Gather boleto transaction information and try to create
-     * payment using sdk api wrapper.
-     */
-    public function processPaymentAction()
-    {
-        $apiOrder = Mage::getModel('paymentmodule/api_order');
-
-        $paymentInfo = new Varien_Object();
-
-        $paymentInfo->setItemsInfo($this->getItemsInformation());
-        $paymentInfo->setCustomerInfo($this->getCustomerInformation());
-        $paymentInfo->setPaymentInfo($this->getPaymentInformation());
-        $paymentInfo->setShippingInfo($this->getShippingInformation());
-        $paymentInfo->setMetaInfo(Mage::helper('paymentmodule/data')->getMetaData());
-
-        try {
-            $response = $apiOrder->createBoletoCreditcardPayment($paymentInfo);
-
-            if (gettype($response) !== 'object' || get_class($response) != GetOrderResponse::class) {
-                throw new Exception("Response must be object.");
-            }
-
-            $this->handleOrderResponse($response, true);
-        } catch(Exception $e) {
-            $helperLog = Mage::helper('paymentmodule/log');
-            $helperLog->error("Exception: " . $e->getMessage());
-            $helperLog->error(json_encode($response,JSON_PRETTY_PRINT));
-        }
-    }
-
-    private function initPaymentInfoSources() {
-        $this->standard = Mage::getModel('paymentmodule/standard');
-        $checkoutSession = $this->standard->getCheckoutSession();
-        $this->orderId = $checkoutSession->getLastRealOrderId();
-        $this->additionalInformation = $this->standard->getAdditionalInformationForOrder($this->orderId);
-        $this->boletoCcConfig = Mage::getModel('paymentmodule/config_boletocc');
-
-        $this->orderId = Mage::getSingleton('checkout/session')->getLastOrderId();
-        $this->order = $this->standard->getOrderByOrderId($this->orderId);
-        $this->antifraudConfig = Mage::getModel('paymentmodule/config_antifraud');
-    }
-
     /**
      * Gather information about payment
      *
      * @return Varien_Object
      */
-    private function getPaymentInformation()
+    protected function getPaymentInformation()
     {
         $this->initPaymentInfoSources();
 
@@ -63,6 +20,18 @@ class Mundipagg_Paymentmodule_BoletoccController extends Mundipagg_Paymentmodule
         return $payment;
     }
 
+    private function initPaymentInfoSources() {
+        $this->standard = Mage::getModel('paymentmodule/standard');
+        $checkoutSession = $this->standard->getCheckoutSession();
+        $this->orderId = $checkoutSession->getLastRealOrderId();
+        $this->lastRealOrderId = $this->orderId;
+        $this->additionalInformation = $this->standard->getAdditionalInformationForOrder($this->orderId);
+        $this->boletoCcConfig = Mage::getModel('paymentmodule/config_boletocc');
+
+        $this->orderId = Mage::getSingleton('checkout/session')->getLastOrderId();
+        $this->order = $this->standard->getOrderByOrderId($this->orderId);
+        $this->antifraudConfig = Mage::getModel('paymentmodule/config_antifraud');
+    }
 
     private function getBoletoPaymentInformation(Varien_Object &$payment)
     {

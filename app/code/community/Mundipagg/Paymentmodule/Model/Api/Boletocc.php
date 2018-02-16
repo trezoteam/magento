@@ -13,49 +13,7 @@ use MundiAPILib\Models\CreateOrderItemRequest;
 
 class Mundipagg_Paymentmodule_Model_Api_Boletocc extends Mundipagg_Paymentmodule_Model_Api_Standard
 {
-    protected function getCustomerRequest($customerInfo)
-    {
-        $customerRequest = new CreateCustomerRequest();
-
-        $customerRequest->name = $customerInfo->getName();
-        $customerRequest->document = $customerInfo->getDocument();
-        $customerRequest->email = $customerInfo->getEmail();
-        $customerRequest->type = $customerInfo->getType();
-        $customerRequest->address = $this->getCreateAddressRequest($customerInfo->getAddress());
-        $customerRequest->phones = $this->getCreatePhonesRequest($customerInfo->getPhones());
-        $customerRequest->code = $customerInfo->getCode();
-        $customerRequest->metadata = $customerInfo->getMetadata();
-
-        return $customerRequest;
-    }
-
-    protected function getCreatePhonesRequest($phonesInfo)
-    {
-        return new CreatePhonesRequest(
-            $this->getHomePhone($phonesInfo),
-            $this->getMobilePhone($phonesInfo)
-        );
-    }
-
-    protected function getHomePhone($phonesInfo)
-    {
-        return new CreatePhoneRequest(
-            $phonesInfo->getCountryCode(),
-            $phonesInfo->getNumber(),
-            $phonesInfo->getAreacode()
-        );
-    }
-
-    protected function getMobilePhone($phonesInfo)
-    {
-        return new CreatePhoneRequest(
-            $phonesInfo->getCountryCode(),
-            $phonesInfo->getNumber(),
-            $phonesInfo->getAreacode()
-        );
-    }
-
-    protected function getPayments($paymentInfo)
+    public function getPayments($paymentInfo)
     {
         $boletoApiModel = Mage::getModel('paymentmodule/api_boleto');
         $creditcardApiModel = Mage::getModel('paymentmodule/api_creditcard');
