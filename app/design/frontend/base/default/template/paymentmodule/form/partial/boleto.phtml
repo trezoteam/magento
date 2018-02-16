@@ -1,0 +1,32 @@
+<?php
+$_code = $this->getCode();
+$elementIndex = $this->getElementIndex();
+$elementId = $_code . "_boleto_". $elementIndex;
+$showValueInput = $this->getShowValueInput();
+?>
+
+<div class="input-box">
+    <h6>Boleto <?php echo $elementIndex; ?></h6>
+    <?php if($showValueInput === true) : ?>
+        <div class="input-box">
+            <label>Value (Ex: 100.50)<span class="required">*</span></label><br/>
+            <input
+                    type="number"
+                    step=".01"
+                    min="0"
+                    id="<?php echo "$elementId"?>_value"
+                    name="payment[<?php echo "$elementId"?>_value]"
+                    title="Value (Ex: 100,50)"
+                    class="required-entry multipayment-value-input"
+                    value="">
+        </div>
+    <?php endif; ?>
+    <label>CPF ou CNPJ<span class="required">*</span></label><br/>
+    <input
+            type="text"
+            id="<?php echo "$elementId"?>_input"
+            name="payment[<?php echo "$elementId"?>_input]"
+            class="validate-mundipagg-cpf"
+    />
+</div>
+<br /><hr />

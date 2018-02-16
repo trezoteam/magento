@@ -1,0 +1,159 @@
+<?php
+$_code = $this->getCode();
+$elementIndex = $this->getElementIndex();
+$elementId = $_code . "_creditcard_". $elementIndex;
+$showValueInput = $this->getShowValueInput();
+?>
+
+<div class="input-box"  id="<?php echo "$elementId"?>_tokenDiv"
+     data-mundicheckout-app-id="<?php echo $this->getPublicKey(); ?>">
+    <h6>Credit Card <?php echo $elementIndex; ?></h6>
+    <?php if($showValueInput === true) : ?>
+        <div class="input-box">
+            <label>Value (Ex: 100.50)<span class="required">*</span></label><br/>
+            <input
+                    type="number"
+                    step=".01"
+                    min="0"
+                    id="<?php echo "$elementId"?>_value"
+                    name="payment[<?php echo "$elementId"?>_value]"
+                    title="Value (Ex: 100,50)"
+                    class="required-entry multipayment-value-input"
+                    value="">
+        </div>
+    <?php endif; ?>
+    <div class="input-box">
+        <img
+                src="https://dashboard.mundipagg.com/emb/images/brands/amex.jpg"
+                style="float: left; width: 30px; margin-right: 5px;"
+        />
+        <img
+                src="https://dashboard.mundipagg.com/emb/images/brands/diners.jpg"
+                style="float: left; width: 30px; margin-right: 5px;"
+        />
+        <img
+                src="https://dashboard.mundipagg.com/emb/images/brands/elo.jpg"
+                style="float: left; width: 30px; margin-right: 5px;"
+        />
+        <img
+                src="https://dashboard.mundipagg.com/emb/images/brands/hipercard.jpg"
+                style="float: left; width: 30px; margin-right: 5px;"
+        />
+        <img
+                src="https://dashboard.mundipagg.com/emb/images/brands/visa.jpg"
+                style="float: left; width: 30px; margin-right: 5px;"
+        />
+        <img
+                src="https://dashboard.mundipagg.com/emb/images/brands/mastercard.jpg"
+                style="float: left; width: 30px; margin-right: 5px;"
+        />
+        <br>
+    </div>
+    <input type="hidden"
+           id="<?php echo "$elementId"?>_brand_name"
+           name="payment[<?php echo "$elementId"?>_brand_name]">
+    <label for="payment[<?php echo "$elementId"?>_creditCardNumber]">
+        Card number<span class="required">*</span>
+    </label>
+    <div class="input-box">
+        <span id="<?php echo "$elementId"?>_mundipaggBrandImage" class="mundipaggBrandImage"></span>
+        <input type="hidden" id="<?php echo "$elementId"?>_mundipaggBrandName" value="">
+        <input
+                type="text"
+                data-mundicheckout-input="number"
+                class="required-entry validate-cc-number mundipaggInput"
+                id="<?php echo "$elementId"?>_mundicheckout-number"
+                onkeyup="getFormData(); getBrand(this.value);"
+                onchange="getFormData(); getBrand(this.value);"
+                maxlength="19"
+                name="payment[<?php echo "$elementId"?>_creditCardNumber]"
+        >
+    </div>
+
+    <label for="">Holder name<span class="required">*</span></label>
+    <div class="input-box">
+        <input
+                type="text"
+                data-mundicheckout-input="<?php echo "$elementId"?>_holder_name"
+                class="required-entry"
+                id="<?php echo "$elementId"?>_mundicheckout-holdername"
+                onkeyup="getFormData()"
+                name="payment[<?php echo "$elementId"?>_holderName]"><br>
+    </div>
+
+    <label for="">Expiration date<span class="required">*</span></label>
+    <div class="input-box">
+        <div class="v-fix">
+            <select
+                    class="required-entry"
+                    id="<?php echo "$elementId"?>_mundicheckout-expmonth"
+                    onchange="getFormData();"
+                    name="payment[<?php echo "$elementId"?>_creditCardExpMonth]"
+            >
+                <option value="">--- Mês --- </option>
+                <?php for ($month = 1; $month < 13; $month++ ) { ?>
+                    <option value="<?php echo str_pad($month, "2", "0", STR_PAD_LEFT); ?>">
+                        <?php
+                        echo str_pad($month, "2", "0", STR_PAD_LEFT);
+                        ?>
+                    </option>
+                <?php } ?>
+
+            </select>
+        </div>
+        <div class="v-fix">
+            <select
+                    class="required-entry"
+                    id="<?php echo "$elementId"?>_mundicheckout-expyear"
+                    onchange="getFormData();"
+                    name="payment[<?php echo "$elementId"?>_creditCardExpYear]"
+            >
+                <option value="">--- Ano --- </option>
+                <?php for ($year = date("Y"); $year < date("Y") + 11; $year++ ) { ?>
+                    <option value="<?php echo $year; ?>"><?php echo $year; ?></option>
+                <?php } ?>
+            </select>
+        </div>
+    </div>
+    <input
+            type="hidden"
+            class="validate-mundipagg-creditcard-exp"
+            id="<?php echo "$elementId"?>_mundicheckout-expiration-date"
+            name="payment[<?php echo "$elementId"?>_creditCardExpDate]"><br>
+
+    <label for="">Parcelamento<span class="required">*</span></label>
+    <div class="input-box">
+        <select
+                name="payment[<?php echo "$elementId"?>_creditCardInstallments]"
+                id="<?php echo "$elementId"?>_mundicheckout-creditCard-installments"
+                onchange="getFormData();"
+        >
+        </select>
+        <br>
+    </div>
+
+    <label for="">CVV<span class="required">*</span></label>
+    <div class="input-box">
+        <input
+                type="text"
+                data-mundicheckout-input="cvv"
+                class="required-entry validate-number"
+                id="<?php echo "$elementId"?>_mundicheckout-cvv"
+                onkeyup="getFormData()"
+                name="payment[<?php echo "$elementId"?>_creditCardCvv]"
+                maxlength="4"
+        >
+        <br>
+    </div>
+
+    <input
+            type="hidden"
+            id="<?php echo "$elementId"?>_mundicheckout-token"
+            name="payment[<?php echo "$elementId"?>_creditCardToken]">
+</div>
+<p>
+<div class="validation-advice hidden" id="<?php echo "$elementId"?>_mundipagg-invalid-credit-card" style="">
+    Cartão de crédito inválido.
+</div>
+</p>
+<br /><hr />
