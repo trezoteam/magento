@@ -9,12 +9,12 @@ class Mundipagg_Paymentmodule_PaymentController extends Mage_Core_Controller_Fro
         $this->order = $this->standard->getOrderByOrderId($this->orderId);
 
         $paymentMethod = $this->order->getPayment()->getMethodInstance()->getCode();
-        $controller = end(explode("_",$paymentMethod));
-        $controller = 'paymentmodule/paymentmethods_' . $controller;
-        $controller = Mage::getModel($controller);
+        $model = end(explode("_",$paymentMethod));
+        $model = 'paymentmodule/paymentmethods_' . $model;
+        $model = Mage::getModel($model);
 
-        if($controller !== false) {
-            $controller->processPayment();
+        if($model !== false) {
+            $model->processPayment();
             return;
         }
 
