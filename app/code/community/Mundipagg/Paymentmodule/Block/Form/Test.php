@@ -11,7 +11,7 @@ class Mundipagg_Paymentmodule_Block_Form_Test extends Mage_Payment_Block_Form
 
     public function getStructure()
     {
-        return ['creditcard','creditcard'];
+        return ['creditcard','creditcard','creditcard','creditcard'];
     }
 
     public function getPartialHTML($element)

@@ -22,6 +22,7 @@ $showValueInput = $this->getShowValueInput();
                     name="payment[<?php echo "$elementId"?>_value]"
                     title="Value (Ex: 100,50)"
                     class="required-entry multipayment-value-input"
+                    onchange="getBrand('<?php echo $elementId?>');"
                     value="">
         </div>
     <?php endif; ?>
