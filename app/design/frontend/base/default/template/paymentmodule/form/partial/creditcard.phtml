@@ -7,7 +7,8 @@ $showValueInput = $this->getShowValueInput();
 
 ?>
 
-<div class="input-box" id="<?php echo "$elementId"?>_tokenDiv"
+<div class="input-box <?php echo "$elementClass"?>_tokenDiv"
+     id="<?php echo "$elementId"?>_tokenDiv"
      data-mundicheckout-app-id="<?php echo $this->getPublicKey(); ?>">
     <h6>Credit Card <?php echo $elementIndex; ?></h6>
     <?php if($showValueInput === true) : ?>
@@ -121,8 +122,7 @@ $showValueInput = $this->getShowValueInput();
     <input
             type="hidden"
             class="<?php echo $elementClass; ?>_validate-mundipagg-creditcard-exp"
-            id="<?php echo "$elementId"?>_mundicheckout-expiration-date"
-            name="payment[<?php echo "$elementId"?>_expDate]"><br>
+            id="<?php echo "$elementId"?>_mundicheckout-expiration-date"><br>
 
     <label for="">Parcelamento<span class="required">*</span></label>
     <div class="input-box">

@@ -1,6 +1,4 @@
-var toTokenApi = {
-    "cards": {}
-};
+var toTokenApi = {};
 
 var brandName = false;
 /*
@@ -44,11 +42,11 @@ function apiRequest(url, data, callback, method, json,callbackArgsObj) {
     return xhr;
 }
 
-function getCreditCardToken(pkKey, callback) {
-    if(validateCreditCardData()){
+function getCreditCardToken(pkKey,elementId, callback) {
+    if(validateCreditCardData(elementId)){
         apiRequest(
             'https://api.mundipagg.com/core/v1/tokens?appId=' + pkKey,
-            toTokenApi,
+            toTokenApi[elementId],
             callback,
             "POST",
             true
@@ -61,17 +59,17 @@ function getCreditCardToken(pkKey, callback) {
  * Validate input data
  * @returns {boolean}
  */
-function validateCreditCardData() {
+function validateCreditCardData(elementId) {
     if(
-        toTokenApi.card.number.length > 15 &&
-        toTokenApi.card.number.length < 22 &&
-        toTokenApi.card.holder_name.length > 2 &&
-        toTokenApi.card.holder_name.length < 51 &&
-        toTokenApi.card.exp_month > 0 &&
-        toTokenApi.card.exp_month < 13 &&
-        toTokenApi.card.exp_year >= getCurrentYear() &&
-        toTokenApi.card.cvv.length > 2 &&
-        toTokenApi.card.cvv.length < 5
+        toTokenApi[elementId].card.number.length > 15 &&
+        toTokenApi[elementId].card.number.length < 22 &&
+        toTokenApi[elementId].card.holder_name.length > 2 &&
+        toTokenApi[elementId].card.holder_name.length < 51 &&
+        toTokenApi[elementId].card.exp_month > 0 &&
+        toTokenApi[elementId].card.exp_month < 13 &&
+        toTokenApi[elementId].card.exp_year >= getCurrentYear() &&
+        toTokenApi[elementId].card.cvv.length > 2 &&
+        toTokenApi[elementId].card.cvv.length < 5
     ){
         return true;
     }else{
@@ -244,6 +242,50 @@ function initPaymentMethod(methodCode)
         var year = document.getElementById(elementId + '_mundicheckout-expyear');
         return validateCreditCardExpiration(year.value, month.value);
     });
+
+    Payment.prototype.save = Payment.prototype.save.wrap(function(save) {
+        if(this.currentMethod !== methodCode) {
+            return save();
+        }
+        var prototypeWrapper = this;
+        var tokenCheckTable = {};
+
+        //generate token check table.
+        jQuery('.' +methodCode+ "_creditcard_tokenDiv").each(function(index,element) {
+            tokenCheckTable[element.id] = false;
+        });
+
+        //for each of creditcard forms
+        jQuery('.' +methodCode+ "_creditcard_tokenDiv").each(function(index,element) {
+            var elementId = element.id.replace('_tokenDiv', '');
+            var key = document.getElementById(element.id)
+                .getAttribute('data-mundicheckout-app-id');
+            var tokenElement = document.getElementById(elementId + '_mundicheckout-token');
+            var validator = new Validation(prototypeWrapper.form);
+            if (prototypeWrapper.validate() && validator.validate()) {
+                getCreditCardToken(key, elementId, function (response) {
+                    if (response != false) {
+                        tokenElement.value = response.id;
+                        jQuery("#"+elementId+"_mundipagg-invalid-credit-card").hide();
+                        tokenCheckTable[element.id] = true;
+                        //check if all tokens are generated.
+                        var canSave = true;
+                        jQuery('.' +methodCode+ "_creditcard_tokenDiv").each(function(index,element) {
+                            if (tokenCheckTable[element.id] === false) {
+                                canSave = false;
+                            }
+                        });
+                        if (canSave) {
+                            save();
+                        }
+                        return;
+                    }
+                    tokenElement.value = "";
+                    jQuery("#"+elementId+"_mundipagg-invalid-credit-card").show();
+                });
+            }
+        });
+    });
 }
 
 function validateCPF(cpf)
@@ -294,10 +336,10 @@ function validateCreditCardExpiration(year, month) {
 //form data
 function getFormData(elementId) {
 
-    if (typeof toTokenApi.cards[elementId] === 'undefined') {
-        toTokenApi.cards[elementId] = {};
+    if (typeof toTokenApi[elementId] === 'undefined') {
+        toTokenApi[elementId] = { card:{} };
     }
-    toTokenApi.cards[elementId] = {
+    toTokenApi[elementId].card = {
         type: "credit",
         holder_name: clearHolderName(document.getElementById(elementId+'_mundicheckout-holdername')),
         number: clearCardNumber(document.getElementById(elementId+'_mundicheckout-number')),
