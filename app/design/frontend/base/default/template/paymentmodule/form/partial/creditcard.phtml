@@ -2,10 +2,12 @@
 $_code = $this->getCode();
 $elementIndex = $this->getElementIndex();
 $elementId = $_code . "_creditcard_". $elementIndex;
+$elementClass = $_code . "_creditcard";
 $showValueInput = $this->getShowValueInput();
+
 ?>
 
-<div class="input-box"  id="<?php echo "$elementId"?>_tokenDiv"
+<div class="input-box" id="<?php echo "$elementId"?>_tokenDiv"
      data-mundicheckout-app-id="<?php echo $this->getPublicKey(); ?>">
     <h6>Credit Card <?php echo $elementIndex; ?></h6>
     <?php if($showValueInput === true) : ?>
@@ -52,6 +54,7 @@ $showValueInput = $this->getShowValueInput();
     <input type="hidden"
            id="<?php echo "$elementId"?>_brand_name"
            name="payment[<?php echo "$elementId"?>_brand_name]">
+
     <label for="payment[<?php echo "$elementId"?>_creditCardNumber]">
         Card number<span class="required">*</span>
     </label>
@@ -60,11 +63,11 @@ $showValueInput = $this->getShowValueInput();
         <input type="hidden" id="<?php echo "$elementId"?>_mundipaggBrandName" value="">
         <input
                 type="text"
-                data-mundicheckout-input="number"
+                data-mundicheckout-input="<?php echo "$elementId"?>_number"
                 class="required-entry validate-cc-number mundipaggInput"
                 id="<?php echo "$elementId"?>_mundicheckout-number"
-                onkeyup="getFormData(); getBrand(this.value);"
-                onchange="getFormData(); getBrand(this.value);"
+                onkeyup="getFormData('<?php echo $elementId?>'); getBrand('<?php echo $elementId?>');"
+                onchange="getFormData('<?php echo $elementId?>'); getBrand('<?php echo $elementId?>');"
                 maxlength="19"
                 name="payment[<?php echo "$elementId"?>_creditCardNumber]"
         >
@@ -77,7 +80,7 @@ $showValueInput = $this->getShowValueInput();
                 data-mundicheckout-input="<?php echo "$elementId"?>_holder_name"
                 class="required-entry"
                 id="<?php echo "$elementId"?>_mundicheckout-holdername"
-                onkeyup="getFormData()"
+                onkeyup="getFormData('<?php echo $elementId?>');"
                 name="payment[<?php echo "$elementId"?>_holderName]"><br>
     </div>
 
@@ -87,8 +90,8 @@ $showValueInput = $this->getShowValueInput();
             <select
                     class="required-entry"
                     id="<?php echo "$elementId"?>_mundicheckout-expmonth"
-                    onchange="getFormData();"
-                    name="payment[<?php echo "$elementId"?>_creditCardExpMonth]"
+                    onchange="getFormData('<?php echo $elementId?>');"
+                    name="payment[<?php echo "$elementId"?>_expMonth]"
             >
                 <option value="">--- Mês --- </option>
                 <?php for ($month = 1; $month < 13; $month++ ) { ?>
@@ -105,8 +108,8 @@ $showValueInput = $this->getShowValueInput();
             <select
                     class="required-entry"
                     id="<?php echo "$elementId"?>_mundicheckout-expyear"
-                    onchange="getFormData();"
-                    name="payment[<?php echo "$elementId"?>_creditCardExpYear]"
+                    onchange="getFormData('<?php echo $elementId?>');"
+                    name="payment[<?php echo "$elementId"?>_expYear]"
             >
                 <option value="">--- Ano --- </option>
                 <?php for ($year = date("Y"); $year < date("Y") + 11; $year++ ) { ?>
@@ -117,16 +120,16 @@ $showValueInput = $this->getShowValueInput();
     </div>
     <input
             type="hidden"
-            class="validate-mundipagg-creditcard-exp"
+            class="<?php echo $elementClass; ?>_validate-mundipagg-creditcard-exp"
             id="<?php echo "$elementId"?>_mundicheckout-expiration-date"
-            name="payment[<?php echo "$elementId"?>_creditCardExpDate]"><br>
+            name="payment[<?php echo "$elementId"?>_expDate]"><br>
 
     <label for="">Parcelamento<span class="required">*</span></label>
     <div class="input-box">
         <select
                 name="payment[<?php echo "$elementId"?>_creditCardInstallments]"
                 id="<?php echo "$elementId"?>_mundicheckout-creditCard-installments"
-                onchange="getFormData();"
+                onchange="getFormData('<?php echo $elementId?>');"
         >
         </select>
         <br>
@@ -136,11 +139,11 @@ $showValueInput = $this->getShowValueInput();
     <div class="input-box">
         <input
                 type="text"
-                data-mundicheckout-input="cvv"
+                data-mundicheckout-input="<?php echo "$elementId"?>_cvv"
                 class="required-entry validate-number"
                 id="<?php echo "$elementId"?>_mundicheckout-cvv"
-                onkeyup="getFormData()"
-                name="payment[<?php echo "$elementId"?>_creditCardCvv]"
+                onkeyup="getFormData('<?php echo $elementId?>');"
+                name="payment[<?php echo "$elementId"?>_cvv]"
                 maxlength="4"
         >
         <br>
@@ -149,7 +152,7 @@ $showValueInput = $this->getShowValueInput();
     <input
             type="hidden"
             id="<?php echo "$elementId"?>_mundicheckout-token"
-            name="payment[<?php echo "$elementId"?>_creditCardToken]">
+            name="payment[<?php echo "$elementId"?>_token]">
 </div>
 <p>
 <div class="validation-advice hidden" id="<?php echo "$elementId"?>_mundipagg-invalid-credit-card" style="">
