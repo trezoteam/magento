@@ -151,6 +151,14 @@
                 <active>1</active>
                 <payment_action>authorize</payment_action>
             </paymentmodule_boletocc>
+
+            <paymentmodule_test>
+                <model>paymentmodule/test</model>
+                <title>Mundipagg - test</title>
+                <allowspecific>0</allowspecific>
+                <active>1</active>
+                <payment_action>authorize</payment_action>
+            </paymentmodule_test>
         </payment>
     </default>
 </config>

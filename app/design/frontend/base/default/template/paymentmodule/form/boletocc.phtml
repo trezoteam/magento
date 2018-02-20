@@ -235,11 +235,23 @@
             else
                 return false;
         }
+
         Validation.add('validate-mundipagg-creditcard-exp_boletocc', 'Data inválida', function(v) {
             month = document.getElementById('mundicheckout-expmonth_boletocc');
             year = document.getElementById('mundicheckout-expyear_boletocc');
             return validateCreditCardExpiration(year.value, month.value);
         });
+
+        function validateCreditCardExpiration(year, month) {
+            var date = new Date();
+            var expDate = new Date(year, month - 1, 1);
+            var today = new Date(date.getFullYear(), date.getMonth(), 1);
+            if (expDate < today) {
+                return false;
+            }
+            return true;
+        }
+
         Payment.prototype.save = Payment.prototype.save.wrap(function(save) {
 
             if(this.currentMethod !== 'paymentmodule_boletocc') {
@@ -261,14 +273,6 @@
                 });
             }
         });
-        function validateCreditCardExpiration(year, month) {
-            var date = new Date();
-            var expDate = new Date(year, month - 1, 1);
-            var today = new Date(date.getFullYear(), date.getMonth(), 1);
-            if (expDate < today) {
-                return false;
-            }
-            return true;
-        }
+
     </script>
 </fieldset>
