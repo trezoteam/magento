@@ -4,7 +4,7 @@
 class Mundipagg_Paymentmodule_Model_Creditcard extends Mundipagg_Paymentmodule_Model_Standard
 {
     protected $_code = 'paymentmodule_creditcard';
-    protected $_formBlockType = 'paymentmodule/form_creditcard';
+    protected $_formBlockType = 'paymentmodule/form_builder';
     protected $_isGateway = true;
     protected $_canOrder  = true;
     protected $_canAuthorize = true;
@@ -74,5 +74,12 @@ class Mundipagg_Paymentmodule_Model_Creditcard extends Mundipagg_Paymentmodule_M
     private function getBaseKey()
     {
         return 'mundipagg_payment_module_';
+    }
+
+    public function getPaymentStructure()
+    {
+        return [
+            'creditcard'
+        ];
     }
 }

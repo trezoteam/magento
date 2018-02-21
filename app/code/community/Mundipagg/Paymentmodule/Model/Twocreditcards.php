@@ -30,8 +30,6 @@ class Mundipagg_Paymentmodule_Model_Twocreditcards extends Mundipagg_Paymentmodu
         return [
             'creditcard',
             'creditcard',
-            'boleto',
-            'boleto'
         ];
     }
 

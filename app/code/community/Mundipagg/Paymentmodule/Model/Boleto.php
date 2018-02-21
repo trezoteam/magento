@@ -3,7 +3,7 @@
 class Mundipagg_Paymentmodule_Model_Boleto extends Mundipagg_Paymentmodule_Model_Standard
 {
     protected $_code = 'paymentmodule_boleto';
-    protected $_formBlockType = 'paymentmodule/form_boleto';
+    protected $_formBlockType = 'paymentmodule/form_builder';
     protected $_isGateway = true;
     protected $_canOrder  = true;
     protected $_canAuthorize = true;
@@ -28,5 +28,12 @@ class Mundipagg_Paymentmodule_Model_Boleto extends Mundipagg_Paymentmodule_Model
     public function assignData($data)
     {
         parent::assignData($data);
+    }
+
+    public function getPaymentStructure()
+    {
+        return [
+            'boleto'
+        ];
     }
 }
