@@ -2,11 +2,6 @@
 
 class Mundipagg_Paymentmodule_Model_Standard extends Mage_Payment_Model_Method_Abstract
 {
-    public function assignData($data)
-    {
-        $a = 1;
-    }
-
     /**
      * This method defines the controller that will be called when the 'place order' button
      * is pressed, in this case, Mundipagg_Paymentmodule_StandardController, and the specific
