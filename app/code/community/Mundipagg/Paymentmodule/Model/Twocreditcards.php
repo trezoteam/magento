@@ -1,9 +1,8 @@
 <?php
 
-
-class Mundipagg_Paymentmodule_Model_Creditcard extends Mundipagg_Paymentmodule_Model_Standard
+class Mundipagg_Paymentmodule_Model_Twocreditcards extends Mundipagg_Paymentmodule_Model_Standard
 {
-    protected $_code = 'paymentmodule_creditcard';
+    protected $_code = 'paymentmodule_twocreditcards';
     protected $_formBlockType = 'paymentmodule/form_builder';
     protected $_isGateway = true;
     protected $_canOrder  = true;
@@ -24,6 +23,14 @@ class Mundipagg_Paymentmodule_Model_Creditcard extends Mundipagg_Paymentmodule_M
     public function isAvailable($quote = null)
     {
         return true;
+    }
+
+    public function getPaymentStructure()
+    {
+        return [
+            'creditcard',
+            'creditcard',
+        ];
     }
 
     public function assignData($data)
@@ -74,12 +81,5 @@ class Mundipagg_Paymentmodule_Model_Creditcard extends Mundipagg_Paymentmodule_M
     private function getBaseKey()
     {
         return 'mundipagg_payment_module_';
-    }
-
-    public function getPaymentStructure()
-    {
-        return [
-            'creditcard'
-        ];
     }
 }
