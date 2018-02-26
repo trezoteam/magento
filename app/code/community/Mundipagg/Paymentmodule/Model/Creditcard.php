@@ -1,6 +1,5 @@
 <?php
 
-
 class Mundipagg_Paymentmodule_Model_Creditcard extends Mundipagg_Paymentmodule_Model_Standard
 {
     protected $_code = 'paymentmodule_creditcard';
@@ -23,7 +22,7 @@ class Mundipagg_Paymentmodule_Model_Creditcard extends Mundipagg_Paymentmodule_M
 
     public function isAvailable($quote = null)
     {
-        return true;
+        return Mage::getModel('paymentmodule/config_card')->isEnabled();
     }
 
     public function assignData($data)

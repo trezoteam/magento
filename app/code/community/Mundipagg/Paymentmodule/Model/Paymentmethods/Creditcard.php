@@ -4,10 +4,11 @@ use MundiAPILib\Models\GetOrderResponse;
 
 class Mundipagg_Paymentmodule_Model_Paymentmethods_Creditcard extends Mundipagg_Paymentmodule_Model_Paymentmethods_Standard
 {
-   /**
+    /**
      * Gather information about payment
      *
      * @return Varien_Object
+     * @throws Varien_Exception
      */
     protected function getPaymentInformation()
     {

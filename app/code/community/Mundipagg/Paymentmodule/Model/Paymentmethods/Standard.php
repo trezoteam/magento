@@ -4,6 +4,11 @@ use MundiAPILib\Models\GetOrderResponse;
 
 abstract class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mundipagg_Paymentmodule_Model_Standard
 {
+    public function getPayments($paymentInformation)
+    {
+
+    }
+
     /**
      * Gather boleto transaction information and try to create
      * payment using sdk api wrapper.

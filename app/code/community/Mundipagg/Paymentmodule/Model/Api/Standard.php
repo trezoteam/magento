@@ -19,7 +19,7 @@ abstract class Mundipagg_Paymentmodule_Model_Api_Standard {
 
         $orderRequest->items = $paymentInformation->getItemsInfo();
         $orderRequest->customer = $this->getCustomerRequest($paymentInformation->getCustomerInfo());
-        $orderRequest->payments = $this->getPayments($paymentInformation->getPaymentInfo());
+        $orderRequest->payments = $this->getPayments();
         $orderRequest->code = $orderId;
         $orderRequest->metadata = $paymentInformation->getMetainfo();
         $orderRequest->shipping = $this->getShippingRequest($paymentInformation->getShippingInfo());
@@ -28,7 +28,28 @@ abstract class Mundipagg_Paymentmodule_Model_Api_Standard {
         return $orderRequest;
     }
 
-    abstract public function getPayments($paymentInfo);
+    protected function getPayments()
+    {
+        $standard = Mage::getModel('paymentmodule/standard');
+
+        $checkoutSession = $standard->getCheckoutSession();
+        $orderId = $checkoutSession->getLastRealOrderId();
+        $additionalInformation = $standard->getAdditionalInformationForOrder($orderId);
+
+        $paymentMethod = $additionalInformation['mundipagg_payment_method'];
+        $paymentInformation = $additionalInformation[$paymentMethod];
+
+        $result = [];
+
+        foreach ($paymentInformation as $key => $value) {
+            $paymentApi = Mage::getModel('paymentmodule/api_' . $key);
+            $result = array_merge($result, $paymentApi->getPayment($value));
+        }
+
+        return $result;
+    }
+
+//    abstract public function getPayments($paymentInfo);
 
     protected function getCustomerRequest($customerInfo)
     {

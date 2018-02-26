@@ -12,6 +12,7 @@ $structure = $this->getStructure();
                         <?php echo $this->getPartialHtml($element);?>
                     </li>
                     <?php endforeach; ?>
+                    <input type="hidden" id="baseUrl" value="<?php echo Mage::getUrl('');?>"/>
                 </ul>
             </div>
         </li>
