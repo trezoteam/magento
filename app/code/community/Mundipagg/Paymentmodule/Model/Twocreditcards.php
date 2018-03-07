@@ -1,8 +1,8 @@
 <?php
 
-class Mundipagg_Paymentmodule_Model_Boleto extends Mundipagg_Paymentmodule_Model_Standard
+class Mundipagg_Paymentmodule_Model_Twocreditcards extends Mundipagg_Paymentmodule_Model_Standard
 {
-    protected $_code = 'paymentmodule_boleto';
+    protected $_code = 'paymentmodule_twocreditcards';
     protected $_formBlockType = 'paymentmodule/form_builder';
     protected $_isGateway = true;
     protected $_canOrder  = true;
@@ -22,7 +22,7 @@ class Mundipagg_Paymentmodule_Model_Boleto extends Mundipagg_Paymentmodule_Model
 
     public function isAvailable($quote = null)
     {
-        $configPath = 'paymentmodule/config_boleto';
+        $configPath = 'paymentmodule/config_twocreditcards';
 
         return Mage::getModel($configPath)->isEnabled();
     }
@@ -30,7 +30,13 @@ class Mundipagg_Paymentmodule_Model_Boleto extends Mundipagg_Paymentmodule_Model
     public function getPaymentStructure()
     {
         return [
-            'boleto'
+            'creditcard',
+            'creditcard'
         ];
+    }
+
+    private function getBaseKey()
+    {
+        return 'mundipagg_payment_module_';
     }
 }

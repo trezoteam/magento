@@ -2,8 +2,39 @@
 
 use MundiAPILib\Models\GetOrderResponse;
 
-class Mundipagg_Paymentmodule_Controller_Payment extends Mage_Core_Controller_Front_Action
+class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mundipagg_Paymentmodule_Model_Standard
 {
+    /**
+     * Gather boleto transaction information and try to create
+     * payment using sdk api wrapper.
+     */
+    public function processPayment($method)
+    {
+        $apiOrder = Mage::getModel('paymentmodule/api_order');
+
+        $paymentInfo = new Varien_Object();
+
+        $paymentInfo->setItemsInfo($this->getItemsInformation());
+        $paymentInfo->setCustomerInfo($this->getCustomerInformation());
+        $paymentInfo->setPaymentInfo($method);
+        $paymentInfo->setShippingInfo($this->getShippingInformation());
+        $paymentInfo->setMetaInfo(Mage::helper('paymentmodule/data')->getMetaData());
+
+        $response = $apiOrder->createPayment($paymentInfo);
+
+        if (gettype($response) !== 'object' || get_class($response) != GetOrderResponse::class) {
+            $helperLog = Mage::helper('paymentmodule/log');
+            $orderId = $this->lastRealOrderId;
+            $helperLog->error("Invalid response for order #$orderId: ");
+            $helperLog->error(json_encode($response,JSON_PRETTY_PRINT));
+
+            $response = new \stdClass();
+            $response->status = 'failed';
+        }
+
+        $this->handleOrderResponse($response, true);
+    }
+
     /**
      * Take the result from processPaymentTransaction, add the histories and, if $redirect is true,
      * redirect customer to success page.
@@ -14,34 +45,36 @@ class Mundipagg_Paymentmodule_Controller_Payment extends Mage_Core_Controller_Fr
      */
     protected function handleOrderResponse($response, $redirect = false)
     {
-        $moduleModelOrder = Mage::getModel('paymentmodule/core_order');
-        $moduleModelCharge = Mage::getModel('paymentmodule/core_charge');
-
-        foreach ($response->charges as $charge) {
-            $charge->code = $response->code;
-            $charge->order->id = $response->id;
-
-            if ($charge->status == 'paid') {
-                $charge->paid_amount = $charge->amount;
-                $moduleModelCharge->paid($charge);
-                $moduleModelOrder->paid($response);
-            }
-        }
-
         //@todo get boleto and the rest of success page data
         $data = [];
 
-        if ($response->status === 'failed') {
-            $this->_redirect('checkout/onepage/failure', ['_secure' => true]);
-            return;
+        $responseRoute = 'checkout/onepage/failure';
+        if ($response->status !== 'failed') {
+            $moduleModelOrder = Mage::getModel('paymentmodule/core_order');
+            $moduleModelCharge = Mage::getModel('paymentmodule/core_charge');
+
+            foreach ($response->charges as $charge) {
+                $charge->code = $response->code;
+//                $charge->order->id = $response->id;
+
+                if ($charge->status == 'paid') {
+                    $charge->paid_amount = $charge->amount;
+                    $moduleModelCharge->paid($charge);
+                    $moduleModelOrder->paid($response);
+                }
+            }
+            $responseRoute = 'checkout/onepage/success';
         }
-        $this->_redirect('checkout/onepage/success', ['_secure' => true], $data);
+        Mage::app()->getFrontController()
+            ->getResponse()
+            ->setRedirect(Mage::getUrl($responseRoute, $data));        
     }
 
     /**
      * Gather information about customer
      *
      * @return Varien_Object
+     * @throws Varien_Exception
      */
     protected function getCustomerInformation()
     {
@@ -70,6 +103,7 @@ class Mundipagg_Paymentmodule_Controller_Payment extends Mage_Core_Controller_Fr
      * Gather information about customer's address
      *
      * @return Varien_Object
+     * @throws Varien_Exception
      */
     protected function getCustomerAddressInformation()
     {
@@ -146,6 +180,7 @@ class Mundipagg_Paymentmodule_Controller_Payment extends Mage_Core_Controller_Fr
      * @example $this->getStateByRegionId(502) //return "RJ"
      * @param int $regionId
      * @return string
+     * @throws Varien_Exception
      */
     private function getStateByRegionId($regionId)
     {
@@ -161,6 +196,7 @@ class Mundipagg_Paymentmodule_Controller_Payment extends Mage_Core_Controller_Fr
      * Gather information about customer's phones
      *
      * @return Varien_Object
+     * @throws Varien_Exception
      */
     private function getCustomerPhonesInformation()
     {
@@ -178,6 +214,7 @@ class Mundipagg_Paymentmodule_Controller_Payment extends Mage_Core_Controller_Fr
      * Provide ordered items information
      *
      * @return array
+     * @throws Varien_Exception
      */
     protected function getItemsInformation()
     {
