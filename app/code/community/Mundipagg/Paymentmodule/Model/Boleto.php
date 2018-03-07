@@ -22,12 +22,9 @@ class Mundipagg_Paymentmodule_Model_Boleto extends Mundipagg_Paymentmodule_Model
 
     public function isAvailable($quote = null)
     {
-        return Mage::getModel('paymentmodule/config_boleto')->isEnabled();
-    }
+        $configPath = 'paymentmodule/config_boleto';
 
-    public function assignData($data)
-    {
-        parent::assignData($data);
+        return Mage::getModel($configPath)->isEnabled();
     }
 
     public function getPaymentStructure()

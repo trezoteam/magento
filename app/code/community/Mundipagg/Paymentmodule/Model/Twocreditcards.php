@@ -22,7 +22,9 @@ class Mundipagg_Paymentmodule_Model_Twocreditcards extends Mundipagg_Paymentmodu
 
     public function isAvailable($quote = null)
     {
-        return true;
+        $configPath = 'paymentmodule/config_twocreditcards';
+
+        return Mage::getModel($configPath)->isEnabled();
     }
 
     public function getPaymentStructure()
@@ -31,52 +33,6 @@ class Mundipagg_Paymentmodule_Model_Twocreditcards extends Mundipagg_Paymentmodu
             'creditcard',
             'creditcard'
         ];
-    }
-
-    public function assignData($data)
-    {
-        return parent::assignData($data);
-//        if (!($data instanceof Varien_Object)) {
-//            $data = new Varien_Object($data);
-//        }
-//
-//        parent::assignData($data);
-//
-//        $key = $this->getBaseKey();
-//        $info = $this->getInfoInstance();
-//        $paymentData = $data->getData();
-//
-//        // @todo possible code exception
-//        $info->setAdditionalInformation($key . 'method', $paymentData['method']);
-//        $info->setAdditionalInformation($key . 'holder_name', $paymentData['holderName']);
-//        $info->setAdditionalInformation($key . 'token', $paymentData['creditCardToken']);
-//        $info->setAdditionalInformation($key . 'installments', $paymentData['creditCardInstallments']);
-//
-//        $interestHelper = Mage::helper("paymentmodule/interest");
-//        $interest = $interestHelper->getInterestValue(
-//            $paymentData['creditCardInstallments'],
-//            $info->getQuote()->getGrandTotal(),
-//            null,
-//            $data->getMundipaggCreditcardBrandName()
-//        );
-//
-//        $info->setAdditionalInformation(
-//            $key . 'interest',
-//            Mage::helper('paymentmodule/monetary')->toCents($interest)
-//        );
-//        $baseGrandTotal =  $info->getQuote()->getBaseGrandTotal();
-//        $info->setAdditionalInformation(
-//            $key . 'base_grand_total',
-//            Mage::helper('paymentmodule/monetary')->toCents($baseGrandTotal)
-//        );
-//
-//        foreach ($info->getQuote()->getAllAddresses() as $address) {
-//            $address->setMundipaggInterest($interest);
-//            $address->setGrandTotal($address->getGrandTotal() + $interest);
-//            break;
-//        }
-//
-//        return $this;
     }
 
     private function getBaseKey()

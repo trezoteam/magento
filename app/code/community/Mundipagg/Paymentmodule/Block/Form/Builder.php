@@ -52,9 +52,11 @@ class Mundipagg_Paymentmodule_Block_Form_Builder extends Mage_Payment_Block_Form
     public function getIndexFor($element)
     {
         $elementCount = $this->getElementCount();
+
         if ($elementCount == null) {
            $elementCount = [];
         }
+
         if (!isset($elementCount[$element])) {
             $elementCount[$element] = 0;
         }

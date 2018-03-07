@@ -11,15 +11,15 @@ class Mundipagg_Paymentmodule_PaymentController extends Mage_Core_Controller_Fro
         $paymentMethod = $this->order->getPayment()->getMethodInstance()->getCode();
 
         // @todo find a better name
-        $exploded = explode("_",$paymentMethod);
+        $method = explode("_", $paymentMethod);
 
-        $model = array_pop($exploded);
-        $model = 'paymentmodule/paymentmethods_' . $model;
+        $methodName = $method[1];
+        $methodModel = 'paymentmodule/paymentmethods_standard';
 
-        $model = Mage::getModel($model);
+        $model = Mage::getModel($methodModel);
 
         if ($model !== false) {
-            $model->processPayment();
+            $model->processPayment($methodName);
             return;
         }
 

@@ -7,8 +7,8 @@ use MundiAPILib\Models\CreatePhoneRequest;
 use MundiAPILib\Models\CreatePhonesRequest;
 use MundiAPILib\Models\CreateShippingRequest;
 
-abstract class Mundipagg_Paymentmodule_Model_Api_Standard {
-
+abstract class Mundipagg_Paymentmodule_Model_Api_Standard
+{
     public function getCreateOrderRequest($paymentInformation)
     {
         $orderRequest = new CreateOrderRequest();
@@ -48,8 +48,6 @@ abstract class Mundipagg_Paymentmodule_Model_Api_Standard {
 
         return $result;
     }
-
-//    abstract public function getPayments($paymentInfo);
 
     protected function getCustomerRequest($customerInfo)
     {

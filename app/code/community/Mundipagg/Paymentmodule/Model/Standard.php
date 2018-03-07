@@ -81,6 +81,7 @@ class Mundipagg_Paymentmodule_Model_Standard extends Mage_Payment_Model_Method_A
      *
      * @param string $orderId
      * @return string
+     * @throws Varien_Exception
      */
     public function getOrderByIncrementOrderId($orderId)
     {
@@ -109,6 +110,7 @@ class Mundipagg_Paymentmodule_Model_Standard extends Mage_Payment_Model_Method_A
     /**
      * @param $charges
      * @param $orderId
+     * @throws Varien_Exception
      */
     public function addChargeInfoToAdditionalInformation($charges, $orderId)
     {
