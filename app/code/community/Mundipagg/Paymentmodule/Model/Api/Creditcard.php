@@ -2,40 +2,64 @@
 
 require_once Mage::getBaseDir('lib') . '/autoload.php';
 
-use MundiAPILib\Models\CreateOrderRequest;
 use MundiAPILib\Models\CreateCustomerRequest;
 use MundiAPILib\Models\CreateAddressRequest;
-use MundiAPILib\Models\CreatePhonesRequest;
-use MundiAPILib\Models\CreatePhoneRequest;
 use MundiAPILib\Models\CreatePaymentRequest;
 use MundiAPILib\Models\CreateCreditCardPaymentRequest;
 
 class Mundipagg_Paymentmodule_Model_Api_Creditcard extends Mundipagg_Paymentmodule_Model_Api_Standard
 {
-    public function getPayments($paymentInfo)
+    public function getPayment($paymentInfo)
     {
-        $paymentRequest = new CreatePaymentRequest();
+        $monetary = Mage::helper('paymentmodule/monetary');
 
-        $creditCardPaymentRequest = new CreateCreditCardPaymentRequest();
-        $creditCardPaymentRequest->installments = $paymentInfo->getInstallmentNumber();
-        $creditCardPaymentRequest->statementDescriptor = $paymentInfo->getInvoiceName();
-        $creditCardPaymentRequest->cardToken = $paymentInfo->getPaymentToken();
-        $creditCardPaymentRequest->capture = $paymentInfo->getOperationType();
+        $result = [];
 
-        $paymentRequest->paymentMethod = 'credit_card';
-        $paymentRequest->currency = $paymentInfo->getCurrency();
-        $paymentRequest->creditCard = $creditCardPaymentRequest;
-        /*
-         * $paymentInfo->getBaseGrandTotal() and $paymentInfo->getInterest() returns arrays
-         * for the future implementation of more than one creditcard payment methods.
-         */
-        $paymentRequest->amount = $paymentInfo->getBaseGrandTotal();
-        $paymentRequest->amount = $paymentRequest->amount[0];
-        //add interest
-        $interest =  $paymentInfo->getInterest();
-        $interest = $interest[0];
-        $paymentRequest->amount += $interest;
+        foreach ($paymentInfo as $payment) {
+            $paymentRequest = new CreatePaymentRequest();
 
-        return array($paymentRequest);
+            $creditCardPaymentRequest = new CreateCreditCardPaymentRequest();
+
+            $creditCardPaymentRequest->installments = $payment['creditCardInstallments'];
+            $creditCardPaymentRequest->cardToken = $payment['token'];
+
+            $paymentRequest->paymentMethod = 'credit_card';
+            $paymentRequest->creditCard = $creditCardPaymentRequest;
+            $paymentRequest->amount = $monetary->toCents($payment['value']);
+            $paymentRequest->customer = $this->getCustomer();
+            // @todo this should not be hard coded
+            $paymentRequest->currency = 'BRL';
+
+            $result[] = $paymentRequest;
+        }
+
+        return $result;
+    }
+
+    private function getCustomer()
+    {
+        $customerRequest = new CreateCustomerRequest();
+
+        $customerRequest->name = 'John Doe';
+        $customerRequest->address = $this->getAddress();
+        $customerRequest->type = 'individual';
+
+        return $customerRequest;
+    }
+
+    private function getAddress()
+    {
+        $addressRequest = new CreateAddressRequest();
+
+        $addressRequest->street = 'Fake Street';
+        $addressRequest->number = 23;
+        $addressRequest->zipCode = '24420023';
+        $addressRequest->neighborhood = 'Comptown';
+        $addressRequest->city = 'San Andreas';
+        $addressRequest->state = 'RJ';
+        $addressRequest->complement = 'Far from here';
+        $addressRequest->country = 'BR';
+
+        return $addressRequest;
     }
 }

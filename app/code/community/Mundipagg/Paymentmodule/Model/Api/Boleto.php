@@ -2,31 +2,71 @@
 
 require_once Mage::getBaseDir('lib') . '/autoload.php';
 
-use MundiAPILib\Models\CreateOrderRequest;
 use MundiAPILib\Models\CreateCustomerRequest;
 use MundiAPILib\Models\CreateAddressRequest;
-use MundiAPILib\Models\CreatePhonesRequest;
-use MundiAPILib\Models\CreatePhoneRequest;
 use MundiAPILib\Models\CreatePaymentRequest;
 use MundiAPILib\Models\CreateBoletoPaymentRequest;
-use MundiAPILib\Models\CreateOrderItemRequest;
 
 class Mundipagg_Paymentmodule_Model_Api_Boleto extends Mundipagg_Paymentmodule_Model_Api_Standard
 {
-   public function getPayments($paymentInfo)
+    public function getPayment($paymentInfo)
     {
-        $paymentRequest = new CreatePaymentRequest();
+        $boletoConfig = Mage::getModel('paymentmodule/config_boleto');
+        $monetary = Mage::helper('paymentmodule/monetary');
 
-        $boletoPaymentRequest = new CreateBoletoPaymentRequest();
-        $boletoPaymentRequest->bank = $paymentInfo->getBank();
-        $boletoPaymentRequest->instructions = $paymentInfo->getInstructions();
-        $boletoPaymentRequest->dueAt = $paymentInfo->getDueAt();
+        $bank = $boletoConfig->getBank();
+        $instructions = $boletoConfig->getInstructions();
+        $dueAt = $boletoConfig->getDueAt();
 
-        $paymentRequest->paymentMethod = 'boleto';
-        $paymentRequest->boleto = $boletoPaymentRequest;
-        // @todo this should not be hard coded
-        $paymentRequest->currency = 'BRL';
+        $result = [];
 
-        return [$paymentRequest];
+        foreach ($paymentInfo as $payment) {
+            $paymentRequest = new CreatePaymentRequest();
+
+            $boletoPaymentRequest = new CreateBoletoPaymentRequest();
+
+            $boletoPaymentRequest->bank = $bank;
+            $boletoPaymentRequest->instructions = $instructions;
+            $boletoPaymentRequest->dueAt = $dueAt;
+
+            $paymentRequest->paymentMethod = 'boleto';
+            $paymentRequest->boleto = $boletoPaymentRequest;
+            $paymentRequest->amount = $monetary->toCents($payment['value']);
+            $paymentRequest->customer = $this->getCustomer($payment['taxvat']);
+            // @todo this should not be hard coded
+            $paymentRequest->currency = 'BRL';
+
+            $result[] = $paymentRequest;
+        }
+
+        return $result;
+    }
+
+    private function getCustomer($documentNumber)
+    {
+        $customerRequest = new CreateCustomerRequest();
+
+        $customerRequest->name = 'John Doe';
+        $customerRequest->document = $documentNumber;
+        $customerRequest->address = $this->getAddress();
+        $customerRequest->type = 'individual';
+
+        return $customerRequest;
+    }
+
+    private function getAddress()
+    {
+        $addressRequest = new CreateAddressRequest();
+
+        $addressRequest->street = 'Fake Street';
+        $addressRequest->number = 23;
+        $addressRequest->zipCode = '24420023';
+        $addressRequest->neighborhood = 'Comptown';
+        $addressRequest->city = 'San Andreas';
+        $addressRequest->state = 'RJ';
+        $addressRequest->complement = 'Far from here';
+        $addressRequest->country = 'BR';
+
+        return $addressRequest;
     }
 }

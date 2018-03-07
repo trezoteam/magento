@@ -2,13 +2,13 @@
 
 use MundiAPILib\Models\GetOrderResponse;
 
-abstract class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mundipagg_Paymentmodule_Model_Standard
+class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mundipagg_Paymentmodule_Model_Standard
 {
     /**
      * Gather boleto transaction information and try to create
      * payment using sdk api wrapper.
      */
-    public function processPayment()
+    public function processPayment($method)
     {
         $apiOrder = Mage::getModel('paymentmodule/api_order');
 
@@ -16,7 +16,7 @@ abstract class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mun
 
         $paymentInfo->setItemsInfo($this->getItemsInformation());
         $paymentInfo->setCustomerInfo($this->getCustomerInformation());
-        $paymentInfo->setPaymentInfo($this->getPaymentInformation());
+        $paymentInfo->setPaymentInfo($method);
         $paymentInfo->setShippingInfo($this->getShippingInformation());
         $paymentInfo->setMetaInfo(Mage::helper('paymentmodule/data')->getMetaData());
 
@@ -34,8 +34,6 @@ abstract class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mun
 
         $this->handleOrderResponse($response, true);
     }
-
-    protected abstract function getPaymentInformation();
 
     /**
      * Take the result from processPaymentTransaction, add the histories and, if $redirect is true,
@@ -57,7 +55,7 @@ abstract class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mun
 
             foreach ($response->charges as $charge) {
                 $charge->code = $response->code;
-                $charge->order->id = $response->id;
+//                $charge->order->id = $response->id;
 
                 if ($charge->status == 'paid') {
                     $charge->paid_amount = $charge->amount;
@@ -76,6 +74,7 @@ abstract class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mun
      * Gather information about customer
      *
      * @return Varien_Object
+     * @throws Varien_Exception
      */
     protected function getCustomerInformation()
     {
@@ -104,6 +103,7 @@ abstract class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mun
      * Gather information about customer's address
      *
      * @return Varien_Object
+     * @throws Varien_Exception
      */
     protected function getCustomerAddressInformation()
     {
@@ -180,6 +180,7 @@ abstract class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mun
      * @example $this->getStateByRegionId(502) //return "RJ"
      * @param int $regionId
      * @return string
+     * @throws Varien_Exception
      */
     private function getStateByRegionId($regionId)
     {
@@ -195,6 +196,7 @@ abstract class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mun
      * Gather information about customer's phones
      *
      * @return Varien_Object
+     * @throws Varien_Exception
      */
     private function getCustomerPhonesInformation()
     {
@@ -212,6 +214,7 @@ abstract class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mun
      * Provide ordered items information
      *
      * @return array
+     * @throws Varien_Exception
      */
     protected function getItemsInformation()
     {

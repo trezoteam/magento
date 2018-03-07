@@ -2,6 +2,49 @@
 
 class Mundipagg_Paymentmodule_Model_Standard extends Mage_Payment_Model_Method_Abstract
 {
+    public function assignData($data)
+    {
+        $paymentMethod = $data->getMethod();
+        $paymentData = $this->getPaymentData($data->getData(), $paymentMethod);
+
+        try {
+            $info = $this->getInfoInstance();
+            $info->setAdditionalInformation('mundipagg_payment_method', $paymentMethod);
+            $info->setAdditionalInformation($paymentMethod, $paymentData);
+        } catch (Mage_Core_Exception $e) {
+            // @todo log it and do something
+        }
+
+        return $this;
+    }
+
+    private function getPaymentData($data, $paymentMethod)
+    {
+        $result = array_filter(
+            $data,
+            function ($k) use ($paymentMethod) {
+                return preg_match('/^' . $paymentMethod . '/', $k);
+            },
+            ARRAY_FILTER_USE_KEY
+        );
+
+        return $this->formatPaymentData($result, $paymentMethod);
+    }
+
+    private function formatPaymentData($data, $paymentMethod)
+    {
+        $result = [];
+
+        foreach ($data as $key => $value) {
+            $keys = explode($paymentMethod .'_', $key)[1];
+            $keys = explode('_', $keys);
+
+            $result[$keys[0]][$keys[1]][$keys[2]] = $value;
+        }
+
+        return $result;
+    }
+
     /**
      * This method defines the controller that will be called when the 'place order' button
      * is pressed, in this case, Mundipagg_Paymentmodule_StandardController, and the specific
@@ -16,10 +59,6 @@ class Mundipagg_Paymentmodule_Model_Standard extends Mage_Payment_Model_Method_A
             'paymentmodule/payment/processpayment',
             array('_secure' => false)
         );
-    }
-
-    public function authorize(Varien_Object $payment, $amount)
-    {
     }
 
     public function getCheckoutSession()
@@ -42,6 +81,7 @@ class Mundipagg_Paymentmodule_Model_Standard extends Mage_Payment_Model_Method_A
      *
      * @param string $orderId
      * @return string
+     * @throws Varien_Exception
      */
     public function getOrderByIncrementOrderId($orderId)
     {
@@ -70,6 +110,7 @@ class Mundipagg_Paymentmodule_Model_Standard extends Mage_Payment_Model_Method_A
     /**
      * @param $charges
      * @param $orderId
+     * @throws Varien_Exception
      */
     public function addChargeInfoToAdditionalInformation($charges, $orderId)
     {
@@ -110,5 +151,10 @@ class Mundipagg_Paymentmodule_Model_Standard extends Mage_Payment_Model_Method_A
         $payment = $this->getPaymentFromOrder($orderId);
 
         return $payment->getAdditionalInformation();
+    }
+
+    public function getOrderFromCheckoutSession()
+    {
+        return Mage::getSingleton('checkout/session');
     }
 }

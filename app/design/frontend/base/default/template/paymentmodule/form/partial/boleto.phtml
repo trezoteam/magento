@@ -1,9 +1,10 @@
 <?php
-$_code = $this->getCode();
-$elementIndex = $this->getElementIndex();
-$elementId = $_code . "_boleto_". $elementIndex;
-$elementClass = $_code . "_boleto";
-$showValueInput = $this->getShowValueInput();
+    $_code = $this->getCode();
+    $elementIndex = $this->getElementIndex();
+    $elementId = $_code . "_boleto_". $elementIndex;
+    $elementClass = $_code . "_boleto";
+    $showValueInput = $this->getShowValueInput();
+    $grandTotal = $this->getGrandTotal();
 ?>
 
 <div class="input-box">
@@ -21,12 +22,20 @@ $showValueInput = $this->getShowValueInput();
                     class="required-entry multipayment-value-input"
                     value="">
         </div>
+    <?php else: ?>
+        <div class="input-box">
+            <input
+                    type="hidden"
+                    id="<?php echo $elementId; ?>_value"
+                    name="payment[<?php echo $elementId; ?>_value]"
+                    value="<?php echo $grandTotal; ?>">
+        </div>
     <?php endif; ?>
     <label>CPF ou CNPJ<span class="required">*</span></label><br/>
     <input
             type="text"
-            id="<?php echo $elementId; ?>_input"
-            name="payment[<?php echo $elementId; ?>_input]"
+            id="<?php echo $elementId; ?>_taxvat"
+            name="payment[<?php echo $elementId; ?>_taxvat]"
             class="<?php echo $elementClass; ?>_validate-mundipagg-cpf required-entry"
     />
 </div>

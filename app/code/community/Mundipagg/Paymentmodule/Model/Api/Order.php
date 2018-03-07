@@ -13,7 +13,7 @@ class Mundipagg_Paymentmodule_Model_Api_Order
 {
     public function createPayment(Varien_Object $paymentInformation)
     {
-        $paymentMethod = $paymentInformation->getPaymentInfo()->getPaymentMethod();
+        $paymentMethod = $paymentInformation->getPaymentInfo();
         $paymentMethod = str_replace("_",'',$paymentMethod);
         $paymentModel = Mage::getModel('paymentmodule/api_' . $paymentMethod);
         $orderRequest = $paymentModel->getCreateOrderRequest($paymentInformation);
@@ -22,6 +22,7 @@ class Mundipagg_Paymentmodule_Model_Api_Order
         $helperLog = Mage::helper('paymentmodule/log');
         $helperLog->info("Request");
         $helperLog->info(json_encode($orderRequest,JSON_PRETTY_PRINT));
+
         try {
             $response = $orderController->createOrder($orderRequest);
             $helperLog->info("Response");

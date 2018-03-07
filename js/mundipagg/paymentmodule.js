@@ -244,16 +244,20 @@ function initPaymentMethod(methodCode)
     });
 
     Payment.prototype.save = Payment.prototype.save.wrap(function(save) {
-        if(this.currentMethod !== methodCode) {
+        var hasCardInfo = false;
+        var creditCardTokenDiv = '.'  + methodCode + "_creditcard_tokenDiv";
+        //generate token check table and check if cardInfos exists;
+        var tokenCheckTable = {};
+
+        jQuery(creditCardTokenDiv).each(function(index, element) {
+            tokenCheckTable[element.id] = false;
+            hasCardInfo = true;
+
+        });
+        if(this.currentMethod !== methodCode || hasCardInfo === false) {
             return save();
         }
         var prototypeWrapper = this;
-        var tokenCheckTable = {};
-
-        //generate token check table.
-        jQuery('.' +methodCode+ "_creditcard_tokenDiv").each(function(index,element) {
-            tokenCheckTable[element.id] = false;
-        });
 
         //for each of creditcard forms
         jQuery('.' +methodCode+ "_creditcard_tokenDiv").each(function(index,element) {

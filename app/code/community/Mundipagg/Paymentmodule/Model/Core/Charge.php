@@ -68,6 +68,7 @@ class Mundipagg_Paymentmodule_Model_Core_Charge extends Mundipagg_Paymentmodule_
     /**
      * Same as canceled
      * @param $charge
+     * @throws Varien_Exception
      */
     protected function paymentFailed($charge)
     {
@@ -84,6 +85,7 @@ class Mundipagg_Paymentmodule_Model_Core_Charge extends Mundipagg_Paymentmodule_
 
     /**
      * @param $charge
+     * @throws Varien_Exception
      */
     protected function partialRefunded($charge)
     {
@@ -99,6 +101,7 @@ class Mundipagg_Paymentmodule_Model_Core_Charge extends Mundipagg_Paymentmodule_
 
     /**
      * @param $charge
+     * @throws Varien_Exception
      */
     protected function partialCanceled($charge)
     {

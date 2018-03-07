@@ -1,9 +1,10 @@
 <?php
-$_code = $this->getCode();
-$elementIndex = $this->getElementIndex();
-$elementId = $_code . "_creditcard_". $elementIndex;
-$elementClass = $_code . "_creditcard";
-$showValueInput = $this->getShowValueInput();
+    $_code = $this->getCode();
+    $elementIndex = $this->getElementIndex();
+    $elementId = $_code . "_creditcard_". $elementIndex;
+    $elementClass = $_code . "_creditcard";
+    $showValueInput = $this->getShowValueInput();
+    $grandTotal = $this->getGrandTotal();
 ?>
 
 <div class="input-box <?php echo "$elementClass"?>_tokenDiv"
@@ -23,6 +24,14 @@ $showValueInput = $this->getShowValueInput();
                     class="required-entry multipayment-value-input"
                     onchange="getBrand('<?php echo $elementId?>');"
                     value="">
+        </div>
+    <?php else: ?>
+        <div class="input-box">
+            <input
+                    type="hidden"
+                    id="<?php echo $elementId; ?>_value"
+                    name="payment[<?php echo $elementId; ?>_value]"
+                    value="<?php echo $grandTotal; ?>">
         </div>
     <?php endif; ?>
     <div class="input-box">
