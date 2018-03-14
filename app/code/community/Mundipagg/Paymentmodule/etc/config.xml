@@ -1,33 +1,25 @@
 <config>
     <modules>
         <Mundipagg_Paymentmodule>
-            <version>0.0.1</version>
+            <version>0.1.0</version>
         </Mundipagg_Paymentmodule>
     </modules>
 
     <global>
         <models>
-            <paymentmodule>
+            <mundipagg_paymentmodule>
                 <class>Mundipagg_Paymentmodule_Model</class>
                 <resourceModel>paymentmodule_resource</resourceModel>
-            </paymentmodule>
+            </mundipagg_paymentmodule>
 
-            <paymentmodule_resource>
+            <mundipagg_paymentmodule_resource>
                 <class>Mundipagg_Paymentmodule_Model_Resource</class>
                 <entities>
-                    <customer>
-                        <table>mundipagg_paymentmodule_customer</table>
-                    </customer>
-
-                    <order>
-                        <table>mundipagg_paymentmodule_order</table>
-                    </order>
-
-                    <charge>
-                        <table>mundipagg_paymentmodule_charge</table>
-                    </charge>
+                    <saved_credit_card>
+                        <table>mundipagg_paymentmodule_saved_credit_card</table>
+                    </saved_credit_card>
                 </entities>
-            </paymentmodule_resource>
+            </mundipagg_paymentmodule_resource>
         </models>
 
         <helpers>
@@ -85,6 +77,13 @@
                 </totals>
             </quote>
         </sales>
+        <resources>
+            <mundipagg_paymentmodule_setup>
+                <setup>
+                    <module>Mundipagg_Paymentmodule</module>
+                </setup>
+            </mundipagg_paymentmodule_setup>
+        </resources>
     </global>
 
     <frontend>
