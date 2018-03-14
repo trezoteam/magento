@@ -4,6 +4,6 @@ class Mundipagg_Paymentmodule_Model_Resource_SavedCreditCard extends Mage_Core_M
 {
     protected function _construct()
     {
-        $this->_init('mundipagg_paymentmodule/saved_credit_card', 'card_id');
+        $this->_init('mundipagg_paymentmodule/saved_credit_card', 'id');
     }
 }
