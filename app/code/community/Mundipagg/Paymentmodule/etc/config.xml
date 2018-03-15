@@ -7,19 +7,19 @@
 
     <global>
         <models>
-            <mundipagg_paymentmodule>
+            <paymentmodule>
                 <class>Mundipagg_Paymentmodule_Model</class>
                 <resourceModel>paymentmodule_resource</resourceModel>
-            </mundipagg_paymentmodule>
+            </paymentmodule>
 
-            <mundipagg_paymentmodule_resource>
+            <paymentmodule_resource>
                 <class>Mundipagg_Paymentmodule_Model_Resource</class>
                 <entities>
                     <saved_credit_card>
                         <table>mundipagg_paymentmodule_saved_credit_card</table>
                     </saved_credit_card>
                 </entities>
-            </mundipagg_paymentmodule_resource>
+            </paymentmodule_resource>
         </models>
 
         <helpers>
