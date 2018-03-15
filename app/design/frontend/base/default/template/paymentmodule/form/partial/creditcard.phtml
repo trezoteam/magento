@@ -65,7 +65,7 @@
            id="<?php echo "$elementId"?>_brand_name"
            name="payment[<?php echo "$elementId"?>_brand_name]">
 
-    <label for="payment[<?php echo "$elementId"?>_creditCardNumber]">
+    <label for="<?php echo "$elementId"?>_mundicheckout-number">
         Card number<span class="required">*</span>
     </label>
     <div class="input-box">
@@ -83,7 +83,7 @@
         >
     </div>
 
-    <label for="">Holder name<span class="required">*</span></label>
+    <label for="<?php echo "$elementId"?>_mundicheckout-holdername">Holder name<span class="required">*</span></label>
     <div class="input-box">
         <input
                 type="text"
@@ -94,7 +94,7 @@
                 name="payment[<?php echo "$elementId"?>_holderName]"><br>
     </div>
 
-    <label for="">Expiration date<span class="required">*</span></label>
+    <label for="<?php echo "$elementId"?>_mundicheckout-expmonth">Expiration date<span class="required">*</span></label>
     <div class="input-box">
         <div class="v-fix">
             <select
@@ -133,7 +133,7 @@
             class="<?php echo $elementClass; ?>_validate-mundipagg-creditcard-exp"
             id="<?php echo "$elementId"?>_mundicheckout-expiration-date"><br>
 
-    <label for="">Parcelamento<span class="required">*</span></label>
+    <label for="<?php echo "$elementId"?>_mundicheckout-creditCard-installments">Parcelamento<span class="required">*</span></label>
     <div class="input-box">
         <select
                 name="payment[<?php echo "$elementId"?>_creditCardInstallments]"
@@ -144,7 +144,7 @@
         <br>
     </div>
 
-    <label for="">CVV<span class="required">*</span></label>
+    <label for="<?php echo "$elementId"?>_mundicheckout-cvv">CVV<span class="required">*</span></label>
     <div class="input-box">
         <input
                 type="text"
@@ -155,6 +155,17 @@
                 name="payment[<?php echo "$elementId"?>_cvv]"
                 maxlength="4"
         >
+        <br>
+    </div>
+
+    <div class="input-box">
+        <br>
+        <input
+                type="checkbox"
+                id="<?php echo "$elementId"?>_mundicheckout-save-credit-card"
+                name="<?php echo "$elementId"?>_save-credit-card"
+        >
+        <label for="<?php echo "$elementId"?>_mundicheckout-save-credit-card">Salvar este cartão para compras futuras</label>
         <br>
     </div>
 
