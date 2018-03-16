@@ -18,6 +18,7 @@ class Mundipagg_Paymentmodule_Model_Api_Order
         $paymentModel = Mage::getModel('paymentmodule/api_' . $paymentMethod);
         $orderRequest = $paymentModel->getCreateOrderRequest($paymentInformation);
         $orderController = $this->getOrderController();
+        $savedCreditCard = Mage::getModel('paymentmodule/SavedCreditCard');
 
         $helperLog = Mage::helper('paymentmodule/log');
         $helperLog->info("Request");
@@ -25,6 +26,7 @@ class Mundipagg_Paymentmodule_Model_Api_Order
 
         try {
             $response = $orderController->createOrder($orderRequest);
+            $savedCreditCard->save($orderRequest, $response);
             $helperLog->info("Response");
             $helperLog->info(json_encode($response,JSON_PRETTY_PRINT));
             return $response;
