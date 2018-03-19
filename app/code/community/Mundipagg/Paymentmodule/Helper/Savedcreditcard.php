@@ -12,12 +12,22 @@ class Mundipagg_Paymentmodule_Helper_Savedcreditcard extends Mage_Core_Helper_Ab
             throw new \Exception('Charge not found');
         }
 
+        $session = Mage::getSingleton('customer/session');
+        $customerLogged = $session->isLoggedIn();
+
+        if(!$customerLogged) {
+            return;
+        }
+
+        $customerId = $session->getCustomer()->getId();
+
         $standard = Mage::getModel('paymentmodule/standard');
         $orderId‌ = $response->code;
 
         $additionalInformation = $standard->getAdditionalInformationForOrder($orderId‌);
         $paymentMethod = $additionalInformation['mundipagg_payment_method'];
         $cards = $additionalInformation[$paymentMethod]['creditcard'];
+
 
         foreach ($cards as $key => $card) {
             if (
@@ -26,7 +36,8 @@ class Mundipagg_Paymentmodule_Helper_Savedcreditcard extends Mage_Core_Helper_Ab
             ) {
                 $this->save(
                     $response->charges[$key -1]->lastTransaction->card,
-                    $response->charges[$key -1]->customer->id
+                    $response->charges[$key -1]->customer->id,
+                    $customerId
                 );
             }
         }
@@ -37,16 +48,17 @@ class Mundipagg_Paymentmodule_Helper_Savedcreditcard extends Mage_Core_Helper_Ab
      * @param string $mundipaggCustomerId
      * @throws Exception
      */
-    public function save($card, $mundipaggCustomerId)
+    public function save($card, $mundipaggCustomerId, $customerId)
     {
         $saveCreditCard = Mage::getModel('paymentmodule/savedcreditcard');
         try {
             if(empty($saveCreditCard->loadMundipaggCardId($card->id)->getData())) {
                 $saveCreditCard->setMundipaggCardId($card->id);
                 $saveCreditCard->setMundipaggCustomerId($mundipaggCustomerId);
+                $saveCreditCard->setCustomerId($customerId);
                 $saveCreditCard->setHolderName($card->holderName);
                 $saveCreditCard->setBrandName($card->brand);
-                $saveCreditCard->setFirstSixDigits($card->firstSixDigits);
+                //$saveCreditCard->setFirstSixDigits($card->firstSixDigits);
                 $saveCreditCard->setLastFourDigits($card->lastFourDigits);
                 $saveCreditCard->setExpirationMonth($card->expMonth);
                 $saveCreditCard->setExpirationYear($card->expYear);
