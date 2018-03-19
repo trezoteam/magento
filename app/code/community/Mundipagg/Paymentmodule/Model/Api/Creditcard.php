@@ -27,7 +27,6 @@ class Mundipagg_Paymentmodule_Model_Api_Creditcard extends Mundipagg_Paymentmodu
             $paymentRequest->creditCard = $creditCardPaymentRequest;
             $paymentRequest->amount = $monetary->toCents($payment['value']);
             $paymentRequest->customer = $this->getCustomer();
-            $paymentRequest->metadata = ['save' => true];
             // @todo this should not be hard coded
             $paymentRequest->currency = 'BRL';
 
