@@ -7,16 +7,20 @@ $installer->startSetup();
 $prefix = Mage::getConfig()->getTablePrefix();
 
 $installer->run("
-CREATE TABLE mundipagg_saved_credit_card
+CREATE TABLE paymentmodule_savedcreditcard
 (
-    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    mundipagg_card_id VARCHAR(50) NOT NULL,
-    brand VARCHAR(6),
-    first_six_digits INT,
-    last_four_digit INT
-);
-CREATE UNIQUE INDEX mundipagg_saved_credit_card_id_uindex ON mundipagg_saved_credit_card (id);
-CREATE UNIQUE INDEX mundipagg_saved_credit_card_mundipagg_card_id_uindex ON mundipagg_saved_credit_card (mundipagg_card_id);
+  id                    INT AUTO_INCREMENT
+    PRIMARY KEY,
+  mundipagg_card_id     VARCHAR(255) NULL,
+  holder_name           VARCHAR(255) NULL,
+  mundipagg_customer_id VARCHAR(255) NULL,
+  brand_name            VARCHAR(12)  NULL,
+  first_six_digits      VARCHAR(6)   NULL,
+  last_four_digits      VARCHAR(4)   NULL,
+  expiration_month      INT(2)       NULL,
+  expiration_year       INT(4)       NULL
+)
+;
 ");
 
 $installer->endSetup();
