@@ -70,9 +70,32 @@ class Mundipagg_Paymentmodule_Block_Form_Builder extends Mage_Payment_Block_Form
 
     private function getSavedCreditCards()
     {
+
+        $session = Mage::getSingleton('customer/session');
+        $customerLogged = $session->isLoggedIn();
+
+        if(!$customerLogged) {
+            return null;
+        }
+
+        $customerId = $session->getCustomer()->getId();
+
+
         if (in_array("creditcard", $this->getStructure())) {
             $model = Mage::getModel('paymentmodule/savedcreditcard');
-            return $model->getResourceCollection()->load()->getItems();
+            return
+                $model
+                    ->getResourceCollection()
+                    ->addFieldToFilter('customer_id',$customerId)
+                    ->setOrder('id', 'DESC')
+                    ->addFieldToFilter(
+                        'expiration_date',
+                        [
+                            'from' => date('Y-m-01'),
+                        ]
+                    )
+                    ->load()
+                    ->getItems();
         }
         return null;
     }

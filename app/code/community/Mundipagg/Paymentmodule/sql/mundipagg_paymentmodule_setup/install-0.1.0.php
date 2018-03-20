@@ -17,8 +17,9 @@ CREATE TABLE paymentmodule_savedcreditcard
   brand_name            VARCHAR(12)  NOT NULL,
   first_six_digits      VARCHAR(6)   NULL,
   last_four_digits      VARCHAR(4)   NOT NULL,
-  expiration_month      INT(2)       NULL,
-  expiration_year       INT(4)       NULL
+  expiration_date       DATE         NULL,
+  created_at            TIMESTAMP    DEFAULT now(), 
+  updated_at            TIMESTAMP    DEFAULT now() ON UPDATE now() 
 )
 ;
 ");

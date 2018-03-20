@@ -60,8 +60,14 @@ class Mundipagg_Paymentmodule_Helper_Savedcreditcard extends Mage_Core_Helper_Ab
                 $saveCreditCard->setBrandName($card->brand);
                 //$saveCreditCard->setFirstSixDigits($card->firstSixDigits);
                 $saveCreditCard->setLastFourDigits($card->lastFourDigits);
-                $saveCreditCard->setExpirationMonth($card->expMonth);
-                $saveCreditCard->setExpirationYear($card->expYear);
+                $saveCreditCard
+                    ->setExpirationDate(
+                        $card->expYear .
+                        "-" .
+                        $card->expMonth .
+                        "-" .
+                        "01"
+                    );
                 $saveCreditCard->save();
             }
         } catch (\Exception $e) {
