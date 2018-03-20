@@ -40,7 +40,8 @@ class Mundipagg_Paymentmodule_Block_Form_Builder extends Mage_Payment_Block_Form
                 'code' => $this->getMethodCode(),
                 'element_index' => $this->getIndexFor($element),
                 'show_value_input' => count($this->getStructure()) > 1,
-                'grand_total' => number_format($grandTotal, "2", ",", "")
+                'grand_total' => number_format($grandTotal, "2", ",", ""),
+                'saved_credit_cards' => $this->getSavedCreditCards()
             ]
         );
 
@@ -65,5 +66,14 @@ class Mundipagg_Paymentmodule_Block_Form_Builder extends Mage_Payment_Block_Form
         $this->setElementCount($elementCount);
 
         return $this->elementCount[$element];
+    }
+
+    private function getSavedCreditCards()
+    {
+        if (in_array("creditcard", $this->getStructure())) {
+            $model = Mage::getModel('paymentmodule/savedcreditcard');
+            return $model->getResourceCollection()->load()->getItems();
+        }
+        return null;
     }
 }

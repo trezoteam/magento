@@ -5,12 +5,13 @@
     $elementClass = $_code . "_creditcard";
     $showValueInput = $this->getShowValueInput();
     $grandTotal = $this->getGrandTotal();
+    echo $this->getSavedCreditCards();
 ?>
 
 <div class="input-box <?php echo "$elementClass"?>_tokenDiv"
      id="<?php echo "$elementId"?>_tokenDiv"
      data-mundicheckout-app-id="<?php echo $this->getPublicKey(); ?>">
-    <h6>Credit Card <?php echo $elementIndex; ?></h6>
+    <h6>Cartão de crédito <?php echo $elementIndex; ?></h6>
     <?php if($showValueInput === true) : ?>
         <div class="input-box">
             <label>Value (Ex: 100.50)<span class="required">*</span></label><br/>

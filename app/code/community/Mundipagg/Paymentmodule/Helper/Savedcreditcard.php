@@ -52,7 +52,7 @@ class Mundipagg_Paymentmodule_Helper_Savedcreditcard extends Mage_Core_Helper_Ab
     {
         $saveCreditCard = Mage::getModel('paymentmodule/savedcreditcard');
         try {
-            if(empty($saveCreditCard->loadMundipaggCardId($card->id)->getData())) {
+            if(empty($saveCreditCard->loadByMundipaggCardId($card->id)->getData())) {
                 $saveCreditCard->setMundipaggCardId($card->id);
                 $saveCreditCard->setMundipaggCustomerId($mundipaggCustomerId);
                 $saveCreditCard->setCustomerId($customerId);
