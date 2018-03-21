@@ -5,7 +5,12 @@
     $elementClass = $_code . "_creditcard";
     $showValueInput = $this->getShowValueInput();
     $grandTotal = $this->getGrandTotal();
-    echo $this->getSavedCreditCards();
+    $savedCreditCards = $this->getSavedCreditCards();
+
+    $new = '';
+    if ($savedCreditCards) {
+        $new = "style='display: none'";
+    }
 ?>
 
 <div class="input-box <?php echo "$elementClass"?>_tokenDiv"
@@ -62,14 +67,43 @@
         />
         <br>
     </div>
+
+    <?php if ($savedCreditCards) { ?>
+        <label for="<?php echo "$elementId"?>_mundicheckout-creditCard-SavedCreditCard">Selecionar um cartão<span class="required">*</span></label>
+        <div class="input-box">
+            <select
+                    name="payment[<?php echo "$elementId"?>_SavedCreditCard]"
+                    id="<?php echo "$elementId"?>_mundicheckout-SavedCreditCard"
+                    onchange="getFormData('<?php echo $elementId?>'); switchNewSaved(this.value, '<?php echo $elementIndex?>'), fillSavedCreditCardInstallments('<?php echo $elementId?>')"
+                    elementIndex="<?php echo $elementIndex?>"
+                    elementId="<?php echo $elementId?>"
+                    class="savedCreditCardSelect"
+            >
+                <?php foreach ($savedCreditCards as $card) { ?>
+                    <option
+                            value="<?php echo $card->getMundipaggCardId(); ?>"
+                            brand="<?php echo $card->getBrandName(); ?>"
+                    ><?php
+                        echo
+                            $card->getBrandName() .
+                            ' xxxx-xxxx-xxxx-' .
+                            $card->getLastFourDigits()
+                        ?></option>
+                <?php } ?>
+                <option value="new" brand="">Preencher dados</option>
+            </select>
+            <br>
+        </div>
+    <?php } ?>
+
     <input type="hidden"
            id="<?php echo "$elementId"?>_brand_name"
            name="payment[<?php echo "$elementId"?>_brand_name]">
 
-    <label for="<?php echo "$elementId"?>_mundicheckout-number">
+    <label for="<?php echo "$elementId"?>_mundicheckout-number" class="newCreditCard-<?php echo $elementIndex?>" <?php echo $new; ?>>
         Card number<span class="required">*</span>
     </label>
-    <div class="input-box">
+    <div class="input-box newCreditCard-<?php echo $elementIndex?>" <?php echo $new; ?>>
         <span id="<?php echo "$elementId"?>_mundipaggBrandImage" class="mundipaggBrandImage"></span>
         <input type="hidden" id="<?php echo "$elementId"?>_mundipaggBrandName" value="">
         <input
@@ -84,8 +118,12 @@
         >
     </div>
 
-    <label for="<?php echo "$elementId"?>_mundicheckout-holdername">Holder name<span class="required">*</span></label>
-    <div class="input-box">
+    <label
+            for="<?php echo "$elementId"?>_mundicheckout-holdername"
+            class="newCreditCard-<?php echo $elementIndex?>"
+            <?php echo $new; ?>
+    >Holder name<span class="required">*</span></label>
+    <div class="input-box newCreditCard-<?php echo $elementIndex?>" <?php echo $new; ?>>
         <input
                 type="text"
                 data-mundicheckout-input="<?php echo "$elementId"?>_holder_name"
@@ -95,8 +133,12 @@
                 name="payment[<?php echo "$elementId"?>_holderName]"><br>
     </div>
 
-    <label for="<?php echo "$elementId"?>_mundicheckout-expmonth">Expiration date<span class="required">*</span></label>
-    <div class="input-box">
+    <label
+            for="<?php echo "$elementId"?>_mundicheckout-expmonth"
+            class="newCreditCard-<?php echo $elementIndex?>"
+            <?php echo $new; ?>
+    >Expiration date<span class="required">*</span></label>
+    <div class="input-box newCreditCard-<?php echo $elementIndex?>" <?php echo $new; ?>>
         <div class="v-fix">
             <select
                     class="required-entry"
@@ -141,12 +183,17 @@
                 id="<?php echo "$elementId"?>_mundicheckout-creditCard-installments"
                 onchange="getFormData('<?php echo $elementId?>');"
         >
+            <option value="">Preencha o número do cartão</option>
         </select>
         <br>
     </div>
 
-    <label for="<?php echo "$elementId"?>_mundicheckout-cvv">CVV<span class="required">*</span></label>
-    <div class="input-box">
+    <label
+        for="<?php echo "$elementId"?>_mundicheckout-cvv"
+        class="newCreditCard-<?php echo $elementIndex?>"
+        <?php echo $new; ?>
+    >CVV<span class="required">*</span></label>
+    <div class="input-box newCreditCard-<?php echo $elementIndex?>" <?php echo $new; ?>>
         <input
                 type="text"
                 data-mundicheckout-input="<?php echo "$elementId"?>_cvv"
@@ -159,7 +206,7 @@
         <br>
     </div>
 
-    <div class="input-box">
+    <div class="input-box newCreditCard-<?php echo $elementIndex?>" <?php echo $new; ?>>
         <br>
         <input
                 type="checkbox"
