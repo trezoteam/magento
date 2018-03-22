@@ -61,17 +61,17 @@ class Mundipagg_Paymentmodule_Model_Api_Creditcard extends Mundipagg_Paymentmodu
     {
         $session = Mage::getSingleton('customer/session');
         $customer = $session->getCustomer();
-        $adress = $customer->getPrimaryBillingAddress();
+        $address = $customer->getPrimaryBillingAddress();
         $addressRequest = new CreateAddressRequest();
 
-        $addressRequest->street = $adress->getStreet()[0];
-        $addressRequest->number = $adress->getStreet()[1];
-        $addressRequest->zipCode = $adress->getPostcode();
+        $addressRequest->street = $address->getStreet()[0];
+        $addressRequest->number = $address->getStreet()[1];
+        $addressRequest->zipCode = $address->getPostcode();
         $addressRequest->neighborhood = 'Comptown';
-        $addressRequest->city = $adress->getCity();;
-        $addressRequest->state = $adress->getRegion();;
+        $addressRequest->city = $address->getCity();;
+        $addressRequest->state = $address->getRegion();;
         $addressRequest->complement = '';
-        $addressRequest->country = $adress->getCountryId();
+        $addressRequest->country = $address->getCountryId();
 
         return $addressRequest;
     }
