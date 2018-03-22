@@ -27,7 +27,6 @@ class Mundipagg_Paymentmodule_Model_Api_Creditcard extends Mundipagg_Paymentmodu
                 $payment['SavedCreditCard'] &&
                 $this->validateSavedCreditCard($payment['SavedCreditCard'])
             ) {
-
                 $creditCardPaymentRequest->cardId = $payment['SavedCreditCard'];
             }
 

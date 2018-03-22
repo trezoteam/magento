@@ -304,7 +304,6 @@ function showBrandImage(brandName,elementId) {
 }
 
 /**
- *
  * @param baseUrl
  * @param brandName
  * @param argsObj

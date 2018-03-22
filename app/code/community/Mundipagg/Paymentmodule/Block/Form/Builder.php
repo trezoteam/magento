@@ -73,15 +73,15 @@ class Mundipagg_Paymentmodule_Block_Form_Builder extends Mage_Payment_Block_Form
         $session = Mage::getSingleton('customer/session');
         $customerLogged = $session->isLoggedIn();
 
-        if(!$customerLogged) {
+        if (!$customerLogged) {
             return null;
         }
 
         $customerId = $session->getCustomer()->getId();
 
-
         if (in_array("creditcard", $this->getStructure())) {
             $model = Mage::getModel('paymentmodule/savedcreditcard');
+
             return
                 $model
                     ->getResourceCollection()

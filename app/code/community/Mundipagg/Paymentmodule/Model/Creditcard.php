@@ -1,5 +1,5 @@
-<?php
 
+<?php
 class Mundipagg_Paymentmodule_Model_Creditcard extends Mundipagg_Paymentmodule_Model_Standard
 {
     protected $_code = 'paymentmodule_creditcard';
