@@ -1,20 +1,35 @@
 var toTokenApi = {};
 
 var brandName = false;
-/*
-function getFormData(elementIdSuffix) {
-    var suffix = typeof elementIdSuffix !== 'undefined' ?
-        elementIdSuffix : '';
-    toTokenApi.card = {
-        type: "credit",
-        holder_name: clearHolderName(document.getElementById('mundicheckout-holdername' + suffix)),
-        number: clearCardNumber(document.getElementById('mundicheckout-number' + suffix)),
-        exp_month: document.getElementById('mundicheckout-expmonth' + suffix).value,
-        exp_year: document.getElementById('mundicheckout-expyear' + suffix).value,
-        cvv: clearCvv(document.getElementById('mundicheckout-cvv' + suffix))
-    };
+
+function initSavedCreditCardInstallments() {
+    jQuery(".savedCreditCardSelect").each(function () {
+        var elementId = jQuery(this).attr("elementId");
+        fillSavedCreditCardInstallments(elementId)
+    });
 }
-*/
+
+function fillSavedCreditCardInstallments(elementId) {
+
+    var brandName = jQuery("#" + elementId + "_mundicheckout-SavedCreditCard").children("option:selected").attr("brand");
+    var baseUrl = jQuery("#baseUrl").val();
+    var value = jQuery("#" + elementId + "_value").val();
+
+    var argsObj = {
+        elementId: elementId,
+        installmentsBaseValue: value
+    };
+
+    if(brandName == "" || value == "") {
+        var html = "<option value=''>Preencha o número do cartão</option>"
+        jQuery("#"+argsObj.elementId+"_mundicheckout-creditCard-installments").html(html);
+        return;
+    }
+
+    getInstallments(baseUrl, brandName, argsObj);
+}
+
+
 /**
  * Call API
  * @param url string
@@ -83,123 +98,6 @@ function getCurrentYear() {
     return date.getFullYear();
 }
 
-/**
- * Get credit card brand
- * @param int creditCardNumber
- */
-/*function getBrand(creditCardNumber,elementIdSuffix,value) {
-    var suffix = '';
-    if (typeof elementIdSuffix !== 'undefined') {
-       suffix = elementIdSuffix;
-    }
-    brandName = jQuery("#mundipaggBrandName" + suffix).val();
-
-    if (creditCardNumber.length > 5 &&
-        (brandName == "" || typeof value !== 'undefined')) {
-        bin = creditCardNumber.substring(0, 6);
-        apiRequest(
-            "https://api.mundipagg.com/bin/v1/" + bin,
-            "",
-            fillBrandData,
-            "GET",
-            false,
-            {
-                elementIdSuffix : elementIdSuffix,
-                installmentsBaseValue: value
-            }
-        );
-    }
-    if (creditCardNumber.length < 6) {
-        clearBrand(elementIdSuffix);
-    }
-}*/
-
-/*function fillBrandData(data,argsObj) {
-    if (data.brand != "" && data.brand != undefined) {
-        var suffix = undefined;
-        if (
-            typeof argsObj !== 'undefined' &&
-            typeof argsObj.elementIdSuffix !== 'undefined'
-        ) {
-            suffix = argsObj.elementIdSuffix;
-        }
-        showBrandImage(data.brand,suffix);
-        getInstallments(jQuery("#baseUrl").val(), data.brandName,argsObj);
-        suffix = typeof suffix !== 'undefined' ? suffix : '';
-        jQuery("#mundipagg_creditcard_brand_name" + suffix).val(data.brandName);
-    }
-}*/
-
-/**
- * Show credit card brand image
- * @param brand
- */
-/*function showBrandImage(brandName,elementIdSuffix) {
-    html = "<img src='https://dashboard.mundipagg.com/emb/images/brands/" + brandName + ".jpg' ";
-    html += " class='mundipaggImage' width='26'>";
-
-    var suffix = '';
-    if (typeof elementIdSuffix !== 'undefined') {
-        suffix = elementIdSuffix;
-    }
-
-    jQuery("#mundipaggBrandName" + suffix).val(brandName);
-    jQuery("#mundipaggBrandImage" + suffix).html(html);
-}*/
-
-/*function clearBrand(elementIdSuffix){
-    var suffix = typeof elementIdSuffix !== 'undefined' ?
-        elementIdSuffix : '';
-    jQuery("#mundipaggBrandName" + suffix).val("");
-    jQuery("#mundipaggBrandImage" + suffix).html("");
-    jQuery("#mundicheckout-creditCard-installments" + suffix).html("");
-    jQuery("#mundipagg_creditcard_brand" + suffix).val("");
-}*/
-
-/*function getInstallments(baseUrl, brandName,argsObj) {
-    var value = '';
-    if (typeof argsObj.installmentsBaseValue !== 'undefined') {
-        var tmp = parseFloat(argsObj.installmentsBaseValue.replace(',','.'));
-        value = '?value=' + tmp;
-    }
-    apiRequest(
-        baseUrl + '/mundipagg/creditcard/getinstallments/' + brandName + value,
-        '',
-        switchInstallments,
-        "GET",
-        false,
-        argsObj
-    );
-}*/
-
-/*function switchInstallments(data,argsObj) {
-    if (data){
-        var suffix = '';
-        if (typeof argsObj.elementIdSuffix !== undefined) {
-            suffix = argsObj.elementIdSuffix;
-        }
-        html = "<option>1x sem juros</option>";
-        jQuery("#mundicheckout-creditCard-installments" + suffix).html("");
-
-        data.forEach(fillInstallments,argsObj);
-    }
-}*/
-
-/*function fillInstallments(item, index) {
-    if (item.interest == 0) {
-        item.interest = " sem juros";
-    } else{
-        item.interest = " com " + item.interest + "% de juros";
-    }
-
-    html = "<option value='"+item.times+"'>" +
-        item.times + "x de " + item.amount + item.interest + "</option>";
-
-    var suffix = typeof this.elementIdSuffix !== 'undefined' ?
-        this.elementIdSuffix : '';
-
-    jQuery("#mundicheckout-creditCard-installments" + suffix).append(html);
-}*/
 
 function balanceValues(grandTotal,triggerInput,balanceInputId) {
     var triggerValue = parseFloat(triggerInput.value.replace(',','.'));
@@ -227,10 +125,11 @@ function balanceValues(grandTotal,triggerInput,balanceInputId) {
 //validations
 function initPaymentMethod(methodCode)
 {
+    initSavedCreditCardInstallments();
     Validation.add(methodCode + '_boleto_validate-mundipagg-cpf', 'CPF inválido', function(cpf) {
         return validateCPF(cpf);
     });
-
+    /*
     Validation.add(methodCode + '_creditcard_validate-mundipagg-creditcard-exp', 'Data inválida', function(v,element) {
         var triggerId = element.id;
         var elementIndex = triggerId
@@ -289,7 +188,7 @@ function initPaymentMethod(methodCode)
                 });
             }
         });
-    });
+    });*/
 }
 
 function validateCPF(cpf)
@@ -404,9 +303,18 @@ function showBrandImage(brandName,elementId) {
     jQuery("#"+elementId+"_mundipaggBrandImage" ).html(html);
 }
 
-function getInstallments(baseUrl, brandName,argsObj) {
+/**
+ * @param baseUrl
+ * @param brandName
+ * @param argsObj
+ * var argsObj = {
+ *      elementId: elementId,
+ *      installmentsBaseValue: value
+ *  };
+ */
+function getInstallments(baseUrl, brandName, argsObj) {
     var value = '';
-    if (typeof argsObj.installmentsBaseValue !== 'undefined') {
+    if(typeof argsObj.installmentsBaseValue !== 'undefined'){
         var tmp = parseFloat(argsObj.installmentsBaseValue.replace(',','.'));
         value = '?value=' + tmp;
     }
@@ -442,7 +350,15 @@ function fillInstallments(item) {
     jQuery("#"+this.elementId+"_mundicheckout-creditCard-installments").append(html);
 }
 
-
+function switchNewSaved(value, elementId) {
+    if(value == "new") {
+        jQuery(".newCreditCard-" + elementId).show();
+        jQuery(".savedCreditCard-" + elementId).hide();
+    } else {
+        jQuery(".newCreditCard-" + elementId).hide();
+        jQuery(".savedCreditCard-" + elementId).show();
+    }
+}
 
 
 

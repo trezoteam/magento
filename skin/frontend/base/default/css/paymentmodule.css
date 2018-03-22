@@ -6,3 +6,7 @@
     margin-right: 1px;
     padding: 2px;
 }
+
+.hidden{
+    display: none;
+}

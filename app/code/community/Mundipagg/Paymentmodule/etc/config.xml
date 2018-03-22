@@ -15,9 +15,9 @@
             <paymentmodule_resource>
                 <class>Mundipagg_Paymentmodule_Model_Resource</class>
                 <entities>
-                    <saved_credit_card>
-                        <table>mundipagg_paymentmodule_saved_credit_card</table>
-                    </saved_credit_card>
+                    <savedcreditcard>
+                        <table>paymentmodule_savedcreditcard</table>
+                    </savedcreditcard>
                 </entities>
             </paymentmodule_resource>
         </models>
