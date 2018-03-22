@@ -126,11 +126,10 @@ function balanceValues(grandTotal,triggerInput,balanceInputId) {
 function initPaymentMethod(methodCode)
 {
     initSavedCreditCardInstallments();
-
-    /*Validation.add(methodCode + '_boleto_validate-mundipagg-cpf', 'CPF inválido', function(cpf) {
+    Validation.add(methodCode + '_boleto_validate-mundipagg-cpf', 'CPF inválido', function(cpf) {
         return validateCPF(cpf);
     });
-
+    /*
     Validation.add(methodCode + '_creditcard_validate-mundipagg-creditcard-exp', 'Data inválida', function(v,element) {
         var triggerId = element.id;
         var elementIndex = triggerId

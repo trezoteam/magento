@@ -70,7 +70,6 @@ class Mundipagg_Paymentmodule_Block_Form_Builder extends Mage_Payment_Block_Form
 
     private function getSavedCreditCards()
     {
-
         $session = Mage::getSingleton('customer/session');
         $customerLogged = $session->isLoggedIn();
 

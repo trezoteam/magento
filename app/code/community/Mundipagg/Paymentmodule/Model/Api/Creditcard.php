@@ -21,7 +21,15 @@ class Mundipagg_Paymentmodule_Model_Api_Creditcard extends Mundipagg_Paymentmodu
             $creditCardPaymentRequest = new CreateCreditCardPaymentRequest();
 
             $creditCardPaymentRequest->installments = $payment['creditCardInstallments'];
-            $creditCardPaymentRequest->cardToken = $payment['token'];
+            $creditCardPaymentRequest->cardToken = $payment['token'] ?? '';
+
+            if (
+                $payment['SavedCreditCard'] &&
+                $this->validateSavedCreditCard($payment['SavedCreditCard'])
+            ) {
+
+                $creditCardPaymentRequest->cardId = $payment['SavedCreditCard'];
+            }
 
             $paymentRequest->paymentMethod = 'credit_card';
             $paymentRequest->creditCard = $creditCardPaymentRequest;
@@ -38,28 +46,49 @@ class Mundipagg_Paymentmodule_Model_Api_Creditcard extends Mundipagg_Paymentmodu
 
     private function getCustomer()
     {
+        $session = Mage::getSingleton('customer/session');
+        $customer = $session->getCustomer();
         $customerRequest = new CreateCustomerRequest();
 
-        $customerRequest->name = 'John Doe';
+        $customerRequest->name = $customer->getName();
         $customerRequest->address = $this->getAddress();
         $customerRequest->type = 'individual';
+        $customerRequest->email = $customer->getEmail();
 
         return $customerRequest;
     }
 
     private function getAddress()
     {
+        $session = Mage::getSingleton('customer/session');
+        $customer = $session->getCustomer();
+        $adress = $customer->getPrimaryBillingAddress();
         $addressRequest = new CreateAddressRequest();
 
-        $addressRequest->street = 'Fake Street';
-        $addressRequest->number = 23;
-        $addressRequest->zipCode = '24420023';
+        $addressRequest->street = $adress->getStreet()[0];
+        $addressRequest->number = $adress->getStreet()[1];
+        $addressRequest->zipCode = $adress->getPostcode();
         $addressRequest->neighborhood = 'Comptown';
-        $addressRequest->city = 'San Andreas';
-        $addressRequest->state = 'RJ';
-        $addressRequest->complement = 'Far from here';
-        $addressRequest->country = 'BR';
+        $addressRequest->city = $adress->getCity();;
+        $addressRequest->state = $adress->getRegion();;
+        $addressRequest->complement = '';
+        $addressRequest->country = $adress->getCountryId();
 
         return $addressRequest;
+    }
+
+    private function validateSavedCreditCard($mundipaggCardId)
+    {
+        $session = Mage::getSingleton('customer/session');
+        $model = Mage::getModel('paymentmodule/savedcreditcard');
+
+        $customerId = $session->getCustomer()->getId();
+        $card = $model->loadByMundipaggCardId($mundipaggCardId);
+
+        if($card->getCustomerId() == $customerId) {
+            return true;
+        }
+
+        return false;
     }
 }
