@@ -9,6 +9,6 @@ class Mundipagg_Paymentmodule_Model_Config_Twocreditcards
 
     public function getPaymentTitle()
     {
-        return Mage::getStoreConfig('mundipagg_config/creditcard_group/twocreditcards_payment_title');
+        return Mage::getStoreConfig('mundipagg_config/twocreditcards_group/twocreditcards_payment_title');
     }
 }
