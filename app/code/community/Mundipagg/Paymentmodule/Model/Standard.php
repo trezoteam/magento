@@ -2,6 +2,24 @@
 
 class Mundipagg_Paymentmodule_Model_Standard extends Mage_Payment_Model_Method_Abstract
 {
+
+    public function isAvailable($quote = null)
+    {
+        return $this->getConfigModel()->isEnabled();
+    }
+
+    public function getPaymentTitle()
+    {
+        return $this->getConfigModel()->getPaymentTitle();
+    }
+
+    protected function getConfigModel() {
+        throw new \Exception(
+            "Magento tries to instantiate this class, so this method can't be abstract. " .
+            "It must be implemented in child classes."
+        );
+    }
+
     public function assignData($data)
     {
         $paymentMethod = $data->getMethod();
