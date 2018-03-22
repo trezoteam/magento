@@ -58,14 +58,6 @@
         </fieldsets>
 
         <events>
-            <mundipagg_payment_start>
-                <observers>
-                    <mundipagg_paymentmodule_payment_start_event_observer>
-                        <class>paymentmodule/observer</class>
-                        <method>requireDependencies</method>
-                    </mundipagg_paymentmodule_payment_start_event_observer>
-                </observers>
-            </mundipagg_payment_start>
         </events>
 
         <sales>
