@@ -51,4 +51,14 @@
         </reference>
     </checkout_onepage_success>
 
+    <creditcard_wallet_menu_item_handle translate="label">
+        <reference name="customer_account_navigation">
+            <action method="addLink" translate="label" module="paymentmodule">
+                <name>paymentmodule</name>
+                <path>mundipagg/wallet/</path>
+                <label>My cards</label>
+            </action>
+        </reference>
+    </creditcard_wallet_menu_item_handle>
+
 </layout>
