@@ -58,6 +58,15 @@
         </fieldsets>
 
         <events>
+            <checkout_onepage_controller_success_action>
+                <observers>
+                    <mundipagg_checkout_success_info>
+                        <type>singleton</type>
+                        <class>paymentmodule/observer</class>
+                        <method>addAdditionalInformationToCheckout</method>
+                    </mundipagg_checkout_success_info>
+                </observers>
+            </checkout_onepage_controller_success_action>
         </events>
 
         <sales>
