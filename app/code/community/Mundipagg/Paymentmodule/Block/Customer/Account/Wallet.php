@@ -1,0 +1,70 @@
+<?php
+
+class Mundipagg_Paymentmodule_Block_Customer_Account_Wallet extends Mage_Payment_Block_Form
+{
+
+    private $savedCreditCards = null;
+
+    protected function _construct()
+    {
+        parent::_construct();
+        $this->setTemplate('paymentmodule/customer/account/wallet.phtml');
+    }
+
+    public function getTitle()
+    {
+        return "My Cards";
+    }
+
+    public function getSavedCreditCards()
+    {
+        if (!$this->savedCreditCards) {
+            $savedCreditCardsHelper = Mage::helper('paymentmodule/savedcreditcard');
+            $this->savedCreditCards = $savedCreditCardsHelper->getCurrentCustomerSavedCards();
+        }
+
+        return array_map(function($card) {
+            return (object)$card;
+        },$this->savedCreditCards);
+    }
+
+    public function hasSavedCards()
+    {
+        return count($this->getSavedCreditCards()) > 0;
+    }
+}
+
+/*
+<?php
+
+class Mundipagg_Paymentmodule_Block_Customer_Account_Wallet extends Mage_Payment_Block_Form
+{
+
+    private $savedCreditCards = null;
+
+    protected function _construct()
+    {
+        parent::_construct();
+        $this->setTemplate('paymentmodule/customer/account/wallet.phtml');
+    }
+
+    public function getTitle()
+    {
+        $test = $this->getSavedCreditCards();
+        return "My Cards";
+    }
+
+    public function getSavedCreditCards()
+    {
+        if (!$this->savedCreditCards) {
+            $savedCreditCardsHelper = Mage::helper('paymentmodule/savedcreditcard');
+            $this->savedCreditCards = $savedCreditCardsHelper->getCurrentCustomerSavedCards();
+        }
+
+        return array_map(function($card) {
+            return (object)$card;
+        },$this->savedCreditCards);
+    }
+}
+
+*/
