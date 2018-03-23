@@ -72,4 +72,27 @@ class Mundipagg_Paymentmodule_Helper_Savedcreditcard extends Mage_Core_Helper_Ab
             throw new \Exception($e->getMessage());
         }
     }
+
+    public function getCurrentCustomerSavedCards() {
+        //This function looks like an repository funcion...
+        $savedCreditCards = [];
+
+        $session = Mage::getSingleton('customer/session');
+
+        if ($session->isLoggedIn()) {
+            $customerId = $session->getCustomer()->getId();
+
+            $savedCreditCardModel = Mage::getModel('paymentmodule/savedcreditcard');
+            $savedCreditCardCollection = $savedCreditCardModel->getResourceCollection()
+                ->addFieldToFilter('customer_id',$customerId)
+                ->load()
+                ->getItems();
+
+            foreach ($savedCreditCardCollection as $creditcard) {
+                $savedCreditCards[] = $creditcard->getData();
+            }
+        }
+
+        return $savedCreditCards;
+    }
 }
