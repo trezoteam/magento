@@ -23,7 +23,7 @@
                             <td><?php echo $card->brand_name; ?></td>
                             <td><?php echo $card->last_four_digits; ?></td>
                             <td><?php echo $card->expiration_date; ?></td>
-                            <td>(actions)</td>
+                            <td><a href="delete?cardId=<?php echo $card->id; ?>">Excluir</a></td>
                         </tr>
                     <?php endforeach ?>
                     </tbody>

@@ -73,6 +73,29 @@ class Mundipagg_Paymentmodule_Helper_Savedcreditcard extends Mage_Core_Helper_Ab
         }
     }
 
+    public function deleteByCardId($id)
+    {
+        $this->delete('id',$id);
+    }
+
+    public function deleteByMundipaggCardId($id)
+    {
+        $this->delete('mundipagg_card_id', $id);
+    }
+
+    private function delete ($field,$value)
+    {
+        $savedCreditCardModel = Mage::getModel('paymentmodule/savedcreditcard');
+        $savedCreditCardCollection = $savedCreditCardModel->getResourceCollection()
+            ->addFieldToFilter($field,$value)
+            ->load()
+            ->getItems();
+
+        foreach($savedCreditCardCollection as $savedCreditCard) {
+            $savedCreditCard->delete();
+        }
+    }
+
     public function getCurrentCustomerSavedCards() {
         //This function looks like an repository funcion...
         $savedCreditCards = [];
@@ -94,5 +117,12 @@ class Mundipagg_Paymentmodule_Helper_Savedcreditcard extends Mage_Core_Helper_Ab
         }
 
         return $savedCreditCards;
+    }
+
+    public function isSavedCreditCardsEnabled()
+    {
+        $cardsConfig = Mage::getModel('paymentmodule/config_card');
+
+        return $cardsConfig->isEnabled() === '1' && $cardsConfig->isSavedCreditCardsEnabled() === '1';
     }
 }
