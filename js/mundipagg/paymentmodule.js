@@ -20,8 +20,15 @@ function fillSavedCreditCardInstallments(elementId) {
         installmentsBaseValue: value
     };
 
-    if(brandName == "" || value == "") {
-        var html = "<option value=''>Preencha o número do cartão</option>"
+
+    let html = '';
+    if(brandName == "") {
+        html = "<option value=''>Preencha o número do cartão</option>";
+    }
+    if(value == "") {
+        html = "<option value=''>Preencha o valor para este cartão</option>";
+    }
+    if (html !== '') {
         jQuery("#"+argsObj.elementId+"_mundicheckout-creditCard-installments").html(html);
         return;
     }
@@ -282,9 +289,22 @@ function getFormData(elementId) {
 
 function getBrand(elementId) {
 
+
     var brandName = jQuery("#" + elementId +"_mundipaggBrandName").val();
+    var baseUrl = jQuery("#baseUrl").val();
     var creditCardNumber = jQuery("#" + elementId +"_mundicheckout-number").val();
     var value = jQuery("#" + elementId +"_value").val();
+    var argsObj = {
+        elementId : elementId,
+        installmentsBaseValue: value
+    };
+
+    if (!isNewCard(elementId)) {
+        brandName = jQuery("#" + elementId + "_mundicheckout-SavedCreditCard")
+            .children("option:selected").attr("brand");
+        getInstallments(baseUrl, brandName, argsObj);
+        return;
+    }
 
     if (
         creditCardNumber.length > 5 &&
@@ -297,10 +317,7 @@ function getBrand(elementId) {
             fillBrandData,
             "GET",
             false,
-            {
-                elementId : elementId,
-                installmentsBaseValue: value
-            }
+            argsObj
         );
     }
     if (creditCardNumber.length < 6) {
