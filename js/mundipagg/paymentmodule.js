@@ -129,13 +129,17 @@ function initPaymentMethod(methodCode)
     Validation.add(methodCode + '_boleto_validate-mundipagg-cpf', 'CPF inválido', function(cpf) {
         return validateCPF(cpf);
     });
-    /*
+
     Validation.add(methodCode + '_creditcard_validate-mundipagg-creditcard-exp', 'Data inválida', function(v,element) {
         var triggerId = element.id;
         var elementIndex = triggerId
             .replace(methodCode + '_creditcard_','')
             .replace('_mundicheckout-expiration-date','');
         var elementId = methodCode + "_creditcard_"+ elementIndex;
+
+        if (!isNewCard(elementId)) {
+            return true;
+        }
 
         var month = document.getElementById(elementId + '_mundicheckout-expmonth');
         var year = document.getElementById(elementId + '_mundicheckout-expyear');
@@ -161,34 +165,58 @@ function initPaymentMethod(methodCode)
         //for each of creditcard forms
         jQuery('.' +methodCode+ "_creditcard_tokenDiv").each(function(index,element) {
             var elementId = element.id.replace('_tokenDiv', '');
-            var key = document.getElementById(element.id)
-                .getAttribute('data-mundicheckout-app-id');
-            var tokenElement = document.getElementById(elementId + '_mundicheckout-token');
-            var validator = new Validation(prototypeWrapper.form);
-            if (prototypeWrapper.validate() && validator.validate()) {
-                getCreditCardToken(key, elementId, function (response) {
-                    if (response != false) {
-                        tokenElement.value = response.id;
-                        jQuery("#"+elementId+"_mundipagg-invalid-credit-card").hide();
-                        tokenCheckTable[element.id] = true;
-                        //check if all tokens are generated.
-                        var canSave = true;
-                        jQuery('.' +methodCode+ "_creditcard_tokenDiv").each(function(index,element) {
-                            if (tokenCheckTable[element.id] === false) {
-                                canSave = false;
+
+            if (isNewCard(elementId) ) {
+                var key = document.getElementById(element.id)
+                    .getAttribute('data-mundicheckout-app-id');
+                var tokenElement = document.getElementById(elementId + '_mundicheckout-token');
+                var validator = new Validation(prototypeWrapper.form);
+                if (prototypeWrapper.validate() && validator.validate()) {
+                    getCreditCardToken(key, elementId, function (response) {
+                        if (response != false) {
+                            tokenElement.value = response.id;
+                            jQuery("#"+elementId+"_mundipagg-invalid-credit-card").hide();
+                            tokenCheckTable[element.id] = true;
+                            //check if all tokens are generated.
+                            var canSave = true;
+                            jQuery('.' +methodCode+ "_creditcard_tokenDiv").each(function(index,element) {
+                                if (tokenCheckTable[element.id] === false) {
+                                    canSave = false;
+                                }
+                            });
+                            if (canSave) {
+                                save();
                             }
-                        });
-                        if (canSave) {
-                            save();
+                            return;
                         }
-                        return;
-                    }
-                    tokenElement.value = "";
-                    jQuery("#"+elementId+"_mundipagg-invalid-credit-card").show();
-                });
+                        tokenElement.value = "";
+                        jQuery("#"+elementId+"_mundipagg-invalid-credit-card").show();
+                    });
+                }
+                return;
             }
+
+            tokenCheckTable[element.id] = true;
+            return save();
         });
-    });*/
+    });
+}
+
+function isNewCard(elementId)
+{
+    let isNew = false;
+
+    try {
+        isNew = jQuery('#' + elementId + '_mundicheckout-SavedCreditCard');
+        isNew =
+            isNew.children("option:selected").val() === 'new' ||
+            typeof isNew.children("option:selected").val() === 'undefined';
+    }
+    catch(e) {
+        isNew = true;
+    }
+
+    return isNew;
 }
 
 function validateCPF(cpf)
