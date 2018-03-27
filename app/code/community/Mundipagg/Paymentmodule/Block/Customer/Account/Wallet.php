@@ -2,8 +2,7 @@
 
 class Mundipagg_Paymentmodule_Block_Customer_Account_Wallet extends Mage_Payment_Block_Form
 {
-
-    private $savedCreditCards = null;
+    protected $savedCreditCards = null;
 
     protected function _construct()
     {

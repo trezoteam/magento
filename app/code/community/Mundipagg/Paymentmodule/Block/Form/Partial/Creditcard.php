@@ -26,7 +26,7 @@ class Mundipagg_Paymentmodule_Block_Form_Partial_Creditcard extends Mage_Payment
             return $savedCreditCardsHelper->getCurrentCustomerSavedCards();
         }
 
-        return null;
+        return [];
     }
 
     public function isSavedCreditCardsEnabled()

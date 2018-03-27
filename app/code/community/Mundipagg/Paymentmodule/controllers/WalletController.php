@@ -1,14 +1,14 @@
 <?php
 
-
 class Mundipagg_Paymentmodule_WalletController extends Mage_Core_Controller_Front_Action
 {
     public function indexAction()
     {
         $savedCreditCardsHelper = Mage::helper('paymentmodule/savedcreditcard');
+        $isUserLoggedIn = Mage::getSingleton('customer/session')->isLoggedIn();
 
         if (
-            !$this->isUserLoggedIn() ||
+            !$isUserLoggedIn ||
             !$savedCreditCardsHelper->isSavedCreditCardsEnabled()
         ) {
             $this->_redirect('customer/account/', ['_secure' => true]);
@@ -22,9 +22,10 @@ class Mundipagg_Paymentmodule_WalletController extends Mage_Core_Controller_Fron
     public function deleteAction()
     {
         $savedCreditCardsHelper = Mage::helper('paymentmodule/savedcreditcard');
+        $isUserLoggedIn = Mage::getSingleton('customer/session')->isLoggedIn();
 
         if (
-            $this->isUserLoggedIn() &&
+            $isUserLoggedIn() &&
             $savedCreditCardsHelper->isSavedCreditCardsEnabled()
         ) {
             $savedCreditCards = $savedCreditCardsHelper->getCurrentCustomerSavedCards();
@@ -46,10 +47,5 @@ class Mundipagg_Paymentmodule_WalletController extends Mage_Core_Controller_Fron
         }
 
         $this->_redirect('mundipagg/wallet/', ['_secure' => true]);
-    }
-
-    private function isUserLoggedIn()
-    {
-        return Mage::getSingleton('customer/session')->isLoggedIn();
     }
 }

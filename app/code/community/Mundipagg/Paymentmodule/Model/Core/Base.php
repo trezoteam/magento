@@ -25,12 +25,13 @@ class Mundipagg_Paymentmodule_Model_Core_Base
      * @param string $snake
      * @return string
      */
-    private function fromSnakeToCamel($snake)
+    protected function fromSnakeToCamel($snake)
     {
         $result = [];
+        $length = strlen($snake);
 
-        for ($i = 0; $i < strlen($snake); $i++) {
-            if ($snake[$i] == '_') {
+        for ($i = 0; $i < $length ; $i++) {
+            if ($snake[$i] === '_') {
                 $result[] = ucfirst($snake[++$i]);
             } else {
                 $result[] = $snake[$i];

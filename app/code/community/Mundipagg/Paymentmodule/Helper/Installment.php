@@ -13,7 +13,7 @@ class Mundipagg_Paymentmodule_Helper_Installment extends Mage_Core_Helper_Abstra
         return $this->getCardsInstallments($total, $cards);
     }
 
-    private function getDefaultInstallments($total)
+    protected function getDefaultInstallments($total)
     {
         $cardConfig = Mage::getModel('paymentmodule/config_card');
 
@@ -30,7 +30,7 @@ class Mundipagg_Paymentmodule_Helper_Installment extends Mage_Core_Helper_Abstra
         );
     }
 
-    private function getCardsInstallments($total, $cards = null)
+    protected function getCardsInstallments($total, $cards = null)
     {
         $cardConfig = Mage::getModel('paymentmodule/config_card');
 
@@ -57,7 +57,7 @@ class Mundipagg_Paymentmodule_Helper_Installment extends Mage_Core_Helper_Abstra
         return $installments;
     }
 
-    private function getInstallmentsWithoutInterest($total, $max)
+    protected function getInstallmentsWithoutInterest($total, $max)
     {
         $installments = array();
 
@@ -72,7 +72,7 @@ class Mundipagg_Paymentmodule_Helper_Installment extends Mage_Core_Helper_Abstra
         return $installments;
     }
 
-    private function getInstallmentsWithInterest($total, $maxWithout, $max, $interest, $increment = 0)
+    protected function getInstallmentsWithInterest($total, $maxWithout, $max, $interest, $increment = 0)
     {
         $installments = array();
 

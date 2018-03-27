@@ -42,7 +42,7 @@ class Mundipagg_Paymentmodule_Model_Api_Boleto extends Mundipagg_Paymentmodule_M
         return $result;
     }
 
-    private function getCustomer($documentNumber)
+    protected function getCustomer($documentNumber)
     {
         $customerRequest = new CreateCustomerRequest();
 
@@ -54,7 +54,7 @@ class Mundipagg_Paymentmodule_Model_Api_Boleto extends Mundipagg_Paymentmodule_M
         return $customerRequest;
     }
 
-    private function getAddress()
+    protected function getAddress()
     {
         $addressRequest = new CreateAddressRequest();
 

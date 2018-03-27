@@ -36,14 +36,14 @@ class Mundipagg_Paymentmodule_Model_Api_Order
         }
     }
 
-    private function getOrderController()
+    protected function getOrderController()
     {
         $client = $this->getMundiPaggApiClient();
 
         return $client->getOrders();
     }
 
-    private function getMundiPaggApiClient()
+    protected function getMundiPaggApiClient()
     {
         $generalConfig = Mage::getModel('paymentmodule/config_general');
 

@@ -46,7 +46,7 @@ class Mundipagg_Paymentmodule_Helper_Savedcreditcard extends Mage_Core_Helper_Ab
      * @param string $mundipaggCustomerId
      * @throws Exception
      */
-    private function save($card, $mundipaggCustomerId, $customerId)
+    protected function save($card, $mundipaggCustomerId, $customerId)
     {
         $saveCreditCard = Mage::getModel('paymentmodule/savedcreditcard');
         try {
@@ -83,7 +83,7 @@ class Mundipagg_Paymentmodule_Helper_Savedcreditcard extends Mage_Core_Helper_Ab
         $this->delete('mundipagg_card_id', $id);
     }
 
-    private function delete ($field,$value)
+    protected function delete($field, $value)
     {
         $savedCreditCardModel = Mage::getModel('paymentmodule/savedcreditcard');
         $savedCreditCardCollection = $savedCreditCardModel->getResourceCollection()

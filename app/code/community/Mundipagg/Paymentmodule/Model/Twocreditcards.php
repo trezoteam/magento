@@ -35,7 +35,7 @@ class Mundipagg_Paymentmodule_Model_Twocreditcards extends Mundipagg_Paymentmodu
         ];
     }
 
-    private function getBaseKey()
+    protected function getBaseKey()
     {
         return 'mundipagg_payment_module_';
     }
