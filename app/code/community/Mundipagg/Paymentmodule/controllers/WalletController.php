@@ -25,7 +25,7 @@ class Mundipagg_Paymentmodule_WalletController extends Mage_Core_Controller_Fron
         $isUserLoggedIn = Mage::getSingleton('customer/session')->isLoggedIn();
 
         if (
-            $isUserLoggedIn() &&
+            $isUserLoggedIn &&
             $savedCreditCardsHelper->isSavedCreditCardsEnabled()
         ) {
             $savedCreditCards = $savedCreditCardsHelper->getCurrentCustomerSavedCards();
