@@ -53,6 +53,9 @@ class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mundipagg_Pa
             $moduleModelOrder = Mage::getModel('paymentmodule/core_order');
             $moduleModelCharge = Mage::getModel('paymentmodule/core_charge');
 
+            $savedCreditCard = Mage::helper('paymentmodule/savedcreditcard');
+            $savedCreditCard->saveCards($response);
+
             foreach ($response->charges as $charge) {
                 $charge->code = $response->code;
 //                $charge->order->id = $response->id;
