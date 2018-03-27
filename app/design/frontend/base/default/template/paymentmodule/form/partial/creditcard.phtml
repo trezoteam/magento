@@ -6,6 +6,7 @@
     $showValueInput = $this->getShowValueInput();
     $grandTotal = $this->getGrandTotal();
     $savedCreditCards = $this->getSavedCreditCards();
+    $isSavedCreditCardsEnabled = $this->isSavedCreditCardsEnabled();
 
     $new = '';
     if ($savedCreditCards) {
@@ -68,7 +69,7 @@
         <br>
     </div>
 
-    <?php if ($savedCreditCards) { ?>
+    <?php if ($savedCreditCards && $isSavedCreditCardsEnabled) { ?>
         <label for="<?php echo "$elementId"?>_mundicheckout-creditCard-SavedCreditCard">Selecionar um cartão<span class="required">*</span></label>
         <div class="input-box">
             <select
@@ -206,6 +207,7 @@
         <br>
     </div>
 
+    <?php if ($isSavedCreditCardsEnabled) : ?>
     <div class="input-box newCreditCard-<?php echo $elementIndex?>" <?php echo $new; ?>>
         <br>
         <input
@@ -216,6 +218,7 @@
         <label for="<?php echo "$elementId"?>_mundicheckout-save-credit-card">Salvar este cartão para compras futuras</label>
         <br>
     </div>
+    <?php endif; ?>
 
     <input
             type="hidden"
