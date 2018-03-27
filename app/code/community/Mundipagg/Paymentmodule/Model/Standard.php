@@ -18,7 +18,7 @@ class Mundipagg_Paymentmodule_Model_Standard extends Mage_Payment_Model_Method_A
         return $this;
     }
 
-    private function getPaymentData($data, $paymentMethod)
+    protected function getPaymentData($data, $paymentMethod)
     {
         $result = array_filter(
             $data,
@@ -31,7 +31,7 @@ class Mundipagg_Paymentmodule_Model_Standard extends Mage_Payment_Model_Method_A
         return $this->formatPaymentData($result, $paymentMethod);
     }
 
-    private function formatPaymentData($data, $paymentMethod)
+    protected function formatPaymentData($data, $paymentMethod)
     {
         $result = [];
 

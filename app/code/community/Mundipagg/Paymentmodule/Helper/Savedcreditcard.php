@@ -46,7 +46,7 @@ class Mundipagg_Paymentmodule_Helper_Savedcreditcard extends Mage_Core_Helper_Ab
      * @param string $mundipaggCustomerId
      * @throws Exception
      */
-    public function save($card, $mundipaggCustomerId, $customerId)
+    protected function save($card, $mundipaggCustomerId, $customerId)
     {
         $saveCreditCard = Mage::getModel('paymentmodule/savedcreditcard');
         try {
@@ -71,5 +71,54 @@ class Mundipagg_Paymentmodule_Helper_Savedcreditcard extends Mage_Core_Helper_Ab
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
         }
+    }
+
+    public function deleteByCardId($id)
+    {
+        $this->delete('id',$id);
+    }
+
+    public function deleteByMundipaggCardId($id)
+    {
+        $this->delete('mundipagg_card_id', $id);
+    }
+
+    protected function delete($field, $value)
+    {
+        $savedCreditCardModel = Mage::getModel('paymentmodule/savedcreditcard');
+        $savedCreditCardCollection = $savedCreditCardModel->getResourceCollection()
+            ->addFieldToFilter($field,$value)
+            ->load()
+            ->getItems();
+
+        foreach ($savedCreditCardCollection as $savedCreditCard) {
+            $savedCreditCard->delete();
+        }
+    }
+
+    public function getCurrentCustomerSavedCards() {
+        //This function looks like an repository funcion...
+        $savedCreditCardCollection = [];
+
+        $session = Mage::getSingleton('customer/session');
+
+        if ($session->isLoggedIn()) {
+            $customerId = $session->getCustomer()->getId();
+
+            $savedCreditCardModel = Mage::getModel('paymentmodule/savedcreditcard');
+            $savedCreditCardCollection = $savedCreditCardModel->getResourceCollection()
+                ->addFieldToFilter('customer_id',$customerId)
+                ->load()
+                ->getItems();
+        }
+
+        return $savedCreditCardCollection;
+    }
+
+    public function isSavedCreditCardsEnabled()
+    {
+        $cardsConfig = Mage::getModel('paymentmodule/config_card');
+
+        return $cardsConfig->isEnabled() === '1' && $cardsConfig->isSavedCreditCardsEnabled() === '1';
     }
 }

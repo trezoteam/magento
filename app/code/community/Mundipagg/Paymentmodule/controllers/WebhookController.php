@@ -26,13 +26,13 @@ class Mundipagg_Paymentmodule_WebhookController extends Mage_Core_Controller_Fro
         }
     }
 
-    private function webhookOrderUpdate($order, $action)
+    protected function webhookOrderUpdate($order, $action)
     {
         $orderHelper = Mage::helper('paymentmodule/order');
         $orderHelper->updateStatus($order, $action);
     }
 
-    private function webhookChargeUpdate($charge, $action)
+    protected function webhookChargeUpdate($charge, $action)
     {
         $chargeHelper = Mage::helper('paymentmodule/charge');
         $chargeHelper->updateStatus($charge, $action);

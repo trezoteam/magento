@@ -202,4 +202,9 @@ class Mundipagg_Paymentmodule_Model_Config_Card
     {
         return Mage::getStoreConfig('mundipagg_config/installments_group/elo_incremental_interest');
     }
+
+    public function isSavedCreditCardsEnabled()
+    {
+        return Mage::getStoreConfig('mundipagg_config/creditcard_group/saved_cards_status');
+    }
 }

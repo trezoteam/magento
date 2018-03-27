@@ -43,7 +43,7 @@ class Mundipagg_Paymentmodule_Model_Api_Creditcard extends Mundipagg_Paymentmodu
         return $result;
     }
 
-    private function getCustomer()
+    protected function getCustomer()
     {
         $session = Mage::getSingleton('customer/session');
         $customer = $session->getCustomer();
@@ -57,7 +57,7 @@ class Mundipagg_Paymentmodule_Model_Api_Creditcard extends Mundipagg_Paymentmodu
         return $customerRequest;
     }
 
-    private function getAddress()
+    protected function getAddress()
     {
         $session = Mage::getSingleton('customer/session');
         $customer = $session->getCustomer();
@@ -76,7 +76,7 @@ class Mundipagg_Paymentmodule_Model_Api_Creditcard extends Mundipagg_Paymentmodu
         return $addressRequest;
     }
 
-    private function validateSavedCreditCard($mundipaggCardId)
+    protected function validateSavedCreditCard($mundipaggCardId)
     {
         $session = Mage::getSingleton('customer/session');
         $model = Mage::getModel('paymentmodule/savedcreditcard');

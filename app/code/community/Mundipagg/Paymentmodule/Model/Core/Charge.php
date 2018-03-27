@@ -115,7 +115,7 @@ class Mundipagg_Paymentmodule_Model_Core_Charge extends Mundipagg_Paymentmodule_
         );
     }
 
-    private function getHelper()
+    protected function getHelper()
     {
         return Mage::helper('paymentmodule/chargeoperations');
     }

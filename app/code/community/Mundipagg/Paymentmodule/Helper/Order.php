@@ -9,7 +9,7 @@ class Mundipagg_Paymentmodule_Helper_Order extends Mage_Core_Helper_Abstract
         try {
             $orderCore->{$action}($orderWebHook);
         } catch (\Exception $e) {
-            // do something with the error
+            //@todo do something with the error
         }
     }
 }

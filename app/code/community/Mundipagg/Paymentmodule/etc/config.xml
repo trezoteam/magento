@@ -58,14 +58,15 @@
         </fieldsets>
 
         <events>
-            <mundipagg_payment_start>
+            <controller_action_layout_load_before>
                 <observers>
-                    <mundipagg_paymentmodule_payment_start_event_observer>
+                    <mundipagg_account_creditcard_wallet_menu_item>
+                        <type>singleton</type>
                         <class>paymentmodule/observer</class>
-                        <method>requireDependencies</method>
-                    </mundipagg_paymentmodule_payment_start_event_observer>
+                        <method>addAccountCreditcardWalletMenuItem</method>
+                    </mundipagg_account_creditcard_wallet_menu_item>
                 </observers>
-            </mundipagg_payment_start>
+            </controller_action_layout_load_before>
         </events>
 
         <sales>

@@ -11,6 +11,7 @@ class Mundipagg_Paymentmodule_Model_Core_Order  extends Mundipagg_Paymentmodule_
      * Set order status as processing
      * Order invoice is created by charge webhook
      * @param stdClass $webHook
+     * @throws Varien_Exception
      */
     protected function paid($webHook)
     {
@@ -31,6 +32,7 @@ class Mundipagg_Paymentmodule_Model_Core_Order  extends Mundipagg_Paymentmodule_
 
     /**
      * @param stdClass $webHook
+     * @throws Varien_Exception
      */
     protected function canceled($webHook)
     {
@@ -67,7 +69,7 @@ class Mundipagg_Paymentmodule_Model_Core_Order  extends Mundipagg_Paymentmodule_
     /**
      * @param object $order
      */
-    private function closeOrder($order)
+    protected function closeOrder($order)
     {
         $order->setData('state', Mage_Sales_Model_Order::STATE_CLOSED);
         $order->setStatus(Mage_Sales_Model_Order::STATE_CLOSED);

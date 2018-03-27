@@ -32,7 +32,7 @@ class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mundipagg_Pa
             $response->status = 'failed';
         }
 
-        $this->handleOrderResponse($response, true);
+        $this->handleOrderResponse($response);
     }
 
     /**
@@ -43,7 +43,7 @@ class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mundipagg_Pa
      * @param bool $redirect
      * @throws Varien_Exception
      */
-    protected function handleOrderResponse($response, $redirect = false)
+    protected function handleOrderResponse($response)
     {
         //@todo get boleto and the rest of success page data
         $data = [];
@@ -52,6 +52,9 @@ class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mundipagg_Pa
         if ($response->status !== 'failed') {
             $moduleModelOrder = Mage::getModel('paymentmodule/core_order');
             $moduleModelCharge = Mage::getModel('paymentmodule/core_charge');
+
+            $savedCreditCard = Mage::helper('paymentmodule/savedcreditcard');
+            $savedCreditCard->saveCards($response);
 
             foreach ($response->charges as $charge) {
                 $charge->code = $response->code;
@@ -182,7 +185,7 @@ class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mundipagg_Pa
      * @return string
      * @throws Varien_Exception
      */
-    private function getStateByRegionId($regionId)
+    protected function getStateByRegionId($regionId)
     {
         $standard = Mage::getModel('paymentmodule/standard');
         $region = $standard->getRegionModel()->load($regionId);
@@ -198,7 +201,7 @@ class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mundipagg_Pa
      * @return Varien_Object
      * @throws Varien_Exception
      */
-    private function getCustomerPhonesInformation()
+    protected function getCustomerPhonesInformation()
     {
         $phones = new Varien_Object();
 

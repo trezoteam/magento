@@ -79,7 +79,7 @@ class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_A
      * @param stdClass $charge
      * @return int
      */
-    private function getChargePaidAmount($charge)
+    protected function getChargePaidAmount($charge)
     {
         if (isset($charge->paid_amount)) {
             return $charge->paid_amount / 100;
@@ -92,7 +92,7 @@ class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_A
      * @param stdClass $charge
      * @return int
      */
-    private function getChargeCanceledAmount($charge)
+    protected function getChargeCanceledAmount($charge)
     {
         if (isset($charge->canceled_amount)) {
             return $charge->canceled_amount / 100;

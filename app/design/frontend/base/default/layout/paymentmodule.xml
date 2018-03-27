@@ -51,4 +51,28 @@
         </reference>
     </checkout_onepage_success>
 
+
+    <!-- CreditCard Wallet  ################################################ -->
+    <creditcard_wallet_menu_item_handle translate="label">
+        <reference name="customer_account_navigation">
+            <action method="addLink" translate="label" module="paymentmodule">
+                <name>paymentmodule</name>
+                <path>mundipagg/wallet/</path>
+                <label>My cards</label>
+            </action>
+        </reference>
+    </creditcard_wallet_menu_item_handle>
+
+    <paymentmodule_wallet_index translate="label">
+        <label>My Cards</label>
+        <update handle="customer_account"/>
+        <reference name="my.account.wrapper">
+            <block
+                    type="paymentmodule/customer_account_wallet"
+                    name="customer_account_wallet"
+            />
+        </reference>
+    </paymentmodule_wallet_index>
+
+    <!-- ################################################################### -->
 </layout>
