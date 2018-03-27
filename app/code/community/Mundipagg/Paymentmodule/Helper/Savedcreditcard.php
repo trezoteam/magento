@@ -91,7 +91,7 @@ class Mundipagg_Paymentmodule_Helper_Savedcreditcard extends Mage_Core_Helper_Ab
             ->load()
             ->getItems();
 
-        foreach($savedCreditCardCollection as $savedCreditCard) {
+        foreach ($savedCreditCardCollection as $savedCreditCard) {
             $savedCreditCard->delete();
         }
     }

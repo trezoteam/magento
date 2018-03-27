@@ -50,9 +50,6 @@ class Mundipagg_Paymentmodule_WalletController extends Mage_Core_Controller_Fron
 
     private function isUserLoggedIn()
     {
-        if (!Mage::getSingleton('customer/session')->isLoggedIn()) {
-            return false;
-        }
-        return true;
+        return Mage::getSingleton('customer/session')->isLoggedIn();
     }
 }
