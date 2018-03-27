@@ -46,7 +46,7 @@ class Mundipagg_Paymentmodule_Helper_Savedcreditcard extends Mage_Core_Helper_Ab
      * @param string $mundipaggCustomerId
      * @throws Exception
      */
-    public function save($card, $mundipaggCustomerId, $customerId)
+    private function save($card, $mundipaggCustomerId, $customerId)
     {
         $saveCreditCard = Mage::getModel('paymentmodule/savedcreditcard');
         try {
@@ -98,7 +98,7 @@ class Mundipagg_Paymentmodule_Helper_Savedcreditcard extends Mage_Core_Helper_Ab
 
     public function getCurrentCustomerSavedCards() {
         //This function looks like an repository funcion...
-        $savedCreditCards = [];
+        $savedCreditCardCollection = [];
 
         $session = Mage::getSingleton('customer/session');
 
@@ -110,13 +110,9 @@ class Mundipagg_Paymentmodule_Helper_Savedcreditcard extends Mage_Core_Helper_Ab
                 ->addFieldToFilter('customer_id',$customerId)
                 ->load()
                 ->getItems();
-
-            foreach ($savedCreditCardCollection as $creditcard) {
-                $savedCreditCards[] = $creditcard->getData();
-            }
         }
 
-        return $savedCreditCards;
+        return $savedCreditCardCollection;
     }
 
     public function isSavedCreditCardsEnabled()

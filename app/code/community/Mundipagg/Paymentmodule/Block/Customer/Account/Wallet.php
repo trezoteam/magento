@@ -23,9 +23,7 @@ class Mundipagg_Paymentmodule_Block_Customer_Account_Wallet extends Mage_Payment
             $this->savedCreditCards = $savedCreditCardsHelper->getCurrentCustomerSavedCards();
         }
 
-        return array_map(function($card) {
-            return (object)$card;
-        },$this->savedCreditCards);
+        return $this->savedCreditCards;
     }
 
     public function hasSavedCards()

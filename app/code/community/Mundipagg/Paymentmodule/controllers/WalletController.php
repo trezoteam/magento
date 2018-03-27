@@ -35,10 +35,10 @@ class Mundipagg_Paymentmodule_WalletController extends Mage_Core_Controller_Fron
             }
 
             foreach ($savedCreditCards as $savedCreditCard) {
-                if (intval($savedCreditCard['id']) === $deleteCardId) {
+                if (intval($savedCreditCard->getId()) === $deleteCardId) {
                     $savedCreditCardsHelper
                         ->deleteByMundipaggCardId(
-                            $savedCreditCard['mundipagg_card_id']
+                            $savedCreditCard->getMundipaggCardId()
                         );
                     break;
                 }
