@@ -15,9 +15,9 @@
             <paymentmodule_resource>
                 <class>Mundipagg_Paymentmodule_Model_Resource</class>
                 <entities>
-                    <saved_credit_card>
-                        <table>mundipagg_paymentmodule_saved_credit_card</table>
-                    </saved_credit_card>
+                    <savedcreditcard>
+                        <table>paymentmodule_savedcreditcard</table>
+                    </savedcreditcard>
                 </entities>
             </paymentmodule_resource>
         </models>
@@ -58,14 +58,25 @@
         </fieldsets>
 
         <events>
-            <mundipagg_payment_start>
+            <controller_action_layout_load_before>
                 <observers>
-                    <mundipagg_paymentmodule_payment_start_event_observer>
+                    <mundipagg_account_creditcard_wallet_menu_item>
+                        <type>singleton</type>
                         <class>paymentmodule/observer</class>
-                        <method>requireDependencies</method>
-                    </mundipagg_paymentmodule_payment_start_event_observer>
+                        <method>addAccountCreditcardWalletMenuItem</method>
+                    </mundipagg_account_creditcard_wallet_menu_item>
                 </observers>
-            </mundipagg_payment_start>
+            </controller_action_layout_load_before>
+
+            <checkout_onepage_controller_success_action>
+                <observers>
+                    <mundipagg_checkout_success_info>
+                    <type>singleton</type>
+                    <class>paymentmodule/observer</class>
+                    <method>addAdditionalInformationToCheckout</method>
+                </mundipagg_checkout_success_info>
+                </observers>
+            </checkout_onepage_controller_success_action>
         </events>
 
         <sales>
