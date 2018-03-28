@@ -20,7 +20,8 @@ class Mundipagg_Paymentmodule_Block_Form_Builder extends Mage_Payment_Block_Form
         return $this->getModel()->getPaymentStructure();
     }
     
-    private function getModel() {
+    private function getModel()
+    {
         $methodCode = $this->getMethodCode();
         $model = $this->getModelName($methodCode);
         if (!$model) {

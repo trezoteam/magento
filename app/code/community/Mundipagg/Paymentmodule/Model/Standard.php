@@ -13,9 +13,11 @@ class Mundipagg_Paymentmodule_Model_Standard extends Mage_Payment_Model_Method_A
         return $this->getConfigModel()->getPaymentTitle();
     }
 
-    protected function getConfigModel() {
+    protected function getConfigModel()
+    {
         throw new \Exception(
-            "Magento tries to instantiate this class, so this method can't be abstract. " .
+            "Magento tries to instantiate this class," .
+            "so this method can't be abstract. " .
             "It must be implemented in child classes."
         );
     }
@@ -27,7 +29,10 @@ class Mundipagg_Paymentmodule_Model_Standard extends Mage_Payment_Model_Method_A
 
         try {
             $info = $this->getInfoInstance();
-            $info->setAdditionalInformation('mundipagg_payment_method', $paymentMethod);
+            $info->setAdditionalInformation(
+                'mundipagg_payment_method',
+                $paymentMethod
+            );
             $info->setAdditionalInformation($paymentMethod, $paymentData);
         } catch (Mage_Core_Exception $e) {
             // @todo log it and do something
