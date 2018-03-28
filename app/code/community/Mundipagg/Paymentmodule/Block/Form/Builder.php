@@ -6,17 +6,29 @@ class Mundipagg_Paymentmodule_Block_Form_Builder extends Mage_Payment_Block_Form
     {
         parent::_construct();
         $this->setTemplate('paymentmodule/form/builder.phtml');
+        $this->setMethodTitle('');
+    }
+
+    public function getMethodTitle()
+    {
+        $paymentName = $this->getModel()->getPaymentTitle();
+        return $paymentName;
     }
 
     public function getStructure()
     {
-        $model = $this->getModelName($this->getMethodCode());
+        return $this->getModel()->getPaymentStructure();
+    }
+    
+    private function getModel()
+    {
+        $methodCode = $this->getMethodCode();
+        $model = $this->getModelName($methodCode);
         if (!$model) {
             // @todo think about exception
             // @todo log it
         }
-
-        return $model->getPaymentStructure();
+        return $model;
     }
 
     private function getModelName($code)
