@@ -73,8 +73,8 @@ class Mundipagg_Paymentmodule_Block_Form_Builder extends Mage_Payment_Block_Form
         return $this->elementCount[$element];
     }
 
-    public function getGrandTotal() {
-
+    public function getGrandTotal()
+    {
         $checkout = Mage::getSingleton('checkout/session');
         $grandTotal = $checkout->getQuote()->getGrandTotal();
 

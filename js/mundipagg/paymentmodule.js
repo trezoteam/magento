@@ -212,7 +212,7 @@ function initPaymentMethod(methodCode,orderTotal)
     var amountInputs = jQuery('#payment_form_' + methodCode).find('.multipayment-value-input');
 
     //distribute amount through amount inputs;
-    if(amountInputs.length > 1) {
+    if (amountInputs.length > 1) {
         var distributedAmount = parseFloat(orderTotal);
         distributedAmount /= amountInputs.length;
         jQuery(amountInputs).each(function(index,element) {
@@ -241,7 +241,6 @@ function initPaymentMethod(methodCode,orderTotal)
             });
         });
     }
-
 }
 
 function isNewCard(elementId)
