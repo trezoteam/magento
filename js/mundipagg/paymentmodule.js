@@ -130,7 +130,7 @@ function balanceValues(grandTotal,triggerInput,balanceInputId) {
 
 
 //validations
-function initPaymentMethod(methodCode)
+function initPaymentMethod(methodCode,orderTotal)
 {
     initSavedCreditCardInstallments();
     Validation.add(methodCode + '_boleto_validate-mundipagg-cpf', 'CPF inválido', function(cpf) {
@@ -207,6 +207,40 @@ function initPaymentMethod(methodCode)
             return save();
         });
     });
+
+    //value balance
+    var amountInputs = jQuery('#payment_form_' + methodCode).find('.multipayment-value-input');
+
+    //distribute amount through amount inputs;
+    if (amountInputs.length > 1) {
+        var distributedAmount = parseFloat(orderTotal);
+        distributedAmount /= amountInputs.length;
+        jQuery(amountInputs).each(function(index,element) {
+            jQuery(element).val(distributedAmount);
+        });
+    }
+
+    //setting autobalance;
+    if (amountInputs.length === 2) { //needs amount auto balance
+        jQuery(amountInputs).each(function(index,element) {
+            var oppositeIndex = index === 0 ? 1 : 0;
+            var oppositeInput = amountInputs[oppositeIndex];
+            var max = parseFloat(orderTotal);
+
+            jQuery(element).on('input',function(){
+                var elementValue = parseFloat(jQuery(element).val());
+
+                if (elementValue > max) {
+                    elementValue = max;
+                }
+
+                var oppositeValue = max - elementValue;
+
+                jQuery(oppositeInput).val(oppositeValue.toFixed(2));
+                jQuery(element).val(elementValue.toFixed(2));
+            });
+        });
+    }
 }
 
 function isNewCard(elementId)

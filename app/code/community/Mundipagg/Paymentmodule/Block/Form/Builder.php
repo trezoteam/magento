@@ -39,14 +39,9 @@ class Mundipagg_Paymentmodule_Block_Form_Builder extends Mage_Payment_Block_Form
 
     public function getPartialHTML($element)
     {
-        // @fixme new method
-        $this->standard = Mage::getModel('paymentmodule/standard');
-
-        $checkout = Mage::getSingleton('checkout/session');
-        $grandTotal = $checkout->getQuote()->getGrandTotal();
+        $grandTotal = $this->getGrandTotal();
 
         $retn = $this->getLayout();
-
         $retn = $retn->createBlock("paymentmodule/form_partial_$element",'',
             [
                 'code' => $this->getMethodCode(),
@@ -55,7 +50,6 @@ class Mundipagg_Paymentmodule_Block_Form_Builder extends Mage_Payment_Block_Form
                 'grand_total' => number_format($grandTotal, "2", ",", "")
             ]
         );
-
         $retn = $retn->toHtml();
 
         return $retn;
@@ -77,5 +71,13 @@ class Mundipagg_Paymentmodule_Block_Form_Builder extends Mage_Payment_Block_Form
         $this->setElementCount($elementCount);
 
         return $this->elementCount[$element];
+    }
+
+    public function getGrandTotal()
+    {
+        $checkout = Mage::getSingleton('checkout/session');
+        $grandTotal = $checkout->getQuote()->getGrandTotal();
+
+        return $grandTotal;
     }
 }
