@@ -25,6 +25,7 @@ class Mundipagg_Paymentmodule_Model_Api_Order
 
         try {
             $response = $orderController->createOrder($orderRequest);
+
             $helperLog->info("Response");
             $helperLog->info(json_encode($response,JSON_PRETTY_PRINT));
             return $response;
@@ -35,14 +36,14 @@ class Mundipagg_Paymentmodule_Model_Api_Order
         }
     }
 
-    private function getOrderController()
+    protected function getOrderController()
     {
         $client = $this->getMundiPaggApiClient();
 
         return $client->getOrders();
     }
 
-    private function getMundiPaggApiClient()
+    protected function getMundiPaggApiClient()
     {
         $generalConfig = Mage::getModel('paymentmodule/config_general');
 

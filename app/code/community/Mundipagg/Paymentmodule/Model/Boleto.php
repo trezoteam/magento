@@ -20,11 +20,9 @@ class Mundipagg_Paymentmodule_Model_Boleto extends Mundipagg_Paymentmodule_Model
     protected $_allowCurrencyCode = array('BRL', 'USD', 'EUR');
     protected $_isInitializeNeeded = true;
 
-    public function isAvailable($quote = null)
+    protected function getConfigModel()
     {
-        $configPath = 'paymentmodule/config_boleto';
-
-        return Mage::getModel($configPath)->isEnabled();
+        return Mage::getModel('paymentmodule/config_boleto');
     }
 
     public function getPaymentStructure()

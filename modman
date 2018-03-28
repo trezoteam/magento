@@ -16,3 +16,5 @@ skin/frontend/base/default/css/paymentmodule.css      skin/frontend/base/default
 lib/*                                                 lib/
 
 js/mundipagg/*                         js/mundipagg/
+
+mundipagg_payment_module.xml var/connect/

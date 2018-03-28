@@ -6,17 +6,29 @@ class Mundipagg_Paymentmodule_Block_Form_Builder extends Mage_Payment_Block_Form
     {
         parent::_construct();
         $this->setTemplate('paymentmodule/form/builder.phtml');
+        $this->setMethodTitle('');
+    }
+
+    public function getMethodTitle()
+    {
+        $paymentName = $this->getModel()->getPaymentTitle();
+        return $paymentName;
     }
 
     public function getStructure()
     {
-        $model = $this->getModelName($this->getMethodCode());
+        return $this->getModel()->getPaymentStructure();
+    }
+    
+    private function getModel()
+    {
+        $methodCode = $this->getMethodCode();
+        $model = $this->getModelName($methodCode);
         if (!$model) {
             // @todo think about exception
             // @todo log it
         }
-
-        return $model->getPaymentStructure();
+        return $model;
     }
 
     private function getModelName($code)
@@ -27,14 +39,9 @@ class Mundipagg_Paymentmodule_Block_Form_Builder extends Mage_Payment_Block_Form
 
     public function getPartialHTML($element)
     {
-        // @fixme new method
-        $this->standard = Mage::getModel('paymentmodule/standard');
-
-        $checkout = Mage::getSingleton('checkout/session');
-        $grandTotal = $checkout->getQuote()->getGrandTotal();
+        $grandTotal = $this->getGrandTotal();
 
         $retn = $this->getLayout();
-
         $retn = $retn->createBlock("paymentmodule/form_partial_$element",'',
             [
                 'code' => $this->getMethodCode(),
@@ -43,7 +50,6 @@ class Mundipagg_Paymentmodule_Block_Form_Builder extends Mage_Payment_Block_Form
                 'grand_total' => number_format($grandTotal, "2", ",", "")
             ]
         );
-
         $retn = $retn->toHtml();
 
         return $retn;
@@ -65,5 +71,13 @@ class Mundipagg_Paymentmodule_Block_Form_Builder extends Mage_Payment_Block_Form
         $this->setElementCount($elementCount);
 
         return $this->elementCount[$element];
+    }
+
+    public function getGrandTotal()
+    {
+        $checkout = Mage::getSingleton('checkout/session');
+        $grandTotal = $checkout->getQuote()->getGrandTotal();
+
+        return $grandTotal;
     }
 }

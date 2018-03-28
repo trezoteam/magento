@@ -1,6 +1,7 @@
 <?php
 $_code = $this->getMethodCode();
 $structure = $this->getStructure();
+$orderTotal = $this->getGrandTotal();
 ?>
 <fieldset>
     <ul id="payment_form_<?php echo $_code; ?>" style="display:none;">
@@ -19,10 +20,7 @@ $structure = $this->getStructure();
     </ul>
     <script type="javascript">
 
-        initPaymentMethod('<?php echo $_code; ?>');
+        initPaymentMethod('<?php echo $_code; ?>','<?php echo $orderTotal; ?>');
 
-        //cc token
-        //validações
-        //balanceamento de value
     </script>
 </fieldset>

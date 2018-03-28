@@ -20,11 +20,9 @@ class Mundipagg_Paymentmodule_Model_Twocreditcards extends Mundipagg_Paymentmodu
     protected $_allowCurrencyCode = array('BRL', 'USD', 'EUR');
     protected $_isInitializeNeeded = true;
 
-    public function isAvailable($quote = null)
+    protected function getConfigModel()
     {
-        $configPath = 'paymentmodule/config_twocreditcards';
-
-        return Mage::getModel($configPath)->isEnabled();
+        return Mage::getModel('paymentmodule/config_twocreditcards');
     }
 
     public function getPaymentStructure()
@@ -35,7 +33,7 @@ class Mundipagg_Paymentmodule_Model_Twocreditcards extends Mundipagg_Paymentmodu
         ];
     }
 
-    private function getBaseKey()
+    protected function getBaseKey()
     {
         return 'mundipagg_payment_module_';
     }

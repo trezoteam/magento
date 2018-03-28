@@ -2,9 +2,9 @@
 
 class Mundipagg_Paymentmodule_Helper_Log extends Mage_Core_Helper_Abstract
 {
-    private $level;
-    private $method;
-    private $logLabel = '';
+    protected $level;
+    protected $method;
+    protected $logLabel = '';
 
     public function __construct($method = '')
     {
@@ -57,7 +57,7 @@ class Mundipagg_Paymentmodule_Helper_Log extends Mage_Core_Helper_Abstract
         }
     }
 
-    private function write($msg)
+    protected function write($msg)
     {
         $logIsEnabled = boolval(Mage::getStoreConfig('mundipagg_config/general_group/logs'));
 

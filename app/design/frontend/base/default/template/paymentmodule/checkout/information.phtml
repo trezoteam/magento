@@ -1,0 +1,9 @@
+<?php $billetData = $this->getBilletData(); ?>
+<br />
+<?php if(!empty($billetData)) : ?>
+    <?php foreach($billetData as $billet) : ?>
+        Click
+        <a href='<?php echo $billet['url']; ?>' target='_blank' />here</a>
+        to show your billet for <strong><?php echo $billet['value']; ?></strong> payment.<br />
+    <?php endforeach; ?>
+<?php endif; ?>

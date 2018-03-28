@@ -42,13 +42,28 @@
         <update handle="mundipagg_checkout_handle"/>
     </idecheckoutvm_index_index>
 
-    <checkout_onepage_success translate="label">
-        <label>One Page Checkout Success</label>
-        <reference name="content">
-            <reference name="checkout.success">
-                <action method="setTemplate"><template>paymentmodule/checkout/success/payment/success.phtml</template></action>
-            </reference>
+    <!-- CreditCard Wallet  ################################################ -->
+    <creditcard_wallet_menu_item_handle translate="label">
+        <reference name="customer_account_navigation">
+            <action method="addLink" translate="label" module="paymentmodule">
+                <name>paymentmodule</name>
+                <path>mundipagg/wallet/</path>
+                <label>My cards</label>
+            </action>
         </reference>
-    </checkout_onepage_success>
+    </creditcard_wallet_menu_item_handle>
+
+    <paymentmodule_wallet_index translate="label">
+        <label>My Cards</label>
+        <update handle="customer_account"/>
+        <reference name="my.account.wrapper">
+            <block
+                    type="paymentmodule/customer_account_wallet"
+                    name="customer_account_wallet"
+            />
+        </reference>
+    </paymentmodule_wallet_index>
+
+    <!-- ################################################################### -->
 
 </layout>

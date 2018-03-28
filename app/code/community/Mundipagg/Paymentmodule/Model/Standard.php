@@ -2,6 +2,26 @@
 
 class Mundipagg_Paymentmodule_Model_Standard extends Mage_Payment_Model_Method_Abstract
 {
+
+    public function isAvailable($quote = null)
+    {
+        return $this->getConfigModel()->isEnabled();
+    }
+
+    public function getPaymentTitle()
+    {
+        return $this->getConfigModel()->getPaymentTitle();
+    }
+
+    protected function getConfigModel()
+    {
+        throw new \Exception(
+            "Magento tries to instantiate this class," .
+            "so this method can't be abstract. " .
+            "It must be implemented in child classes."
+        );
+    }
+
     public function assignData($data)
     {
         $paymentMethod = $data->getMethod();
@@ -9,7 +29,10 @@ class Mundipagg_Paymentmodule_Model_Standard extends Mage_Payment_Model_Method_A
 
         try {
             $info = $this->getInfoInstance();
-            $info->setAdditionalInformation('mundipagg_payment_method', $paymentMethod);
+            $info->setAdditionalInformation(
+                'mundipagg_payment_method',
+                $paymentMethod
+            );
             $info->setAdditionalInformation($paymentMethod, $paymentData);
         } catch (Mage_Core_Exception $e) {
             // @todo log it and do something
@@ -18,7 +41,7 @@ class Mundipagg_Paymentmodule_Model_Standard extends Mage_Payment_Model_Method_A
         return $this;
     }
 
-    private function getPaymentData($data, $paymentMethod)
+    protected function getPaymentData($data, $paymentMethod)
     {
         $result = array_filter(
             $data,
@@ -31,7 +54,7 @@ class Mundipagg_Paymentmodule_Model_Standard extends Mage_Payment_Model_Method_A
         return $this->formatPaymentData($result, $paymentMethod);
     }
 
-    private function formatPaymentData($data, $paymentMethod)
+    protected function formatPaymentData($data, $paymentMethod)
     {
         $result = [];
 

@@ -13,6 +13,11 @@ class Mundipagg_Paymentmodule_Model_Config_Card
         return Mage::getStoreConfig('mundipagg_config/creditcard_group/creditcard_payment_title');
     }
 
+    public function getPaymentTitle()
+    {
+        return $this->getTitle();
+    }
+
     public function getInvoiceName()
     {
         return Mage::getStoreConfig('mundipagg_config/creditcard_group/invoice_name');
@@ -201,5 +206,10 @@ class Mundipagg_Paymentmodule_Model_Config_Card
     public function getEloIncrementalInterest()
     {
         return Mage::getStoreConfig('mundipagg_config/installments_group/elo_incremental_interest');
+    }
+
+    public function isSavedCreditCardsEnabled()
+    {
+        return Mage::getStoreConfig('mundipagg_config/creditcard_group/saved_cards_status');
     }
 }
