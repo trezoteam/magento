@@ -1,2 +1,9 @@
+"####### Genérico","###########################################################"
+"Value","Valor"
+"####### Boleto","#############################################################"
+"Billet", "Boleto",
+"Tax/VAT", "CPF ou CNPJ",
+"####### Cartão de crédito","##################################################"
+"Credit Card", "Cartão de Crédito"
+"####### Informações extras de checkout","#####################################"
 "Click <a href='%s'>here</a> to show your billet for <strong>%s %s</strong> payment.", "Clique <a href='%s'>aqui</a> para mostrar seu boleto para o pagamento de <strong>%s %s</strong>."
-"Billet", "Boleto"

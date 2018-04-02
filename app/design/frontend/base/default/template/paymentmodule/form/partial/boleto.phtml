@@ -11,7 +11,7 @@
     <h6><?php echo $this->__('Billet') . ' ' . $elementIndex; ?></h6>
     <?php if($showValueInput === true) : ?>
         <div class="input-box">
-            <label>Value (Ex: 100.50)<span class="required">*</span></label><br/>
+            <label><?php echo $this->__('Value'); ?> (Ex: 100.50)<span class="required">*</span></label><br/>
             <input
                     type="number"
                     step=".01"
@@ -31,7 +31,7 @@
                     value="<?php echo $grandTotal; ?>">
         </div>
     <?php endif; ?>
-    <label>CPF ou CNPJ<span class="required">*</span></label><br/>
+    <label><?php echo $this->__('Tax/VAT'); ?><span class="required"></span></label><br/>
     <input
             type="text"
             id="<?php echo $elementId; ?>_taxvat"
