@@ -58,7 +58,7 @@
                         <![CDATA[<br><a href="http://www.mundipagg.com.br" target="_blank"><img title="MundiPagg" alt="MundiPagg" width="100" src="https://www.mundipagg.com/wp-content/uploads/2017/05/logo-mundipagg.png"/></a><br><br><br>]]>
                     </comment>
                     <fields>
-                        <heading_basic_config translate="label">
+                        <heading_basic_config translate="label" module="paymentmodule">
                             <label>Module Basic Configuration</label>
                             <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
                             <sort_order>0</sort_order>
