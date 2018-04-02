@@ -6,7 +6,7 @@ class Mundipagg_Paymentmodule_I18nController extends Mage_Core_Controller_Front_
     {
         $translateTable = Mage::app()->getTranslator()->getData();
 
-        //ignore lines starting with #
+        //ignore lines starting with # in the translate.csv file
         $translateTable = array_filter($translateTable,function($line) {
             return $line[0] !== '#';
         });

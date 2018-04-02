@@ -52,12 +52,15 @@ function fillSavedCreditCardInstallments(elementId) {
         installmentsBaseValue: value
     };
 
+    var fillCardValue = MundiPagg.Locale.getTranslaction('Fill the value for this card');
+    var fillCardNumber = MundiPagg.Locale.getTranslaction('Fill the card number');
+
     let html = '';
     if(brandName == "") {
-        html = "<option value=''>Preencha o número do cartão</option>";
+        html = "<option value=''>"+fillCardNumber+"</option>";
     }
     if(value == "") {
-        html = "<option value=''>Preencha o valor para este cartão</option>";
+        html = "<option value=''>"+fillCardValue+"</option>";
     }
     if (html !== '') {
         jQuery("#"+argsObj.elementId+"_mundicheckout-creditCard-installments").html(html);
@@ -136,30 +139,6 @@ function getCurrentYear() {
     return date.getFullYear();
 }
 
-
-function balanceValues(grandTotal,triggerInput,balanceInputId) {
-    var triggerValue = parseFloat(triggerInput.value.replace(',','.'));
-    if(isNaN(triggerValue)) {
-        triggerValue = 0;
-    }
-
-    triggerValue = Math.abs(triggerValue);
-    triggerValue = Math.round(triggerValue * 100) / 100
-    triggerValue = triggerValue > grandTotal ? grandTotal : triggerValue;
-    triggerValue = triggerValue.toFixed(2);
-
-    var balanceValue = grandTotal - triggerValue;
-    balanceValue = (Math.round(balanceValue * 100) / 100).toFixed(2);
-
-    jQuery("#" + balanceInputId).val(balanceValue);
-    jQuery("#" + triggerInput.id).val(triggerValue);
-
-    jQuery(".balanceCC").change();
-}
-
-////////////////////////new architecture
-
-
 //validations
 function initPaymentMethod(methodCode,orderTotal)
 {
@@ -173,21 +152,25 @@ function initPaymentMethod(methodCode,orderTotal)
             }
         );
 
-        Validation.add(methodCode + '_creditcard_validate-mundipagg-creditcard-exp', 'Data inválida', function(v,element) {
-            var triggerId = element.id;
-            var elementIndex = triggerId
-                .replace(methodCode + '_creditcard_','')
-                .replace('_mundicheckout-expiration-date','');
-            var elementId = methodCode + "_creditcard_"+ elementIndex;
+        Validation.add(
+            methodCode + '_creditcard_validate-mundipagg-creditcard-exp',
+            MundiPagg.Locale.getTranslaction('Invalid Date'),
+            function(v,element) {
+                var triggerId = element.id;
+                var elementIndex = triggerId
+                    .replace(methodCode + '_creditcard_','')
+                    .replace('_mundicheckout-expiration-date','');
+                var elementId = methodCode + "_creditcard_"+ elementIndex;
 
-            if (!isNewCard(elementId)) {
-                return true;
+                if (!isNewCard(elementId)) {
+                    return true;
+                }
+
+                var month = document.getElementById(elementId + '_mundicheckout-expmonth');
+                var year = document.getElementById(elementId + '_mundicheckout-expyear');
+                return validateCreditCardExpiration(year.value, month.value);
             }
-
-            var month = document.getElementById(elementId + '_mundicheckout-expmonth');
-            var year = document.getElementById(elementId + '_mundicheckout-expyear');
-            return validateCreditCardExpiration(year.value, month.value);
-        });
+        );
 
         Payment.prototype.save = Payment.prototype.save.wrap(function(save) {
             var hasCardInfo = false;
@@ -446,7 +429,9 @@ function getInstallments(baseUrl, brandName, argsObj) {
 
 function switchInstallments(data,argsObj) {
     if (data){
-        var html = "<option>1x sem juros</option>";
+        var withoutInterest = MundiPagg.Locale.getTranslaction("without interest");
+
+        var html = "<option>1x " + withoutInterest + "</option>";
         jQuery("#"+argsObj.elementId+"_mundicheckout-creditCard-installments").html("");
 
         data.forEach(fillInstallments,argsObj);
@@ -454,14 +439,26 @@ function switchInstallments(data,argsObj) {
 }
 
 function fillInstallments(item) {
-    if (item.interest == 0) {
-        item.interest = " sem juros";
-    } else{
-        item.interest = " com " + item.interest + "% de juros";
+    var withoutInterest = MundiPagg.Locale.getTranslaction("without interest");
+    var interestPercent = MundiPagg.Locale.getTranslaction("% of interest");
+    var of = MundiPagg.Locale.getTranslaction("of");
+
+    item.interestMessage = ' ' + withoutInterest;
+
+    if (item.interest > 0) {
+        item.interestMessage =
+            " " + MundiPagg.Locale.getTranslaction("with") + " " +
+            item.interest +
+            interestPercent;
     }
 
-    var html = "<option value='"+item.times+"'>" +
-        item.times + "x de " + item.amount + item.interest + "</option>";
+    var html =
+        "<option value='"+item.times+"'>" +
+        item.times +
+        "x " + of + " " +
+        item.amount +
+        item.interestMessage +
+        "</option>";
 
     jQuery("#"+this.elementId+"_mundicheckout-creditCard-installments").append(html);
 }

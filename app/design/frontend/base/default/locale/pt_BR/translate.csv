@@ -2,6 +2,12 @@
 "Value","Valor"
 "Month","Mês"
 "Year","Ano"
+"with", "com"
+"of","de"
+"Invalid Date","Data inválida"
+"without interest", "sem juros"
+"% of interest","% de juros"
+"Fill the value for this card","Preencha o valor para este cartão"
 "####### Boleto","#############################################################"
 "Billet", "Boleto",
 "Tax/VAT", "CPF ou CNPJ",
