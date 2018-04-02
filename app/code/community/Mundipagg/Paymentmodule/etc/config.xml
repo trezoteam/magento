@@ -115,6 +115,15 @@
                 </paymentmodule>
             </updates>
         </layout>
+        <translate>
+            <modules>
+                <paymentmodule>
+                    <files>
+                        <default>mundipagg_locale.csv</default>
+                    </files>
+                </paymentmodule>
+            </modules>
+        </translate>
     </frontend>
 
 
