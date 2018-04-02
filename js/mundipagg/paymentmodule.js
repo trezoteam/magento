@@ -1,3 +1,35 @@
+var MundiPagg = {};
+
+MundiPagg.init = function(posInitializationCallback)
+{
+    MundiPagg.Locale.init(posInitializationCallback);
+};
+
+MundiPagg.Locale = {
+    translactionTable: false,
+    init: function (posInitializationCallback)
+    {
+        if (!this.translactionTable) {
+            var baseUrl = '';
+            var url = baseUrl + '/mundipagg/i18n/getTable';
+            apiRequest(url,'',function(data){
+                if(data !== false) {
+                    this.translactionTable = data;
+                    posInitializationCallback();
+                }
+            }.bind(this));
+        }
+    },
+    getTranslaction: function (text)
+    {
+        var translaction = this.translactionTable[text];
+        if (typeof translaction === 'undefined') {
+            translaction = text;
+        }
+        return translaction;
+    }
+};
+
 var toTokenApi = {};
 
 var brandName = false;
@@ -19,7 +51,6 @@ function fillSavedCreditCardInstallments(elementId) {
         elementId: elementId,
         installmentsBaseValue: value
     };
-
 
     let html = '';
     if(brandName == "") {
@@ -132,115 +163,121 @@ function balanceValues(grandTotal,triggerInput,balanceInputId) {
 //validations
 function initPaymentMethod(methodCode,orderTotal)
 {
-    initSavedCreditCardInstallments();
-    Validation.add(methodCode + '_boleto_validate-mundipagg-cpf', 'CPF inválido', function(cpf) {
-        return validateCPF(cpf);
-    });
+    MundiPagg.init(function(){
+        initSavedCreditCardInstallments();
+        Validation.add(
+            methodCode + '_boleto_validate-mundipagg-cpf',
+            MundiPagg.Locale.getTranslaction('Invalid CPF'),
+            function(cpf) {
+                return validateCPF(cpf);
+            }
+        );
 
-    Validation.add(methodCode + '_creditcard_validate-mundipagg-creditcard-exp', 'Data inválida', function(v,element) {
-        var triggerId = element.id;
-        var elementIndex = triggerId
-            .replace(methodCode + '_creditcard_','')
-            .replace('_mundicheckout-expiration-date','');
-        var elementId = methodCode + "_creditcard_"+ elementIndex;
+        Validation.add(methodCode + '_creditcard_validate-mundipagg-creditcard-exp', 'Data inválida', function(v,element) {
+            var triggerId = element.id;
+            var elementIndex = triggerId
+                .replace(methodCode + '_creditcard_','')
+                .replace('_mundicheckout-expiration-date','');
+            var elementId = methodCode + "_creditcard_"+ elementIndex;
 
-        if (!isNewCard(elementId)) {
-            return true;
-        }
-
-        var month = document.getElementById(elementId + '_mundicheckout-expmonth');
-        var year = document.getElementById(elementId + '_mundicheckout-expyear');
-        return validateCreditCardExpiration(year.value, month.value);
-    });
-
-    Payment.prototype.save = Payment.prototype.save.wrap(function(save) {
-        var hasCardInfo = false;
-        var creditCardTokenDiv = '.'  + methodCode + "_creditcard_tokenDiv";
-        //generate token check table and check if cardInfos exists;
-        var tokenCheckTable = {};
-
-        jQuery(creditCardTokenDiv).each(function(index, element) {
-            tokenCheckTable[element.id] = false;
-            hasCardInfo = true;
-
-        });
-        if(this.currentMethod !== methodCode || hasCardInfo === false) {
-            return save();
-        }
-        var prototypeWrapper = this;
-
-        //for each of creditcard forms
-        jQuery('.' +methodCode+ "_creditcard_tokenDiv").each(function(index,element) {
-            var elementId = element.id.replace('_tokenDiv', '');
-
-            if (isNewCard(elementId) ) {
-                var key = document.getElementById(element.id)
-                    .getAttribute('data-mundicheckout-app-id');
-                var tokenElement = document.getElementById(elementId + '_mundicheckout-token');
-                var validator = new Validation(prototypeWrapper.form);
-                if (prototypeWrapper.validate() && validator.validate()) {
-                    getCreditCardToken(key, elementId, function (response) {
-                        if (response != false) {
-                            tokenElement.value = response.id;
-                            jQuery("#"+elementId+"_mundipagg-invalid-credit-card").hide();
-                            tokenCheckTable[element.id] = true;
-                            //check if all tokens are generated.
-                            var canSave = true;
-                            jQuery('.' +methodCode+ "_creditcard_tokenDiv").each(function(index,element) {
-                                if (tokenCheckTable[element.id] === false) {
-                                    canSave = false;
-                                }
-                            });
-                            if (canSave) {
-                                save();
-                            }
-                            return;
-                        }
-                        tokenElement.value = "";
-                        jQuery("#"+elementId+"_mundipagg-invalid-credit-card").show();
-                    });
-                }
-                return;
+            if (!isNewCard(elementId)) {
+                return true;
             }
 
-            tokenCheckTable[element.id] = true;
-            return save();
+            var month = document.getElementById(elementId + '_mundicheckout-expmonth');
+            var year = document.getElementById(elementId + '_mundicheckout-expyear');
+            return validateCreditCardExpiration(year.value, month.value);
         });
-    });
 
-    //value balance
-    var amountInputs = jQuery('#payment_form_' + methodCode).find('.multipayment-value-input');
+        Payment.prototype.save = Payment.prototype.save.wrap(function(save) {
+            var hasCardInfo = false;
+            var creditCardTokenDiv = '.'  + methodCode + "_creditcard_tokenDiv";
+            //generate token check table and check if cardInfos exists;
+            var tokenCheckTable = {};
 
-    //distribute amount through amount inputs;
-    if (amountInputs.length > 1) {
-        var distributedAmount = parseFloat(orderTotal);
-        distributedAmount /= amountInputs.length;
-        jQuery(amountInputs).each(function(index,element) {
-            jQuery(element).val(distributedAmount);
-        });
-    }
+            jQuery(creditCardTokenDiv).each(function(index, element) {
+                tokenCheckTable[element.id] = false;
+                hasCardInfo = true;
 
-    //setting autobalance;
-    if (amountInputs.length === 2) { //needs amount auto balance
-        jQuery(amountInputs).each(function(index,element) {
-            var oppositeIndex = index === 0 ? 1 : 0;
-            var oppositeInput = amountInputs[oppositeIndex];
-            var max = parseFloat(orderTotal);
+            });
+            if(this.currentMethod !== methodCode || hasCardInfo === false) {
+                return save();
+            }
+            var prototypeWrapper = this;
 
-            jQuery(element).on('input',function(){
-                var elementValue = parseFloat(jQuery(element).val());
+            //for each of creditcard forms
+            jQuery('.' +methodCode+ "_creditcard_tokenDiv").each(function(index,element) {
+                var elementId = element.id.replace('_tokenDiv', '');
 
-                if (elementValue > max) {
-                    elementValue = max;
+                if (isNewCard(elementId) ) {
+                    var key = document.getElementById(element.id)
+                        .getAttribute('data-mundicheckout-app-id');
+                    var tokenElement = document.getElementById(elementId + '_mundicheckout-token');
+                    var validator = new Validation(prototypeWrapper.form);
+                    if (prototypeWrapper.validate() && validator.validate()) {
+                        getCreditCardToken(key, elementId, function (response) {
+                            if (response != false) {
+                                tokenElement.value = response.id;
+                                jQuery("#"+elementId+"_mundipagg-invalid-credit-card").hide();
+                                tokenCheckTable[element.id] = true;
+                                //check if all tokens are generated.
+                                var canSave = true;
+                                jQuery('.' +methodCode+ "_creditcard_tokenDiv").each(function(index,element) {
+                                    if (tokenCheckTable[element.id] === false) {
+                                        canSave = false;
+                                    }
+                                });
+                                if (canSave) {
+                                    save();
+                                }
+                                return;
+                            }
+                            tokenElement.value = "";
+                            jQuery("#"+elementId+"_mundipagg-invalid-credit-card").show();
+                        });
+                    }
+                    return;
                 }
 
-                var oppositeValue = max - elementValue;
-
-                jQuery(oppositeInput).val(oppositeValue.toFixed(2));
-                jQuery(element).val(elementValue.toFixed(2));
+                tokenCheckTable[element.id] = true;
+                return save();
             });
         });
-    }
+
+        //value balance
+        var amountInputs = jQuery('#payment_form_' + methodCode).find('.multipayment-value-input');
+
+        //distribute amount through amount inputs;
+        if (amountInputs.length > 1) {
+            var distributedAmount = parseFloat(orderTotal);
+            distributedAmount /= amountInputs.length;
+            jQuery(amountInputs).each(function(index,element) {
+                jQuery(element).val(distributedAmount);
+            });
+        }
+
+        //setting autobalance;
+        if (amountInputs.length === 2) { //needs amount auto balance
+            jQuery(amountInputs).each(function(index,element) {
+                var oppositeIndex = index === 0 ? 1 : 0;
+                var oppositeInput = amountInputs[oppositeIndex];
+                var max = parseFloat(orderTotal);
+
+                jQuery(element).on('input',function(){
+                    var elementValue = parseFloat(jQuery(element).val());
+
+                    if (elementValue > max) {
+                        elementValue = max;
+                    }
+
+                    var oppositeValue = max - elementValue;
+
+                    jQuery(oppositeInput).val(oppositeValue.toFixed(2));
+                    jQuery(element).val(elementValue.toFixed(2));
+                });
+            });
+        }
+    });
 }
 
 function isNewCard(elementId)

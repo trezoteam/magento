@@ -5,6 +5,7 @@
 "####### Boleto","#############################################################"
 "Billet", "Boleto",
 "Tax/VAT", "CPF ou CNPJ",
+"Invalid CPF","CPF inválido",
 "####### Cartão de crédito","##################################################"
 "Credit Card", "Cartão de Crédito"
 "Select a Card", "Selecionar um cartão"
