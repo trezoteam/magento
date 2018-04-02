@@ -1,6 +1,6 @@
 <?php
 
-class Mundipagg_Paymentmodule_Block_Form_Partial_Grandtotal extends Mage_Payment_Block_Form
+class Mundipagg_Paymentmodule_Block_Form_Partial_Grandtotal extends Mundipagg_Paymentmodule_Block_Base
 {
     protected function _construct()
     {
