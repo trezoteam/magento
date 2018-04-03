@@ -17,17 +17,17 @@
 <div class="input-box <?php echo "$elementClass"?>_tokenDiv"
      id="<?php echo "$elementId"?>_tokenDiv"
      data-mundicheckout-app-id="<?php echo $this->getPublicKey(); ?>">
-    <h6>Cartão de crédito <?php echo $elementIndex; ?></h6>
+    <h6><?php echo $this->__('Credit Card') . ' ' . $elementIndex; ?></h6>
     <?php if($showValueInput === true) : ?>
         <div class="input-box">
-            <label>Value (Ex: 100.50)<span class="required">*</span></label><br/>
+            <label><?php echo $this->__('Value'); ?> (Ex: 100.50)<span class="required"></span></label><br/>
             <input
                     type="number"
                     step=".01"
                     min="0"
                     id="<?php echo "$elementId"?>_value"
                     name="payment[<?php echo "$elementId"?>_value]"
-                    title="Value (Ex: 100,50)"
+                    title="<?php echo $this->__('Value'); ?> (Ex: 100,50)"
                     class="required-entry multipayment-value-input"
                     onchange="getBrand('<?php echo $elementId?>');"
                     value="">
@@ -70,7 +70,7 @@
     </div>
 
     <?php if ($savedCreditCards && $isSavedCreditCardsEnabled) { ?>
-        <label for="<?php echo "$elementId"?>_mundicheckout-creditCard-SavedCreditCard">Selecionar um cartão<span class="required">*</span></label>
+        <label for="<?php echo "$elementId"?>_mundicheckout-creditCard-SavedCreditCard"><?php echo $this->__('Select a Card'); ?><span class="required"></span></label>
         <div class="input-box">
             <select
                     name="payment[<?php echo "$elementId"?>_SavedCreditCard]"
@@ -91,7 +91,7 @@
                             $card->getLastFourDigits()
                         ?></option>
                 <?php } ?>
-                <option value="new" brand="">Preencher dados</option>
+                <option value="new" brand=""><?php echo $this->__('Fill Data'); ?></option>
             </select>
             <br>
         </div>
@@ -102,7 +102,7 @@
            name="payment[<?php echo "$elementId"?>_brand_name]">
 
     <label for="<?php echo "$elementId"?>_mundicheckout-number" class="newCreditCard-<?php echo $elementIndex?>" <?php echo $new; ?>>
-        Card number<span class="required">*</span>
+        <?php echo $this->__('Card number'); ?><span class="required"></span>
     </label>
     <div class="input-box newCreditCard-<?php echo $elementIndex?>" <?php echo $new; ?>>
         <span id="<?php echo "$elementId"?>_mundipaggBrandImage" class="mundipaggBrandImage"></span>
@@ -123,7 +123,7 @@
             for="<?php echo "$elementId"?>_mundicheckout-holdername"
             class="newCreditCard-<?php echo $elementIndex?>"
             <?php echo $new; ?>
-    >Holder name<span class="required">*</span></label>
+    ><?php echo $this->__('Holder Name'); ?><span class="required"></span></label>
     <div class="input-box newCreditCard-<?php echo $elementIndex?>" <?php echo $new; ?>>
         <input
                 type="text"
@@ -138,7 +138,7 @@
             for="<?php echo "$elementId"?>_mundicheckout-expmonth"
             class="newCreditCard-<?php echo $elementIndex?>"
             <?php echo $new; ?>
-    >Expiration date<span class="required">*</span></label>
+    ><?php echo $this->__('Expiration date'); ?><span class="required"></span></label>
     <div class="input-box newCreditCard-<?php echo $elementIndex?>" <?php echo $new; ?>>
         <div class="v-fix">
             <select
@@ -147,7 +147,7 @@
                     onchange="getFormData('<?php echo $elementId?>');"
                     name="payment[<?php echo "$elementId"?>_expMonth]"
             >
-                <option value="">--- Mês --- </option>
+                <option value="">--- <?php echo $this->__('Month'); ?> --- </option>
                 <?php for ($month = 1; $month < 13; $month++ ) { ?>
                     <option value="<?php echo str_pad($month, "2", "0", STR_PAD_LEFT); ?>">
                         <?php
@@ -165,7 +165,7 @@
                     onchange="getFormData('<?php echo $elementId?>');"
                     name="payment[<?php echo "$elementId"?>_expYear]"
             >
-                <option value="">--- Ano --- </option>
+                <option value="">--- <?php echo $this->__('Year'); ?> --- </option>
                 <?php for ($year = date("Y"); $year < date("Y") + 11; $year++ ) { ?>
                     <option value="<?php echo $year; ?>"><?php echo $year; ?></option>
                 <?php } ?>
@@ -177,14 +177,14 @@
             class="<?php echo $elementClass; ?>_validate-mundipagg-creditcard-exp"
             id="<?php echo "$elementId"?>_mundicheckout-expiration-date"><br>
 
-    <label for="<?php echo "$elementId"?>_mundicheckout-creditCard-installments">Parcelamento<span class="required">*</span></label>
+    <label for="<?php echo "$elementId"?>_mundicheckout-creditCard-installments"><?php echo $this->__('Installments'); ?><span class="required"></span></label>
     <div class="input-box">
         <select
                 name="payment[<?php echo "$elementId"?>_creditCardInstallments]"
                 id="<?php echo "$elementId"?>_mundicheckout-creditCard-installments"
                 onchange="getFormData('<?php echo $elementId?>');"
         >
-            <option value="">Preencha o número do cartão</option>
+            <option value=""><?php echo $this->__('Fill the card number'); ?></option>
         </select>
         <br>
     </div>
@@ -215,7 +215,7 @@
                 id="<?php echo "$elementId"?>_mundicheckout-save-credit-card"
                 name="payment[<?php echo "$elementId"?>_saveCreditCard]"
         >
-        <label for="<?php echo "$elementId"?>_mundicheckout-save-credit-card">Salvar este cartão para compras futuras</label>
+        <label for="<?php echo "$elementId"?>_mundicheckout-save-credit-card"><?php echo $this->__('Save this card to future orders'); ?></label>
         <br>
     </div>
     <?php endif; ?>
@@ -227,7 +227,7 @@
 </div>
 <p>
 <div class="validation-advice hidden" id="<?php echo "$elementId"?>_mundipagg-invalid-credit-card" style="">
-    Cartão de crédito inválido.
+    <?php echo $this->__('Invalid credit card'); ?>
 </div>
 </p>
 <br /><hr />

@@ -13,6 +13,9 @@ app/design/frontend/base/default/layout/paymentmodule.xml app/design/frontend/ba
 skin/adminhtml/default/default/images/mundipagg       skin/adminhtml/default/default/images/mundipagg
 skin/frontend/base/default/css/paymentmodule.css      skin/frontend/base/default/css/paymentmodule.css
 
+#locale
+app/locale/pt_BR/*            app/locale/pt_BR
+
 lib/*                                                 lib/
 
 js/mundipagg/*                         js/mundipagg/

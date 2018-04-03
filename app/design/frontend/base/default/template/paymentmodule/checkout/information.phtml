@@ -2,8 +2,17 @@
 <br />
 <?php if(!empty($billetData)) : ?>
     <?php foreach($billetData as $billet) : ?>
-        Click
-        <a href='<?php echo $billet['url']; ?>' target='_blank' />here</a>
-        to show your billet for <strong><?php echo $billet['value']; ?></strong> payment.<br />
+        <?php
+            echo sprintf(
+                $this->__(
+                    "Click <a href='%s'>here</a>" .
+                    " to show your billet for <strong>%s %s</strong> payment."
+                ),
+                $billet['url'],
+                $this->getCurrentCurrencySymbol(),
+                $billet['value']
+            );
+        ?>
+      <br />
     <?php endforeach; ?>
 <?php endif; ?>
