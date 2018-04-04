@@ -21,7 +21,10 @@ class Mundipagg_Paymentmodule_Model_Api_Creditcard extends Mundipagg_Paymentmodu
             $creditCardPaymentRequest = new CreateCreditCardPaymentRequest();
 
             $creditCardPaymentRequest->installments = $payment['creditCardInstallments'];
-            $creditCardPaymentRequest->cardToken = $payment['token'] ?? '';
+            $creditCardPaymentRequest->cardToken = '';
+            if (isset($payment['token'])) {
+                $creditCardPaymentRequest->cardToken = $payment['token'];
+            }
 
             if (
                 $payment['SavedCreditCard'] &&
