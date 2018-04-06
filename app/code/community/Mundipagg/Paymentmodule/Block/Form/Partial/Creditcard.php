@@ -30,9 +30,7 @@ class Mundipagg_Paymentmodule_Block_Form_Partial_Creditcard extends Mundipagg_Pa
             $savedCreditCardsHelper->isSavedCreditCardsEnabled()
         ) {
             if ($onlyEnabledCards) {
-                return $this->enabledSavedCreditCards(
-                    $savedCreditCardsHelper->getCurrentCustomerSavedCards()
-                );
+                return $savedCreditCardsHelper->enabledSavedCreditCards();
             }
 
             return $savedCreditCardsHelper->getCurrentCustomerSavedCards();
@@ -41,23 +39,6 @@ class Mundipagg_Paymentmodule_Block_Form_Partial_Creditcard extends Mundipagg_Pa
         return [];
     }
 
-    private function enabledSavedCreditCards($savedCreditCards)
-    {
-        $enabledBrands = $this->getEnabledBrands();
-        $enabledSavedCreditCards = [];
-
-        foreach ($savedCreditCards as $savedCreditCard) {
-            $brandName = strtolower($savedCreditCard->getBrandName());
-
-            if (in_array($brandName, $enabledBrands)) {
-                $enabledSavedCreditCards[] = $savedCreditCard;
-            }
-        }
-
-        return $enabledSavedCreditCards;
-    }
-
-
     public function isSavedCreditCardsEnabled()
     {
         return Mage::helper('paymentmodule/savedcreditcard')
@@ -65,17 +46,7 @@ class Mundipagg_Paymentmodule_Block_Form_Partial_Creditcard extends Mundipagg_Pa
     }
 
     public function getEnabledBrands() {
-        $brandStatuses = Mage::getModel('paymentmodule/config_card')
-            ->getBrandStatuses();
-
-        $enabledBrands = [];
-
-        foreach ($brandStatuses as $brand => $status) {
-            if ($status == 1) {
-                $enabledBrands[] = $brand;
-            }
-        }
-
-        return $enabledBrands;
+        return Mage::getModel('paymentmodule/config_card')
+            ->getEnabledBrands();
     }
 }

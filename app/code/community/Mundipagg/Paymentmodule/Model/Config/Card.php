@@ -52,6 +52,19 @@ class Mundipagg_Paymentmodule_Model_Config_Card
         ];
     }
 
+    public function getEnabledBrands() {
+        $brandStatuses = $this->getBrandStatuses();
+        $enabledBrands = [];
+
+        foreach ($brandStatuses as $brand => $status) {
+            if ($status == 1) {
+                $enabledBrands[] = $brand;
+            }
+        }
+
+        return $enabledBrands;
+    }
+
     public function isDefaultConfigurationEnabled()
     {
         return Mage::getStoreConfig('mundipagg_config/installments_group/default_status');
