@@ -33,6 +33,25 @@ class Mundipagg_Paymentmodule_Model_Config_Card
         return $this->getOperationType() === 'AuthAndCapture';
     }
 
+    public function getInstallmentsConfig()
+    {
+        return Mage::getStoreConfig('mundipagg_config/installments_group');
+    }
+
+    public function getBrandStatuses()
+    {
+        $installmentsConfig = $this->getInstallmentsConfig();
+
+        return [
+            'amex' => $installmentsConfig['amex_status'],
+            'diners' => $installmentsConfig['diners_status'],
+            'elo' => $installmentsConfig['elo_status'],
+            'hipercard' => $installmentsConfig['hipercard_status'],
+            'mastercard' => $installmentsConfig['mastercard_status'],
+            'visa' => $installmentsConfig['visa_status']
+        ];
+    }
+
     public function isDefaultConfigurationEnabled()
     {
         return Mage::getStoreConfig('mundipagg_config/installments_group/default_status');
