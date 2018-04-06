@@ -333,11 +333,11 @@ function getFormData(elementId) {
     }
     toTokenApi[elementId].card = {
         type: "credit",
-        holder_name: clearHolderName(document.getElementById(elementId+'_mundicheckout-holdername')),
-        number: clearCardNumber(document.getElementById(elementId+'_mundicheckout-number')),
-        exp_month: document.getElementById(elementId+'_mundicheckout-expmonth').value,
-        exp_year: document.getElementById(elementId+'_mundicheckout-expyear').value,
-        cvv: clearCvv(document.getElementById(elementId+'_mundicheckout-cvv'))
+        holder_name: clearHolderName(document.getElementById(elementId + '_mundicheckout-holdername')),
+        number: clearCardNumber(document.getElementById(elementId + '_mundicheckout-number')),
+        exp_month: document.getElementById(elementId + '_mundicheckout-expmonth').value,
+        exp_year: document.getElementById(elementId + '_mundicheckout-expyear').value,
+        cvv: clearCvv(document.getElementById(elementId + '_mundicheckout-cvv'))
     };
 }
 
