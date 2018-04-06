@@ -7,6 +7,7 @@
     $grandTotal = $this->getGrandTotal();
     $savedCreditCards = $this->getSavedCreditCards();
     $isSavedCreditCardsEnabled = $this->isSavedCreditCardsEnabled();
+    $enabledBrands = $this->getEnabledBrands();
 
     $new = '';
     if ($savedCreditCards) {
@@ -18,6 +19,21 @@
      id="<?php echo "$elementId"?>_tokenDiv"
      data-mundicheckout-app-id="<?php echo $this->getPublicKey(); ?>">
     <h6><?php echo $this->__('Credit Card') . ' ' . $elementIndex; ?></h6>
+
+    <div class="input-box">
+        <?php
+            foreach ($enabledBrands as $brand) {
+                $brandImage = 'https://dashboard.mundipagg.com/emb/images/brands/';
+                $brandImage .= $brand . '.jpg';
+        ?>
+            <img
+                src="<?php echo $brandImage; ?>"
+                style="float: left; width: 30px; margin-right: 5px;"
+            />
+        <?php } ?>
+        <br><br>
+    </div>
+
     <?php if($showValueInput === true) : ?>
         <div class="input-box">
             <label><?php echo $this->__('Value'); ?> (Ex: 100.50)<span class="required"></span></label><br/>
@@ -32,6 +48,7 @@
                     onchange="getBrand('<?php echo $elementId?>');"
                     value="">
         </div>
+        <br>
     <?php else: ?>
         <div class="input-box">
             <input
@@ -41,33 +58,6 @@
                     value="<?php echo $grandTotal; ?>">
         </div>
     <?php endif; ?>
-    <div class="input-box">
-        <img
-                src="https://dashboard.mundipagg.com/emb/images/brands/amex.jpg"
-                style="float: left; width: 30px; margin-right: 5px;"
-        />
-        <img
-                src="https://dashboard.mundipagg.com/emb/images/brands/diners.jpg"
-                style="float: left; width: 30px; margin-right: 5px;"
-        />
-        <img
-                src="https://dashboard.mundipagg.com/emb/images/brands/elo.jpg"
-                style="float: left; width: 30px; margin-right: 5px;"
-        />
-        <img
-                src="https://dashboard.mundipagg.com/emb/images/brands/hipercard.jpg"
-                style="float: left; width: 30px; margin-right: 5px;"
-        />
-        <img
-                src="https://dashboard.mundipagg.com/emb/images/brands/visa.jpg"
-                style="float: left; width: 30px; margin-right: 5px;"
-        />
-        <img
-                src="https://dashboard.mundipagg.com/emb/images/brands/mastercard.jpg"
-                style="float: left; width: 30px; margin-right: 5px;"
-        />
-        <br>
-    </div>
 
     <?php if ($savedCreditCards && $isSavedCreditCardsEnabled) { ?>
         <label for="<?php echo "$elementId"?>_mundicheckout-creditCard-SavedCreditCard"><?php echo $this->__('Select a Card'); ?><span class="required"></span></label>
