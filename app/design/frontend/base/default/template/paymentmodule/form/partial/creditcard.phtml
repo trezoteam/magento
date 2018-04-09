@@ -107,6 +107,11 @@
                 maxlength="19"
                 name="payment[<?php echo "$elementId"?>_creditCardNumber]"
         >
+        <p
+                id="<?php echo "$elementId"?>_disabled_brand_message"
+                style="display: none; color: #E13520"
+                class="disabledBrandMessae"
+        ><?php echo $this->__('Unavailable brand'); ?></p>
     </div>
 
     <label
@@ -173,6 +178,7 @@
                 name="payment[<?php echo "$elementId"?>_creditCardInstallments]"
                 id="<?php echo "$elementId"?>_mundicheckout-creditCard-installments"
                 onchange="getFormData('<?php echo $elementId?>');"
+                class="required-entry
         >
             <option value=""><?php echo $this->__('Fill the card number'); ?></option>
         </select>

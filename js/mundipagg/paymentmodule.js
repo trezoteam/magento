@@ -42,7 +42,6 @@ function initSavedCreditCardInstallments() {
 }
 
 function fillSavedCreditCardInstallments(elementId) {
-
     var brandName = jQuery("#" + elementId + "_mundicheckout-SavedCreditCard").children("option:selected").attr("brand");
     var baseUrl = jQuery("#baseUrl").val();
     var value = jQuery("#" + elementId + "_value").val();
@@ -55,7 +54,7 @@ function fillSavedCreditCardInstallments(elementId) {
     var fillCardValue = MundiPagg.Locale.getTranslaction('Fill the value for this card');
     var fillCardNumber = MundiPagg.Locale.getTranslaction('Fill the card number');
 
-    let html = '';
+    var html = '';
     if(brandName == "") {
         html = "<option value=''>"+fillCardNumber+"</option>";
     }
@@ -66,7 +65,6 @@ function fillSavedCreditCardInstallments(elementId) {
         jQuery("#"+argsObj.elementId+"_mundicheckout-creditCard-installments").html(html);
         return;
     }
-
     getInstallments(baseUrl, brandName, argsObj);
 }
 
@@ -265,7 +263,7 @@ function initPaymentMethod(methodCode,orderTotal)
 
 function isNewCard(elementId)
 {
-    let isNew = false;
+    var isNew = false;
 
     try {
         isNew = jQuery('#' + elementId + '_mundicheckout-SavedCreditCard');
@@ -343,7 +341,6 @@ function getFormData(elementId) {
 
 function getBrand(elementId) {
 
-
     var brandName = jQuery("#" + elementId +"_mundipaggBrandName").val();
     var baseUrl = jQuery("#baseUrl").val();
     var creditCardNumber = jQuery("#" + elementId +"_mundicheckout-number").val();
@@ -383,6 +380,7 @@ function fillBrandData(data,argsObj) {
     if (data.brand != "" && data.brand != undefined) {
         showBrandImage(data.brand,argsObj.elementId);
         getInstallments(jQuery("#baseUrl").val(), data.brandName,argsObj);
+        jQuery("#"+argsObj.elementId+"_mundicheckout-creditCard-installments").html("");
         jQuery("#"+argsObj.elementId+"_brand_name").val(data.brandName);
     }
 }
@@ -428,13 +426,19 @@ function getInstallments(baseUrl, brandName, argsObj) {
 }
 
 function switchInstallments(data,argsObj) {
-    if (data){
+    jQuery("#" + argsObj.elementId + '_disabled_brand_message').hide();
+
+    if (data) {
         var withoutInterest = MundiPagg.Locale.getTranslaction("without interest");
 
         var html = "<option>1x " + withoutInterest + "</option>";
-        jQuery("#"+argsObj.elementId+"_mundicheckout-creditCard-installments").html("");
 
-        data.forEach(fillInstallments,argsObj);
+        data.forEach(fillInstallments, argsObj);
+    } else {
+        if(argsObj !== undefined && argsObj.elementId != undefined) {
+            //console.log(jQuery(argsObj.elementId));
+            jQuery("#" + argsObj.elementId + '_disabled_brand_message').show();
+        }
     }
 }
 
@@ -442,6 +446,8 @@ function fillInstallments(item) {
     var withoutInterest = MundiPagg.Locale.getTranslaction("without interest");
     var interestPercent = MundiPagg.Locale.getTranslaction("% of interest");
     var of = MundiPagg.Locale.getTranslaction("of");
+    var installmentsSelect =
+        jQuery("#"+this.elementId+"_mundicheckout-creditCard-installments");
 
     item.interestMessage = ' ' + withoutInterest;
 
@@ -460,7 +466,7 @@ function fillInstallments(item) {
         item.interestMessage +
         "</option>";
 
-    jQuery("#"+this.elementId+"_mundicheckout-creditCard-installments").append(html);
+    installmentsSelect.append(html);
 }
 
 function switchNewSaved(value, elementId) {

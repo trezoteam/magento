@@ -7,27 +7,39 @@ class Mundipagg_Paymentmodule_Helper_Installment extends Mage_Core_Helper_Abstra
         $cardConfig = Mage::getModel('paymentmodule/config_card');
 
         if ($cardConfig->isDefaultConfigurationEnabled()) {
-            return $this->getDefaultInstallments($total);
+
+            $brand = '';
+            if (isset($cards[0])) {
+                $brand = $cards[0];
+            }
+
+            return $this->getDefaultInstallments($total, $brand);
         }
 
         return $this->getCardsInstallments($total, $cards);
     }
 
-    protected function getDefaultInstallments($total)
+    protected function getDefaultInstallments($total, $brand = '')
     {
         $cardConfig = Mage::getModel('paymentmodule/config_card');
 
-        $max = $cardConfig->getDefaultMaxInstallmentNumber();
-        $maxWithout = $cardConfig->getDefaultMaxInstallmentNumberWithoutInterest();
-        $interest = $cardConfig->getDefaultInterest();
-        $inc = $cardConfig->getDefaultIncrementalInterest();
+        if (in_array(strtolower($brand), $cardConfig->getEnabledBrands())) {
+            $max = $cardConfig->getDefaultMaxInstallmentNumber();
+            $interest = $cardConfig->getDefaultInterest();
+            $inc = $cardConfig->getDefaultIncrementalInterest();
 
-        return array(
-            'default' => array_merge(
-                $this->getInstallmentsWithoutInterest($total, $maxWithout),
-                $this->getInstallmentsWithInterest($total, $maxWithout, $max, $interest, $inc)
-            )
-        );
+            $maxWithout =
+                $cardConfig->getDefaultMaxInstallmentNumberWithoutInterest();
+
+            return array(
+                'default' => array_merge(
+                    $this->getInstallmentsWithoutInterest($total, $maxWithout),
+                    $this->getInstallmentsWithInterest($total, $maxWithout, $max, $interest, $inc)
+                )
+            );
+        }
+
+        return [];
     }
 
     protected function getCardsInstallments($total, $cards = null)

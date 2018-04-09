@@ -25,6 +25,7 @@
 "Fill the card number","Preencha o número do cartão"
 "Save this card to future orders","Salvar este cartão para compras futuras"
 "Invalid Credit Card", "Cartão de crédito inválido"
+"Unavailable brand", "Bandeira indisponível"
 
 "####### Informações extras de checkout","#####################################"
 "Click <a href='%s'>here</a> to show your billet for <strong>%s %s</strong> payment.", "Clique <a href='%s'>aqui</a> para mostrar seu boleto para o pagamento de <strong>%s %s</strong>."
