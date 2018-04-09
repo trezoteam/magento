@@ -107,11 +107,12 @@
                 maxlength="19"
                 name="payment[<?php echo "$elementId"?>_creditCardNumber]"
         >
-        <p
+
+        <div
                 id="<?php echo "$elementId"?>_disabled_brand_message"
-                style="display: none; color: #E13520"
-                class="disabledBrandMessae"
-        ><?php echo $this->__('Unavailable brand'); ?></p>
+                style="display: none;"
+                class="disabledBrandMessae validation-advice"
+        ><?php echo $this->__('Unavailable brand'); ?></div>
     </div>
 
     <label
