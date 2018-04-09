@@ -380,6 +380,7 @@ function fillBrandData(data,argsObj) {
     if (data.brand != "" && data.brand != undefined) {
         showBrandImage(data.brand,argsObj.elementId);
         getInstallments(jQuery("#baseUrl").val(), data.brandName,argsObj);
+
         jQuery("#"+argsObj.elementId+"_mundicheckout-creditCard-installments").html("");
         jQuery("#"+argsObj.elementId+"_brand_name").val(data.brandName);
     }
@@ -426,47 +427,48 @@ function getInstallments(baseUrl, brandName, argsObj) {
 }
 
 function switchInstallments(data,argsObj) {
-    jQuery("#" + argsObj.elementId + '_disabled_brand_message').hide();
+    jQuery('.disabledBrandMessae').hide();
 
     if (data) {
         var withoutInterest = MundiPagg.Locale.getTranslaction("without interest");
+        var html;
 
-        var html = "<option>1x " + withoutInterest + "</option>";
+        html = fillInstallments(data);
 
-        data.forEach(fillInstallments, argsObj);
+        jQuery("#"+ argsObj.elementId + "_mundicheckout-creditCard-installments").html(html);
     } else {
         if(argsObj !== undefined && argsObj.elementId != undefined) {
-            //console.log(jQuery(argsObj.elementId));
             jQuery("#" + argsObj.elementId + '_disabled_brand_message').show();
         }
     }
 }
 
-function fillInstallments(item) {
+function fillInstallments(data) {
+    var html = '';
     var withoutInterest = MundiPagg.Locale.getTranslaction("without interest");
     var interestPercent = MundiPagg.Locale.getTranslaction("% of interest");
     var of = MundiPagg.Locale.getTranslaction("of");
-    var installmentsSelect =
-        jQuery("#"+this.elementId+"_mundicheckout-creditCard-installments");
 
-    item.interestMessage = ' ' + withoutInterest;
+    for (i=0; i< data.length; i++) {
+        data[i].interestMessage = ' ' + withoutInterest;
 
-    if (item.interest > 0) {
-        item.interestMessage =
-            " " + MundiPagg.Locale.getTranslaction("with") + " " +
-            item.interest +
-            interestPercent;
+        if (data[i].interest > 0) {
+            data[i].interestMessage =
+                " " + MundiPagg.Locale.getTranslaction("with") + " " +
+                data[i].interest +
+                interestPercent;
+        }
+
+         html +=
+            "<option value='"+data[i].times+"'>" +
+            data[i].times +
+            "x " + of + " " +
+            data[i].amount +
+            data[i].interestMessage +
+            "</option>";
     }
 
-    var html =
-        "<option value='"+item.times+"'>" +
-        item.times +
-        "x " + of + " " +
-        item.amount +
-        item.interestMessage +
-        "</option>";
-
-    installmentsSelect.append(html);
+    return html;
 }
 
 function switchNewSaved(value, elementId) {
