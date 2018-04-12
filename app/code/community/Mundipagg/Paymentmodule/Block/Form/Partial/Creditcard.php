@@ -45,7 +45,8 @@ class Mundipagg_Paymentmodule_Block_Form_Partial_Creditcard extends Mundipagg_Pa
             ->isSavedCreditCardsEnabled();
     }
 
-    public function getEnabledBrands() {
+    public function getEnabledBrands()
+    {
         return Mage::getModel('paymentmodule/config_card')
             ->getEnabledBrands();
     }
