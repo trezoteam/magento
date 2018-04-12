@@ -8,6 +8,7 @@
 "without interest", "sem juros"
 "% of interest","% de juros"
 "Fill the value for this card","Preencha o valor para este cartão"
+"Invalid payment data", "Dados de pagamento inválidos"
 
 "####### Boleto","#############################################################"
 "Billet", "Boleto",

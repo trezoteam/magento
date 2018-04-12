@@ -52,7 +52,8 @@ class Mundipagg_Paymentmodule_Model_Config_Card
         ];
     }
 
-    public function getEnabledBrands() {
+    public function getEnabledBrands()
+    {
         $brandStatuses = $this->getBrandStatuses();
         $enabledBrands = [];
 
