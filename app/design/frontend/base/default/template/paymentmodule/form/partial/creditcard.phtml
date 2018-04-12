@@ -22,10 +22,10 @@
 
     <div class="input-box">
         <?php
-            $brandImage = 'https://dashboard.mundipagg.com/emb/images/brands/';
+            $brandUrl = 'https://dashboard.mundipagg.com/emb/images/brands/';
 
             foreach ($enabledBrands as $brand) {
-                $brandImage .= $brand . '.jpg';
+                $brandImage = $brandUrl . $brand . '.jpg';
         ?>
             <img
                 src="<?php echo $brandImage; ?>"
