@@ -121,4 +121,28 @@ class Mundipagg_Paymentmodule_Helper_Savedcreditcard extends Mage_Core_Helper_Ab
 
         return $cardsConfig->isEnabled() === '1' && $cardsConfig->isSavedCreditCardsEnabled() === '1';
     }
+
+    /**
+     * Filter for enabled credit card brands
+     * @param array $enabledBrands
+     * @return array
+     */
+    public function enabledSavedCreditCards()
+    {
+        $enabledSavedCreditCards = [];
+
+        $savedCreditCards = $this->getCurrentCustomerSavedCards();
+        $enabledBrands = Mage::getModel('paymentmodule/config_card')
+            ->getEnabledBrands();
+
+        foreach ($savedCreditCards as $savedCreditCard) {
+            $brandName = strtolower($savedCreditCard->getBrandName());
+
+            if (in_array($brandName, $enabledBrands)) {
+                $enabledSavedCreditCards[] = $savedCreditCard;
+            }
+        }
+
+        return $enabledSavedCreditCards;
+    }
 }

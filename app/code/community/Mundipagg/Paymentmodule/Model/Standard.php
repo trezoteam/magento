@@ -26,7 +26,7 @@ class Mundipagg_Paymentmodule_Model_Standard extends Mage_Payment_Model_Method_A
     {
         $paymentMethod = $data->getMethod();
         $paymentData = $this->getPaymentData($data->getData(), $paymentMethod);
-
+        $this->validate($paymentData);
         try {
             $info = $this->getInfoInstance();
             $info->setAdditionalInformation(
@@ -179,5 +179,72 @@ class Mundipagg_Paymentmodule_Model_Standard extends Mage_Payment_Model_Method_A
     public function getOrderFromCheckoutSession()
     {
         return Mage::getSingleton('checkout/session');
+    }
+
+    /**
+     * Prevent not allowed input data
+     * @return $this|Mage_Payment_Model_Abstract
+     * @throws Mage_Core_Exception
+     * @todo Improve this method
+     */
+    public function validate($paymentData = null)
+    {
+        if (!$paymentData) {
+            return $this;
+        }
+
+        $validation = true;
+
+        if (isset($paymentData['creditcard'])) {
+            $validation = $this->validateCreditCard($paymentData['creditcard']);
+        }
+
+        if (!$validation) {
+            Mage::throwException(Mage::helper('paymentmodule')->__('Invalid payment data'));
+            return false;
+        }
+    }
+
+    private function validateCreditCard($creditCards)
+    {
+        $enabledBrands = strtolower($this->getConfigModel()->getEnabledBrands());
+
+        foreach ($creditCards as $creditCard) {
+            if (
+                !in_array(
+                    $enabledBrands,
+                    strtolower($creditCard['brand'])
+                ) && !$this->validateInstallments($creditCard)
+
+            ) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private function validateInstallments($card)
+    {
+        $configModel = $this->getConfigModel();
+        $default = $configModel->isDefaultConfigurationEnabled();
+
+        $installments = $card['creditCardInstallments'];
+        $brand = $card['brand'];
+
+        if (
+            $default &&
+            $installments <= $configModel->getDefaultMaxInstallmentNumber()
+        ) {
+            return true;
+        }
+
+        $brandMaxInstallments = 'get' . $brand . 'MaxInstallmentsNumber';
+
+        if ($installments > $configModel->$brandMaxInstallments()) {
+            return false;
+        }
+
+        return true;
     }
 }
