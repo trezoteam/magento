@@ -220,6 +220,112 @@
             type="hidden"
             id="<?php echo "$elementId"?>_mundicheckout-token"
             name="payment[<?php echo "$elementId"?>_token]">
+
+    <br>
+    <h3><?php echo $this->__('Fill other buyer data'); ?></h3>
+
+    <div class="input-box">
+        <label><?php echo $this->__('Full name'); ?> <span class="required"></span></label><br/>
+        <input
+                type="text"
+                id="<?php echo "$elementId"?>_multibuyer_name"
+                name="payment[<?php echo "$elementId"?>_multibuyer_name]"
+                class="required-entry"
+                value="">
+    </div>
+
+    <div class="input-box">
+        <label><?php echo $this->__('E-mail'); ?> <span class="required"></span></label><br/>
+        <input
+                type="text"
+                id="<?php echo "$elementId"?>_multibuyer_email"
+                name="payment[<?php echo "$elementId"?>_multibuyer_email]"
+                class="required-entry"
+                value="">
+    </div>
+
+    <div class="input-box">
+        <label><?php echo $this->__('Zipcode'); ?> <span class="required"></span></label><br/>
+        <input
+                type="text"
+                id="<?php echo "$elementId"?>_multibuyer_zipcode"
+                name="payment[<?php echo "$elementId"?>_multibuyer_zipcode]"
+                class="required-entry"
+                value="">
+    </div>
+
+    <div class="input-box">
+        <label><?php echo $this->__('Street'); ?> <span class="required"></span></label><br/>
+        <input
+                type="text"
+                id="<?php echo "$elementId"?>_multibuyer_street"
+                name="payment[<?php echo "$elementId"?>_multibuyer_street]"
+                class="required-entry"
+                value="">
+    </div>
+
+    <div class="input-box">
+        <label><?php echo $this->__('Number'); ?> <span class="required"></span></label><br/>
+        <input
+                type="text"
+                id="<?php echo "$elementId"?>_multibuyer_number"
+                name="payment[<?php echo "$elementId"?>_multibuyer_number]"
+                class="required-entry"
+                value="">
+    </div>
+
+    <div class="input-box">
+        <label><?php echo $this->__('Complement'); ?></label><br/>
+        <input
+                type="text"
+                id="<?php echo "$elementId"?>_multibuyer_complement"
+                name="payment[<?php echo "$elementId"?>_multibuyer_complement]"
+                class=
+                value="">
+    </div>
+
+
+    <div class="input-box">
+        <label><?php echo $this->__('Neighborhood'); ?> <span class="required"></span></label><br/>
+        <input
+                type="text"
+                id="<?php echo "$elementId"?>_multibuyer_neighborhood"
+                name="payment[<?php echo "$elementId"?>_multibuyer_neighborhood]"
+                class="required-entry"
+                value="">
+    </div>
+
+    <div class="input-box">
+        <label><?php echo $this->__('City'); ?> <span class="required"></span></label><br/>
+        <input
+                type="text"
+                id="<?php echo "$elementId"?>_multibuyer_city"
+                name="payment[<?php echo "$elementId"?>_multibuyer_city]"
+                class="required-entry"
+                value="">
+    </div>
+
+    <div class="input-box">
+        <label><?php echo $this->__('State'); ?> <span class="required"></span></label><br/>
+        <input
+                type="text"
+                id="<?php echo "$elementId"?>_multibuyer_state"
+                name="payment[<?php echo "$elementId"?>_multibuyer_state]"
+                class="required-entry"
+                value="">
+    </div>
+
+    <div class="input-box">
+        <label><?php echo $this->__('Country'); ?> <span class="required"></span></label><br/>
+        <input
+                type="text"
+                id="<?php echo "$elementId"?>_multibuyer_country"
+                name="payment[<?php echo "$elementId"?>_multibuyer_country]"
+                class="required-entry"
+                value="">
+    </div>
+
+
 </div>
 <p>
 <div class="validation-advice hidden" id="<?php echo "$elementId"?>_mundipagg-invalid-credit-card" style="">
