@@ -1,6 +1,6 @@
 <?php
 
-class Mundipagg_Paymentmodule_Model_Config_Twocreditcards
+class Mundipagg_Paymentmodule_Model_Config_Twocreditcards extends Mundipagg_Paymentmodule_Model_Config_Card
 {
     public function isEnabled()
     {
