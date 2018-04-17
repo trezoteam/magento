@@ -42,7 +42,9 @@ function initSavedCreditCardInstallments() {
 }
 
 function fillSavedCreditCardInstallments(elementId) {
-    var brandName = jQuery("#" + elementId + "_mundicheckout-SavedCreditCard").children("option:selected").attr("brand");
+    var brandName = jQuery("#" + elementId + "_mundicheckout-SavedCreditCard")
+        .children("option:selected")
+        .attr("data-brand");
     var baseUrl = jQuery("#baseUrl").val();
     var value = jQuery("#" + elementId + "_value").val();
 
@@ -259,6 +261,11 @@ function initPaymentMethod(methodCode,orderTotal)
             });
         }
     });
+
+    //trigger change events on certain inputs
+    var paymentMethodForm = jQuery('#payment_form_' + methodCode);
+    //on saved creditCards select.
+    paymentMethodForm.find('.savedCreditCardSelect').change();
 }
 
 function isNewCard(elementId)
@@ -337,6 +344,10 @@ function getFormData(elementId) {
         exp_year: document.getElementById(elementId + '_mundicheckout-expyear').value,
         cvv: clearCvv(document.getElementById(elementId + '_mundicheckout-cvv'))
     };
+
+    var brandName = jQuery('#' + elementId + '_mundicheckout-SavedCreditCard')
+        .find('option:selected').attr('data-brand');
+    jQuery("#" + elementId + "_brand_name").val(brandName);
 }
 
 function getBrand(elementId) {
@@ -352,7 +363,7 @@ function getBrand(elementId) {
 
     if (!isNewCard(elementId)) {
         brandName = jQuery("#" + elementId + "_mundicheckout-SavedCreditCard")
-            .children("option:selected").attr("brand");
+            .children("option:selected").attr("data-brand");
         getInstallments(baseUrl, brandName, argsObj);
         return;
     }

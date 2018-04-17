@@ -30,3 +30,15 @@
 
 "####### Informações extras de checkout","#####################################"
 "Click <a href='%s'>here</a> to show your billet for <strong>%s %s</strong> payment.", "Clique <a href='%s'>aqui</a> para mostrar seu boleto para o pagamento de <strong>%s %s</strong>."
+
+"####### Multi buyer","##################################################"
+"Fill other buyer data", "Informar dados de outro comprador"
+"Full name", "Nome completo"
+"Zipcode", "Cep"
+"Street", "Rua"
+"Number", "Número"
+"Complement", "Complemento"
+"Neighborhood", "Bairro"
+"City", "Cidade"
+"State", "Estado"
+"Country", "País"

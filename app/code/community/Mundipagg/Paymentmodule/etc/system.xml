@@ -19,7 +19,7 @@
                     <comment>
                         <![CDATA[
                             <a href="http://www.mundipagg.com.br" target="_blank">
-                                <img title="MundiPagg" alt="MundiPagg" width="100" src="https://www.mundipagg.com/wp-content/uploads/2017/05/logo-mundipagg.png"/>
+                                <img title="MundiPagg" alt="MundiPagg" width="200" src="/skin/adminhtml/default/default/images/mundipagg/mundipagg-colorida.svg"/>
                             </a>
                             <br>
                             <br>
@@ -39,7 +39,7 @@
         </payment>
 
         <mundipagg_config translate="label" module="paymentmodule">
-            <label><![CDATA[<div style="position: absolute;"><img id="magepal_block" alt="" border="0" width="16" /> &nbsp;Mundipagg</div>&nbsp;<script>$("magepal_block").src = "https://dashboard.mundipagg.com/images/logo-mundipagg-versao-reduzida.png";</script>]]></label>
+            <label><![CDATA[<div style="position: absolute;"><img id="magepal_block" alt="" border="0" width="16" /> &nbsp;Mundipagg</div>&nbsp;<script>$("magepal_block").src = "/skin/adminhtml/default/default/images/mundipagg/icons/logo-mundipagg-icon.png";</script>]]></label>
             <tab>paymentmoduleconfig</tab>
             <sort_order>1000</sort_order>
             <show_in_default>1</show_in_default>
@@ -48,14 +48,14 @@
 
             <groups>
                 <general_group translate="label" module="paymentmodule">
-                    <label><![CDATA[<img title="Mundipagg" alt="Mundipagg" width="32" style="margin:10px 0px 0px 0px;" src="/skin/adminhtml/default/default/images/mundipagg/icons/mundipagg-branco.png"/> <div style="margin: -23px 0 13px 40px;"> General configuration</div>]]></label>
+                    <label>General configuration</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>1000</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                     <comment>
-                        <![CDATA[<br><a href="http://www.mundipagg.com.br" target="_blank"><img title="MundiPagg" alt="MundiPagg" width="100" src="https://www.mundipagg.com/wp-content/uploads/2017/05/logo-mundipagg.png"/></a><br><br><br>]]>
+                        <![CDATA[<br><a href="http://www.mundipagg.com.br" target="_blank"><img title="MundiPagg" alt="MundiPagg" width="200" src="/skin/adminhtml/default/default/images/mundipagg/mundipagg-colorida.svg"/></a><br><br><br>]]>
                     </comment>
                     <fields>
                         <heading_basic_config translate="label" module="paymentmodule">
@@ -139,7 +139,7 @@
                 </general_group>
 
                 <antifraud_group translate="label" module="paymentmodule">
-                    <label><![CDATA[Anti-fraud configuration]]></label>
+                    <label>Anti-fraud configuration</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>1000</sort_order>
                     <show_in_default>1</show_in_default>
@@ -180,7 +180,7 @@
                 </antifraud_group>
 
                 <boleto_group translate="label" module="paymentmodule">
-                    <label><![CDATA[<img title='Billet' alt='Billet' width='32' style='margin-top:9px;' src='/skin/adminhtml/default/default/images/mundipagg/icons/boleto.png'/> <div style='margin:-29px 0 13px 40px'> Billet configuration</div>]]></label>
+                    <label>Billet configuration</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>1000</sort_order>
                     <show_in_default>1</show_in_default>
@@ -265,7 +265,7 @@
                 </boleto_group>
 
                 <creditcard_group translate="label" module="paymentmodule">
-                    <label><![CDATA[<img title='Creditcard' alt='Creditcard' width='32' style='margin-top:9px;' src='/skin/adminhtml/default/default/images/mundipagg/icons/creditcard.png'/> <div style='margin:-29px 0 13px 40px'> General credit card configuration</div>]]></label>
+                    <label>General credit card configuration</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>1100</sort_order>
                     <show_in_default>1</show_in_default>
@@ -341,7 +341,7 @@
                 </creditcard_group>
 
                 <twocreditcards_group translate="label" module="paymentmodule">
-                    <label><![CDATA[Two credit cards configuration]]></label>
+                    <label>Two credit cards configuration</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>1000</sort_order>
                     <show_in_default>1</show_in_default>
@@ -381,7 +381,7 @@
                 </twocreditcards_group>
 
                 <boletocreditcard_group translate="label" module="paymentmodule">
-                    <label><![CDATA[<img title='Billet Creditcard' alt='Billet Creditcard' width='32' style='margin-top:9px;' src='/skin/adminhtml/default/default/images/mundipagg/icons/creditcard.png'/> <div style='margin:-29px 0 13px 40px'> Billet and Credit Card configuration</div>]]></label>
+                    <label>Billet and Credit Card configuration</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>1200</sort_order>
                     <show_in_default>1</show_in_default>
@@ -513,7 +513,7 @@
 
                 <!-- INSTALLMENTS -->
                 <installments_group translate="label" module="paymentmodule">
-                    <label><![CDATA[<img title='Installments' alt='Installments' width='37' style='margin: 9px 0 0 0px;' src='/skin/adminhtml/default/default/images/mundipagg/icons/installments.png'/><div style='margin: -26px 0 11px 45px;'>Installments configuration</div>]]></label>
+                    <label>Installments configuration</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>1300</sort_order>
                     <show_in_default>1</show_in_default>
