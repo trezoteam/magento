@@ -117,7 +117,7 @@ function getCreditCardToken(pkKey,elementId, callback) {
  */
 function validateCreditCardData(elementId) {
     if(
-        toTokenApi[elementId].card.number.length > 15 &&
+        toTokenApi[elementId].card.number.length > 14 &&
         toTokenApi[elementId].card.number.length < 22 &&
         toTokenApi[elementId].card.holder_name.length > 2 &&
         toTokenApi[elementId].card.holder_name.length < 51 &&
