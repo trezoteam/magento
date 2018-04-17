@@ -79,21 +79,6 @@ class Mundipagg_Paymentmodule_Model_Api_Creditcard extends Mundipagg_Paymentmodu
         return $customerRequest;
     }
 
-    /**
-     * @param $customer
-     * @return CreateCustomerRequest
-     */
-    protected function getCustomerFromMultiBuyer($customer)
-    {
-        $customerRequest = new CreateCustomerRequest();
-
-        $customerRequest->name = $customer['multiBuyerName'];
-        $customerRequest->email = $customer['multiBuyerEmail'];
-        $customerRequest->address = $this->getAddressFromMultiBuyer($customer);
-        $customerRequest->type = 'individual';
-
-        return $customerRequest;
-    }
 
     /**
      * @return CreateAddressRequest
@@ -118,7 +103,23 @@ class Mundipagg_Paymentmodule_Model_Api_Creditcard extends Mundipagg_Paymentmodu
     }
 
     /**
-     * @param array $multiBuyerData
+     * @param $customer
+     * @return CreateCustomerRequest
+     */
+    protected function getCustomerFromMultiBuyer($customer)
+    {
+        $customerRequest = new CreateCustomerRequest();
+
+        $customerRequest->name = $customer['multiBuyerName'];
+        $customerRequest->email = $customer['multiBuyerEmail'];
+        $customerRequest->address = $this->getAddressFromMultiBuyer($customer);
+        $customerRequest->type = 'individual';
+
+        return $customerRequest;
+    }
+
+    /**
+     * @param array $customer
      * @return CreateAddressRequest
      */
     protected function getAddressFromMultiBuyer($customer)
