@@ -19,7 +19,7 @@
                     <comment>
                         <![CDATA[
                             <a href="http://www.mundipagg.com.br" target="_blank">
-                                <img title="MundiPagg" alt="MundiPagg" width="100" src="https://www.mundipagg.com/wp-content/uploads/2017/05/logo-mundipagg.png"/>
+                                <img title="MundiPagg" alt="MundiPagg" width="200" src="/skin/adminhtml/default/default/images/mundipagg/mundipagg-colorida.svg"/>
                             </a>
                             <br>
                             <br>
@@ -39,7 +39,7 @@
         </payment>
 
         <mundipagg_config translate="label" module="paymentmodule">
-            <label><![CDATA[<div style="position: absolute;"><img id="magepal_block" alt="" border="0" width="16" /> &nbsp;Mundipagg</div>&nbsp;<script>$("magepal_block").src = "https://dashboard.mundipagg.com/images/logo-mundipagg-versao-reduzida.png";</script>]]></label>
+            <label><![CDATA[<div style="position: absolute;"><img id="magepal_block" alt="" border="0" width="16" /> &nbsp;Mundipagg</div>&nbsp;<script>$("magepal_block").src = "/skin/adminhtml/default/default/images/mundipagg/icons/logo-mundipagg-icon.png";</script>]]></label>
             <tab>paymentmoduleconfig</tab>
             <sort_order>1000</sort_order>
             <show_in_default>1</show_in_default>
@@ -55,7 +55,7 @@
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                     <comment>
-                        <![CDATA[<br><a href="http://www.mundipagg.com.br" target="_blank"><img title="MundiPagg" alt="MundiPagg" width="100" src="https://www.mundipagg.com/wp-content/uploads/2017/05/logo-mundipagg.png"/></a><br><br><br>]]>
+                        <![CDATA[<br><a href="http://www.mundipagg.com.br" target="_blank"><img title="MundiPagg" alt="MundiPagg" width="200" src="/skin/adminhtml/default/default/images/mundipagg/mundipagg-colorida.svg"/></a><br><br><br>]]>
                     </comment>
                     <fields>
                         <heading_basic_config translate="label" module="paymentmodule">
