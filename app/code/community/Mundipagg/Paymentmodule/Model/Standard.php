@@ -195,56 +195,17 @@ class Mundipagg_Paymentmodule_Model_Standard extends Mage_Payment_Model_Method_A
 
         $validation = true;
 
-        if (isset($paymentData['creditcard'])) {
-            $validation = $this->validateCreditCard($paymentData['creditcard']);
+        foreach ($paymentData as $key => $payment) {
+            $validation = Mage::getModel('paymentmodule/' . $key)
+                ->validatePaymentData($paymentData[$key]);
         }
 
         if (!$validation) {
-            Mage::throwException(Mage::helper('paymentmodule')->__('Invalid payment data'));
+            $errorMsg = Mage::helper('paymentmodule')
+                ->__('Invalid payment data');
+            Mage::throwException($errorMsg);
+
             return false;
         }
-    }
-
-    private function validateCreditCard($creditCards)
-    {
-        $enabledBrands = strtolower($this->getConfigModel()->getEnabledBrands());
-
-        foreach ($creditCards as $creditCard) {
-            if (
-                !in_array(
-                    $enabledBrands,
-                    strtolower($creditCard['brand'])
-                ) && !$this->validateInstallments($creditCard)
-
-            ) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    private function validateInstallments($card)
-    {
-        $configModel = $this->getConfigModel();
-        $default = $configModel->isDefaultConfigurationEnabled();
-
-        $installments = $card['creditCardInstallments'];
-        $brand = $card['brand'];
-
-        if (
-            $default &&
-            $installments <= $configModel->getDefaultMaxInstallmentNumber()
-        ) {
-            return true;
-        }
-
-        $brandMaxInstallments = 'get' . $brand . 'MaxInstallmentsNumber';
-
-        if ($installments > $configModel->$brandMaxInstallments()) {
-            return false;
-        }
-
-        return true;
     }
 }
