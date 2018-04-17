@@ -42,7 +42,9 @@ function initSavedCreditCardInstallments() {
 }
 
 function fillSavedCreditCardInstallments(elementId) {
-    var brandName = jQuery("#" + elementId + "_mundicheckout-SavedCreditCard").children("option:selected").attr("data-brand");
+    var brandName = jQuery("#" + elementId + "_mundicheckout-SavedCreditCard")
+        .children("option:selected")
+        .attr("data-brand");
     var baseUrl = jQuery("#baseUrl").val();
     var value = jQuery("#" + elementId + "_value").val();
 
@@ -343,8 +345,9 @@ function getFormData(elementId) {
         cvv: clearCvv(document.getElementById(elementId + '_mundicheckout-cvv'))
     };
 
-    var brandName = jQuery('#' + elementId + '_mundicheckout-SavedCreditCard').find('option:selected').attr('data-brand');
-    jQuery("#"+elementId+"_brand_name").val(brandName);
+    var brandName = jQuery('#' + elementId + '_mundicheckout-SavedCreditCard')
+        .find('option:selected').attr('data-brand');
+    jQuery("#" + elementId + "_brand_name").val(brandName);
 }
 
 function getBrand(elementId) {
