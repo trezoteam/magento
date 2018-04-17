@@ -186,6 +186,17 @@ function initPaymentMethod(methodCode,orderTotal)
             }
             var prototypeWrapper = this;
 
+            //foreach value input of the paymentMethod
+            //update input balance values
+            jQuery('#payment_form_' + methodCode)
+                .find('.multipayment-value-input')
+                .each(
+                    function(index,element)
+                    {
+                        jQuery(element).change();
+                    }
+                );
+
             //for each of creditcard forms
             jQuery('.' +methodCode+ "_creditcard_tokenDiv").each(function(index,element) {
                 var elementId = element.id.replace('_tokenDiv', '');
@@ -244,9 +255,24 @@ function initPaymentMethod(methodCode,orderTotal)
                 var oppositeInput = amountInputs[oppositeIndex];
                 var max = parseFloat(orderTotal);
 
+                element.lastValue = jQuery(element).val();
                 jQuery(element).on('input',function(){
+
+                    setTimeout(function(){
+                        if (jQuery(element).val() !== element.lastValue) {
+                            element.lastValue = jQuery(element).val();
+                            jQuery(element).change();
+                        }
+                    }.bind(element),2000);
+
+                }.bind(element));
+
+                jQuery(element).on('change',function(){
                     var elementValue = parseFloat(jQuery(element).val());
-                    console.log(jQuery(element).caret);
+
+                    if (isNaN(elementValue)) {
+                        elementValue = 0;
+                    }
 
                     if (elementValue > max) {
                         elementValue = max;
@@ -257,8 +283,14 @@ function initPaymentMethod(methodCode,orderTotal)
                     jQuery(oppositeInput).val(oppositeValue.toFixed(2));
                     jQuery(element).val(elementValue.toFixed(2));
 
-                    jQuery(oppositeInput).change();
-                    jQuery(element).change();
+                    var elementId = element.id.split('_');
+                    elementId.pop();
+                    getBrandWithDelay(elementId.join('_'));
+
+                    var oppositeInputId = oppositeInput.id.split('_');
+                    oppositeInputId.pop();
+                    getBrandWithDelay(oppositeInputId.join('_'));
+
                 }.bind(element));
             });
         }
