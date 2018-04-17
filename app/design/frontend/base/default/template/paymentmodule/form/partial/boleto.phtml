@@ -73,6 +73,14 @@
                 value="">
     </div>
 
+    <label><?php echo $this->__('Tax/VAT'); ?><span class="required"></span></label><br/>
+    <input
+            type="text"
+            id="<?php echo $elementId; ?>_multi_buyer_taxvat"
+            name="payment[<?php echo $elementId; ?>_multiBuyerTaxvat]"
+            class="<?php echo $elementClass; ?>_validate-mundipagg-cpf required-entry"
+    />
+
     <div class="input-box">
         <label><?php echo $this->__('Zipcode'); ?> <span class="required"></span></label><br/>
         <input

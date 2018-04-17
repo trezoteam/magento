@@ -56,7 +56,7 @@ class Mundipagg_Paymentmodule_Model_Api_Boleto extends Mundipagg_Paymentmodule_M
             isset($payment['multiBuyerEnabled']) &&
             $payment['multiBuyerEnabled'] === 'on')
         {
-            return $this->getCustomerFromMultiBuyer($payment, $documentNumber);
+            return $this->getCustomerFromMultiBuyer($payment);
 
         }
 
@@ -104,15 +104,14 @@ class Mundipagg_Paymentmodule_Model_Api_Boleto extends Mundipagg_Paymentmodule_M
 
     /**
      * @param $customer
-     * @param $documentNumber
      * @return CreateCustomerRequest
      */
-    protected function getCustomerFromMultiBuyer($customer, $documentNumber)
+    protected function getCustomerFromMultiBuyer($customer)
     {
         $customerRequest = new CreateCustomerRequest();
 
         $customerRequest->name = $customer['multiBuyerName'];
-        $customerRequest->document = $documentNumber;
+        $customerRequest->document = $customer['multiBuyerTaxvat'];
         $customerRequest->email = $customer['multiBuyerEmail'];
         $customerRequest->address = $this->getAddressFromMultiBuyer($customer);
         $customerRequest->type = 'individual';
