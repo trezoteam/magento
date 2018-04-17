@@ -74,7 +74,7 @@
                 <?php foreach ($savedCreditCards as $card) { ?>
                     <option
                             value="<?php echo $card->getMundipaggCardId(); ?>"
-                            brand="<?php echo $card->getBrandName(); ?>"
+                            data-brand="<?php echo $card->getBrandName(); ?>"
                     ><?php
                         echo
                             $card->getBrandName() .
@@ -82,7 +82,7 @@
                             $card->getLastFourDigits()
                         ?></option>
                 <?php } ?>
-                <option value="new" brand=""><?php echo $this->__('Fill Data'); ?></option>
+                <option value="new" data-brand=""><?php echo $this->__('Fill Data'); ?></option>
             </select>
             <br>
         </div>
