@@ -36,7 +36,7 @@ class Mundipagg_Paymentmodule_Model_Api_Creditcard extends Mundipagg_Paymentmodu
             $paymentRequest->paymentMethod = 'credit_card';
             $paymentRequest->creditCard = $creditCardPaymentRequest;
             $paymentRequest->amount = $monetary->toCents($payment['value']);
-            $paymentRequest->customer = $this->getCustomer();
+            $paymentRequest->customer = $this->getCustomer($payment);
             // @todo this should not be hard coded
             $paymentRequest->currency = 'BRL';
 
@@ -46,21 +46,45 @@ class Mundipagg_Paymentmodule_Model_Api_Creditcard extends Mundipagg_Paymentmodu
         return $result;
     }
 
-    protected function getCustomer()
+    /**
+     * @param array $payment
+     * @return CreateCustomerRequest
+     */
+    protected function getCustomer($payment)
     {
+        if (
+            isset($payment['multiBuyerEnabled']) &&
+            $payment['multiBuyerEnabled'] === 'on')
+        {
+            return $this->getCustomerFromMultiBuyer($payment);
+
+        }
+
+        return $this->getCustomerFromSession();
+    }
+
+    /**
+     * @return CreateCustomerRequest
+     */
+    protected function getCustomerFromSession()
+    {
+        $customerRequest = new CreateCustomerRequest();
         $session = Mage::getSingleton('customer/session');
         $customer = $session->getCustomer();
-        $customerRequest = new CreateCustomerRequest();
 
         $customerRequest->name = $customer->getName();
-        $customerRequest->address = $this->getAddress();
+        $customerRequest->address = $this->getAddressFromSession();
         $customerRequest->type = 'individual';
         $customerRequest->email = $customer->getEmail();
 
         return $customerRequest;
     }
 
-    protected function getAddress()
+
+    /**
+     * @return CreateAddressRequest
+     */
+    protected function getAddressFromSession()
     {
         $session = Mage::getSingleton('customer/session');
         $customer = $session->getCustomer();
@@ -71,10 +95,46 @@ class Mundipagg_Paymentmodule_Model_Api_Creditcard extends Mundipagg_Paymentmodu
         $addressRequest->number = $address->getStreet()[1];
         $addressRequest->zipCode = $address->getPostcode();
         $addressRequest->neighborhood = 'Comptown';
-        $addressRequest->city = $address->getCity();;
-        $addressRequest->state = $address->getRegion();;
+        $addressRequest->city = $address->getCity();
+        $addressRequest->state = $address->getRegion();
         $addressRequest->complement = '';
         $addressRequest->country = $address->getCountryId();
+
+        return $addressRequest;
+    }
+
+    /**
+     * @param $customer
+     * @return CreateCustomerRequest
+     */
+    protected function getCustomerFromMultiBuyer($customer)
+    {
+        $customerRequest = new CreateCustomerRequest();
+
+        $customerRequest->name = $customer['multiBuyerName'];
+        $customerRequest->email = $customer['multiBuyerEmail'];
+        $customerRequest->address = $this->getAddressFromMultiBuyer($customer);
+        $customerRequest->type = 'individual';
+
+        return $customerRequest;
+    }
+
+    /**
+     * @param array $customer
+     * @return CreateAddressRequest
+     */
+    protected function getAddressFromMultiBuyer($customer)
+    {
+        $addressRequest = new CreateAddressRequest();
+
+        $addressRequest->street = $customer['multiBuyerStreet'];
+        $addressRequest->number = $customer['multiBuyerNumber'];
+        $addressRequest->zipCode = $customer['multiBuyerZipCode'];
+        $addressRequest->neighborhood = $customer['multiBuyerNeighborhood'];
+        $addressRequest->city = $customer['multiBuyerCity'];
+        $addressRequest->state = $customer['multiBuyerState'];
+        $addressRequest->complement = $customer['multiBuyerComplement'];
+        $addressRequest->country = $customer['multiBuyerCountry'];
 
         return $addressRequest;
     }
