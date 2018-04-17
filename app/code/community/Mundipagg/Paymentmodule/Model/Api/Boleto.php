@@ -32,11 +32,7 @@ class Mundipagg_Paymentmodule_Model_Api_Boleto extends Mundipagg_Paymentmodule_M
             $paymentRequest->paymentMethod = 'boleto';
             $paymentRequest->boleto = $boletoPaymentRequest;
             $paymentRequest->amount = $monetary->toCents($payment['value']);
-            $paymentRequest->customer =
-                $this->getCustomer(
-                    $payment,
-                    $payment['taxvat']
-                );
+            $paymentRequest->customer = $this->getCustomer($payment);
             // @todo this should not be hard coded
             $paymentRequest->currency = 'BRL';
 
@@ -50,23 +46,24 @@ class Mundipagg_Paymentmodule_Model_Api_Boleto extends Mundipagg_Paymentmodule_M
      * @param array $payment
      * @return CreateCustomerRequest
      */
-    protected function getCustomer($payment = null, $documentNumber)
+    protected function getCustomer($payment)
     {
         if (
             isset($payment['multiBuyerEnabled']) &&
-            $payment['multiBuyerEnabled'] === 'on')
-        {
+            $payment['multiBuyerEnabled'] === 'on'
+        ) {
             return $this->getCustomerFromMultiBuyer($payment);
-
         }
 
-        return $this->getCustomerFromSession($documentNumber);
+        return $this->getCustomerFromSession($payment['taxvat']);
     }
 
     /**
+     * @param string $documentNumber
      * @return CreateCustomerRequest
      */
-    protected function getCustomerFromSession($documentNumber) {
+    protected function getCustomerFromSession($documentNumber)
+    {
         $customerRequest = new CreateCustomerRequest();
         $session = Mage::getSingleton('customer/session');
         $customer = $session->getCustomer();

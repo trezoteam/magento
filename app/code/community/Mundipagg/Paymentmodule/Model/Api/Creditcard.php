@@ -50,7 +50,7 @@ class Mundipagg_Paymentmodule_Model_Api_Creditcard extends Mundipagg_Paymentmodu
      * @param array $payment
      * @return CreateCustomerRequest
      */
-    protected function getCustomer($payment = null)
+    protected function getCustomer($payment)
     {
         if (
             isset($payment['multiBuyerEnabled']) &&
@@ -66,7 +66,8 @@ class Mundipagg_Paymentmodule_Model_Api_Creditcard extends Mundipagg_Paymentmodu
     /**
      * @return CreateCustomerRequest
      */
-    protected function getCustomerFromSession() {
+    protected function getCustomerFromSession()
+    {
         $customerRequest = new CreateCustomerRequest();
         $session = Mage::getSingleton('customer/session');
         $customer = $session->getCustomer();
