@@ -246,6 +246,7 @@ function initPaymentMethod(methodCode,orderTotal)
 
                 jQuery(element).on('input',function(){
                     var elementValue = parseFloat(jQuery(element).val());
+                    console.log(jQuery(element).caret);
 
                     if (elementValue > max) {
                         elementValue = max;
@@ -255,7 +256,10 @@ function initPaymentMethod(methodCode,orderTotal)
 
                     jQuery(oppositeInput).val(oppositeValue.toFixed(2));
                     jQuery(element).val(elementValue.toFixed(2));
-                });
+
+                    jQuery(oppositeInput).change();
+                    jQuery(element).change();
+                }.bind(element));
             });
         }
     });
@@ -337,6 +341,29 @@ function getFormData(elementId) {
         exp_year: document.getElementById(elementId + '_mundicheckout-expyear').value,
         cvv: clearCvv(document.getElementById(elementId + '_mundicheckout-cvv'))
     };
+}
+
+var isElementValueBusy = {};
+function getBrandWithDelay(elementId) {
+    if (typeof isElementValueBusy[elementId] === 'undefined') {
+        isElementValueBusy[elementId] = false;
+    }
+
+    if (!isElementValueBusy[elementId]) {
+        var lastValue = jQuery("#" + elementId + "_value").val();
+
+        setTimeout(function(){
+            var currentValue = jQuery("#" + elementId + "_value").val();
+            isElementValueBusy[elementId] = false;
+            if (currentValue === lastValue) {
+                getBrand(elementId);
+                return;
+            }
+            getBrandWithDelay(elementId);
+        }.bind(lastValue,elementId,isElementValueBusy),300);
+
+        isElementValueBusy[elementId] = true;
+    }
 }
 
 function getBrand(elementId) {
