@@ -91,8 +91,8 @@ class Mundipagg_Paymentmodule_Model_Api_Boleto extends Mundipagg_Paymentmodule_M
         $addressRequest->number = $address->getStreet()[1];
         $addressRequest->zipCode = $address->getPostcode();
         $addressRequest->neighborhood = 'Comptown';
-        $addressRequest->city = $address->getCity();;
-        $addressRequest->state = $address->getRegion();;
+        $addressRequest->city = $address->getCity();
+        $addressRequest->state = $address->getRegion();
         $addressRequest->complement = '';
         $addressRequest->country = $address->getCountryId();
 

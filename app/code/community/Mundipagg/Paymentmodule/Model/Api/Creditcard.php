@@ -95,8 +95,8 @@ class Mundipagg_Paymentmodule_Model_Api_Creditcard extends Mundipagg_Paymentmodu
         $addressRequest->number = $address->getStreet()[1];
         $addressRequest->zipCode = $address->getPostcode();
         $addressRequest->neighborhood = 'Comptown';
-        $addressRequest->city = $address->getCity();;
-        $addressRequest->state = $address->getRegion();;
+        $addressRequest->city = $address->getCity();
+        $addressRequest->state = $address->getRegion();
         $addressRequest->complement = '';
         $addressRequest->country = $address->getCountryId();
 
