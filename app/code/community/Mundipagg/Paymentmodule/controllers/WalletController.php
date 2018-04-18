@@ -2,6 +2,12 @@
 
 class Mundipagg_Paymentmodule_WalletController extends Mage_Core_Controller_Front_Action
 {
+    public function preDispatch()
+    {
+        parent::preDispatch();
+        Mage::helper('paymentmodule/exception')->initExceptionHandler();
+    }
+
     public function indexAction()
     {
         $savedCreditCardsHelper = Mage::helper('paymentmodule/savedcreditcard');

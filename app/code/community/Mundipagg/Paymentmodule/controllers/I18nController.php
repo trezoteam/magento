@@ -2,6 +2,12 @@
 
 class Mundipagg_Paymentmodule_I18nController extends Mage_Core_Controller_Front_Action
 {
+    public function preDispatch()
+    {
+        parent::preDispatch();
+        Mage::helper('paymentmodule/exception')->initExceptionHandler();
+    }
+
     public function getTableAction()
     {
         $translateTable = Mage::app()->getTranslator()->getData();
