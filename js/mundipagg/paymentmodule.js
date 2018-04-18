@@ -484,6 +484,9 @@ function getInstallments(baseUrl, brandName, argsObj) {
     var value = '';
     if(typeof argsObj.installmentsBaseValue !== 'undefined'){
         var tmp = parseFloat(argsObj.installmentsBaseValue.replace(',','.'));
+        if (isNaN(tmp)) {
+            tmp = 0;
+        }
         value = '?value=' + tmp;
     }
     apiRequest(
