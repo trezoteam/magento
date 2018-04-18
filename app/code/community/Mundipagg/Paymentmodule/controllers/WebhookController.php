@@ -4,6 +4,12 @@ require_once Mage::getBaseDir('lib') . '/autoload.php';
 
 class Mundipagg_Paymentmodule_WebhookController extends Mage_Core_Controller_Front_Action
 {
+    public function preDispatch()
+    {
+        parent::preDispatch();
+        Mage::helper('paymentmodule/exception')->initExceptionHandler();
+    }
+
     public function indexAction()
     {
         if (Mage::app()->getRequest()->isPost()) {

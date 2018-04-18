@@ -67,7 +67,7 @@ class Mundipagg_Paymentmodule_Helper_Log extends Mage_Core_Helper_Abstract
 
         $metaData = Mage::helper('paymentmodule/data')->getMetaData();
         $version = $metaData['module_version'];
-        $file = "Mundipagg_Integracao_" . date('Y-m-d') . ".log";
+        $file = "Mundipagg_PaymentModule_" . date('Y-m-d') . ".log";
         $method = $this->method;
         $newMsg = "v{$version} ";
 

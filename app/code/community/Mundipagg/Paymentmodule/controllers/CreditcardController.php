@@ -4,6 +4,12 @@ use MundiAPILib\Models\GetOrderResponse;
 
 class Mundipagg_Paymentmodule_CreditcardController extends Mage_Core_Controller_Front_Action
 {
+    public function preDispatch()
+    {
+        parent::preDispatch();
+        Mage::helper('paymentmodule/exception')->initExceptionHandler();
+    }
+
     /**
      * Only one credit card brand allowed
      */
