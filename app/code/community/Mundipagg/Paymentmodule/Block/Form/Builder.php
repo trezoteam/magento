@@ -58,6 +58,13 @@ class Mundipagg_Paymentmodule_Block_Form_Builder extends Mundipagg_Paymentmodule
 
     public function getMultiBuyerHtml($parentElement)
     {
+        /**
+         * @var Mundipagg_Paymentmodule_Model_Config_Multibuyer $multiBuyerConfig;
+         */
+        $multiBuyerConfig = Mage::getModel('paymentmodule/config_multibuyer');
+        if (!$multiBuyerConfig->isEnabled()) {
+            return '';
+        }
         return $this->getPartialHTML('multibuyer',$parentElement);
     }
 
