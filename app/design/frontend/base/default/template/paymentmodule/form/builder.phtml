@@ -10,7 +10,9 @@ $orderTotal = $this->getGrandTotal();
                 <ul >
                     <?php foreach($structure as $element): ?>
                     <li style="clear:both">
-                        <?php echo $this->getPartialHtml($element);?>
+                        <?php echo $this->getPartialHtml($element); ?>
+                        <?php echo $this->getMultiBuyerHtml($element); ?>
+                        <br /><hr />
                     </li>
                     <?php endforeach; ?>
                     <input type="hidden" id="baseUrl" value="<?php echo Mage::getUrl('');?>"/>
