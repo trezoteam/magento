@@ -210,6 +210,7 @@
                 type="checkbox"
                 id="<?php echo "$elementId"?>_mundicheckout-save-credit-card"
                 name="payment[<?php echo "$elementId"?>_saveCreditCard]"
+                onchange="toogleSavedCreditCard('<?php echo "$elementId"?>');"
         >
         <label for="<?php echo "$elementId"?>_mundicheckout-save-credit-card"><?php echo $this->__('Save this card to future orders'); ?></label>
         <br>
