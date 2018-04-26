@@ -3,6 +3,24 @@
 class Mundipagg_Paymentmodule_Model_Standard extends Mage_Payment_Model_Method_Abstract
 {
 
+    protected $_allowCurrencyCode = array();
+
+    public function __construct()
+    {
+        $this->_allowCurrencyCode = $this->getAllowedCurrencies();
+        parent::_construct();
+    }
+
+    private function getAllowedCurrencies()
+    {
+        $currencyCode = Mage::getModel('core/config_data')
+            ->getCollection()
+            ->addFieldToFilter('path','currency/options/allow')
+            ->getData();
+        $currenciesArray = explode(',',$currencyCode[0]['value']);
+        return $currenciesArray;
+    }
+
     public function isAvailable($quote = null)
     {
         return $this->getConfigModel()->isEnabled();

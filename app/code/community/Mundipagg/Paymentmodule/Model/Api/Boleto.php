@@ -33,8 +33,7 @@ class Mundipagg_Paymentmodule_Model_Api_Boleto extends Mundipagg_Paymentmodule_M
             $paymentRequest->boleto = $boletoPaymentRequest;
             $paymentRequest->amount = $monetary->toCents($payment['value']);
             $paymentRequest->customer = $this->getCustomer($payment);
-            // @todo this should not be hard coded
-            $paymentRequest->currency = 'BRL';
+            $paymentRequest->currency = $this->getCurrentCurrencyCode();
 
             $result[] = $paymentRequest;
         }
