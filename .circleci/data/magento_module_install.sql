@@ -40,12 +40,11 @@ INSERT INTO magento.core_config_data (scope, scope_id, path, value) VALUES
 ('default', 0, 'mundipagg_config/installments_group/hipercard_status', '1'),
 ('default', 0, 'mundipagg_config/installments_group/diners_status', '1'),
 ('default', 0, 'mundipagg_config/installments_group/amex_status', '1'),
-('default', 0, 'mundipagg_config/installments_group/elo_status', '1'),
--- magento
-('default', 0, 'dev/log/file', 'system.log'),
-('default', 0, 'dev/log/exception_file', 'exception.log');
+('default', 0, 'mundipagg_config/installments_group/elo_status', '1');
 
 UPDATE magento.core_config_data SET value = '1' WHERE path = 'dev/log/active';
+UPDATE magento.core_config_data SET value = 'system.log' WHERE path = 'dev/log/file';
+UPDATE magento.core_config_data SET value = 'exception.log' WHERE path = 'dev/log/exception_file';
 
 -- creating user
 
