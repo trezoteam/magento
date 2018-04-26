@@ -554,6 +554,58 @@ function switchNewSaved(value, elementId) {
     }
 }
 
+function toggleMultiBuyerForm(elementId)
+{
+    var isEnabled =
+        jQuery('#' + elementId + '_multi_buyer_enabled:checked').length > 0;
+    if (isEnabled) {
+        enableMultibuyerForm(elementId);
+        return;
+    }
+    disableMultibuyerForm(elementId);
+
+}
+
+function enableMultibuyerForm(elementId)
+{
+    jQuery('#' + elementId + '_multi_buyer_enabled').attr('checked', true);
+    jQuery("#" + elementId + '_multi_buyer_form_div').show();
+
+    //enabling all children input
+    jQuery('#' + elementId + '_multi_buyer_form_div').find('[name]')
+        .attr('disabled',false);
 
 
+    //if multibuyer is enabled, save credit card should be disabled.
+    jQuery('#' + elementId + '_mundicheckout-save-credit-card')
+        .attr('disabled',true);
+}
 
+function disableMultibuyerForm(elementId)
+{
+    jQuery('#' + elementId + '_multi_buyer_enabled').attr('checked', false);
+    jQuery("#" + elementId + '_multi_buyer_form_div').hide();
+
+    //disabling all children input
+    jQuery('#' + elementId + '_multi_buyer_form_div').find('[name]')
+        .attr('disabled',true);
+
+    //enable editing of save credit-card checkbox
+    jQuery('#' + elementId + '_mundicheckout-save-credit-card')
+        .attr('disabled',false);
+}
+
+function toogleSavedCreditCard(elementId) {
+    var isEnabled =
+        jQuery('#' + elementId + '_mundicheckout-save-credit-card:checked')
+            .length > 0;
+
+    //if isEnabled, it should disable multibuyer checkbox
+    if(isEnabled) {
+        disableMultibuyerForm(elementId);
+        jQuery('#' + elementId + '_multi_buyer_enabled').attr('disabled', true);
+        return;
+    }
+
+    jQuery('#' + elementId + '_multi_buyer_enabled').attr('disabled', false);
+}

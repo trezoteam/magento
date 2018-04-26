@@ -56,3 +56,6 @@
 "<img title='Diners' alt='Diners' width='32' src='/skin/adminhtml/default/default/images/mundipagg/icons/diners.jpg'/> <div style='margin:-29px 0 13px 40px'> Diners configuration</div>","<img title='Diners' alt='Diners' width='32' src='/skin/adminhtml/default/default/images/mundipagg/icons/diners.jpg'/> <div style='margin:-29px 0 13px 40px'> Configuração para Diners</div>"
 "<img title='Amex' alt='Amex' width='32' src='/skin/adminhtml/default/default/images/mundipagg/icons/amex.jpg'/> <div style='margin:-29px 0 13px 40px'>Amex configuration</div>","<img title='Amex' alt='Amex' width='32' src='/skin/adminhtml/default/default/images/mundipagg/icons/amex.jpg'/> <div style='margin:-29px 0 13px 40px'> Configuração para Amex</div>"
 "<img title='Elo' alt='Elo' width='32' src='/skin/adminhtml/default/default/images/mundipagg/icons/elo.jpg'/> <div style='margin:-29px 0 13px 40px'>Elo configuration</div>","<img title='Elo' alt='Elo' width='32' src='/skin/adminhtml/default/default/images/mundipagg/icons/elo.jpg'/> <div style='margin:-29px 0 13px 40px'> Configuração para Elo</div>"
+
+"#### Configuração de multicomprador","########################################"
+"Multi-Buyer configuration","Configuração de Multi-Comprador"
