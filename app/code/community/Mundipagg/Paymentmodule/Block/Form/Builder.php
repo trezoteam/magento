@@ -37,7 +37,7 @@ class Mundipagg_Paymentmodule_Block_Form_Builder extends Mundipagg_Paymentmodule
         return Mage::getModel('paymentmodule/' . end($code));
     }
 
-    public function getPartialHTML($element)
+    public function getPartialHTML($element,$parentElement = '')
     {
         $grandTotal = $this->getGrandTotal();
 
@@ -47,12 +47,25 @@ class Mundipagg_Paymentmodule_Block_Form_Builder extends Mundipagg_Paymentmodule
                 'code' => $this->getMethodCode(),
                 'element_index' => $this->getIndexFor($element),
                 'show_value_input' => count($this->getStructure()) > 1,
-                'grand_total' => number_format($grandTotal, "2", ",", "")
+                'grand_total' => number_format($grandTotal, "2", ",", ""),
+                'parent_element' => $parentElement
             ]
         );
         $retn = $retn->toHtml();
 
         return $retn;
+    }
+
+    public function getMultiBuyerHtml($parentElement)
+    {
+        /**
+         * @var Mundipagg_Paymentmodule_Model_Config_Multibuyer $multiBuyerConfig;
+         */
+        $multiBuyerConfig = Mage::getModel('paymentmodule/config_multibuyer');
+        if (!$multiBuyerConfig->isEnabled()) {
+            return '';
+        }
+        return $this->getPartialHTML('multibuyer',$parentElement);
     }
 
     public function getIndexFor($element)
