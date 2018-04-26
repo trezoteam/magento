@@ -213,6 +213,7 @@ function initPaymentMethod(methodCode,orderTotal)
                             if (response != false) {
                                 tokenElement.value = response.id;
                                 jQuery("#"+elementId+"_mundipagg-invalid-credit-card").hide();
+                                jQuery("#"+elementId+"_brand_name").val(response.card.brand);
                                 tokenCheckTable[element.id] = true;
                                 //check if all tokens are generated.
                                 var canSave = true;
