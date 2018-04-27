@@ -428,22 +428,25 @@ function getBrand(elementId) {
         return;
     }
 
-    if (
-        creditCardNumber.length > 5 &&
-        (brandName === "" || typeof value !== 'undefined')
-    ) {
-        var bin = creditCardNumber.substring(0, 6);
-        apiRequest(
-            "https://api.mundipagg.com/bin/v1/" + bin,
-            "",
-            fillBrandData,
-            "GET",
-            false,
-            argsObj
-        );
-    }
-    if (creditCardNumber.length < 6) {
-        clearBrand(elementId);
+    if (typeof creditCardNumber !== 'undefined') {
+        if (
+
+            creditCardNumber.length > 5 &&
+            (brandName === "" || typeof value !== 'undefined')
+        ) {
+            var bin = creditCardNumber.substring(0, 6);
+            apiRequest(
+                "https://api.mundipagg.com/bin/v1/" + bin,
+                "",
+                fillBrandData,
+                "GET",
+                false,
+                argsObj
+            );
+        }
+        if (creditCardNumber.length < 6) {
+            clearBrand(elementId);
+        }
     }
 }
 
