@@ -430,7 +430,6 @@ function getBrand(elementId) {
 
     if (typeof creditCardNumber !== 'undefined') {
         if (
-
             creditCardNumber.length > 5 &&
             (brandName === "" || typeof value !== 'undefined')
         ) {
