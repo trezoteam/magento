@@ -17,7 +17,9 @@ class Mundipagg_Paymentmodule_Model_Standard extends Mage_Payment_Model_Method_A
             ->getCollection()
             ->addFieldToFilter('path','currency/options/allow')
             ->getData();
-        $currenciesArray = explode(',',$currencyCode[0]['value']);
+        
+        $currenciesArray = explode(',', $currencyCode[0]['value']);
+
         return $currenciesArray;
     }
 
