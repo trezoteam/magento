@@ -48,7 +48,8 @@ class Mundipagg_Paymentmodule_Block_Form_Builder extends Mundipagg_Paymentmodule
                 'element_index' => $this->getIndexFor($element),
                 'show_value_input' => count($this->getStructure()) > 1,
                 'grand_total' => number_format($grandTotal, "2", ",", ""),
-                'parent_element' => $parentElement
+                'parent_element' => $parentElement,
+                'parent_index' => $this->getElementCount()[$parentElement]
             ]
         );
         $retn = $retn->toHtml();
