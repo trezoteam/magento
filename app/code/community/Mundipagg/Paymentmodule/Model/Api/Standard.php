@@ -9,6 +9,11 @@ use MundiAPILib\Models\CreateShippingRequest;
 
 abstract class Mundipagg_Paymentmodule_Model_Api_Standard
 {
+    protected function getCurrentCurrencyCode()
+    {
+        return Mage::app()->getStore()->getCurrentCurrencyCode();
+    }
+
     public function getCreateOrderRequest($paymentInformation)
     {
         $orderRequest = new CreateOrderRequest();
@@ -17,6 +22,7 @@ abstract class Mundipagg_Paymentmodule_Model_Api_Standard
         $checkoutSession = $standard->getCheckoutSession();
         $orderId = $checkoutSession->getLastRealOrderId();
 
+        $orderRequest->currency = $this->getCurrentCurrencyCode();
         $orderRequest->items = $paymentInformation->getItemsInfo();
         $orderRequest->customer = $this->getCustomerRequest($paymentInformation->getCustomerInfo());
         $orderRequest->payments = $this->getPayments();

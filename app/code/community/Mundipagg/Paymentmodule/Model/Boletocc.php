@@ -17,7 +17,6 @@ class Mundipagg_Paymentmodule_Model_Boletocc extends Mundipagg_Paymentmodule_Mod
     protected $_canSaveCc = false;
     protected $_canFetchTransactionInfo = false;
     protected $_canManageRecurringProfiles = false;
-    protected $_allowCurrencyCode = array('BRL', 'USD', 'EUR');
     protected $_isInitializeNeeded = true;
 
     protected function getConfigModel()
