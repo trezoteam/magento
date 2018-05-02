@@ -103,7 +103,7 @@
                 <use>standard</use>
                 <args>
                     <module>Mundipagg_Paymentmodule</module>
-                    <frontName>mundipagg</frontName>
+                    <frontName>mp-paymentmodule</frontName>
                 </args>
             </paymentmodule>
         </routers>
