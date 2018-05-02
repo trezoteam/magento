@@ -259,6 +259,7 @@ class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mundipagg_Pa
         $order = $standard->getOrderByIncrementOrderId($orderId);
 
         foreach ($order->getAllItems() as $item) {
+            if ($item->getParentItemId() === null) {
                 $itemInfo = [];
 
                 $itemInfo['amount'] = round($item->getPrice() * 100);
@@ -266,6 +267,7 @@ class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mundipagg_Pa
                 $itemInfo['description'] = 'item description';
 
                 $items[] = $itemInfo;
+            }
         }
 
         return $items;
