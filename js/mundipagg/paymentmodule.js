@@ -11,7 +11,7 @@ MundiPagg.Locale = {
     {
         if (!this.translactionTable) {
             var baseUrl = '';
-            var url = baseUrl + '/mundipagg/i18n/getTable';
+            var url = baseUrl + '/mp-paymentmodule/i18n/getTable';
             apiRequest(url,'',function(data){
                 if(data !== false) {
                     this.translactionTable = data;
@@ -493,7 +493,7 @@ function getInstallments(baseUrl, brandName, argsObj) {
         value = '?value=' + tmp;
     }
     apiRequest(
-        baseUrl + '/mundipagg/creditcard/getinstallments/' + brandName + value,
+        baseUrl + '/mp-paymentmodule/creditcard/getinstallments/' + brandName + value,
         '',
         switchInstallments,
         "GET",
