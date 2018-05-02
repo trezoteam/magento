@@ -24,6 +24,7 @@
   },
 
   "require": {
-    "mundipagg/mundiapi": "dev-master"
+    "mundipagg/mundiapi": "dev-master",
+    "consolidation/robo": "~1"
   }
 }
