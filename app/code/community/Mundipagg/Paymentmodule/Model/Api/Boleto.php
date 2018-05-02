@@ -88,12 +88,12 @@ class Mundipagg_Paymentmodule_Model_Api_Boleto extends Mundipagg_Paymentmodule_M
 
         $addressRequest->street = $address->getStreet()[0];
         $addressRequest->number = $address->getStreet()[1];
-        $addressRequest->zipCode = $address->getPostcode();
-        $addressRequest->neighborhood = 'Comptown';
+        $addressRequest->complement = $address->getStreet()[2];
+        $addressRequest->neighborhood = $address->getStreet()[3];
         $addressRequest->city = $address->getCity();
         $addressRequest->state = $address->getRegion();
-        $addressRequest->complement = '';
         $addressRequest->country = $address->getCountryId();
+        $addressRequest->zipCode = $address->getPostcode();
 
         return $addressRequest;
     }
