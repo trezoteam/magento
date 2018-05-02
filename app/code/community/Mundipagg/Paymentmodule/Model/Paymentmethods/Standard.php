@@ -153,14 +153,15 @@ class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mundipagg_Pa
 
         // @fixme I'm using this getStreet()[0] here but maybe there's a better way...
         $address->setStreet($billingAddress->getStreet()[0]);
-        $address->setNumber('number');
-        $address->setZipCode($billingAddress->getPostcode());
-        $address->setNeighborhood('neighborhood');
+        $address->setNumber($billingAddress->getStreet()[1]);
+        $address->setComplement($billingAddress->getStreet()[2]);
+        $address->setNeighborhood($billingAddress->getStreet()[3]);
         $address->setCity($billingAddress->getCity());
         $address->setState($this->getStateByRegionId($regionId));
         $address->setCountry($billingAddress->getCountryId());
-        $address->setComplement('complement');
+        $address->setZipCode($billingAddress->getPostcode());
         $address->setMetadata(null);
+
         return $address;
     }
 
@@ -198,13 +199,13 @@ class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mundipagg_Pa
 
         // @fixme I'm using this getStreet()[0] here but maybe there's a better way...
         $address->setStreet($shippingAddress->getStreet()[0]);
-        $address->setNumber('number');
-        $address->setZipCode($shippingAddress->getPostcode());
-        $address->setNeighborhood('neighborhood');
+        $address->setNumber($shippingAddress->getStreet()[1]);
+        $address->setComplement($shippingAddress->getStreet()[2]);
+        $address->setNeighborhood($shippingAddress->getStreet()[3]);
         $address->setCity($shippingAddress->getCity());
         $address->setState($this->getStateByRegionId($regionId));
         $address->setCountry($shippingAddress->getCountryId());
-        $address->setComplement('complement');
+        $address->setZipCode($shippingAddress->getPostcode());
         $address->setMetadata(null);
 
         return $address;
@@ -215,7 +216,6 @@ class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mundipagg_Pa
      * @example $this->getStateByRegionId(502) //return "RJ"
      * @param int $regionId
      * @return string
-     * @throws Varien_Exception
      */
     protected function getStateByRegionId($regionId)
     {
@@ -231,7 +231,6 @@ class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mundipagg_Pa
      * Gather information about customer's phones
      *
      * @return Varien_Object
-     * @throws Varien_Exception
      */
     protected function getCustomerPhonesInformation()
     {
@@ -247,13 +246,11 @@ class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mundipagg_Pa
 
     /**
      * Provide ordered items information
-     *
      * @return array
-     * @throws Varien_Exception
      */
     protected function getItemsInformation()
     {
-        $items = array();
+        $items = [];
 
         $standard = Mage::getModel('paymentmodule/standard');
         $checkoutSession = $standard->getCheckoutSession();
@@ -262,13 +259,13 @@ class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mundipagg_Pa
         $order = $standard->getOrderByIncrementOrderId($orderId);
 
         foreach ($order->getAllItems() as $item) {
-            $itemInfo = array();
+                $itemInfo = [];
 
-            $itemInfo['amount'] = round($item->getPrice() * 100);
-            $itemInfo['quantity'] = (int) $item->getQtyOrdered();
-            $itemInfo['description'] = 'item description';
+                $itemInfo['amount'] = round($item->getPrice() * 100);
+                $itemInfo['quantity'] = (int) $item->getQtyOrdered();
+                $itemInfo['description'] = 'item description';
 
-            $items[] = $itemInfo;
+                $items[] = $itemInfo;
         }
 
         return $items;
