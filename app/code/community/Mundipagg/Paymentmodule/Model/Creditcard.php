@@ -17,7 +17,6 @@ class Mundipagg_Paymentmodule_Model_Creditcard extends Mundipagg_Paymentmodule_M
     protected $_canSaveCc = false;
     protected $_canFetchTransactionInfo = false;
     protected $_canManageRecurringProfiles = false;
-    protected $_allowCurrencyCode = array('BRL', 'USD', 'EUR');
     protected $_isInitializeNeeded = true;
 
     protected function getConfigModel()
@@ -30,5 +29,48 @@ class Mundipagg_Paymentmodule_Model_Creditcard extends Mundipagg_Paymentmodule_M
         return [
             'creditcard'
         ];
+    }
+
+    public function validatePaymentData($paymentData)
+    {
+        foreach ($paymentData as $creditCard) {
+            $enabledBrands = strtolower($this->getConfigModel()->getEnabledBrands());
+
+            if (
+                !in_array(
+                    $enabledBrands,
+                    strtolower($creditCard['brand'])
+                ) && !$this->validateInstallments($creditCard)
+
+            ) {
+                return false;
+            }
+
+            return true;
+        }
+    }
+
+    private function validateInstallments($card)
+    {
+        $configModel = $this->getConfigModel();
+        $default = $configModel->isDefaultConfigurationEnabled();
+
+        $installments = $card['creditCardInstallments'];
+        $brand = $card['brand'];
+
+        if (
+            $default &&
+            $installments <= $configModel->getDefaultMaxInstallmentNumber()
+        ) {
+            return true;
+        }
+
+        $brandMaxInstallments = 'get' . $brand . 'MaxInstallmentsNumber';
+
+        if ($installments > $configModel->$brandMaxInstallments()) {
+            return false;
+        }
+
+        return true;
     }
 }

@@ -3,6 +3,26 @@
 class Mundipagg_Paymentmodule_Model_Standard extends Mage_Payment_Model_Method_Abstract
 {
 
+    protected $_allowCurrencyCode = [];
+
+    public function __construct()
+    {
+        $this->_allowCurrencyCode = $this->getAllowedCurrencies();
+        parent::_construct();
+    }
+
+    private function getAllowedCurrencies()
+    {
+        $currencyCode = Mage::getModel('core/config_data')
+            ->getCollection()
+            ->addFieldToFilter('path','currency/options/allow')
+            ->getData();
+        
+        $currenciesArray = explode(',', $currencyCode[0]['value']);
+
+        return $currenciesArray;
+    }
+
     public function isAvailable($quote = null)
     {
         return $this->getConfigModel()->isEnabled();
@@ -26,7 +46,7 @@ class Mundipagg_Paymentmodule_Model_Standard extends Mage_Payment_Model_Method_A
     {
         $paymentMethod = $data->getMethod();
         $paymentData = $this->getPaymentData($data->getData(), $paymentMethod);
-
+        $this->validate($paymentData);
         try {
             $info = $this->getInfoInstance();
             $info->setAdditionalInformation(
@@ -179,5 +199,33 @@ class Mundipagg_Paymentmodule_Model_Standard extends Mage_Payment_Model_Method_A
     public function getOrderFromCheckoutSession()
     {
         return Mage::getSingleton('checkout/session');
+    }
+
+    /**
+     * Prevent not allowed input data
+     * @return $this|Mage_Payment_Model_Abstract
+     * @throws Mage_Core_Exception
+     * @todo Improve this method
+     */
+    public function validate($paymentData = null)
+    {
+        if (!$paymentData) {
+            return $this;
+        }
+
+        $validation = true;
+
+        foreach ($paymentData as $key => $payment) {
+            $validation = Mage::getModel('paymentmodule/' . $key)
+                ->validatePaymentData($paymentData[$key]);
+        }
+
+        if (!$validation) {
+            $errorMsg = Mage::helper('paymentmodule')
+                ->__('Invalid payment data');
+            Mage::throwException($errorMsg);
+
+            return false;
+        }
     }
 }

@@ -4,14 +4,31 @@ require_once Mage::getBaseDir('lib') . '/autoload.php';
 
 class Mundipagg_Paymentmodule_WebhookController extends Mage_Core_Controller_Front_Action
 {
+    public function preDispatch()
+    {
+        parent::preDispatch();
+        Mage::helper('paymentmodule/exception')->initExceptionHandler();
+    }
+
     public function indexAction()
     {
         if (Mage::app()->getRequest()->isPost()) {
             $body = json_decode(Mage::app()->getRequest()->getRawBody());
+            /**
+             * @var Mundipagg_Paymentmodule_Helper_Log $logger
+             */
+            $logger = Mage::helper('paymentmodule/log');
 
             $webhookInfo = explode('.', $body->type);
             $webhookType  = $webhookInfo[0];
             $webhookAction = $webhookInfo[1];
+
+            $orderCode = $body->data->code;
+            $logger->info(
+                'Webhook ('.$body->type.') received for order #' .
+                $orderCode . ":\n" .
+                json_encode($body,JSON_PRETTY_PRINT)
+            );
 
             switch ($webhookType) {
                 case 'order':

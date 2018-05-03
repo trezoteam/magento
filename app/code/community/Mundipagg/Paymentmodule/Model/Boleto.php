@@ -17,7 +17,6 @@ class Mundipagg_Paymentmodule_Model_Boleto extends Mundipagg_Paymentmodule_Model
     protected $_canSaveCc = false;
     protected $_canFetchTransactionInfo = false;
     protected $_canManageRecurringProfiles = false;
-    protected $_allowCurrencyCode = array('BRL', 'USD', 'EUR');
     protected $_isInitializeNeeded = true;
 
     protected function getConfigModel()
@@ -30,5 +29,16 @@ class Mundipagg_Paymentmodule_Model_Boleto extends Mundipagg_Paymentmodule_Model
         return [
             'boleto'
         ];
+    }
+
+    public function validatePaymentData($paymentData)
+    {
+        foreach ($paymentData as $boleto) {
+            if (!isset($boleto['taxvat'])) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

@@ -19,7 +19,7 @@
                     <comment>
                         <![CDATA[
                             <a href="http://www.mundipagg.com.br" target="_blank">
-                                <img title="MundiPagg" alt="MundiPagg" width="100" src="https://www.mundipagg.com/wp-content/uploads/2017/05/logo-mundipagg.png"/>
+                                <img title="MundiPagg" alt="MundiPagg" width="200" src="/skin/adminhtml/default/default/images/mundipagg/mundipagg-colorida.svg"/>
                             </a>
                             <br>
                             <br>
@@ -39,7 +39,7 @@
         </payment>
 
         <mundipagg_config translate="label" module="paymentmodule">
-            <label><![CDATA[<div style="position: absolute;"><img id="magepal_block" alt="" border="0" width="16" /> &nbsp;Mundipagg</div>&nbsp;<script>$("magepal_block").src = "https://dashboard.mundipagg.com/images/logo-mundipagg-versao-reduzida.png";</script>]]></label>
+            <label><![CDATA[<div style="position: absolute;"><img id="magepal_block" alt="" border="0" width="16" /> &nbsp;Mundipagg</div>&nbsp;<script>$("magepal_block").src = "/skin/adminhtml/default/default/images/mundipagg/icons/logo-mundipagg-icon.png";</script>]]></label>
             <tab>paymentmoduleconfig</tab>
             <sort_order>1000</sort_order>
             <show_in_default>1</show_in_default>
@@ -48,17 +48,17 @@
 
             <groups>
                 <general_group translate="label" module="paymentmodule">
-                    <label><![CDATA[<img title="Mundipagg" alt="Mundipagg" width="32" style="margin:10px 0px 0px 0px;" src="/skin/adminhtml/default/default/images/mundipagg/icons/mundipagg-branco.png"/> <div style="margin: -23px 0 13px 40px;"> General configuration</div>]]></label>
+                    <label>General configuration</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>1000</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                     <comment>
-                        <![CDATA[<br><a href="http://www.mundipagg.com.br" target="_blank"><img title="MundiPagg" alt="MundiPagg" width="100" src="https://www.mundipagg.com/wp-content/uploads/2017/05/logo-mundipagg.png"/></a><br><br><br>]]>
+                        <![CDATA[<br><a href="http://www.mundipagg.com.br" target="_blank"><img title="MundiPagg" alt="MundiPagg" width="200" src="/skin/adminhtml/default/default/images/mundipagg/mundipagg-colorida.svg"/></a><br><br><br>]]>
                     </comment>
                     <fields>
-                        <heading_basic_config translate="label">
+                        <heading_basic_config translate="label" module="paymentmodule">
                             <label>Module Basic Configuration</label>
                             <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
                             <sort_order>0</sort_order>
@@ -139,7 +139,7 @@
                 </general_group>
 
                 <antifraud_group translate="label" module="paymentmodule">
-                    <label><![CDATA[Anti-fraud configuration]]></label>
+                    <label>Anti-fraud configuration</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>1000</sort_order>
                     <show_in_default>1</show_in_default>
@@ -180,7 +180,7 @@
                 </antifraud_group>
 
                 <boleto_group translate="label" module="paymentmodule">
-                    <label><![CDATA[<img title="Boleto" alt="Boleto" width="32" style="margin-top:9px;" src="/skin/adminhtml/default/default/images/mundipagg/icons/boleto.png"/> <div style="margin:-29px 0 13px 40px"> Boleto configuration</div>]]></label>
+                    <label>Billet configuration</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>1000</sort_order>
                     <show_in_default>1</show_in_default>
@@ -189,7 +189,7 @@
 
                     <fields>
                         <manage_cards translate="label">
-                            <label>Boleto configuration</label>
+                            <label>Billet configuration</label>
                             <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
                             <sort_order>0</sort_order>
                             <show_in_default>1</show_in_default>
@@ -265,7 +265,7 @@
                 </boleto_group>
 
                 <creditcard_group translate="label" module="paymentmodule">
-                    <label><![CDATA[<img title="Creditcard" alt="Creditcard" width="32" style="margin-top:9px;" src="/skin/adminhtml/default/default/images/mundipagg/icons/creditcard.png"/> <div style="margin:-29px 0 13px 40px"> General credit card configuration</div>]]></label>
+                    <label>General credit card configuration</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>1100</sort_order>
                     <show_in_default>1</show_in_default>
@@ -341,7 +341,7 @@
                 </creditcard_group>
 
                 <twocreditcards_group translate="label" module="paymentmodule">
-                    <label><![CDATA[Two credit cards configuration]]></label>
+                    <label>Two credit cards configuration</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>1000</sort_order>
                     <show_in_default>1</show_in_default>
@@ -381,7 +381,7 @@
                 </twocreditcards_group>
 
                 <boletocreditcard_group translate="label" module="paymentmodule">
-                    <label><![CDATA[<img title="Boleto Creditcard" alt="Boleto Creditcard" width="32" style="margin-top:9px;" src="/skin/adminhtml/default/default/images/mundipagg/icons/creditcard.png"/> <div style="margin:-29px 0 13px 40px"> Boleto and Credit Card configuration</div>]]></label>
+                    <label>Billet and Credit Card configuration</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>1200</sort_order>
                     <show_in_default>1</show_in_default>
@@ -390,7 +390,7 @@
 
                     <fields>
                         <boleto_cards_config translate="label">
-                            <label>General boleto and credit card configuration</label>
+                            <label>General billet and credit card configuration</label>
                             <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
                             <sort_order>0</sort_order>
                             <show_in_default>1</show_in_default>
@@ -418,7 +418,7 @@
                             <show_in_store>1</show_in_store>
                         </boleto_creditcard_payment_title>
                         <boleto_cards_config_header translate="label">
-                            <label>Boleto configuration</label>
+                            <label>Billet configuration</label>
                             <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
                             <sort_order>2</sort_order>
                             <depends>
@@ -513,7 +513,7 @@
 
                 <!-- INSTALLMENTS -->
                 <installments_group translate="label" module="paymentmodule">
-                    <label><![CDATA[<img title="Installments" alt="Installments" width="37" style="margin: 9px 0 0 0px;" src="/skin/adminhtml/default/default/images/mundipagg/icons/installments.png"/><div style="margin: -26px 0 11px 45px;">Installments configuration</div>]]></label>
+                    <label>Installments configuration</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>1300</sort_order>
                     <show_in_default>1</show_in_default>
@@ -589,12 +589,9 @@
 
                         <!-- VISA -->
                         <visa_configuration translate="label">
-                            <label><![CDATA[<img title="Visa" alt="Visa" width="32" src="/skin/adminhtml/default/default/images/mundipagg/icons/visa.jpg"/> <div style="margin:-29px 0 13px 40px"> Visa configuration</div>]]></label>
+                            <label><![CDATA[<img title='Visa' alt='Visa' width='32' src='/skin/adminhtml/default/default/images/mundipagg/icons/visa.jpg'/> <div style='margin:-29px 0 13px 40px'> Visa configuration</div>]]></label>
                             <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
                             <sort_order>6</sort_order>
-                            <depends>
-                                <default_status>0</default_status>
-                            </depends>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
@@ -604,9 +601,6 @@
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>7</sort_order>
-                            <depends>
-                                <default_status>0</default_status>
-                            </depends>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -664,12 +658,9 @@
 
                         <!-- MASTERCARD -->
                         <mastercard_configuration translate="label">
-                            <label><![CDATA[<img title="Mastercard" alt="Mastercard" width="32" src="/skin/adminhtml/default/default/images/mundipagg/icons/mastercard.jpg"/> <div style="margin:-29px 0 13px 40px"> Mastercard configuration</div>]]></label>
+                            <label><![CDATA[<img title='Mastercard' alt='Mastercard' width='32' src='/skin/adminhtml/default/default/images/mundipagg/icons/mastercard.jpg'/> <div style='margin:-29px 0 13px 40px'> Mastercard configuration</div>]]></label>
                             <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
                             <sort_order>20</sort_order>
-                            <depends>
-                                <default_status>0</default_status>
-                            </depends>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
@@ -679,9 +670,6 @@
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>21</sort_order>
-                            <depends>
-                                <default_status>0</default_status>
-                            </depends>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -739,12 +727,9 @@
 
                         <!-- HIPERCARD -->
                         <hipercard_configuration translate="label">
-                            <label><![CDATA[<img title="Hipercard" alt="Hipercard" width="32" src="/skin/adminhtml/default/default/images/mundipagg/icons/hipercard.jpg"/> <div style="margin:-29px 0 13px 40px"> Hipercard configuration</div>]]></label>
+                            <label><![CDATA[<img title='Hipercard' alt='Hipercard' width='32' src='/skin/adminhtml/default/default/images/mundipagg/icons/hipercard.jpg'/> <div style='margin:-29px 0 13px 40px'> Hipercard configuration</div>]]></label>
                             <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
                             <sort_order>30</sort_order>
-                            <depends>
-                                <default_status>0</default_status>
-                            </depends>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
@@ -754,9 +739,6 @@
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>31</sort_order>
-                            <depends>
-                                <default_status>0</default_status>
-                            </depends>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -814,12 +796,9 @@
 
                         <!-- DINERS-->
                         <diners_configuration translate="label">
-                            <label><![CDATA[<img title="Diners" alt="Diners" width="32" src="/skin/adminhtml/default/default/images/mundipagg/icons/diners.jpg"/> <div style="margin:-29px 0 13px 40px"> Diners configuration</div>]]></label>
+                            <label><![CDATA[<img title='Diners' alt='Diners' width='32' src='/skin/adminhtml/default/default/images/mundipagg/icons/diners.jpg'/> <div style='margin:-29px 0 13px 40px'> Diners configuration</div>]]></label>
                             <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
                             <sort_order>40</sort_order>
-                            <depends>
-                                <default_status>0</default_status>
-                            </depends>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
@@ -829,9 +808,6 @@
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>41</sort_order>
-                            <depends>
-                                <default_status>0</default_status>
-                            </depends>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -889,12 +865,9 @@
 
                         <!-- AMEX -->
                         <amex_configuration translate="label">
-                            <label><![CDATA[<img title="Amex" alt="Amex" width="32" src="/skin/adminhtml/default/default/images/mundipagg/icons/amex.jpg"/> <div style="margin:-29px 0 13px 40px">Amex configuration</div>]]></label>
+                            <label><![CDATA[<img title='Amex' alt='Amex' width='32' src='/skin/adminhtml/default/default/images/mundipagg/icons/amex.jpg'/> <div style='margin:-29px 0 13px 40px'>Amex configuration</div>]]></label>
                             <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
                             <sort_order>50</sort_order>
-                            <depends>
-                                <default_status>0</default_status>
-                            </depends>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
@@ -904,9 +877,6 @@
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>51</sort_order>
-                            <depends>
-                                <default_status>0</default_status>
-                            </depends>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -964,12 +934,9 @@
 
                         <!-- ELO -->
                         <elo_configuration translate="label">
-                            <label><![CDATA[<img title="Elo" alt="Elo" width="32" src="/skin/adminhtml/default/default/images/mundipagg/icons/elo.jpg"/> <div style="margin:-29px 0 13px 40px">Elo configuration</div>]]></label>
+                            <label><![CDATA[<img title='Elo' alt='Elo' width='32' src='/skin/adminhtml/default/default/images/mundipagg/icons/elo.jpg'/> <div style='margin:-29px 0 13px 40px'>Elo configuration</div>]]></label>
                             <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
                             <sort_order>60</sort_order>
-                            <depends>
-                                <default_status>0</default_status>
-                            </depends>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
@@ -979,9 +946,6 @@
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>61</sort_order>
-                            <depends>
-                                <default_status>0</default_status>
-                            </depends>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -1038,6 +1002,35 @@
                         </elo_incremental_interest>
                     </fields>
                 </installments_group>
+
+                <multibuyer_group translate="label" module="paymentmodule">
+                    <label>Multi-Buyer configuration</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>1300</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+
+                    <fields>
+                        <manage_multibuyer translate="label">
+                            <label>Multi-Buyer configuration</label>
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </manage_multibuyer>
+                        <multibuyer_status translate="label">
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </multibuyer_status>
+                    </fields>
+                </multibuyer_group>
             </groups>
         </mundipagg_config>
     </sections>
