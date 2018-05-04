@@ -1,34 +1,18 @@
 <?php
-
 /**
  * Class RoboFile
  * doesn't allow 'get' usage in method names
  *
  */
-class RoboFile extends \Robo\Tasks {
-
+class RoboFile extends \Robo\Tasks
+{
     private $configXml = 'app/code/community/Mundipagg/Paymentmodule/etc/config.xml';
     private $mundipaggPaymentModuleXml = 'mundipagg_payment_module.xml';
-
     private $currentVersion;
 
     public function __construct()
     {
         $this->currentVersion = $this->versionGet();
-    }
-
-    public function getReleaseChanges()
-    {
-        $gitLog = `git log --pretty=format:"%b"`;
-        return preg_replace("#[\n]+#", "\n-", $gitLog);
-    }
-
-    private function setReleaseChanges()
-    {
-        $this->taskReplaceInFile($this->mundipaggPaymentModuleXml)
-            ->regex("/<notes>[\s\S]*?<\/notes>/")
-            ->to('<notes>' . $this->getReleaseChanges() . '</notes>')
-            ->run();
     }
 
     public function versionBump($param = '')
@@ -92,5 +76,19 @@ class RoboFile extends \Robo\Tasks {
             $matches
         );
         return $matches['currentVersion'];
+    }
+
+    private function getReleaseChanges()
+    {
+        $gitLog = `git log --pretty=format:"%b"`;
+        return preg_replace("#[\n]+#", "\n-", $gitLog);
+    }
+
+    private function setReleaseChanges()
+    {
+        $this->taskReplaceInFile($this->mundipaggPaymentModuleXml)
+            ->regex("/<notes>[\s\S]*?<\/notes>/")
+            ->to('<notes>' . $this->getReleaseChanges() . '</notes>')
+            ->run();
     }
 }
