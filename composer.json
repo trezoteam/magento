@@ -5,12 +5,14 @@
   "require-dev" : {
     "squizlabs/php_codesniffer" : "^3.0",
     "phpunit/phpunit" : "^6.2",
-    "magento-ecg/coding-standard": "^3.1"
+    "magento-ecg/coding-standard": "^3.1",
+    "consolidation/robo": "^1.1"
   },
 
   "scripts": {
     "phpcs": "phpcs --standard=lib/magento-ecg/coding-standard/Ecg app/code/community/Mundipagg/Paymentmodule/",
-    "phpcbf": "phpcbf --standard=lib/magento-ecg/coding-standard/Ecg app/code/community/Mundipagg/Paymentmodule/"
+    "phpcbf": "phpcbf --standard=lib/magento-ecg/coding-standard/Ecg app/code/community/Mundipagg/Paymentmodule/",
+    "robo": "robo"
   },
 
   "autoload": {
@@ -24,7 +26,6 @@
   },
 
   "require": {
-    "mundipagg/mundiapi": "dev-master",
-    "consolidation/robo": "~1"
+    "mundipagg/mundiapi": "dev-master"
   }
 }
