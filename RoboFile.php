@@ -32,9 +32,8 @@ class RoboFile extends \Robo\Tasks
                     $version[0] . '.' . $version[1] . '.' . ($version[2] + 1);
                 break;
             default:
-                echo "Missing param. " .
-                    "Allowed values: 'major', 'minor' or 'patch'\n";
-                die;
+                throw new Exception("Missing param. " .
+                    "Allowed values: 'major', 'minor' or 'patch'");
         }
 
         $this->versionUpdate($newVersion);
@@ -47,8 +46,7 @@ class RoboFile extends \Robo\Tasks
     public function versionUpdate($newVersion = null)
     {
         if (!$newVersion) {
-            echo "Missing param: version number \n";
-            die;
+            throw new Exception("Missing param: version number");
         }
 
         $this->taskReplaceInFile($this->configXml)
