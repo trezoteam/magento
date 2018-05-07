@@ -49,19 +49,21 @@ class RoboFile extends \Robo\Tasks
             throw new Exception("Missing param: version number");
         }
 
+        $currentVersion = $this->currentVersion;
+
         $this->taskReplaceInFile($this->configXml)
-            ->from('<version>' . $this->currentVersion . '</version>')
+            ->from('<version>' . $currentVersion . '</version>')
             ->to('<version>' . $newVersion . '</version>')
             ->run();
 
         $this->taskReplaceInFile($this->mundipaggPaymentModuleXml)
-            ->from('<version>' . $this->currentVersion . '</version>')
+            ->from('<version>' . $currentVersion . '</version>')
             ->to('<version>' . $newVersion . '</version>')
             ->run();
 
         $this->setReleaseChanges();
 
-        echo "Version updated from: " . $this->currentVersion . ' to: ' . $newVersion;
+        echo "Version updated from: " . $currentVersion . ' to: ' . $newVersion;
         echo "\n";
     }
 
