@@ -15,6 +15,11 @@ class RoboFile extends \Robo\Tasks
         $this->currentVersion = $this->versionGet();
     }
 
+    /**
+     * Increase module version
+     * @param string $param (major, minor, patch)
+     * @throws Exception
+     */
     public function versionBump($param = '')
     {
         $version = explode('.', $this->currentVersion);
@@ -22,7 +27,6 @@ class RoboFile extends \Robo\Tasks
         switch ($param) {
             case 'major' :
                 $newVersion = ($version[0] + 1) . '.' . 0 . '.' . 0;
-
                 break;
             case 'minor' :
                 $newVersion = $version[0] . '.' . ($version[1] + 1) . '.' . 0;
@@ -42,6 +46,7 @@ class RoboFile extends \Robo\Tasks
     /**
      * Update module version
      * @param $newVersion
+     * @throws Exception
      */
     public function versionUpdate($newVersion = null)
     {
@@ -67,6 +72,10 @@ class RoboFile extends \Robo\Tasks
         echo "\n";
     }
 
+    /**
+     * Get current version
+     * @return string
+     */
     public function versionGet()
     {
         $xml = file_get_contents($this->configXml);
@@ -78,12 +87,20 @@ class RoboFile extends \Robo\Tasks
         return $matches['currentVersion'];
     }
 
+    /**
+     * Get git merge messases to fill release changes
+     * @return null|string|string[]
+     */
     private function getReleaseChanges()
     {
         $gitLog = `git log --pretty=format:"%b"`;
         return preg_replace("#[\n]+#", "\n-", $gitLog);
     }
 
+    /**
+     * Fill release changes
+     * @return void
+     */
     private function setReleaseChanges()
     {
         $this->taskReplaceInFile($this->mundipaggPaymentModuleXml)
