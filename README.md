@@ -31,6 +31,25 @@ modman init
 modman clone https://github.com/mundipagg/magento
 ```
 
+## Updating module version
+Use `composer robo version` with the following options
+
+`get` get current module version    	
+`update version-tag` set version manually	    
+`bump major/minor/patch` increase module version based on the previous one	
+
+Example: If the current module version is 1.0.0 
+
+`composer robo version:bump major` from 1.0.0 to 2.0.0
+
+`composer robo version:bump minor` from 1.0.0 to 1.1.0
+
+`composer robo version:bump patch` from 1.0.0 to 1.0.1   
+
+Before module version updating, pay attention to  [Semantic Versioning](https://semver.org) 
+
+
+
 ## Magento Marketplace
 
 Coming soon
