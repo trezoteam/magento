@@ -9,7 +9,7 @@
         </reference>
 
         <reference name="before_body_end">
-            <block type="page/html_head" name="extra_js" as="extra_js" after="-" template="paymentmodule/extras.phtml">
+            <block type="page/html_head" name="mp-paymentmodule" as="mp-paymentmodule" after="-" template="paymentmodule/extras.phtml">
                 <action method="addItem">
                     <type>js</type>
                     <name>mundipagg/paymentmodule.js</name>
