@@ -1,6 +1,5 @@
 <?php
 
-
 class Mundipagg_Paymentmodule_Model_Observer extends Varien_Event_Observer
 {
     public function addAccountCreditcardWalletMenuItem(Varien_Event_Observer $observer)
@@ -18,14 +17,12 @@ class Mundipagg_Paymentmodule_Model_Observer extends Varien_Event_Observer
         $block = Mage::app()->getLayout()->createBlock(
             'Mundipagg_Paymentmodule_Block_Checkout_Information'
         );
+
         $checkoutSuccessBlock =
             Mage::app()->getLayout()->getBlock('checkout.success');
 
         if ($checkoutSuccessBlock) {
-            Mage::app()
-                ->getLayout()
-                ->getBlock('checkout.success')
-                ->append($block);
+            $checkoutSuccessBlock->append($block);
         }
     }
 }
