@@ -18,7 +18,10 @@ class Mundipagg_Paymentmodule_Model_Observer extends Varien_Event_Observer
         $block = Mage::app()->getLayout()->createBlock(
             'Mundipagg_Paymentmodule_Block_Checkout_Information'
         );
-        if (Mage::app()->getLayout()->getBlock('checkout.success')) {
+        $checkoutSuccessBlock =
+            Mage::app()->getLayout()->getBlock('checkout.success');
+
+        if ($checkoutSuccessBlock) {
             Mage::app()
                 ->getLayout()
                 ->getBlock('checkout.success')
