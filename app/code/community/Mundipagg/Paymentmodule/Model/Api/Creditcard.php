@@ -22,6 +22,8 @@ class Mundipagg_Paymentmodule_Model_Api_Creditcard extends Mundipagg_Paymentmodu
 
             $creditCardPaymentRequest->installments = $payment['creditCardInstallments'];
             $creditCardPaymentRequest->cardToken = '';
+            $creditCardPaymentRequest->capture = $this->getCaptureValue();
+
             if (isset($payment['token'])) {
                 $creditCardPaymentRequest->cardToken = $payment['token'];
             }
@@ -43,6 +45,16 @@ class Mundipagg_Paymentmodule_Model_Api_Creditcard extends Mundipagg_Paymentmodu
         }
 
         return $result;
+    }
+
+    protected function getCaptureValue()
+    {
+        return $this->getConfigCardModel()->getOperationTypeFlag();
+    }
+
+    protected function getConfigCardModel()
+    {
+        return Mage::getModel('paymentmodule/config_card');
     }
 
     /**
