@@ -16,10 +16,12 @@ class Mundipagg_Paymentmodule_Block_Checkout_Information extends Mundipagg_Payme
         $order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
         $additionalInformation = $order->getPayment()->getAdditionalInformation();
 
-        $paymentMethod = $additionalInformation['mundipagg_payment_method'];
-        $paymentInfo = $additionalInformation[$paymentMethod];
+        if (isset($additionalInformation['mundipagg_payment_method'])) {
+            $paymentMethod = $additionalInformation['mundipagg_payment_method'];
+            $paymentInfo = $additionalInformation[$paymentMethod];
 
-        $this->setPaymentInformation($paymentInfo);
+            $this->setPaymentInformation($paymentInfo);
+        }
     }
 
     public function getBilletData()

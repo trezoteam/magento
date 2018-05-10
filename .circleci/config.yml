@@ -88,6 +88,8 @@ jobs:
                 WHERE path IN ('web/unsecure/base_url','web/secure/base_url');"
              docker exec -it newimage /bin/sh -c \
                "mv /app/errors/local.xml.sample /app/errors/local.xml"
+             docker exec -it newimage /bin/sh -c \
+               "chown -R www-data:root /app/"
       - run:
           name: Clear useless files
           command: |
