@@ -74,7 +74,7 @@ abstract class Mundipagg_Paymentmodule_Model_Api_Standard
     protected function getShippingRequest($shippingInformation) {
         $shippingRequest = new CreateShippingRequest();
 
-        $shippingRequest->amount = $shippingInformation->getAmount();
+        $shippingRequest->amount = round($shippingInformation->getAmount());
         $shippingRequest->description = $shippingInformation->getDescription();
         $shippingRequest->address = $this->getCreateAddressRequest($shippingInformation->getAddress());
 
