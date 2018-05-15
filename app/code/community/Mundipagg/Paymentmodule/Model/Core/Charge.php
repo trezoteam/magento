@@ -22,6 +22,15 @@ class Mundipagg_Paymentmodule_Model_Core_Charge extends Mundipagg_Paymentmodule_
 
     /**
      * @param $charge
+     * @throws Exception
+     */
+    protected function pending($charge)
+    {
+        $this->created($charge);
+    }
+
+    /**
+     * @param $charge
      */
     protected function paid($charge)
     {
