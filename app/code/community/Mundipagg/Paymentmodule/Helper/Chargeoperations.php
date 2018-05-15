@@ -5,7 +5,6 @@ class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_A
     /**
      * @param string $methodName
      * @param stdClass $charge
-     * @throws Varien_Exception
      */
     public function paidMethods($methodName, $charge)
     {
@@ -29,7 +28,6 @@ class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_A
     /**
      * @param string $methodName
      * @param stdClass $charge
-     * @throws Varien_Exception
      */
     public function canceledMethods($methodName, $charge, $extraComment = '')
     {
@@ -61,7 +59,6 @@ class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_A
      * @param string $type charge type (paid, created, etc)
      * @param stdClass $charge Full webhook object
      * @param string $comment additional comments
-     * @throws Varien_Exception
      */
     public function updateChargeInfo($type, $charge, $comment = '')
     {
@@ -81,11 +78,13 @@ class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_A
      */
     protected function getChargePaidAmount($charge)
     {
-        if (isset($charge->paid_amount)) {
-            return $charge->paid_amount / 100;
+
+        $field = 'paid_amount';
+        if (!isset($charge->$field)) {
+            $field = 'amount';
         }
 
-        return 0;
+        return $charge->$field / 100;
     }
 
     /**
@@ -101,14 +100,12 @@ class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_A
         return 0;
     }
 
-
     /**
      * Join comments to insert into order history
      * @param string $type
      * @param stdClass $charge
      * @param string $extraComment
      * @return string
-     * @throws Varien_Exception
      */
     public function joinComments($type, $charge, $extraComment)
     {
@@ -118,7 +115,6 @@ class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_A
         $comment = $orderEnum->{$type}();
         $comment .= $extraComment . '<br>';
         $comment .= 'Charge id: ' . $charge->id . '<br>';
-//        $comment .= 'Order id: ' . $charge->order->id . '<br>';
         $comment .= 'Event: ' . $type;
 
         return $comment;
@@ -128,7 +124,6 @@ class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_A
      * Add comments to order history
      * @param int $orderId
      * @param string $comment
-     * @throws Varien_Exception
      */
     public function addOrderHistory($orderId, $comment)
     {
