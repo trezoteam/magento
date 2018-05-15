@@ -22,16 +22,6 @@ class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mundipagg_Pa
 
         $response = $apiOrder->createPayment($paymentInfo);
 
-        if (gettype($response) !== 'object' || get_class($response) != GetOrderResponse::class) {
-            $helperLog = Mage::helper('paymentmodule/log');
-            $orderId = $this->lastRealOrderId;
-            $helperLog->error("Invalid response for order #$orderId: ");
-            $helperLog->error(json_encode($response,JSON_PRETTY_PRINT));
-
-            $response = new \stdClass();
-            $response->status = 'failed';
-        }
-
         $this->handleOrderResponse($response);
     }
 
@@ -41,68 +31,80 @@ class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mundipagg_Pa
      *
      * @param $response
      * @param bool $redirect
-     * @throws Varien_Exception
      */
     protected function handleOrderResponse($response)
     {
-        //@todo get boleto and the rest of success page data
-        $data = [];
+        $redirectTo = Mage::helper('paymentmodule/redirect');
 
-        $responseRoute = 'checkout/onepage/failure';
-        if ($response->status !== 'failed') {
-            $moduleModelOrder = Mage::getModel('paymentmodule/core_order');
-            $moduleModelCharge = Mage::getModel('paymentmodule/core_charge');
+        if (
+            gettype($response) !== 'object' ||
+            get_class($response) != GetOrderResponse::class
+        ) {
+            $this->handleOrderFailure($response);
+            $redirectTo->orderFailure();
+            return;
+        }
 
-            $savedCreditCard = Mage::helper('paymentmodule/savedcreditcard');
-            $savedCreditCard->saveCards($response);
+        $this->handleOrderSuccess($response);
+        $redirectTo->orderSuccess();
+    }
 
-            //get additional information about boleto payments
-            $standard = Mage::getModel('paymentmodule/standard');
-            $orderId = $response->code;
-            $additionalInformation = $standard->getAdditionalInformationForOrder($orderId);
-            $paymentMethod = $additionalInformation['mundipagg_payment_method'];
-            $paymentInfo = $additionalInformation[$paymentMethod];
-            $boletosInfo = [];
-            if (isset($paymentInfo['boleto'])) {
-                $boletosInfo = $paymentInfo['boleto'];
-            }
+    private function handleOrderFailure($response)
+    {
+        $helperLog = Mage::helper('paymentmodule/log');
+        $orderId = $this->lastRealOrderId;
+        $helperLog->error("Invalid response for order #$orderId: ");
+        $helperLog->error(json_encode($response,JSON_PRETTY_PRINT));
+    }
 
-            //processing charges;
-            foreach ($response->charges as $chargeIndex => $charge) {
-                $charge->code = $response->code;
+    private function handleOrderSuccess($response)
+    {
+        $chargeHelper = Mage::helper('paymentmodule/charge');
 
-                if ($charge->status == 'paid') {
-                    $charge->paid_amount = $charge->amount;
-                    $moduleModelCharge->paid($charge);
-                    $moduleModelOrder->paid($response);
-                }
+        $savedCreditCard = Mage::helper('paymentmodule/savedcreditcard');
+        $savedCreditCard->saveCards($response);
 
-                //search for boleto link
-                if($charge->paymentMethod === 'boleto') {
-                    $boletoUrl = $charge->lastTransaction->url;
-                    //add to additional information boleto link.
-                    foreach($boletosInfo as &$boletoInfo){
-                        if(!isset($boletoInfo['url'])) {
-                            $boletoInfo['url'] =  $boletoUrl;
-                            break;
-                        }
+        //get additional information about boleto payments
+        $standard = Mage::getModel('paymentmodule/standard');
+        $orderId = $response->code;
+        $additionalInformation = $standard->getAdditionalInformationForOrder($orderId);
+        $paymentMethod = $additionalInformation['mundipagg_payment_method'];
+        $paymentInfo = $additionalInformation[$paymentMethod];
+        $boletosInfo = [];
+
+        if (isset($paymentInfo['boleto'])) {
+            $boletosInfo = $paymentInfo['boleto'];
+        }
+
+        /**
+         * @todo fix charge handle
+         */
+        //processing charges;
+        foreach ($response->charges as $chargeIndex => $charge) {
+            $charge->code = $response->code;
+
+            $chargeHelper->updateStatus($charge, $charge->status);
+
+            //search for boleto link
+            if ($charge->paymentMethod === 'boleto') {
+                $boletoUrl = $charge->lastTransaction->url;
+                //add to additional information boleto link.
+                foreach($boletosInfo as &$boletoInfo){
+                    if(!isset($boletoInfo['url'])) {
+                        $boletoInfo['url'] =  $boletoUrl;
+                        break;
                     }
                 }
             }
-
-            if(count($boletosInfo) > 0) {
-                //update additional information with boleto links.
-                $additionalInformation[$paymentMethod]['boleto'] = $boletosInfo;
-                $payment = $standard->getOrderByIncrementOrderId($orderId)->getPayment();
-                $payment->setAdditionalInformation($paymentMethod, $additionalInformation[$paymentMethod]);
-                $payment->save();
-            }
-
-            $responseRoute = 'checkout/onepage/success';
         }
-        Mage::app()->getFrontController()
-            ->getResponse()
-            ->setRedirect(Mage::getUrl($responseRoute, $data));
+
+        if(count($boletosInfo) > 0) {
+            //update additional information with boleto links.
+            $additionalInformation[$paymentMethod]['boleto'] = $boletosInfo;
+            $payment = $standard->getOrderByIncrementOrderId($orderId)->getPayment();
+            $payment->setAdditionalInformation($paymentMethod, $additionalInformation[$paymentMethod]);
+            $payment->save();
+        }
     }
 
     /**
