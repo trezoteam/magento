@@ -78,7 +78,6 @@ class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_A
      */
     protected function getChargePaidAmount($charge)
     {
-
         $field = 'paid_amount';
         if (!isset($charge->$field)) {
             $field = 'amount';

@@ -1,11 +1,10 @@
 <?php
 
 /**
- * Class Mundipagg_Paymentmodule_Helper_Interest
+ * Class Mundipagg_Paymentmodule_Helper_Redirect
  */
 class Mundipagg_Paymentmodule_Helper_Redirect extends Mage_Core_Helper_Abstract
 {
-
     public function orderSuccess()
     {
         $this->redirect('checkout/onepage/success');

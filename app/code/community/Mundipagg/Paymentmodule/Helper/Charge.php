@@ -9,7 +9,6 @@ class Mundipagg_Paymentmodule_Helper_Charge extends Mage_Core_Helper_Abstract
         try {
             $chargeCore->{$action}($chargeWebHook);
         } catch (\Exception $e) {
-
             // do something with the error
         }
     }

@@ -86,7 +86,7 @@ class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mundipagg_Pa
             $chargeHelper->updateStatus($charge, $charge->status);
 
             //search for boleto link
-            if($charge->paymentMethod === 'boleto') {
+            if ($charge->paymentMethod === 'boleto') {
                 $boletoUrl = $charge->lastTransaction->url;
                 //add to additional information boleto link.
                 foreach($boletosInfo as &$boletoInfo){
