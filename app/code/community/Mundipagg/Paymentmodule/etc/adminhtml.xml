@@ -1,4 +1,15 @@
 <config>
+    <menu>
+        <sales>
+            <children>
+                <paymentmodule translate="title" module="paymentmodule">
+                    <sort_order>10</sort_order>
+                    <title>Orders - Charge</title>
+                    <action>adminhtml/charge/</action>
+                </paymentmodule>
+            </children>
+        </sales>
+    </menu>
     <acl>
         <resources>
             <admin>

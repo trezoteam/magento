@@ -138,6 +138,18 @@
         </translate>
     </adminhtml>
 
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <paymentmodule before="Mage_Adminhtml">Mundipagg_Paymentmodule_Adminhtml</paymentmodule>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+
     <default>
         <mundipagg_config>
             <general_group>
