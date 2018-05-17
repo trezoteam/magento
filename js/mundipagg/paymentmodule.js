@@ -386,6 +386,7 @@ function getFormData(elementId) {
     if (typeof toTokenApi[elementId] === 'undefined') {
         toTokenApi[elementId] = { card:{} };
     }
+
     toTokenApi[elementId].card = {
         type: "credit",
         holder_name: clearHolderName(document.getElementById(elementId + '_mundicheckout-holdername')),
@@ -395,9 +396,13 @@ function getFormData(elementId) {
         cvv: clearCvv(document.getElementById(elementId + '_mundicheckout-cvv'))
     };
 
-    var brandName = jQuery('#' + elementId + '_mundicheckout-SavedCreditCard')
-        .find('option:selected').attr('data-brand');
-    jQuery("#" + elementId + "_brand_name").val(brandName);
+    jQuery("#" + elementId + "_brand_name").val('');
+
+    if (!isNewCard(elementId)) {
+        var brandName = jQuery('#' + elementId + '_mundicheckout-SavedCreditCard')
+            .find('option:selected').attr('data-brand');
+        jQuery("#" + elementId + "_brand_name").val(brandName);
+    }
 }
 
 var isElementValueBusy = {};
@@ -482,6 +487,8 @@ function clearBrand(elementId){
 function showBrandImage(brandName,elementId) {
     var html = "<img src='https://dashboard.mundipagg.com/emb/images/brands/" + brandName + ".jpg' ";
     html += " class='mundipaggImage' width='26'>";
+
+    jQuery("#"+elementId+"_brand_name").val(brandName);
 
     jQuery("#"+elementId+"_mundipaggBrandName").val(brandName);
     jQuery("#"+elementId+"_mundipaggBrandImage" ).html(html);
