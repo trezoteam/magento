@@ -20,9 +20,9 @@ $orderTotal = $this->getGrandTotal();
             </div>
         </li>
     </ul>
-    <script type="javascript">
-
-        initPaymentMethod('<?php echo $_code; ?>','<?php echo $orderTotal; ?>');
-
+    <script type="text/javascript">
+        jQuery(document).ready(function(){
+            initPaymentMethod('<?php echo $_code; ?>','<?php echo $orderTotal; ?>');
+        });
     </script>
 </fieldset>
