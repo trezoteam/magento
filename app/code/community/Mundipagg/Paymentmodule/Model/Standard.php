@@ -159,6 +159,8 @@ class Mundipagg_Paymentmodule_Model_Standard extends Mage_Payment_Model_Method_A
     {
         $order   = Mage::getModel('sales/order')->loadByIncrementId($orderId);
         $payment = $order->getPayment();
+        $moduleCharges =
+            $payment->getAdditionalInformation('mundipagg_payment_module_charges');
 
         foreach ($charges as $charge) {
             $newInfo[$charge->id] =
@@ -166,12 +168,28 @@ class Mundipagg_Paymentmodule_Model_Standard extends Mage_Payment_Model_Method_A
         }
 
         if (!empty($newInfo)) {
+            $this->addOrUpdateCharge($payment, $newInfo, $moduleCharges);
+        }
+    }
+
+    protected function addOrUpdateCharge($payment, $info, $charges)
+    {
+        if (empty($charges)) {
             $payment->setAdditionalInformation(
                 'mundipagg_payment_module_charges',
-                $newInfo
+                $info
             );
-            $payment->save();
+            return $payment->save();
         }
+
+        $chargeId = key($info);
+        $charges[$chargeId] = $info[$chargeId];
+
+        $payment->setAdditionalInformation(
+            'mundipagg_payment_module_charges',
+            $charges
+        );
+        return $payment->save();
     }
 
     /**
