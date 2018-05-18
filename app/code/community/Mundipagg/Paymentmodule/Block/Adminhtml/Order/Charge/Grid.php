@@ -5,44 +5,52 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Order_Charge_Grid extends Mage_Adm
     public function __construct()
     {
         parent::__construct();
-        $this->setId('inchoo_order_grid');
-        $this->setDefaultSort('increment_id');
-        $this->setDefaultDir('DESC');
+        $this->setId('order_charge_grid');
+        $this->setFilterVisibility(false);
+        $this->setPagerVisibility(false);
         $this->setSaveParametersInSession(true);
-        $this->setUseAjax(true);
+    }
+
+    public function getRowUrl($row){
+       return false;
     }
  
     protected function _prepareCollection()
     {
+        $orderId = Mage::app()->getRequest()->getParam('order_id');
+
         $collection = Mage::getResourceModel('sales/order_collection')
-            ->join(array('a' => 'sales/order_address'), 'main_table.entity_id = a.parent_id AND a.address_type != \'billing\'', array(
-                'city'       => 'city',
-                'country_id' => 'country_id'
-            ))
             ->join(['b' => 'sales/order_payment'],
                 'main_table.entity_id = b.parent_id',
                 ['additional_information' => 'additional_information']
             )
-            ->join(array('c' => 'customer/customer_group'), 'main_table.customer_group_id = c.customer_group_id', array(
-                'customer_group_code' => 'customer_group_code'
-            ))
-            ->addExpressionFieldToSelect(
-                'fullname',
-                'CONCAT({{customer_firstname}}, \' \', {{customer_lastname}})',
-                array('customer_firstname' => 'main_table.customer_firstname', 'customer_lastname' => 'main_table.customer_lastname'))
-            ->addExpressionFieldToSelect(
-                'products',
-                '(SELECT GROUP_CONCAT(\' \', x.name)
-                    FROM sales_flat_order_item x
-                    WHERE {{entity_id}} = x.order_id
-                        AND x.product_type != \'configurable\')',
-                array('entity_id' => 'main_table.entity_id')
-            )
-        ;
- 
+            ->addFieldToFilter('main_table.entity_id', $orderId);
+
+        $collection = $this->createChargeCollection($collection);
         $this->setCollection($collection);
         parent::_prepareCollection();
         return $this;
+    }
+
+    protected function createChargeCollection($collection)
+    {
+        $aditional = [];
+        foreach ($collection as $order) {
+            $aditional = unserialize($order->additional_information);
+        }
+
+        $collection = new Varien_Data_Collection();
+        array_walk($aditional['mundipagg_payment_module_charges'],
+            function ($item) use ($collection) {
+                $item['amount'] = $item['amount'] / 100;
+
+                $rowObj = new Varien_Object();
+                $rowObj->setData($item);
+                $collection->addItem($rowObj);
+            }
+        );
+
+        return $collection;
     }
  
     protected function _prepareColumns()
@@ -50,71 +58,42 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Order_Charge_Grid extends Mage_Adm
         $helper = Mage::helper('paymentmodule/order');
         $currency = (string) Mage::getStoreConfig(Mage_Directory_Model_Currency::XML_PATH_CURRENCY_BASE);
  
-        $this->addColumn('increment_id', array(
-            'header' => $helper->__('Order #'),
-            'index'  => 'increment_id'
+        $this->addColumn('id', array(
+            'header' => $helper->__('Charge Id'),
+            'index'  => 'id',
+            'filter' => false,
+            'sortable'  => false,
         ));
  
+        $this->addColumn('amount', array(
+            'header' => $helper->__('Valor'),
+            'index'  => 'amount',
+            'type'   => 'currency',
+            'currency_code' => $currency,
+            'filter' => false,
+            'sortable'  => false,
+        ));
+ 
+        $this->addColumn('status', array(
+            'header' => $helper->__('Status'),
+            'index'  => 'status',
+            'filter' => false,
+            'sortable'  => false,
+        ));
+ 
+        $this->addColumn('payment_method', array(
+            'header' => $helper->__('Payment Method'),
+            'index'  => 'payment_method',
+            'filter' => false,
+            'sortable'  => false,
+        ));
+/*
         $this->addColumn('additional_information', array(
             'header' => $helper->__('Aditional'),
-            'index'  => 'additional_information'
+            'index'  => 'additional_information',
+            'renderer' => 'Mundipagg_Paymentmodule_Block_Adminhtml_Order_Charge_Render'
         ));
-
-        $this->addColumn('purchased_on', array(
-            'header' => $helper->__('Purchased On'),
-            'type'   => 'datetime',
-            'index'  => 'created_at'
-        ));
- 
-        $this->addColumn('products', array(
-            'header'       => $helper->__('Products Purchased'),
-            'index'        => 'products',
-            'filter_index' => '(SELECT GROUP_CONCAT(\' \', x.name) FROM sales_flat_order_item x WHERE main_table.entity_id = x.order_id AND x.product_type != \'configurable\')'
-        ));
- 
-        $this->addColumn('fullname', array(
-            'header'       => $helper->__('Name'),
-            'index'        => 'fullname',
-            'filter_index' => 'CONCAT(customer_firstname, \' \', customer_lastname)'
-        ));
- 
-        $this->addColumn('city', array(
-            'header' => $helper->__('City'),
-            'index'  => 'city'
-        ));
- 
-        $this->addColumn('country', array(
-            'header'   => $helper->__('Country'),
-            'index'    => 'country_id',
-            'renderer' => 'adminhtml/widget_grid_column_renderer_country'
-        ));
- 
-        $this->addColumn('customer_group', array(
-            'header' => $helper->__('Customer Group'),
-            'index'  => 'customer_group_code'
-        ));
- 
-        $this->addColumn('grand_total', array(
-            'header'        => $helper->__('Grand Total'),
-            'index'         => 'grand_total',
-            'type'          => 'currency',
-            'currency_code' => $currency
-        ));
- 
-        $this->addColumn('shipping_method', array(
-            'header' => $helper->__('Shipping Method'),
-            'index'  => 'shipping_description'
-        ));
- 
-        $this->addColumn('order_status', array(
-            'header'  => $helper->__('Status'),
-            'index'   => 'status',
-            'type'    => 'options',
-            'options' => Mage::getSingleton('sales/order_config')->getStatuses(),
-        ));
- 
-        $this->addExportType('*/*/exportInchooCsv', $helper->__('CSV'));
-        $this->addExportType('*/*/exportInchooExcel', $helper->__('Excel XML'));
+*/
  
         return parent::_prepareColumns();
     }

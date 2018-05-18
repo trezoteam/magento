@@ -6,8 +6,8 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Order_Charge extends Mage_Adminhtm
     {
         $this->_blockGroup = 'paymentmodule';
         $this->_controller = 'adminhtml_order_charge';
-        $this->_headerText = Mage::helper('paymentmodule/order')
-                                ->__('Orders - Charge');
+        $this->_headerText = Mage::helper('paymentmodule')
+                                ->__('Cobranças');
  
         parent::__construct();
         $this->_removeButton('add');
