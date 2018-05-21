@@ -82,18 +82,45 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Order_Charge_Grid extends Mage_Adm
         ));
  
         $this->addColumn('payment_method', array(
-            'header' => $helper->__('Payment Method'),
+            'header' => $helper->__('Metodo de Pagamento'),
             'index'  => 'payment_method',
             'filter' => false,
             'sortable'  => false,
         ));
-/*
-        $this->addColumn('additional_information', array(
-            'header' => $helper->__('Aditional'),
-            'index'  => 'additional_information',
-            'renderer' => 'Mundipagg_Paymentmodule_Block_Adminhtml_Order_Charge_Render'
+
+        $this->addColumn('action_capture', array(
+            'header' => $helper->__(''),
+            'width'     => '5%',
+            'type'      => 'action',
+            'getter'     => 'getId',
+            'actions'   => array(
+                    array(
+                        'caption' => Mage::helper('sales')->__('Capturar'),
+                        'onclick' => 'javascript();',
+                        'field'   => 'id'
+                    )
+                ),
+            'filter'    => false,
+            'sortable'  => false,
+            'is_system' => true,
         ));
-*/
+
+        $this->addColumn('action_cancel', array(
+            'header' => $helper->__(''),
+            'width'     => '5%',
+            'type'      => 'action',
+            'getter'     => 'getId',
+            'actions'   => array(
+                    array(
+                        'caption' => Mage::helper('sales')->__('Cancelar'),
+                        'onclick' => 'javascript();',
+                        'field'   => 'id'
+                    )
+                ),
+            'filter'    => false,
+            'sortable'  => false,
+            'is_system' => true,
+        ));
  
         return parent::_prepareColumns();
     }
