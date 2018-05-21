@@ -3,8 +3,10 @@
 "Payment title","Título do método de pagamento"
 "Yes","Sim"
 "No","Não"
-"Cobranças", "Cobranças"
-"Cobrança", "Cobrança"
+"Charges", "Cobranças"
+"Charge", "Cobrança"
+"Payment Method", "Método de Pagamento"
+"Amount", "Valor"
 
 "##### Configuração básica do módulo","########################################"
 "Module Basic Configuration","Configuração básica do módulo"

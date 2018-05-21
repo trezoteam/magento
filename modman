@@ -14,7 +14,7 @@ skin/adminhtml/default/default/images/mundipagg       skin/adminhtml/default/def
 skin/frontend/base/default/css/paymentmodule.css      skin/frontend/base/default/css/paymentmodule.css
 
 #locale
-app/locale/pt_BR/*            app/locale/pt_BR
+app/locale/*            app/locale/
 
 lib/*                                                 lib/
 

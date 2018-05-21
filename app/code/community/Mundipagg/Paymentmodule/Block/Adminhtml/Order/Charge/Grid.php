@@ -66,7 +66,7 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Order_Charge_Grid extends Mage_Adm
         ));
  
         $this->addColumn('amount', array(
-            'header' => $helper->__('Valor'),
+            'header' => $this->__('Amount'),
             'index'  => 'amount',
             'type'   => 'currency',
             'currency_code' => $currency,
@@ -82,12 +82,12 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Order_Charge_Grid extends Mage_Adm
         ));
  
         $this->addColumn('payment_method', array(
-            'header' => $helper->__('Metodo de Pagamento'),
+            'header' => $this->__('Payment Method'),
             'index'  => 'payment_method',
             'filter' => false,
             'sortable'  => false,
         ));
-
+/*
         $this->addColumn('action_capture', array(
             'header' => $helper->__(''),
             'width'     => '5%',
@@ -121,7 +121,7 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Order_Charge_Grid extends Mage_Adm
             'sortable'  => false,
             'is_system' => true,
         ));
- 
+ */
         return parent::_prepareColumns();
     }
  

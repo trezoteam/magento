@@ -34,8 +34,8 @@ class Mundipagg_Paymentmodule_Model_Observer extends Varien_Event_Observer
             $block->addTabAfter(
                 'order_charges',
                 [
-                    'label'     => Mage::helper('paymentmodule')->__('Cobranças'),
-                    'title'     => Mage::helper('paymentmodule')->__('Cobranças'),
+                    'label'     => Mage::helper('paymentmodule')->__('Charges'),
+                    'title'     => Mage::helper('paymentmodule')->__('Charges'),
                     'content'   => Mage::app()
                                     ->getLayout()
                                     ->createBlock($blockName)
