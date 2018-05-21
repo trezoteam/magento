@@ -9,12 +9,27 @@ var AbstractCheckoutModuleHandler = function (methodCode) {
     this.resetBeforeCheckout();
 };
 
-AbstractCheckoutModuleHandler.prototype.resetBeforeCheckout = function (placeOrderFunction) {
+AbstractCheckoutModuleHandler.prototype.resetBeforeCheckout = function (placeOrderFunction,callerObject) {
     this.tokenCheckTable = {};
     this.placeOrderFunction = placeOrderFunction;
+    this.callerObject = callerObject;
+};
+
+AbstractCheckoutModuleHandler.prototype.callPlaceOrderFunction = function() {
+  if(typeof this.callerObject === 'undefined') {
+      return this.placeOrderFunction();
+  }
+  this.callerObject[this.placeOrderFunction.name]();
 };
 
 AbstractCheckoutModuleHandler.prototype.isHandlingNeeded = function () {
+    return !(
+        this.getCurrentPaymentMethod() !== this.methodCode
+    );
+};
+
+//@Todo this method do not belongs to this class...
+AbstractCheckoutModuleHandler.prototype.hasCardInfo = function () {
     var creditCardTokenDiv = '.'  + this.methodCode + "_creditcard_tokenDiv";
     var hasCardInfo = false;
     var _self = this;
@@ -24,10 +39,7 @@ AbstractCheckoutModuleHandler.prototype.isHandlingNeeded = function () {
         hasCardInfo = true;
     }.bind(_self));
 
-    return !(
-        this.getCurrentPaymentMethod() !== this.methodCode ||
-        hasCardInfo === false
-    );
+    return hasCardInfo;
 };
 
 //@Todo this method do not belongs to this class...
@@ -50,7 +62,7 @@ AbstractCheckoutModuleHandler.prototype.handleTokenGenerationResponse = function
             }
         }.bind(_self));
         if (canSave) {
-            this.placeOrderFunction();
+            this.callPlaceOrderFunction();
         }
         return;
     }

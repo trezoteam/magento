@@ -2,7 +2,6 @@
 
 class Mundipagg_Paymentmodule_Model_Standard extends Mage_Payment_Model_Method_Abstract
 {
-
     protected $_allowCurrencyCode = [];
 
     public function __construct()

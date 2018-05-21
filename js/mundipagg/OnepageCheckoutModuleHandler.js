@@ -18,7 +18,7 @@ OnepageCheckoutModuleHandler.prototype.setSavePaymentInterceptor = function () {
     var _self = this;
     Payment.prototype.save = Payment.prototype.save.wrap(function(save) {
         _self.resetBeforeCheckout(save);
-        if(!_self.isHandlingNeeded()) {
+        if(!_self.isHandlingNeeded() || !_self.hasCardInfo()) {
             return _self.placeOrderFunction();
         }
 

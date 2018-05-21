@@ -185,75 +185,6 @@ function initPaymentMethod(methodCode,orderTotal)
             }
         );
 
-        if (typeof OSCForm !== 'undefined' && false) {
-            OSCForm.placeOrderButton.stopObserving('click');
-            OSCForm.placeOrderButton.observe('click',function(){
-                if (OSCForm.validate()) {
-                    var hasCardInfo = false;
-                    var creditCardTokenDiv = '.'  + methodCode + "_creditcard_tokenDiv";
-                    //generate token check table and check if cardInfos exists;
-                    var tokenCheckTable = {};
-
-                    jQuery(creditCardTokenDiv).each(function(index, element) {
-                        tokenCheckTable[element.id] = false;
-                        hasCardInfo = true;
-
-                    });
-                    if(OSCPayment.currentMethod !== methodCode || hasCardInfo === false) {
-                        return OSCForm.placeOrder();
-                    }
-
-                    //foreach value input of the paymentMethod
-                    //update input balance values
-                    jQuery('#payment_form_' + methodCode)
-                        .find('.multipayment-value-input')
-                        .each(
-                            function(index,element)
-                            {
-                                jQuery(element).change();
-                            }
-                        );
-
-                    //for each of creditcard forms
-                    jQuery('.' +methodCode+ "_creditcard_tokenDiv").each(function(index,element) {
-                        var elementId = element.id.replace('_tokenDiv', '');
-
-                        if (isNewCard(elementId) ) {
-                            var key = document.getElementById(element.id)
-                                .getAttribute('data-mundicheckout-app-id');
-                            var tokenElement = document.getElementById(elementId + '_mundicheckout-token');
-
-                            getCreditCardToken(key, elementId, function (response) {
-                                if (response != false) {
-                                    tokenElement.value = response.id;
-                                    jQuery("#"+elementId+"_mundipagg-invalid-credit-card").hide();
-                                    jQuery("#"+elementId+"_brand_name").val(response.card.brand);
-                                    tokenCheckTable[element.id] = true;
-                                    //check if all tokens are generated.
-                                    var canSave = true;
-                                    jQuery('.' +methodCode+ "_creditcard_tokenDiv").each(function(index,element) {
-                                        if (tokenCheckTable[element.id] === false) {
-                                            canSave = false;
-                                        }
-                                    });
-                                    if (canSave) {
-                                        return OSCForm.placeOrder();
-                                    }
-                                    return;
-                                }
-                                tokenElement.value = "";
-                                jQuery("#"+elementId+"_mundipagg-invalid-credit-card").show();
-                            });
-                            return;
-                        }
-
-                        tokenCheckTable[element.id] = true;
-                        return;
-                    });
-                }
-            });
-        }
-
         //value balance
         var amountInputs = jQuery('#payment_form_' + methodCode).find('.multipayment-value-input');
 
@@ -398,7 +329,7 @@ function getFormData(elementId) {
         cvv: clearCvv(document.getElementById(elementId + '_mundicheckout-cvv'))
     };
 
-    jQuery("#" + elementId + "_brand_name").val('');
+    //jQuery("#" + elementId + "_brand_name").val('');
 
     if (!isNewCard(elementId)) {
         var brandName = jQuery('#' + elementId + '_mundicheckout-SavedCreditCard')
@@ -471,6 +402,7 @@ function getBrand(elementId) {
 
 function fillBrandData(data,argsObj) {
     if (data.brand != "" && data.brand != undefined) {
+
         showBrandImage(data.brand,argsObj.elementId);
         getInstallments(jQuery("#baseUrl").val(), data.brandName,argsObj);
 
@@ -525,7 +457,7 @@ function getInstallments(baseUrl, brandName, argsObj) {
 }
 
 function switchInstallments(data,argsObj) {
-    jQuery('.disabledBrandMessae').hide();
+    jQuery('.disabledBrandMessage').hide();
 
     if (data) {
         var withoutInterest = MundiPagg.Locale.getTranslaction("without interest");
