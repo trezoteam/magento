@@ -11,7 +11,8 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Order_Charge_Grid extends Mage_Adm
         $this->setSaveParametersInSession(true);
     }
 
-    public function getRowUrl($row){
+    public function getRowUrl($row)
+    {
        return false;
     }
  
@@ -29,6 +30,7 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Order_Charge_Grid extends Mage_Adm
         $collection = $this->createChargeCollection($collection);
         $this->setCollection($collection);
         parent::_prepareCollection();
+
         return $this;
     }
 
@@ -58,75 +60,76 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Order_Charge_Grid extends Mage_Adm
         $helper = Mage::helper('paymentmodule/order');
         $currency = (string) Mage::getStoreConfig(Mage_Directory_Model_Currency::XML_PATH_CURRENCY_BASE);
  
-        $this->addColumn('id', array(
+        $this->addColumn('id', [
             'header' => $helper->__('Charge Id'),
             'index'  => 'id',
             'filter' => false,
             'sortable'  => false,
-        ));
+        ]);
  
-        $this->addColumn('amount', array(
+        $this->addColumn('amount', [
             'header' => $this->__('Amount'),
             'index'  => 'amount',
             'type'   => 'currency',
             'currency_code' => $currency,
             'filter' => false,
             'sortable'  => false,
-        ));
+        ]);
  
-        $this->addColumn('status', array(
+        $this->addColumn('status', [
             'header' => $helper->__('Status'),
             'index'  => 'status',
             'filter' => false,
             'sortable'  => false,
         ));
  
-        $this->addColumn('payment_method', array(
+        $this->addColumn('payment_method', [
             'header' => $this->__('Payment Method'),
             'index'  => 'payment_method',
             'filter' => false,
             'sortable'  => false,
-        ));
+        ]);
 /*
-        $this->addColumn('action_capture', array(
+        Descomentar esse trecho para adicionar os botões de ações
+        $this->addColumn('action_capture', [
             'header' => $helper->__(''),
             'width'     => '5%',
             'type'      => 'action',
             'getter'     => 'getId',
-            'actions'   => array(
-                    array(
-                        'caption' => Mage::helper('sales')->__('Capturar'),
-                        'onclick' => 'javascript();',
-                        'field'   => 'id'
-                    )
-                ),
+            'actions'   => [
+                [
+                    'caption' => Mage::helper('sales')->__('Capturar'),
+                    'onclick' => 'javascript();',
+                    'field'   => 'id'
+                ]
+            ],
             'filter'    => false,
             'sortable'  => false,
             'is_system' => true,
-        ));
+        ]);
 
-        $this->addColumn('action_cancel', array(
+        $this->addColumn('action_cancel', [
             'header' => $helper->__(''),
             'width'     => '5%',
             'type'      => 'action',
             'getter'     => 'getId',
-            'actions'   => array(
-                    array(
-                        'caption' => Mage::helper('sales')->__('Cancelar'),
-                        'onclick' => 'javascript();',
-                        'field'   => 'id'
-                    )
-                ),
+            'actions'   => [
+                [
+                    'caption' => Mage::helper('sales')->__('Cancelar'),
+                    'onclick' => 'javascript();',
+                    'field'   => 'id'
+                ]
+            ],
             'filter'    => false,
             'sortable'  => false,
             'is_system' => true,
-        ));
+        ]);
  */
         return parent::_prepareColumns();
     }
  
     public function getGridUrl()
     {
-        return $this->getUrl('*/*/grid', array('_current'=>true));
+        return $this->getUrl('*/*/grid', ['_current'=>true]);
     }
 }
