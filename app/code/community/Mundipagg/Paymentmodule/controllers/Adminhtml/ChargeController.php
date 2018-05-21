@@ -4,7 +4,6 @@ class Mundipagg_Paymentmodule_Adminhtml_ChargeController extends Mage_Adminhtml_
 {
     public function indexAction()
     {
-        $this->_title($this->__('Sales'))->_title($this->__('Orders Inchoo'));
         $this->loadLayout();
         $this->_setActiveMenu('sales/sales');
         $this->_addContent($this->getLayout()->createBlock('paymentmodule/adminhtml_order_charge'));
