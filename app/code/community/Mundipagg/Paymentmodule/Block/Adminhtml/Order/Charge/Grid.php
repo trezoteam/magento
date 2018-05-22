@@ -73,21 +73,21 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Order_Charge_Grid extends Mage_Adm
             'type'   => 'currency',
             'currency_code' => $currency,
             'filter' => false,
-            'sortable'  => false,
+            'sortable'  => false
         ]);
  
         $this->addColumn('status', [
             'header' => $helper->__('Status'),
             'index'  => 'status',
             'filter' => false,
-            'sortable'  => false,
-        ));
+            'sortable'  => false
+        ]);
  
         $this->addColumn('payment_method', [
             'header' => $this->__('Payment Method'),
             'index'  => 'payment_method',
             'filter' => false,
-            'sortable'  => false,
+            'sortable'  => false
         ]);
 /*
         Descomentar esse trecho para adicionar os botões de ações
