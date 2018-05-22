@@ -1,4 +1,23 @@
-var MundiPagg = {};
+var MundiPagg = {
+    paymentMethods: {},
+    grandTotal: ''
+};
+
+MundiPagg.initPaymentMethod = function (methodCode, orderTotal) {
+    if (typeof this.paymentMethods[methodCode] === 'undefined') {
+
+        this.paymentMethods[methodCode] =
+            new MundiPaggCheckoutHandler(methodCode);
+        this.paymentMethods[methodCode].setSavePaymentInterceptor();
+
+        this.paymentMethods[methodCode].init();
+
+        initPaymentMethod(methodCode, orderTotal);
+
+        this.paymentMethods[methodCode].setValueInputAutobalanceEvents();
+        this.paymentMethods[methodCode].updateInputBalanceValues();
+    }
+};
 
 MundiPagg.init = function(posInitializationCallback)
 {
@@ -143,6 +162,7 @@ function getCurrentYear() {
 function initPaymentMethod(methodCode,orderTotal)
 {
     MundiPagg.init(function(){
+        MundiPagg.grandTotal = orderTotal;
         initSavedCreditCardInstallments();
         Validation.add(
             methodCode + '_boleto_validate-mundipagg-cpf',
@@ -172,129 +192,15 @@ function initPaymentMethod(methodCode,orderTotal)
             }
         );
 
-        Payment.prototype.save = Payment.prototype.save.wrap(function(save) {
-            var hasCardInfo = false;
-            var creditCardTokenDiv = '.'  + methodCode + "_creditcard_tokenDiv";
-            //generate token check table and check if cardInfos exists;
-            var tokenCheckTable = {};
-
-            jQuery(creditCardTokenDiv).each(function(index, element) {
-                tokenCheckTable[element.id] = false;
-                hasCardInfo = true;
-
-            });
-            if(this.currentMethod !== methodCode || hasCardInfo === false) {
-                return save();
-            }
-            var prototypeWrapper = this;
-
-            //foreach value input of the paymentMethod
-            //update input balance values
-            jQuery('#payment_form_' + methodCode)
-                .find('.multipayment-value-input')
-                .each(
-                    function(index,element)
-                    {
-                        jQuery(element).change();
-                    }
-                );
-
-            //for each of creditcard forms
-            jQuery('.' +methodCode+ "_creditcard_tokenDiv").each(function(index,element) {
-                var elementId = element.id.replace('_tokenDiv', '');
-
-                if (isNewCard(elementId) ) {
-                    var key = document.getElementById(element.id)
-                        .getAttribute('data-mundicheckout-app-id');
-                    var tokenElement = document.getElementById(elementId + '_mundicheckout-token');
-                    var validator = new Validation(prototypeWrapper.form);
-                    if (prototypeWrapper.validate() && validator.validate()) {
-                        getCreditCardToken(key, elementId, function (response) {
-                            if (response != false) {
-                                tokenElement.value = response.id;
-                                jQuery("#"+elementId+"_mundipagg-invalid-credit-card").hide();
-                                jQuery("#"+elementId+"_brand_name").val(response.card.brand);
-                                tokenCheckTable[element.id] = true;
-                                //check if all tokens are generated.
-                                var canSave = true;
-                                jQuery('.' +methodCode+ "_creditcard_tokenDiv").each(function(index,element) {
-                                    if (tokenCheckTable[element.id] === false) {
-                                        canSave = false;
-                                    }
-                                });
-                                if (canSave) {
-                                    save();
-                                }
-                                return;
-                            }
-                            tokenElement.value = "";
-                            jQuery("#"+elementId+"_mundipagg-invalid-credit-card").show();
-                        });
-                    }
-                    return;
-                }
-
-                tokenCheckTable[element.id] = true;
-                return save();
-            });
-        });
-
         //value balance
         var amountInputs = jQuery('#payment_form_' + methodCode).find('.multipayment-value-input');
 
         //distribute amount through amount inputs;
         if (amountInputs.length > 1) {
-            var distributedAmount = parseFloat(orderTotal);
+            var distributedAmount = parseFloat(MundiPagg.grandTotal);
             distributedAmount /= amountInputs.length;
             jQuery(amountInputs).each(function(index,element) {
                 jQuery(element).val(distributedAmount);
-            });
-        }
-
-        //setting autobalance;
-        if (amountInputs.length === 2) { //needs amount auto balance
-            jQuery(amountInputs).each(function(index,element) {
-                var oppositeIndex = index === 0 ? 1 : 0;
-                var oppositeInput = amountInputs[oppositeIndex];
-                var max = parseFloat(orderTotal);
-
-                element.lastValue = jQuery(element).val();
-                jQuery(element).on('input',function(){
-
-                    setTimeout(function(){
-                        if (jQuery(element).val() !== element.lastValue) {
-                            element.lastValue = jQuery(element).val();
-                            jQuery(element).change();
-                        }
-                    }.bind(element),2000);
-
-                }.bind(element));
-
-                jQuery(element).on('change',function(){
-                    var elementValue = parseFloat(jQuery(element).val());
-
-                    if (isNaN(elementValue)) {
-                        elementValue = 0;
-                    }
-
-                    if (elementValue > max) {
-                        elementValue = max;
-                    }
-
-                    var oppositeValue = max - elementValue;
-
-                    jQuery(oppositeInput).val(oppositeValue.toFixed(2));
-                    jQuery(element).val(elementValue.toFixed(2));
-
-                    var elementId = element.id.split('_');
-                    elementId.pop();
-                    getBrandWithDelay(elementId.join('_'));
-
-                    var oppositeInputId = oppositeInput.id.split('_');
-                    oppositeInputId.pop();
-                    getBrandWithDelay(oppositeInputId.join('_'));
-
-                }.bind(element));
             });
         }
     });
@@ -373,6 +279,7 @@ function getFormData(elementId) {
     if (typeof toTokenApi[elementId] === 'undefined') {
         toTokenApi[elementId] = { card:{} };
     }
+
     toTokenApi[elementId].card = {
         type: "credit",
         holder_name: clearHolderName(document.getElementById(elementId + '_mundicheckout-holdername')),
@@ -382,9 +289,13 @@ function getFormData(elementId) {
         cvv: clearCvv(document.getElementById(elementId + '_mundicheckout-cvv'))
     };
 
-    var brandName = jQuery('#' + elementId + '_mundicheckout-SavedCreditCard')
-        .find('option:selected').attr('data-brand');
-    jQuery("#" + elementId + "_brand_name").val(brandName);
+    //jQuery("#" + elementId + "_brand_name").val('');
+
+    if (!isNewCard(elementId)) {
+        var brandName = jQuery('#' + elementId + '_mundicheckout-SavedCreditCard')
+            .find('option:selected').attr('data-brand');
+        jQuery("#" + elementId + "_brand_name").val(brandName);
+    }
 }
 
 var isElementValueBusy = {};
@@ -451,6 +362,7 @@ function getBrand(elementId) {
 
 function fillBrandData(data,argsObj) {
     if (data.brand != "" && data.brand != undefined) {
+
         showBrandImage(data.brand,argsObj.elementId);
         getInstallments(jQuery("#baseUrl").val(), data.brandName,argsObj);
 
@@ -469,6 +381,8 @@ function clearBrand(elementId){
 function showBrandImage(brandName,elementId) {
     var html = "<img src='https://dashboard.mundipagg.com/emb/images/brands/" + brandName + ".jpg' ";
     html += " class='mundipaggImage' width='26'>";
+
+    jQuery("#"+elementId+"_brand_name").val(brandName);
 
     jQuery("#"+elementId+"_mundipaggBrandName").val(brandName);
     jQuery("#"+elementId+"_mundipaggBrandImage" ).html(html);
@@ -503,7 +417,7 @@ function getInstallments(baseUrl, brandName, argsObj) {
 }
 
 function switchInstallments(data,argsObj) {
-    jQuery('.disabledBrandMessae').hide();
+    jQuery('.disabledBrandMessage').hide();
 
     if (data) {
         var withoutInterest = MundiPagg.Locale.getTranslaction("without interest");

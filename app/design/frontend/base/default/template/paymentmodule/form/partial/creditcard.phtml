@@ -66,7 +66,7 @@
             <select
                     name="payment[<?php echo "$elementId"?>_SavedCreditCard]"
                     id="<?php echo "$elementId"?>_mundicheckout-SavedCreditCard"
-                    onchange="getFormData('<?php echo $elementId?>'); switchNewSaved(this.value, '<?php echo $elementIndex?>'), fillSavedCreditCardInstallments('<?php echo $elementId?>')"
+                    onchange="getFormData('<?php echo $elementId?>'); switchNewSaved(this.value, '<?php echo $elementId?>'), fillSavedCreditCardInstallments('<?php echo $elementId?>')"
                     elementIndex="<?php echo $elementIndex?>"
                     elementId="<?php echo $elementId?>"
                     class="savedCreditCardSelect"
@@ -92,10 +92,10 @@
            id="<?php echo "$elementId"?>_brand_name"
            name="payment[<?php echo "$elementId"?>_brand_name]">
 
-    <label for="<?php echo "$elementId"?>_mundicheckout-number" class="newCreditCard-<?php echo $elementIndex?>" <?php echo $new; ?>>
+    <label for="<?php echo "$elementId"?>_mundicheckout-number" class="newCreditCard-<?php echo $elementId?>" <?php echo $new; ?>>
         <?php echo $this->__('Card number'); ?><span class="required"></span>
     </label>
-    <div class="input-box newCreditCard-<?php echo $elementIndex?>" <?php echo $new; ?>>
+    <div class="input-box newCreditCard-<?php echo $elementId?>" <?php echo $new; ?>>
         <span id="<?php echo "$elementId"?>_mundipaggBrandImage" class="mundipaggBrandImage"></span>
         <input type="hidden" id="<?php echo "$elementId"?>_mundipaggBrandName" value="">
         <input
@@ -111,16 +111,16 @@
         <div
                 id="<?php echo "$elementId"?>_disabled_brand_message"
                 style="display: none;"
-                class="disabledBrandMessae validation-advice"
+                class="disabledBrandMessage validation-advice"
         ><?php echo $this->__('Unavailable brand'); ?></div>
     </div>
 
     <label
             for="<?php echo "$elementId"?>_mundicheckout-holdername"
-            class="newCreditCard-<?php echo $elementIndex?>"
+            class="newCreditCard-<?php echo $elementId?>"
             <?php echo $new; ?>
     ><?php echo $this->__('Holder Name'); ?><span class="required"></span></label>
-    <div class="input-box newCreditCard-<?php echo $elementIndex?>" <?php echo $new; ?>>
+    <div class="input-box newCreditCard-<?php echo $elementId?>" <?php echo $new; ?>>
         <input
                 type="text"
                 data-mundicheckout-input="<?php echo "$elementId"?>_holder_name"
@@ -132,10 +132,10 @@
 
     <label
             for="<?php echo "$elementId"?>_mundicheckout-expmonth"
-            class="newCreditCard-<?php echo $elementIndex?>"
+            class="newCreditCard-<?php echo $elementId?>"
             <?php echo $new; ?>
     ><?php echo $this->__('Expiration date'); ?><span class="required"></span></label>
-    <div class="input-box newCreditCard-<?php echo $elementIndex?>" <?php echo $new; ?>>
+    <div class="input-box newCreditCard-<?php echo $elementId?>" <?php echo $new; ?>>
         <div class="v-fix">
             <select
                     class="required-entry"
@@ -188,10 +188,10 @@
 
     <label
         for="<?php echo "$elementId"?>_mundicheckout-cvv"
-        class="newCreditCard-<?php echo $elementIndex?>"
+        class="newCreditCard-<?php echo $elementId?>"
         <?php echo $new; ?>
     >CVV<span class="required">*</span></label>
-    <div class="input-box newCreditCard-<?php echo $elementIndex?>" <?php echo $new; ?>>
+    <div class="input-box newCreditCard-<?php echo $elementId?>" <?php echo $new; ?>>
         <input
                 type="text"
                 data-mundicheckout-input="<?php echo "$elementId"?>_cvv"
@@ -204,7 +204,7 @@
     </div>
 
     <?php if ($isSavedCreditCardsEnabled) : ?>
-    <div class="input-box newCreditCard-<?php echo $elementIndex?>" <?php echo $new; ?>>
+    <div class="input-box newCreditCard-<?php echo $elementId?>" <?php echo $new; ?>>
         <br>
         <input
                 type="checkbox"
