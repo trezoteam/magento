@@ -3,7 +3,7 @@ console.log('OnepageCheckoutModuleHandler');
 var OnepageCheckoutModuleHandler = function (methodCode) {
     AbstractCheckoutModuleHandler.call(this,methodCode);
 };
-var MundipaggCheckoutHandler = OnepageCheckoutModuleHandler;
+var MundiPaggCheckoutHandler = OnepageCheckoutModuleHandler;
 
 OnepageCheckoutModuleHandler.prototype =
     Object.create(AbstractCheckoutModuleHandler.prototype, {
@@ -12,6 +12,9 @@ OnepageCheckoutModuleHandler.prototype =
 
 OnepageCheckoutModuleHandler.prototype.getCurrentPaymentMethod = function() {
     return payment.currentMethod;
+};
+
+OnepageCheckoutModuleHandler.prototype.init = function() {
 };
 
 OnepageCheckoutModuleHandler.prototype.setSavePaymentInterceptor = function () {

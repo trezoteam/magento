@@ -3,7 +3,7 @@ console.log('OSCCheckoutModuleHandler');
 var OSCCheckoutModuleHandler = function (methodCode) {
     AbstractCheckoutModuleHandler.call(this,methodCode);
 };
-var MundipaggCheckoutHandler = OSCCheckoutModuleHandler;
+var MundiPaggCheckoutHandler = OSCCheckoutModuleHandler;
 
 OSCCheckoutModuleHandler.prototype =
     Object.create(AbstractCheckoutModuleHandler.prototype, {
@@ -12,6 +12,45 @@ OSCCheckoutModuleHandler.prototype =
 
 OSCCheckoutModuleHandler.prototype.getCurrentPaymentMethod = function() {
     return OSCPayment.currentMethod;
+};
+
+OSCCheckoutModuleHandler.prototype.init = function() {
+    OnestepcheckoutCore.updater.onRequestCompleteFn = function (transport) {
+        try {
+            var response = JSON.parse(transport.responseText.replace(/\n/g,""));
+
+        } catch(e) {
+            //error
+            var response = {
+                blocks: {}
+            };
+        }
+
+        var action = this._getActionFromUrl(transport.request.url);
+        this.removeActionBlocksFromQueue(action, response);
+        this.currentRequest = null;
+        if (this.requestQueue.length > 0) {
+            this._clearQueue();
+            var args = this.requestQueue.shift();
+            this.runRequest(args[0], args[1]);
+        }
+
+        // payment form reload fix
+        OSCPayment.initObservers();
+
+        // for Discount purpose...
+        // OSCShipment.switchToMethod();
+
+        if (Object.keys(response).includes('grand_total')) {
+            var grandTotal = response.grand_total.replace(/\D/g, '');
+            grandTotal = parseFloat(grandTotal/100);
+            MundiPagg.grandTotal = grandTotal;
+            Object.keys(MundiPagg.paymentMethods).each(function(method){
+                MundiPagg.paymentMethods[method].setValueInputAutobalanceEvents();
+                MundiPagg.paymentMethods[method].updateInputBalanceValues();
+            });
+        }
+    };
 };
 
 OSCCheckoutModuleHandler.prototype.setSavePaymentInterceptor = function () {

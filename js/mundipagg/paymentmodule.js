@@ -1,15 +1,21 @@
 var MundiPagg = {
-    paymentMethods: {}
+    paymentMethods: {},
+    grandTotal: ''
 };
 
 MundiPagg.initPaymentMethod = function (methodCode, orderTotal) {
     if (typeof this.paymentMethods[methodCode] === 'undefined') {
 
         this.paymentMethods[methodCode] =
-            new MundipaggCheckoutHandler(methodCode);
+            new MundiPaggCheckoutHandler(methodCode);
         this.paymentMethods[methodCode].setSavePaymentInterceptor();
 
+        this.paymentMethods[methodCode].init();
+
         initPaymentMethod(methodCode, orderTotal);
+
+        this.paymentMethods[methodCode].setValueInputAutobalanceEvents();
+        this.paymentMethods[methodCode].updateInputBalanceValues();
     }
 };
 
@@ -156,6 +162,7 @@ function getCurrentYear() {
 function initPaymentMethod(methodCode,orderTotal)
 {
     MundiPagg.init(function(){
+        MundiPagg.grandTotal = orderTotal;
         initSavedCreditCardInstallments();
         Validation.add(
             methodCode + '_boleto_validate-mundipagg-cpf',
@@ -190,57 +197,10 @@ function initPaymentMethod(methodCode,orderTotal)
 
         //distribute amount through amount inputs;
         if (amountInputs.length > 1) {
-            var distributedAmount = parseFloat(orderTotal);
+            var distributedAmount = parseFloat(MundiPagg.grandTotal);
             distributedAmount /= amountInputs.length;
             jQuery(amountInputs).each(function(index,element) {
                 jQuery(element).val(distributedAmount);
-            });
-        }
-
-        //setting autobalance;
-        if (amountInputs.length === 2) { //needs amount auto balance
-            jQuery(amountInputs).each(function(index,element) {
-                var oppositeIndex = index === 0 ? 1 : 0;
-                var oppositeInput = amountInputs[oppositeIndex];
-                var max = parseFloat(orderTotal);
-
-                element.lastValue = jQuery(element).val();
-                jQuery(element).on('input',function(){
-
-                    setTimeout(function(){
-                        if (jQuery(element).val() !== element.lastValue) {
-                            element.lastValue = jQuery(element).val();
-                            jQuery(element).change();
-                        }
-                    }.bind(element),2000);
-
-                }.bind(element));
-
-                jQuery(element).on('change',function(){
-                    var elementValue = parseFloat(jQuery(element).val());
-
-                    if (isNaN(elementValue)) {
-                        elementValue = 0;
-                    }
-
-                    if (elementValue > max) {
-                        elementValue = max;
-                    }
-
-                    var oppositeValue = max - elementValue;
-
-                    jQuery(oppositeInput).val(oppositeValue.toFixed(2));
-                    jQuery(element).val(elementValue.toFixed(2));
-
-                    var elementId = element.id.split('_');
-                    elementId.pop();
-                    getBrandWithDelay(elementId.join('_'));
-
-                    var oppositeInputId = oppositeInput.id.split('_');
-                    oppositeInputId.pop();
-                    getBrandWithDelay(oppositeInputId.join('_'));
-
-                }.bind(element));
             });
         }
     });

@@ -84,6 +84,65 @@ AbstractCheckoutModuleHandler.prototype.updateInputBalanceValues = function() {
         );
 };
 
+//@Todo this method do not belongs to this class...
+AbstractCheckoutModuleHandler.prototype.setValueInputAutobalanceEvents = function () {
+    //value balance
+    var amountInputs = jQuery('#payment_form_' + this.methodCode).find('.multipayment-value-input');
+
+    //setting autobalance;
+    if (amountInputs.length === 2) { //needs amount auto balance
+        jQuery(amountInputs).each(function(index,element) {
+            var oppositeIndex = index === 0 ? 1 : 0;
+            var oppositeInput = amountInputs[oppositeIndex];
+
+            element.lastValue = jQuery(element).val();
+            jQuery(element).on('input',function(){
+
+                setTimeout(function(){
+                    if (jQuery(element).val() !== element.lastValue) {
+                        element.lastValue = jQuery(element).val();
+                        jQuery(element).change();
+                    }
+                }.bind(element),2000);
+
+            }.bind(element));
+
+            jQuery(element).on('change',function(){
+                var max = parseFloat(MundiPagg.grandTotal);
+                var elementValue = parseFloat(jQuery(element).val());
+
+                if (isNaN(elementValue)) {
+                    elementValue = 0;
+                }
+
+                if (elementValue > max) {
+                    elementValue = max;
+                }
+
+                var oppositeValue = max - elementValue;
+
+                jQuery(oppositeInput).val(oppositeValue.toFixed(2));
+                jQuery(element).val(elementValue.toFixed(2));
+
+                var elementId = element.id.split('_');
+                elementId.pop();
+                getBrandWithDelay(elementId.join('_'));
+
+                var oppositeInputId = oppositeInput.id.split('_');
+                oppositeInputId.pop();
+                getBrandWithDelay(oppositeInputId.join('_'));
+
+            }.bind(element));
+        });
+    }
+};
+
+
+AbstractCheckoutModuleHandler.prototype.init = function() {
+    throw new Error("'init' is abstract!");
+};
+
+
 AbstractCheckoutModuleHandler.prototype.setSavePaymentInterceptor = function() {
     throw new Error("'setSavePaymentInterceptor' is abstract!");
 };
