@@ -1,5 +1,3 @@
-console.log('OSCCheckoutModuleHandler');
-
 var OSCCheckoutModuleHandler = function (methodCode) {
     AbstractCheckoutModuleHandler.call(this,methodCode);
 };

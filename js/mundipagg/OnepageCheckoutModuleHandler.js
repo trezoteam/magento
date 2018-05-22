@@ -1,5 +1,3 @@
-console.log('OnepageCheckoutModuleHandler');
-
 var OnepageCheckoutModuleHandler = function (methodCode) {
     AbstractCheckoutModuleHandler.call(this,methodCode);
 };
