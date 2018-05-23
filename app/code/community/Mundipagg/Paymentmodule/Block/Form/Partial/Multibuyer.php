@@ -7,4 +7,10 @@ class Mundipagg_Paymentmodule_Block_Form_Partial_Multibuyer extends Mundipagg_Pa
         parent::_construct();
         $this->setTemplate('paymentmodule/form/partial/multibuyer.phtml');
     }
+
+    public function getCountryCollection()
+    {
+        $countryCollection = Mage::getModel('directory/country_api')->items();
+        return $countryCollection;
+    }
 }

@@ -23,6 +23,10 @@
                     <type>js</type>
                     <name>mundipagg/formoperations.js</name>
                 </action>
+                <action method="addItem">
+                    <type>js</type>
+                    <name>mundipagg/multibuyer.js</name>
+                </action>
             </block>
         </reference>
     </mundipagg_checkout_handle>
@@ -68,7 +72,7 @@
         <reference name="customer_account_navigation">
             <action method="addLink" translate="label" module="paymentmodule">
                 <name>paymentmodule</name>
-                <path>mundipagg/wallet/</path>
+                <path>mp-paymentmodule/wallet/</path>
                 <label>My cards</label>
             </action>
         </reference>
