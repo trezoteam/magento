@@ -20,7 +20,6 @@ function getState(obj) {
     });
 }
 
-
 function buildStatesOptions(data) {
     var json = jQuery.parseJSON(data);
     var html = "<option value=''> Select </option>";
