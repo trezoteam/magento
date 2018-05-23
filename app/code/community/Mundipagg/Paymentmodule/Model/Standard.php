@@ -231,10 +231,21 @@ class Mundipagg_Paymentmodule_Model_Standard extends Mage_Payment_Model_Method_A
         }
 
         $validation = true;
+        $amount = 0;
 
         foreach ($paymentData as $key => $payment) {
             $validation = Mage::getModel('paymentmodule/' . $key)
                 ->validatePaymentData($paymentData[$key]);
+
+            $amount += $this->getAmountFromPaymentData($paymentData[$key]);
+        }
+
+        if (!$this->validateOrderAmount($amount)) {
+            $helperLog = Mage::helper('paymentmodule/log');
+            $helperLog->info("Amount different of Order");
+            $helperLog->info("Order amount: " . $this->getGrandTotalPerOrder());
+            $helperLog->info("Amount Selected: " . $amount);
+            $validation = false;
         }
 
         if (!$validation) {
@@ -244,5 +255,27 @@ class Mundipagg_Paymentmodule_Model_Standard extends Mage_Payment_Model_Method_A
 
             return false;
         }
+    }
+
+    protected function getAmountFromPaymentData($paymentData)
+    {
+        $amount = 0;
+        foreach ($paymentData as $payment) {
+            $amount += (float) $payment['value'];
+        }
+
+        return $amount;
+    }
+
+    protected function validateOrderAmount($amount)
+    {
+        return $amount == $this->getGrandTotalPerOrder();
+    }
+
+    protected function getGrandTotalPerOrder()
+    {
+        return (int) $this->getCheckoutSession()
+                                ->getQuote()
+                                ->getGrandTotal();
     }
 }
