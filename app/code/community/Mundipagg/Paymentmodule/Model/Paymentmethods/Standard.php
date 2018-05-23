@@ -224,9 +224,7 @@ class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mundipagg_Pa
         $standard = Mage::getModel('paymentmodule/standard');
         $region = $standard->getRegionModel()->load($regionId);
 
-        // @fixme this method is not working!
-        return 'RJ';
-//        return $region->getCode();
+        return $region->getCode();
     }
 
     /**
