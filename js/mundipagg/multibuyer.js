@@ -11,7 +11,7 @@ function getState(obj) {
     .done(function (data){
         var html = buildStatesOptions(data);
         var id = "#" + elementId + "multi_buyer_state";
-        console.log(id);
+
         jQuery("#" + elementId + "multi_buyer_state").html(html);
         jQuery("#" + elementId + "multi_buyer_state").prop("disabled", false);
     })
