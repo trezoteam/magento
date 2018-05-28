@@ -2,6 +2,9 @@
 
 class Mundipagg_Paymentmodule_Model_Core_Order  extends Mundipagg_Paymentmodule_Model_Core_Base
 {
+
+    protected $infoInstance;
+
     //Do nothing
     protected function created($webHook)
     {
@@ -122,12 +125,13 @@ class Mundipagg_Paymentmodule_Model_Core_Order  extends Mundipagg_Paymentmodule_
 
     protected function applyInterestOnSession($interest)
     {
-        $addresses = $this->getPaymentHelper()->getQuote()->getAllAddresses();
+        $addresses = $this->getInfoInstance()->getQuote()->getAllAddresses();
+
         foreach ($addresses as $address) {
             $grandTotal = $address->getGrandTotal();
-            if ($grandTotal > 0) {
+            if ($grandTotal) {
                 $address->setMundipaggInterest($interest);
-                $address->setGrandTotal($grandTotal);
+                $address->setGrandTotal($grandTotal + $interest);
             }
         }
     }
@@ -146,4 +150,16 @@ class Mundipagg_Paymentmodule_Model_Core_Order  extends Mundipagg_Paymentmodule_
     {
         return Mage::helper('paymentmodule/paymentformat');
     }
+
+    public function setInfoInstance($info)
+    {
+        $this->infoInstance = $info;
+        return $this;
+    }
+
+    protected function getInfoInstance()
+    {
+        return $this->infoInstance;
+    }
+
 }

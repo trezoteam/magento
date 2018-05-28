@@ -47,9 +47,10 @@ class Mundipagg_Paymentmodule_Model_Standard extends Mage_Payment_Model_Method_A
 
         $helperPayment = $this->getHelperPayment();
         $paymentData = $helperPayment->getFormatedData($data->getData(), $paymentMethod);
-        $this->processOrderAmount($paymentData);
+
         try {
             $info = $this->getInfoInstance();
+            $this->processOrderAmount($paymentData, $info);
             $info->setAdditionalInformation(
                 'mundipagg_payment_method',
                 $paymentMethod
@@ -60,7 +61,6 @@ class Mundipagg_Paymentmodule_Model_Standard extends Mage_Payment_Model_Method_A
         } catch (Mage_Core_Exception $e) {
             // @todo log it and do something
         }
-
         return $this;
     }
 
@@ -69,9 +69,10 @@ class Mundipagg_Paymentmodule_Model_Standard extends Mage_Payment_Model_Method_A
         return Mage::helper('paymentmodule/paymentformat');
     }
 
-    protected function processOrderAmount(&$paymentData)
+    protected function processOrderAmount(&$paymentData, $info)
     {
         $orderAmountModel = Mage::getModel('paymentmodule/core_order');
+        $orderAmountModel->setInfoInstance($info);
         $orderAmountModel->processOrderAmountChanges($paymentData);
     }
 
