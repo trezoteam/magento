@@ -115,6 +115,7 @@ class Mundipagg_Paymentmodule_Model_Core_Order  extends Mundipagg_Paymentmodule_
                     $item['brand']
                 );
             $item['value'] = $item['value'] + $interest;
+            $item['interest'] = $interest;
             $totalInterest += $interest;
 
             return $item;
