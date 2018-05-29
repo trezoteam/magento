@@ -84,6 +84,7 @@ class Mundipagg_Paymentmodule_Model_Core_Order  extends Mundipagg_Paymentmodule_
     {
         $this->getPaymentHelper()->validate($paymentData);
         $this->applyInterest($paymentData);
+
         return $paymentData;
     }
 
@@ -119,7 +120,7 @@ class Mundipagg_Paymentmodule_Model_Core_Order  extends Mundipagg_Paymentmodule_
             $totalInterest += $interest;
 
             return $item;
-        },$data);
+        }, $data);
 
         return $totalInterest;
     }

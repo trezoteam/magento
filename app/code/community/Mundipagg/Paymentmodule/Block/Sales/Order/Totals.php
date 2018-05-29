@@ -15,13 +15,14 @@ class Mundipagg_Paymentmodule_Block_Sales_Order_Totals extends Mage_Sales_Block_
         $interest = $interestHelper->getTotalInterestFromOrder($this->getOrder());
 
         if ($interest > 0) {
-            $this->addTotalBefore(new Varien_Object(array
-            (
+            $this->addTotalBefore(new Varien_Object(
+                [
                     'code'  => 'mundipagg_interest',
                     'field' => 'interest',
                     'value' => $interest,
                     'label' => $this->__('Interest')
-            )), 'grand_total');
+                ]
+            ), 'grand_total');
         }
         
         return $this;

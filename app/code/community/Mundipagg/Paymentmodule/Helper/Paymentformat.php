@@ -2,7 +2,6 @@
 
 class Mundipagg_Paymentmodule_Helper_Paymentformat extends Mage_Core_Helper_Abstract
 {
-
     public function getFormatedData($data, $paymentMethod)
     {
         $result = array_filter(
@@ -58,9 +57,9 @@ class Mundipagg_Paymentmodule_Helper_Paymentformat extends Mage_Core_Helper_Abst
 
         if (!$this->validateOrderAmount($amount)) {
             $helperLog = Mage::helper('paymentmodule/log');
-            $helperLog->info("Amount different of Order");
+            $helperLog->info("Divergent order amount.");
             $helperLog->info("Order amount: " . $this->getGrandTotalPerOrder());
-            $helperLog->info("Amount Selected: " . $amount);
+            $helperLog->info("Selected amount: " . $amount);
             $validation = false;
         }
 
@@ -92,8 +91,7 @@ class Mundipagg_Paymentmodule_Helper_Paymentformat extends Mage_Core_Helper_Abst
 
     public function getGrandTotalPerOrder()
     {
-        return (int) $this->getQuote()
-                        ->getGrandTotal();
+        return (int) $this->getQuote()->getGrandTotal();
     }
 
     public function getQuote()
