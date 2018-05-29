@@ -6,6 +6,8 @@ var MundiPagg = {
 MundiPagg.initPaymentMethod = function (methodCode, orderTotal) {
     if (typeof this.paymentMethods[methodCode] === 'undefined') {
 
+        this.selectedInstallments = {};
+
         this.paymentMethods[methodCode] =
             new MundiPaggCheckoutHandler(methodCode);
         this.paymentMethods[methodCode].setSavePaymentInterceptor();
@@ -406,6 +408,10 @@ function getInstallments(baseUrl, brandName, argsObj) {
         }
         value = '?value=' + tmp;
     }
+
+    var selectedInstallment = jQuery("#" + argsObj.elementId + "_mundicheckout-creditCard-installments").val();
+    MundiPagg.selectedInstallments[argsObj.elementId] = selectedInstallment;
+
     apiRequest(
         baseUrl + '/mp-paymentmodule/creditcard/getinstallments/' + brandName + value,
         '',
@@ -426,6 +432,10 @@ function switchInstallments(data,argsObj) {
         html = fillInstallments(data);
 
         jQuery("#"+ argsObj.elementId + "_mundicheckout-creditCard-installments").html(html);
+
+        if (MundiPagg.selectedInstallments[argsObj.elementId] != "" ) {
+            jQuery("#"+ argsObj.elementId + "_mundicheckout-creditCard-installments").val(MundiPagg.selectedInstallments[argsObj.elementId]);
+        }
     } else {
         if(argsObj !== undefined && argsObj.elementId != undefined) {
             jQuery("#" + argsObj.elementId + '_disabled_brand_message').show();

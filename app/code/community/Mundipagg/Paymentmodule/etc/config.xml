@@ -32,6 +32,16 @@
             <paymentmodule>
                 <class>Mundipagg_Paymentmodule_Block</class>
             </paymentmodule>
+            <adminhtml>
+                <rewrite>
+                    <sales_order_totals>Mundipagg_Paymentmodule_Block_Adminhtml_Sales_Order_Totals</sales_order_totals>
+                </rewrite>
+            </adminhtml>
+            <sales>
+                <rewrite>
+                    <order_totals>Mundipagg_Paymentmodule_Block_Sales_Order_Totals</order_totals>
+                </rewrite>
+            </sales>
         </blocks>
 
         <fieldsets>
