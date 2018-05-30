@@ -450,13 +450,13 @@ function fillInstallments(data) {
     var of = MundiPagg.Locale.getTranslaction("of");
 
     for (i=0; i< data.length; i++) {
-        data[i].interestMessage = ' ' + withoutInterest;
+        data[i].interestMessage = ' ' + withoutInterest + " , Total: " + data[i].totalAmount ;
 
         if (data[i].interest > 0) {
             data[i].interestMessage =
                 " " + MundiPagg.Locale.getTranslaction("with") + " " +
                 data[i].interest +
-                interestPercent;
+                interestPercent + " , Total: " + data[i].totalAmount ;
         }
 
          html +=

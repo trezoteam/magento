@@ -10,4 +10,20 @@ class Mundipagg_Paymentmodule_Helper_Monetary extends Mage_Core_Helper_Abstract
     {
         return Mage::helper('core')->currency($amountInCents, true, false);
     }
+
+    public function formatDecimals($number) {
+        return number_format($number,2);
+    }
+
+    public function getCurrentCurrencySymbol()
+    {
+        return Mage::app()
+            ->getLocale()
+            ->currency(
+                Mage::app()
+                    ->getStore()
+                    ->getCurrentCurrencyCode()
+            )
+            ->getSymbol();
+    }
 }
