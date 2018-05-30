@@ -72,12 +72,18 @@ class Mundipagg_Paymentmodule_Helper_Installment extends Mage_Core_Helper_Abstra
     protected function getInstallmentsWithoutInterest($total, $max)
     {
         $installments = array();
+        $monetary = Mage::helper('paymentmodule/monetary');
+        $currencySymbol = $monetary->getCurrentCurrencySymbol();
 
-        for ($i = 0; $i < $max; $i++) {
+        for ($i = 1; $i <= $max; $i++) {
+            $totalAmount = $monetary->formatDecimals($total);
+            $amount = $monetary->formatDecimals($totalAmount / $i);
+
             $installments[] = array(
-                'amount' => $total / ($i + 1),
-                'times' => $i + 1,
-                'interest' => 0
+                'amount' =>  $currencySymbol . $amount,
+                'times' => $i,
+                'interest' => 0,
+                'totalAmount' => $currencySymbol . $totalAmount
             );
         }
 
@@ -87,12 +93,18 @@ class Mundipagg_Paymentmodule_Helper_Installment extends Mage_Core_Helper_Abstra
     protected function getInstallmentsWithInterest($total, $maxWithout, $max, $interest, $increment = 0)
     {
         $installments = array();
+        $monetary = Mage::helper('paymentmodule/monetary');
 
-        for ($i = $maxWithout + 1; $i < $max; $i++) {
+        for ($i = $maxWithout + 1; $i <= $max; $i++) {
+            $totalAmount = $monetary->formatDecimals($total * (1 + ($interest / 100)));
+            $amount = $monetary->formatDecimals($totalAmount / $i);
+            $currencySymbol = $monetary->getCurrentCurrencySymbol();
+
             $installments[] = array(
-                'amount' => $total / ($i + 1),
-                'times' => $i + 1,
-                'interest' => $interest
+                'amount' =>  $currencySymbol . $amount,
+                'times' => $i,
+                'interest' => $interest,
+                'totalAmount' => $currencySymbol . $totalAmount
             );
 
             $interest += $increment;
