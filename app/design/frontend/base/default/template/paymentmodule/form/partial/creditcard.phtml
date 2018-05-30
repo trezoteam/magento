@@ -203,7 +203,10 @@
         <br>
     </div>
 
-    <?php if ($isSavedCreditCardsEnabled) : ?>
+    <?php
+        $isLogged = $this->helper('customer')->isLoggedIn();
+        if ($isLogged && $isSavedCreditCardsEnabled) :
+    ?>
     <div class="input-box newCreditCard-<?php echo $elementId?>" <?php echo $new; ?>>
         <br>
         <input
