@@ -12,7 +12,7 @@ class Mundipagg_Paymentmodule_Helper_Monetary extends Mage_Core_Helper_Abstract
     }
 
     public function formatDecimals($number) {
-        return number_format($number,2);
+        return number_format($number, 2);
     }
 
     public function getCurrentCurrencySymbol()
