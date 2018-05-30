@@ -78,7 +78,7 @@ class Mundipagg_Paymentmodule_Helper_Paymentformat extends Mage_Core_Helper_Abst
     {
         $amount = 0;
         foreach ($paymentData as $payment) {
-            $amount += (float) $payment['value'];
+            $amount += (float) str_replace(",", ".", $payment['value']);
         }
 
         return $amount;
@@ -91,7 +91,7 @@ class Mundipagg_Paymentmodule_Helper_Paymentformat extends Mage_Core_Helper_Abst
 
     public function getGrandTotalPerOrder()
     {
-        return (int) $this->getQuote()->getGrandTotal();
+        return (float) $this->getQuote()->getGrandTotal();
     }
 
     public function getQuote()
