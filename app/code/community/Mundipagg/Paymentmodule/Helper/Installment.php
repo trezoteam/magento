@@ -76,7 +76,6 @@ class Mundipagg_Paymentmodule_Helper_Installment extends Mage_Core_Helper_Abstra
         $currencySymbol = $monetary->getCurrentCurrencySymbol();
 
         for ($i = 1; $i <= $max; $i++) {
-
             $totalAmount = $monetary->formatDecimals($total);
             $amount = $monetary->formatDecimals($totalAmount / $i);
 
@@ -97,7 +96,6 @@ class Mundipagg_Paymentmodule_Helper_Installment extends Mage_Core_Helper_Abstra
         $monetary = Mage::helper('paymentmodule/monetary');
 
         for ($i = $maxWithout + 1; $i <= $max; $i++) {
-
             $totalAmount = $monetary->formatDecimals($total * (1+ ($interest / 100)));
             $amount = $monetary->formatDecimals($totalAmount / $i,2);
             $currencySymbol = $monetary->getCurrentCurrencySymbol();
