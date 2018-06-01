@@ -99,7 +99,23 @@ class Mundipagg_Paymentmodule_Model_Standard extends Mage_Payment_Model_Method_A
 
     public function getCustomerSession()
     {
-        return Mage::getModel('customer/session');
+
+        $orderId = Mage::getModel('checkout/session')->getLastOrderId();
+        $order = Mage::getModel("sales/order")->load($orderId);
+
+        $customer = new Varien_Object();
+
+        $name = $order->getCustomerFirstname();
+        $name .= ' ' .  $order->getCustomerMiddlename();
+        $name .= ' ' .  $order->getCustomerLastname();
+        $customer->setName($name);
+        $customer->setEmail($order->getCustomerEmail());
+        $customer->setId(null);
+        $customer->setDocument($order->getCustomerTaxvat());
+        $customer->setCustomer($customer);
+
+        return $customer;
+        //return Mage::getModel('customer/session');
     }
 
     public function getRegionModel()

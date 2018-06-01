@@ -125,7 +125,7 @@ class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mundipagg_Pa
 
         $information->setName($customer->getName());
         $information->setEmail($customer->getEmail());
-        $information->setDocument(null);
+        $information->setDocument($customer->getDocument());
         // @todo where does it should come from?
         $information->setType('individual');
         $information->setAddress($this->getCustomerAddressInformation());
@@ -144,27 +144,7 @@ class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mundipagg_Pa
      */
     protected function getCustomerAddressInformation()
     {
-        $standard = Mage::getModel('paymentmodule/standard');
-        $checkoutSession = $standard->getCheckoutSession();
-
-        $orderId = $checkoutSession->getLastOrderId();
-        $order = $standard->getOrderByOrderId($orderId);
-        $billingAddress = $order->getBillingAddress();
-        $regionId = $billingAddress->getRegionId();
-        $address = new Varien_Object();
-
-        // @fixme I'm using this getStreet()[0] here but maybe there's a better way...
-        $address->setStreet($billingAddress->getStreet()[0]);
-        $address->setNumber($billingAddress->getStreet()[1]);
-        $address->setComplement($billingAddress->getStreet()[2]);
-        $address->setNeighborhood($billingAddress->getStreet()[3]);
-        $address->setCity($billingAddress->getCity());
-        $address->setState($this->getStateByRegionId($regionId));
-        $address->setCountry($billingAddress->getCountryId());
-        $address->setZipCode($billingAddress->getPostcode());
-        $address->setMetadata(null);
-
-        return $address;
+        return Mage::helper('paymentmodule/address')->getCustomerAddressInformation();
     }
 
     protected function getShippingInformation($order = null)

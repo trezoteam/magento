@@ -80,8 +80,8 @@ class Mundipagg_Paymentmodule_Model_Api_Creditcard extends Mundipagg_Paymentmodu
     protected function getCustomerFromSession()
     {
         $customerRequest = new CreateCustomerRequest();
-        $session = Mage::getSingleton('customer/session');
-        $customer = $session->getCustomer();
+        $standard = Mage::getModel('paymentmodule/standard');
+        $customer = $standard->getCustomerSession();
 
         $customerRequest->name = $customer->getName();
         $customerRequest->address = $this->getAddressFromSession();
@@ -97,19 +97,18 @@ class Mundipagg_Paymentmodule_Model_Api_Creditcard extends Mundipagg_Paymentmodu
      */
     protected function getAddressFromSession()
     {
-        $session = Mage::getSingleton('customer/session');
-        $customer = $session->getCustomer();
-        $address = $customer->getPrimaryBillingAddress();
+        $address = Mage::helper('paymentmodule/address')->getCustomerAddressInformation();
+
         $addressRequest = new CreateAddressRequest();
 
-        $addressRequest->street = $address->getStreet()[0];
-        $addressRequest->number = $address->getStreet()[1];
-        $addressRequest->complement = $address->getStreet()[2];
-        $addressRequest->neighborhood = $address->getStreet()[3];
+        $addressRequest->street = $address->getStreet();
+        $addressRequest->number = $address->getNumber();
+        $addressRequest->complement = $address->getComplement();
+        $addressRequest->neighborhood = $address->getNeighborhood();
         $addressRequest->city = $address->getCity();
-        $addressRequest->state = $address->getRegion();
-        $addressRequest->country = $address->getCountryId();
-        $addressRequest->zipCode = $address->getPostcode();
+        $addressRequest->state = $address->getState();
+        $addressRequest->country = $address->getCountry();
+        $addressRequest->zipCode = $address->getZipCode();
 
         return $addressRequest;
     }
