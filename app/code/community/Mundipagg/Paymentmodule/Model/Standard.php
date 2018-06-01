@@ -115,7 +115,6 @@ class Mundipagg_Paymentmodule_Model_Standard extends Mage_Payment_Model_Method_A
         $customer->setCustomer($customer);
 
         return $customer;
-        //return Mage::getModel('customer/session');
     }
 
     public function getRegionModel()
