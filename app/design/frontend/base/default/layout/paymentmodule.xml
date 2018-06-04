@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <layout version="0.1.0">
+
     <mundipagg_checkout_handle>
         <reference name="head">
             <action method="addItem">
@@ -16,7 +17,15 @@
                 </action>
                 <action method="addItem">
                     <type>js</type>
+                    <name>mundipagg/AbstractCheckoutModuleHandler.js</name>
+                </action>
+                <action method="addItem">
+                    <type>js</type>
                     <name>mundipagg/formoperations.js</name>
+                </action>
+                <action method="addItem">
+                    <type>js</type>
+                    <name>mundipagg/multibuyer.js</name>
                 </action>
             </block>
         </reference>
@@ -24,15 +33,31 @@
 
     <checkout_onepage_index translate="label">
         <update handle="mundipagg_checkout_handle"/>
+        <reference name="before_body_end">
+            <block type="page/html_head" name="mp-paymentmodule-onepage-handler" as="mp-paymentmodule-onepage-handler" after="-" template="paymentmodule/extras.phtml">
+                <action method="addItem">
+                    <type>js</type>
+                    <name>mundipagg/OnepageCheckoutModuleHandler.js</name>
+                </action>
+            </block>
+        </reference>
     </checkout_onepage_index>
+
+    <onestepcheckout_index_index translate="label">
+        <update handle="mundipagg_checkout_handle"/>
+        <reference name="before_body_end">
+            <block type="page/html_head" name="mp-paymentmodule-osc-handler" as="mp-paymentmodule-osc-handler" after="-" template="paymentmodule/extras.phtml">
+                <action method="addItem">
+                    <type>js</type>
+                    <name>mundipagg/OSCCheckoutModuleHandler.js</name>
+                </action>
+            </block>
+        </reference>
+    </onestepcheckout_index_index>
 
     <onepagecheckout_index_index translate="label">
         <update handle="mundipagg_checkout_handle"/>
     </onepagecheckout_index_index>
-
-    <onestepcheckout_index_index translate="label">
-        <update handle="mundipagg_checkout_handle"/>
-    </onestepcheckout_index_index>
 
     <opc_index_index translate="label">
         <update handle="mundipagg_checkout_handle"/>
@@ -47,7 +72,7 @@
         <reference name="customer_account_navigation">
             <action method="addLink" translate="label" module="paymentmodule">
                 <name>paymentmodule</name>
-                <path>mundipagg/wallet/</path>
+                <path>mp-paymentmodule/wallet/</path>
                 <label>My cards</label>
             </action>
         </reference>

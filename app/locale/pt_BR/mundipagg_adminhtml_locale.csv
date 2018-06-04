@@ -1,8 +1,12 @@
 "##### Genérico","#############################################################"
 "Enabled","Habilitado"
 "Payment title","Título do método de pagamento"
-"Yes","Sim",
+"Yes","Sim"
 "No","Não"
+"Charges", "Cobranças"
+"Charge", "Cobrança"
+"Payment Method", "Método de Pagamento"
+"Amount", "Valor"
 
 "##### Configuração básica do módulo","########################################"
 "Module Basic Configuration","Configuração básica do módulo"

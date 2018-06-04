@@ -22,16 +22,6 @@ class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mundipagg_Pa
 
         $response = $apiOrder->createPayment($paymentInfo);
 
-        if (gettype($response) !== 'object' || get_class($response) != GetOrderResponse::class) {
-            $helperLog = Mage::helper('paymentmodule/log');
-            $orderId = $this->lastRealOrderId;
-            $helperLog->error("Invalid response for order #$orderId: ");
-            $helperLog->error(json_encode($response,JSON_PRETTY_PRINT));
-
-            $response = new \stdClass();
-            $response->status = 'failed';
-        }
-
         $this->handleOrderResponse($response);
     }
 
@@ -41,68 +31,80 @@ class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mundipagg_Pa
      *
      * @param $response
      * @param bool $redirect
-     * @throws Varien_Exception
      */
     protected function handleOrderResponse($response)
     {
-        //@todo get boleto and the rest of success page data
-        $data = [];
+        $redirectTo = Mage::helper('paymentmodule/redirect');
 
-        $responseRoute = 'checkout/onepage/failure';
-        if ($response->status !== 'failed') {
-            $moduleModelOrder = Mage::getModel('paymentmodule/core_order');
-            $moduleModelCharge = Mage::getModel('paymentmodule/core_charge');
+        if (
+            gettype($response) !== 'object' ||
+            get_class($response) != GetOrderResponse::class
+        ) {
+            $this->handleOrderFailure($response);
+            $redirectTo->orderFailure();
+            return;
+        }
 
-            $savedCreditCard = Mage::helper('paymentmodule/savedcreditcard');
-            $savedCreditCard->saveCards($response);
+        $this->handleOrderSuccess($response);
+        $redirectTo->orderSuccess();
+    }
 
-            //get additional information about boleto payments
-            $standard = Mage::getModel('paymentmodule/standard');
-            $orderId = $response->code;
-            $additionalInformation = $standard->getAdditionalInformationForOrder($orderId);
-            $paymentMethod = $additionalInformation['mundipagg_payment_method'];
-            $paymentInfo = $additionalInformation[$paymentMethod];
-            $boletosInfo = [];
-            if (isset($paymentInfo['boleto'])) {
-                $boletosInfo = $paymentInfo['boleto'];
-            }
+    private function handleOrderFailure($response)
+    {
+        $helperLog = Mage::helper('paymentmodule/log');
+        $orderId = $this->lastRealOrderId;
+        $helperLog->error("Invalid response for order #$orderId: ");
+        $helperLog->error(json_encode($response,JSON_PRETTY_PRINT));
+    }
 
-            //processing charges;
-            foreach ($response->charges as $chargeIndex => $charge) {
-                $charge->code = $response->code;
+    private function handleOrderSuccess($response)
+    {
+        $chargeHelper = Mage::helper('paymentmodule/charge');
 
-                if ($charge->status == 'paid') {
-                    $charge->paid_amount = $charge->amount;
-                    $moduleModelCharge->paid($charge);
-                    $moduleModelOrder->paid($response);
-                }
+        $savedCreditCard = Mage::helper('paymentmodule/savedcreditcard');
+        $savedCreditCard->saveCards($response);
 
-                //search for boleto link
-                if($charge->paymentMethod === 'boleto') {
-                    $boletoUrl = $charge->lastTransaction->url;
-                    //add to additional information boleto link.
-                    foreach($boletosInfo as &$boletoInfo){
-                        if(!isset($boletoInfo['url'])) {
-                            $boletoInfo['url'] =  $boletoUrl;
-                            break;
-                        }
+        //get additional information about boleto payments
+        $standard = Mage::getModel('paymentmodule/standard');
+        $orderId = $response->code;
+        $additionalInformation = $standard->getAdditionalInformationForOrder($orderId);
+        $paymentMethod = $additionalInformation['mundipagg_payment_method'];
+        $paymentInfo = $additionalInformation[$paymentMethod];
+        $boletosInfo = [];
+
+        if (isset($paymentInfo['boleto'])) {
+            $boletosInfo = $paymentInfo['boleto'];
+        }
+
+        /**
+         * @todo fix charge handle
+         */
+        //processing charges;
+        foreach ($response->charges as $chargeIndex => $charge) {
+            $charge->code = $response->code;
+
+            $chargeHelper->updateStatus($charge, $charge->status);
+
+            //search for boleto link
+            if ($charge->paymentMethod === 'boleto') {
+                $boletoUrl = $charge->lastTransaction->url;
+                //add to additional information boleto link.
+                foreach($boletosInfo as &$boletoInfo){
+                    if(!isset($boletoInfo['url'])) {
+                        $boletoInfo['url'] =  $boletoUrl;
+                        break;
                     }
                 }
             }
-
-            if(count($boletosInfo) > 0) {
-                //update additional information with boleto links.
-                $additionalInformation[$paymentMethod]['boleto'] = $boletosInfo;
-                $payment = $standard->getOrderByIncrementOrderId($orderId)->getPayment();
-                $payment->setAdditionalInformation($paymentMethod, $additionalInformation[$paymentMethod]);
-                $payment->save();
-            }
-
-            $responseRoute = 'checkout/onepage/success';
         }
-        Mage::app()->getFrontController()
-            ->getResponse()
-            ->setRedirect(Mage::getUrl($responseRoute, $data));
+
+        if(count($boletosInfo) > 0) {
+            //update additional information with boleto links.
+            $additionalInformation[$paymentMethod]['boleto'] = $boletosInfo;
+            $payment = $standard->getOrderByIncrementOrderId($orderId)->getPayment();
+            $payment->setAdditionalInformation($paymentMethod, $additionalInformation[$paymentMethod]);
+            $payment->save();
+        }
     }
 
     /**
@@ -123,7 +125,7 @@ class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mundipagg_Pa
 
         $information->setName($customer->getName());
         $information->setEmail($customer->getEmail());
-        $information->setDocument(null);
+        $information->setDocument($customer->getDocument());
         // @todo where does it should come from?
         $information->setType('individual');
         $information->setAddress($this->getCustomerAddressInformation());
@@ -142,27 +144,7 @@ class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mundipagg_Pa
      */
     protected function getCustomerAddressInformation()
     {
-        $standard = Mage::getModel('paymentmodule/standard');
-        $checkoutSession = $standard->getCheckoutSession();
-
-        $orderId = $checkoutSession->getLastOrderId();
-        $order = $standard->getOrderByOrderId($orderId);
-        $billingAddress = $order->getBillingAddress();
-        $regionId = $billingAddress->getRegionId();
-        $address = new Varien_Object();
-
-        // @fixme I'm using this getStreet()[0] here but maybe there's a better way...
-        $address->setStreet($billingAddress->getStreet()[0]);
-        $address->setNumber($billingAddress->getStreet()[1]);
-        $address->setComplement($billingAddress->getStreet()[2]);
-        $address->setNeighborhood($billingAddress->getStreet()[3]);
-        $address->setCity($billingAddress->getCity());
-        $address->setState($this->getStateByRegionId($regionId));
-        $address->setCountry($billingAddress->getCountryId());
-        $address->setZipCode($billingAddress->getPostcode());
-        $address->setMetadata(null);
-
-        return $address;
+        return Mage::helper('paymentmodule/address')->getCustomerAddressInformation();
     }
 
     protected function getShippingInformation($order = null)
@@ -185,46 +167,8 @@ class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mundipagg_Pa
     }
 
     protected function getShippingAddressInformation($order = null) {
-        // @todo This method is like self::getCustomerAddressInformation. Refact it to one method.
-        if (!$order) {
-            $standard = Mage::getModel('paymentmodule/standard');
-            $checkoutSession = $standard->getCheckoutSession();
-            $orderId = $checkoutSession->getLastOrderId();
-            $order = $standard->getOrderByOrderId($orderId);
-        }
-
-        $shippingAddress = $order->getShippingAddress();
-        $regionId = $shippingAddress->getRegionId();
-        $address = new Varien_Object();
-
-        // @fixme I'm using this getStreet()[0] here but maybe there's a better way...
-        $address->setStreet($shippingAddress->getStreet()[0]);
-        $address->setNumber($shippingAddress->getStreet()[1]);
-        $address->setComplement($shippingAddress->getStreet()[2]);
-        $address->setNeighborhood($shippingAddress->getStreet()[3]);
-        $address->setCity($shippingAddress->getCity());
-        $address->setState($this->getStateByRegionId($regionId));
-        $address->setCountry($shippingAddress->getCountryId());
-        $address->setZipCode($shippingAddress->getPostcode());
-        $address->setMetadata(null);
-
-        return $address;
-    }
-
-    /**
-     * Return state code
-     * @example $this->getStateByRegionId(502) //return "RJ"
-     * @param int $regionId
-     * @return string
-     */
-    protected function getStateByRegionId($regionId)
-    {
-        $standard = Mage::getModel('paymentmodule/standard');
-        $region = $standard->getRegionModel()->load($regionId);
-
-        // @fixme this method is not working!
-        return 'RJ';
-//        return $region->getCode();
+        return Mage::helper('paymentmodule/address')
+            ->getShippingAddressInformation($order);
     }
 
     /**

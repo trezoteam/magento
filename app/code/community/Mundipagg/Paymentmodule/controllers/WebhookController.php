@@ -38,8 +38,10 @@ class Mundipagg_Paymentmodule_WebhookController extends Mage_Core_Controller_Fro
                     $this->webhookChargeUpdate($body->data, $webhookAction);
                     break;
                 default:
-                    throw new \Exception('Errado');
+                    throw new \Exception('Invalid webhook');
             }
+        }elseif (Mage::app()->getRequest()->isGet()) {
+            echo 'Webhook URL';
         }
     }
 

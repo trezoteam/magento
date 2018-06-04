@@ -2,7 +2,6 @@
 
 class Mundipagg_Paymentmodule_Model_Standard extends Mage_Payment_Model_Method_Abstract
 {
-
     protected $_allowCurrencyCode = [];
 
     public function __construct()
@@ -45,47 +44,36 @@ class Mundipagg_Paymentmodule_Model_Standard extends Mage_Payment_Model_Method_A
     public function assignData($data)
     {
         $paymentMethod = $data->getMethod();
-        $paymentData = $this->getPaymentData($data->getData(), $paymentMethod);
-        $this->validate($paymentData);
+
+        $helperPayment = $this->getHelperPayment();
+        $paymentData = $helperPayment->getFormatedData($data->getData(), $paymentMethod);
+
         try {
             $info = $this->getInfoInstance();
+            $this->processOrderAmount($paymentData, $info);
             $info->setAdditionalInformation(
                 'mundipagg_payment_method',
                 $paymentMethod
             );
+
             $info->setAdditionalInformation($paymentMethod, $paymentData);
+            $info->save();
         } catch (Mage_Core_Exception $e) {
             // @todo log it and do something
         }
-
         return $this;
     }
 
-    protected function getPaymentData($data, $paymentMethod)
+    public function getHelperPayment()
     {
-        $result = array_filter(
-            $data,
-            function ($k) use ($paymentMethod) {
-                return preg_match('/^' . $paymentMethod . '/', $k);
-            },
-            ARRAY_FILTER_USE_KEY
-        );
-
-        return $this->formatPaymentData($result, $paymentMethod);
+        return Mage::helper('paymentmodule/paymentformat');
     }
 
-    protected function formatPaymentData($data, $paymentMethod)
+    protected function processOrderAmount(&$paymentData, $info)
     {
-        $result = [];
-
-        foreach ($data as $key => $value) {
-            $keys = explode($paymentMethod .'_', $key)[1];
-            $keys = explode('_', $keys);
-
-            $result[$keys[0]][$keys[1]][$keys[2]] = $value;
-        }
-
-        return $result;
+        $orderAmountModel = Mage::getModel('paymentmodule/core_order');
+        $orderAmountModel->setInfoInstance($info);
+        $orderAmountModel->processOrderAmountChanges($paymentData);
     }
 
     /**
@@ -111,7 +99,22 @@ class Mundipagg_Paymentmodule_Model_Standard extends Mage_Payment_Model_Method_A
 
     public function getCustomerSession()
     {
-        return Mage::getModel('customer/session');
+
+        $orderId = Mage::getModel('checkout/session')->getLastOrderId();
+        $order = Mage::getModel("sales/order")->load($orderId);
+
+        $customer = new Varien_Object();
+
+        $name = $order->getCustomerFirstname();
+        $name .= ' ' .  $order->getCustomerMiddlename();
+        $name .= ' ' .  $order->getCustomerLastname();
+        $customer->setName($name);
+        $customer->setEmail($order->getCustomerEmail());
+        $customer->setId(null);
+        $customer->setDocument($order->getCustomerTaxvat());
+        $customer->setCustomer($customer);
+
+        return $customer;
     }
 
     public function getRegionModel()
@@ -159,6 +162,8 @@ class Mundipagg_Paymentmodule_Model_Standard extends Mage_Payment_Model_Method_A
     {
         $order   = Mage::getModel('sales/order')->loadByIncrementId($orderId);
         $payment = $order->getPayment();
+        $moduleCharges =
+            $payment->getAdditionalInformation('mundipagg_payment_module_charges');
 
         foreach ($charges as $charge) {
             $newInfo[$charge->id] =
@@ -166,12 +171,28 @@ class Mundipagg_Paymentmodule_Model_Standard extends Mage_Payment_Model_Method_A
         }
 
         if (!empty($newInfo)) {
+            $this->addOrUpdateCharge($payment, $newInfo, $moduleCharges);
+        }
+    }
+
+    protected function addOrUpdateCharge($payment, $info, $charges)
+    {
+        if (empty($charges)) {
             $payment->setAdditionalInformation(
                 'mundipagg_payment_module_charges',
-                $newInfo
+                $info
             );
-            $payment->save();
+            return $payment->save();
         }
+
+        $chargeId = key($info);
+        $charges[$chargeId] = $info[$chargeId];
+
+        $payment->setAdditionalInformation(
+            'mundipagg_payment_module_charges',
+            $charges
+        );
+        return $payment->save();
     }
 
     /**
@@ -199,33 +220,5 @@ class Mundipagg_Paymentmodule_Model_Standard extends Mage_Payment_Model_Method_A
     public function getOrderFromCheckoutSession()
     {
         return Mage::getSingleton('checkout/session');
-    }
-
-    /**
-     * Prevent not allowed input data
-     * @return $this|Mage_Payment_Model_Abstract
-     * @throws Mage_Core_Exception
-     * @todo Improve this method
-     */
-    public function validate($paymentData = null)
-    {
-        if (!$paymentData) {
-            return $this;
-        }
-
-        $validation = true;
-
-        foreach ($paymentData as $key => $payment) {
-            $validation = Mage::getModel('paymentmodule/' . $key)
-                ->validatePaymentData($paymentData[$key]);
-        }
-
-        if (!$validation) {
-            $errorMsg = Mage::helper('paymentmodule')
-                ->__('Invalid payment data');
-            Mage::throwException($errorMsg);
-
-            return false;
-        }
     }
 }
