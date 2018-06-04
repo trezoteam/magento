@@ -11,6 +11,10 @@ use MundiAPILib\MundiAPIClient;
 
 class Mundipagg_Paymentmodule_Model_Api_Order
 {
+    /**
+     * @param Varien_Object $paymentInformation
+     * @return mixed|string
+     */
     public function createPayment(Varien_Object $paymentInformation)
     {
         $paymentMethod = $paymentInformation->getPaymentInfo();

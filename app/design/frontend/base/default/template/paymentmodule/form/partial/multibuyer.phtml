@@ -2,6 +2,7 @@
     $_code = $this->getCode();
     $elementIndex = $this->getParentIndex();
     $elementId = $_code . "_".$this->getParentElement() ."_". $elementIndex;
+    $countryCollection = $this->getCountryCollection();
 ?>
 
 <div class="input-box">
@@ -110,21 +111,33 @@
 
     <div class="input-box">
         <label><?php echo $this->__('State'); ?> <span class="required"></span></label><br/>
-        <input
+        <select
                 type="text"
                 id="<?php echo "$elementId"?>_multi_buyer_state"
                 name="payment[<?php echo "$elementId"?>_multiBuyerState]"
+                disabled="true"
                 class="required-entry"
-                value="">
+                >
+            <option value=""><?php echo $this->__('Select an Country'); ?></option>
+        </select>
     </div>
 
     <div class="input-box">
         <label><?php echo $this->__('Country'); ?> <span class="required"></span></label><br/>
-        <input
-                type="text"
+        <select
                 id="<?php echo "$elementId"?>_multi_buyer_country"
                 name="payment[<?php echo "$elementId"?>_multiBuyerCountry]"
                 class="required-entry"
-                value="">
+                onChange="getState(this)"
+                >
+                <option value=""><?php echo $this->__('Select'); ?></option>
+            <?php
+                foreach($countryCollection as $country) :
+            ?>
+                <option value="<?php echo $country['country_id'] ?>" ><?php echo $country['name'] ?></option>
+            <?php
+                endforeach;
+            ?>
+        </select>
     </div>
 </div>
