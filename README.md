@@ -16,7 +16,7 @@ Refer to [module documentation](https://github.com/mundipagg/magento/wiki)
 This module supports Magento version 1.9.3+
 
 # Dependencies
-* ```PHP``` Version 7.0+
+* ```PHP``` Version 5.6+
 
 # Install
 There are two different ways to install our module
