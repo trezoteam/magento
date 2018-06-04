@@ -167,44 +167,8 @@ class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mundipagg_Pa
     }
 
     protected function getShippingAddressInformation($order = null) {
-        // @todo This method is like self::getCustomerAddressInformation. Refact it to one method.
-        if (!$order) {
-            $standard = Mage::getModel('paymentmodule/standard');
-            $checkoutSession = $standard->getCheckoutSession();
-            $orderId = $checkoutSession->getLastOrderId();
-            $order = $standard->getOrderByOrderId($orderId);
-        }
-
-        $shippingAddress = $order->getShippingAddress();
-        $regionId = $shippingAddress->getRegionId();
-        $address = new Varien_Object();
-
-        // @fixme I'm using this getStreet()[0] here but maybe there's a better way...
-        $address->setStreet($shippingAddress->getStreet()[0]);
-        $address->setNumber($shippingAddress->getStreet()[1]);
-        $address->setComplement($shippingAddress->getStreet()[2]);
-        $address->setNeighborhood($shippingAddress->getStreet()[3]);
-        $address->setCity($shippingAddress->getCity());
-        $address->setState($this->getStateByRegionId($regionId));
-        $address->setCountry($shippingAddress->getCountryId());
-        $address->setZipCode($shippingAddress->getPostcode());
-        $address->setMetadata(null);
-
-        return $address;
-    }
-
-    /**
-     * Return state code
-     * @example $this->getStateByRegionId(502) //return "RJ"
-     * @param int $regionId
-     * @return string
-     */
-    protected function getStateByRegionId($regionId)
-    {
-        $standard = Mage::getModel('paymentmodule/standard');
-        $region = $standard->getRegionModel()->load($regionId);
-
-        return $region->getCode();
+        return Mage::helper('paymentmodule/address')
+            ->getShippingAddressInformation($order);
     }
 
     /**
