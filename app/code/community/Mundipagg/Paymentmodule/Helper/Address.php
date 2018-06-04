@@ -13,11 +13,17 @@ class Mundipagg_Paymentmodule_Helper_Address extends Mage_Core_Helper_Abstract
         $regionId = $billingAddress->getRegionId();
         $address = new Varien_Object();
 
-        // @fixme I'm using this getStreet()[0] here but maybe there's a better way...
-        $address->setStreet($billingAddress->getStreet()[0]);
-        $address->setNumber($billingAddress->getStreet()[1]);
-        $address->setComplement($billingAddress->getStreet()[2]);
-        $address->setNeighborhood($billingAddress->getStreet()[3]);
+        list(
+            $customerStreet,
+            $customerNumber,
+            $customerComplement,
+            $customerNeighborhood
+            ) = $billingAddress->getStreet();
+
+        $address->setStreet($customerStreet);
+        $address->setNumber($customerNumber);
+        $address->setComplement($customerComplement);
+        $address->setNeighborhood($customerNeighborhood);
         $address->setCity($billingAddress->getCity());
         $address->setState($this->getStateByRegionId($regionId));
         $address->setCountry($billingAddress->getCountryId());
