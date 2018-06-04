@@ -19,7 +19,7 @@ class Mundipagg_Paymentmodule_Model_Observer extends Varien_Event_Observer
         );
 
         $checkoutSuccessBlock =
-            Mage::app()->getLayout()->getBlock('checkout.success');
+            Mage::app()->getLayout()->getBlock('head');
 
         if ($checkoutSuccessBlock) {
             $checkoutSuccessBlock->append($block);
