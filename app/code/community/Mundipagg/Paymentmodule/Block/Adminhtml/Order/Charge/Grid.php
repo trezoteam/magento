@@ -54,7 +54,11 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Order_Charge_Grid extends Mage_Adm
 
         return $collection;
     }
- 
+
+    /**
+     * @return Mage_Adminhtml_Block_Widget_Grid
+     * @throws Exception
+     */
     protected function _prepareColumns()
     {
         $helper = Mage::helper('paymentmodule/order');
@@ -89,8 +93,7 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Order_Charge_Grid extends Mage_Adm
             'filter' => false,
             'sortable'  => false
         ]);
-/*
-        Descomentar esse trecho para adicionar os botões de ações
+
         $this->addColumn('action_capture', [
             'header' => $helper->__(''),
             'width'     => '5%',
@@ -124,7 +127,7 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Order_Charge_Grid extends Mage_Adm
             'sortable'  => false,
             'is_system' => true,
         ]);
- */
+
         return parent::_prepareColumns();
     }
  
