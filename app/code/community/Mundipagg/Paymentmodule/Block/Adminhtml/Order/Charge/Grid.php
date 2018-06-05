@@ -102,8 +102,9 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Order_Charge_Grid extends Mage_Adm
             'actions'   => [
                 [
                     'caption' => Mage::helper('sales')->__('Capturar'),
-                    'onclick' => 'javascript();',
-                    'field'   => 'id'
+                    'onclick' => 'javascript:showChargeDialog("Capture",this);',
+                    'field'   => 'id',
+                    'class'   => 'form-button'
                 ]
             ],
             'filter'    => false,
@@ -119,8 +120,9 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Order_Charge_Grid extends Mage_Adm
             'actions'   => [
                 [
                     'caption' => Mage::helper('sales')->__('Cancelar'),
-                    'onclick' => 'javascript();',
-                    'field'   => 'id'
+                    'onclick' => 'javascript:showChargeDialog("Cancel",this);',
+                    'field'   => 'id',
+                    'class'   => 'form-button'
                 ]
             ],
             'filter'    => false,

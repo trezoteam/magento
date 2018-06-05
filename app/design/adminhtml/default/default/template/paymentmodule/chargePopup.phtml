@@ -1,0 +1,60 @@
+<div id="message-popup-window-mask" style="height:100%; display:none"></div>
+<div id="charge-dialog" class="message-popup show">
+    <div class="message-popup-head">
+        <h2><span class="charge-operation"></span> Charge</h2>
+    </div>
+    <div class="message-popup-content">
+        <div class="message">
+            <div>
+                <h3>Charge Info:</h3>
+                <ul>
+                    <li>Id: <strong><span id="charge-id"></span></strong></li>
+                    <li>Value: <strong><span id="charge-stringValue"></span></strong></li>
+                    <li>Payment Method: <strong><span id="charge-typeName"></span></strong></li>
+                </ul>
+            </div>
+            <br />
+            <form>
+                <fieldset>
+                    <div>How would you like to <strong><span class="charge-operation"></span></strong> this charge?</div>
+                    <br />
+                    <div>
+                        <label>
+                            <input type="radio" name="total_or_partial" class="total_or_partial" checked="" value="total">
+                            <span>Total <span class="charge-operation"></span></span>
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            <input type="radio" name="total_or_partial" class="total_or_partial" value="partial">
+                            <span>Partial <span class="charge-operation"></span></span>
+                        </label>
+                    </div>
+                    <div id="charge-operation-value-wrapper" style='display:none'>
+                        <br/>
+                        <div>
+                            <label>
+                                <span>Value:</span>
+                                <input type="text" placeholder="Insert the value here" name="charge-operation-value" id="charge-operation-value">
+                            </label>
+                        </div>
+                    </div>
+                </fieldset>
+                <br />
+                <hr />
+                <fieldset>
+                    <div>To continue this operation, please enter your password:</div>
+                    <div>
+                        <input type="password" name="charge-operation-credential" id="charge-operation-credential">
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+        <div class="read-more button-set">
+            <button class="form-button"><span class="charge-operation"></span> Charge</button>
+            <button class="form-button back" onclick="hideChargeDialog();">
+                Close
+            </button>
+        </div>
+    </div>
+</div>

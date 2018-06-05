@@ -8,6 +8,8 @@
                     <name>mundipagg/ChargeController.js</name>
                 </action>
             </block>
+            <block type="paymentmodule/adminhtml_order_charge_popup" name="mp-test" as="mp-test" after="-"></block>
         </reference>
+
     </adminhtml_sales_order_view>
 </layout>
