@@ -2,6 +2,43 @@ var dialogIsInited = false;
 var currentCharge = {};
 var currentOrderId = '';
 
+
+
+var confirmChargeOperation = function() {
+
+    currentCharge.credential = document.getElementById('charge-operation-credential').value;
+    currentCharge.operationValue =  document.getElementById('charge-operation-value').value;
+
+    apiRequest('/mp-paymentmodule/charge',currentCharge,function(data){
+        if(data !== false) {
+            console.log(data);
+        }
+    },'POST');
+};
+
+function apiRequest(url, data, callback, method, json,callbackArgsObj) {
+    var xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+    xhr.open(method, url);
+
+    if (json) {
+        xhr.setRequestHeader("content-type", "application/json");
+    }
+
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState > 3 && xhr.status == 200) {
+            callback(JSON.parse(xhr.responseText),callbackArgsObj);
+        }else{
+            callback(false);
+        }
+    };
+
+    xhr.send(JSON.stringify(data));
+
+    return xhr;
+}
+
+
+
 var showChargeDialog = function(operation,element) {
     if (!dialogIsInited) {
         dialogIsInited = true;
@@ -60,6 +97,8 @@ var getChargeDataFromElement =  function(element) {
 
 var resetChargeDialog = function (data) {
     currentCharge = data.charge;
+    currentCharge.operation = data.operation;
+
     document.getElementById('charge-operation-value').value = '';
     document.getElementById('charge-operation-credential').value = '';
 
@@ -103,4 +142,5 @@ var checkTotalOrPartial = function() {
     if (value == 'partial') {
         valueWrapper.show();
     }
+    currentCharge.operationType = value;
 };
