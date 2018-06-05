@@ -40,11 +40,40 @@ class Mundipagg_Paymentmodule_Model_Api_Order
         }
     }
 
+    public function updateCharge($chargeData) {
+        $chargeRequest = new \MundiAPILib\Models\CreateCaptureChargeRequest();
+        $chargeRequest->amount = $chargeData->amount;
+
+        $chargeController = $this->getChargeController();
+
+        $helperLog = Mage::helper('paymentmodule/log');
+        $helperLog->info("Request UPDATE CHARGE");
+        $helperLog->info(json_encode($chargeData,JSON_PRETTY_PRINT));
+        $helperLog->info(json_encode($chargeRequest,JSON_PRETTY_PRINT));
+        try {
+            $response = $chargeController->captureCharge($chargeData->id,$chargeRequest);
+
+            $helperLog->info("Response UPDATE CHARGE");
+            $helperLog->info(json_encode($response,JSON_PRETTY_PRINT));
+            return $response;
+        } catch (\Exception $e) {
+            $helperLog->error("Exception: " . $e->getMessage());
+            $helperLog->error(json_encode($e->errors,JSON_PRETTY_PRINT));
+            return $e->getMessage();
+        }
+    }
+
     protected function getOrderController()
     {
         $client = $this->getMundiPaggApiClient();
 
         return $client->getOrders();
+    }
+
+    protected function getChargeController() {
+        $client = $this->getMundiPaggApiClient();
+
+        return $client->getCharges();
     }
 
     protected function getMundiPaggApiClient()
@@ -56,4 +85,6 @@ class Mundipagg_Paymentmodule_Model_Api_Order
 
         return new MundiAPIClient($secretKey, $password);
     }
+
+
 }

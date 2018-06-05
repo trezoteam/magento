@@ -56,9 +56,26 @@ class Mundipagg_Paymentmodule_ChargeController extends Mage_Core_Controller_Fron
                return;
            }
 
-           $charge = $charges[$body->id];
+            $charge = $body;
+            $charge->amount = $charge->operationType == "total" ? $charge->centsValue : $charge->operationValue;
 
-            $a=1;
+            $api = Mage::getModel('paymentmodule/api_order');
+            $response = $api->updateCharge($charge);
+
+            if(is_string($response)) {
+                $responseMsg = $response;
+                $response = new stdClass();
+                $response->message = "Operation failed.";
+                $response->details = $responseMsg;
+                $response->status = 403;
+
+                $this->getResponse()
+                    ->clearHeaders()
+                    ->setHeader('HTTP/1.0', 200 , true)
+                    ->setHeader('Content-Type', 'application/json') // can be changed to json, xml...
+                    ->setBody(json_encode($response));
+                return;
+            }
 
             $response = new stdClass();
             $response->message = 'Success';

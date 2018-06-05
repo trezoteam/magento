@@ -2,16 +2,23 @@ var dialogIsInited = false;
 var currentCharge = {};
 var currentOrderId = '';
 
-
-
 var confirmChargeOperation = function() {
 
     currentCharge.credential = document.getElementById('charge-operation-credential').value;
     currentCharge.operationValue =  document.getElementById('charge-operation-value').value;
+    currentCharge.operationValue = parseFloat(currentCharge.operationValue) * 100;
 
     apiRequest('/mp-paymentmodule/charge',currentCharge,function(data){
         if(data !== false) {
-            console.log(data);
+            switch(data.status) {
+                case 200 :
+                    hideChargeDialog();
+                    window.reload();
+                break;
+                default:
+                    console.log(data);
+            }
+
         }
     },'POST');
 };
@@ -65,7 +72,7 @@ var initDialog = function() {
 
     var operationValue = document.getElementById('charge-operation-value');
 
-    operationValue.onchange = function() {
+    /*operationValue.onchange = function() {
         console.log(this);
         if (this.value > this.max) {
             this.value = this.max;
@@ -73,7 +80,7 @@ var initDialog = function() {
         if (this.value < this.min) {
             this.value = this.min;
         }
-    };
+    };*/
 };
 
 var hideChargeDialog = function() {
