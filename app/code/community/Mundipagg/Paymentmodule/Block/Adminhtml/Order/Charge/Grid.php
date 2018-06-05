@@ -45,6 +45,8 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Order_Charge_Grid extends Mage_Adm
         array_walk($aditional['mundipagg_payment_module_charges'],
             function ($item) use ($collection) {
                 $item['amount'] = $item['amount'] / 100;
+                $item['paid_amount'] =
+                    isset($item['paid_amount']) ? $item['paid_amount'] / 100 : 0.000000001;
 
                 $rowObj = new Varien_Object();
                 $rowObj->setData($item);
@@ -73,6 +75,24 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Order_Charge_Grid extends Mage_Adm
  
         $this->addColumn('amount', [
             'header' => $this->__('Amount'),
+            'index'  => 'amount',
+            'type'   => 'currency',
+            'currency_code' => $currency,
+            'filter' => false,
+            'sortable'  => false
+        ]);
+
+        $this->addColumn('paid_amount', [
+            'header' => $this->__('Captured Amount'),
+            'index'  => 'paid_amount',
+            'type'   => 'currency',
+            'currency_code' => $currency,
+            'filter' => false,
+            'sortable'  => false
+        ]);
+
+        $this->addColumn('canceled_amount', [
+            'header' => $this->__('Canceled Amount'),
             'index'  => 'amount',
             'type'   => 'currency',
             'currency_code' => $currency,

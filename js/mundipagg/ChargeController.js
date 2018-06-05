@@ -1,15 +1,11 @@
-var initDialog = false;
+var dialogIsInited = false;
 var currentCharge = {};
+var currentOrderId = '';
 
 var showChargeDialog = function(operation,element) {
-
-    if (!initDialog) {
-        initDialog = true;
-        var nodes = document.getElementsByName('total_or_partial');
-        for (var i = 0, l = nodes.length; i < l; i++)
-        {
-            nodes[i].onchange = checkTotalOrPartial;
-        }
+    if (!dialogIsInited) {
+        dialogIsInited = true;
+        initDialog();
     }
 
     var charge = getChargeDataFromElement(element);
@@ -23,12 +19,23 @@ var showChargeDialog = function(operation,element) {
     popup.show();
 };
 
-var getChargeDataFromElement =  function(element) {
-    return {
-        id: element.parentElement.parentElement.childElements()[0].innerHTML.trim(),
-        stringValue: element.parentElement.parentElement.childElements()[1].innerHTML.trim(),
-        centsValue: element.parentElement.parentElement.childElements()[1].innerHTML.trim().replace(/\D/g, ''),
-        typeName: element.parentElement.parentElement.childElements()[3].innerHTML.trim()
+var initDialog = function() {
+    var nodes = document.getElementsByName('total_or_partial');
+    for (var i = 0, l = nodes.length; i < l; i++)
+    {
+        nodes[i].onchange = checkTotalOrPartial;
+    }
+
+    var operationValue = document.getElementById('charge-operation-value');
+
+    operationValue.onchange = function() {
+        console.log(this);
+        if (this.value > this.max) {
+            this.value = this.max;
+        }
+        if (this.value < this.min) {
+            this.value = this.min;
+        }
     };
 };
 
@@ -39,6 +46,18 @@ var hideChargeDialog = function() {
     popup.hide();
 };
 
+var getChargeDataFromElement =  function(element) {
+    return {
+        id: element.parentElement.parentElement.childElements()[0].innerHTML.trim(),
+        stringValue: element.parentElement.parentElement.childElements()[1].innerHTML.trim(),
+        centsValue: element.parentElement.parentElement.childElements()[1].innerHTML.trim().replace(/\D/g, ''),
+        capturedValue: element.parentElement.parentElement.childElements()[2].innerHTML.trim().replace(/\D/g, ''),
+        canceledValue: element.parentElement.parentElement.childElements()[3].innerHTML.trim().replace(/\D/g, ''),
+        typeName: element.parentElement.parentElement.childElements()[5].innerHTML.trim(),
+        orderId: currentOrderId
+    };
+};
+
 var resetChargeDialog = function (data) {
     currentCharge = data.charge;
     document.getElementById('charge-operation-value').value = '';
@@ -47,6 +66,10 @@ var resetChargeDialog = function (data) {
     document.getElementById('charge-id').innerHTML = data.charge.id;
     document.getElementById('charge-stringValue').innerHTML = data.charge.stringValue;
     document.getElementById('charge-typeName').innerHTML = data.charge.typeName;
+
+    var valueInput = document.getElementById('charge-operation-value');
+    valueInput.value = parseInt(data.charge.centsValue) / 100;
+    valueInput.max = valueInput.value;
 
     var elements = document.getElementsByClassName('charge-operation');
     for (var i = 0, l = elements.length; i < l; i++)

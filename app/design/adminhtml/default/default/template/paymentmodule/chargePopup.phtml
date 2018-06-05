@@ -6,7 +6,7 @@
     <div class="message-popup-content">
         <div class="message">
             <div>
-                <h3>Charge Info:</h3>
+                <h3>Charge Information:</h3>
                 <ul>
                     <li>Id: <strong><span id="charge-id"></span></strong></li>
                     <li>Value: <strong><span id="charge-stringValue"></span></strong></li>
@@ -34,20 +34,22 @@
                         <br/>
                         <div>
                             <label>
-                                <span>Value:</span>
-                                <input type="text" placeholder="Insert the value here" name="charge-operation-value" id="charge-operation-value">
+                                <span>Value to <span class="charge-operation"></span>:</span>
+                                <input type="number" min="0" step='.01' placeholder="Insert the value here" name="charge-operation-value" id="charge-operation-value">
                             </label>
                         </div>
                     </div>
                 </fieldset>
                 <br />
                 <hr />
+                <br />
                 <fieldset>
                     <div>To continue this operation, please enter your password:</div>
                     <div>
                         <input type="password" name="charge-operation-credential" id="charge-operation-credential">
                     </div>
                 </fieldset>
+                <br />
             </form>
         </div>
         <div class="read-more button-set">
@@ -58,3 +60,7 @@
         </div>
     </div>
 </div>
+
+<script>
+    var currentOrderId = <?php echo $this->getOrderId(); ?> ;
+</script>
