@@ -65,11 +65,6 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Order_Charge_Grid extends Mage_Adm
             }
         );
 
-        $items = [];
-        foreach($aditional['mundipagg_payment_module_charges'] as $item) {
-            $items[] = $item;//->getData();
-        }
-
         return $collection;
     }
 

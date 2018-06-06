@@ -1,9 +1,5 @@
 <?php
 
-/**
- *
- * @author     Darko Goleš <darko.goles@inchoo.net>
- */
 class  Mundipagg_Paymentmodule_Block_Adminhtml_Order_Charge_Popup extends Mage_Adminhtml_Block_Widget_Form {
 
     protected $orderId = 0;
@@ -16,7 +12,6 @@ class  Mundipagg_Paymentmodule_Block_Adminhtml_Order_Charge_Popup extends Mage_A
 
         $adminUser = Mage::getSingleton('admin/session')->getUser();
         $this->adminUsername = $adminUser->getUsername();
-
     }
 
     public function getOrderId()
@@ -24,7 +19,8 @@ class  Mundipagg_Paymentmodule_Block_Adminhtml_Order_Charge_Popup extends Mage_A
         return $this->orderId;
     }
 
-    public function getAdminUsername() {
+    public function getAdminUsername()
+    {
         return $this->adminUsername;
     }
 }
