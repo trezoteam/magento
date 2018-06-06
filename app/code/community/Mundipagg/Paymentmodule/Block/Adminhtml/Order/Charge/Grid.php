@@ -83,7 +83,7 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Order_Charge_Grid extends Mage_Adm
         $currency = (string) Mage::getStoreConfig(Mage_Directory_Model_Currency::XML_PATH_CURRENCY_BASE);
  
         $this->addColumn('id', [
-            'header' => $helper->__('Charge Id'),
+            'header' => $this->__('Charge Id'),
             'index'  => 'id',
             'filter' => false,
             'sortable'  => false,
