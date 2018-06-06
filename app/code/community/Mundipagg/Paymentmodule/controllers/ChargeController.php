@@ -4,6 +4,9 @@ class Mundipagg_Paymentmodule_ChargeController extends Mage_Core_Controller_Fron
 {
     public function preDispatch()
     {
+        $r = Mage::app()->getRequest();
+        $r = Mage::app()->getRequest()->getParam('source');
+        $r = json_decode(Mage::app()->getRequest()->getRawBody());
         parent::preDispatch();
         Mage::helper('paymentmodule/exception')->initExceptionHandler();
     }
@@ -12,6 +15,24 @@ class Mundipagg_Paymentmodule_ChargeController extends Mage_Core_Controller_Fron
     {
         if (Mage::app()->getRequest()->isPost()) {
             $body = json_decode(Mage::app()->getRequest()->getRawBody());
+
+            //validating password.
+            $adminUser = Mage::getModel('admin/user')->loadByUsername($body->username);
+            list($adminPassword,$adminSalt) = explode(':',$adminUser->getPassword());
+            $inputPassword = md5($adminSalt . $body->credential);
+
+            if($inputPassword !== $adminPassword) {
+                $response = new stdClass();
+                $response->message = 'Invalid credentials';
+                $response->status = 403;
+
+                $this->getResponse()
+                    ->clearHeaders()
+                    ->setHeader('HTTP/1.0', 200 , true)
+                    ->setHeader('Content-Type', 'application/json') // can be changed to json, xml...
+                    ->setBody(json_encode($response));
+                return;
+            }
 
             $orderId = $body->orderId;
 

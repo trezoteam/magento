@@ -13,10 +13,18 @@ class  Mundipagg_Paymentmodule_Block_Adminhtml_Order_Charge_Popup extends Mage_A
         parent::_construct();
         $this->setTemplate('paymentmodule/chargePopup.phtml');
         $this->orderId = Mage::app()->getRequest()->get('order_id');
+
+        $adminUser = Mage::getSingleton('admin/session')->getUser();
+        $this->adminUsername = $adminUser->getUsername();
+
     }
 
     public function getOrderId()
     {
         return $this->orderId;
+    }
+
+    public function getAdminUsername() {
+        return $this->adminUsername;
     }
 }

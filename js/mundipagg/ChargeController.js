@@ -1,12 +1,14 @@
 var dialogIsInited = false;
 var currentCharge = {};
 var currentOrderId = '';
+var currentUsername = '';
 
 var confirmChargeOperation = function() {
 
     currentCharge.credential = document.getElementById('charge-operation-credential').value;
     currentCharge.operationValue =  document.getElementById('charge-operation-value').value;
     currentCharge.operationValue = parseFloat(currentCharge.operationValue) * 100;
+    currentCharge.username = currentUsername;
 
     apiRequest('/mp-paymentmodule/charge',currentCharge,function(data){
         if(data !== false) {
@@ -45,7 +47,6 @@ function apiRequest(url, data, callback, method, json,callbackArgsObj) {
 }
 
 
-
 var showChargeDialog = function(operation,element) {
     if (!dialogIsInited) {
         dialogIsInited = true;
@@ -71,16 +72,6 @@ var initDialog = function() {
     }
 
     var operationValue = document.getElementById('charge-operation-value');
-
-    /*operationValue.onchange = function() {
-        console.log(this);
-        if (this.value > this.max) {
-            this.value = this.max;
-        }
-        if (this.value < this.min) {
-            this.value = this.min;
-        }
-    };*/
 };
 
 var hideChargeDialog = function() {
@@ -93,6 +84,7 @@ var hideChargeDialog = function() {
 var getChargeDataFromElement =  function(element) {
     return {
         id: element.parentElement.parentElement.childElements()[0].innerHTML.trim(),
+        operationName: element.innerHTML.trim(),
         stringValue: element.parentElement.parentElement.childElements()[1].innerHTML.trim(),
         centsValue: element.parentElement.parentElement.childElements()[1].innerHTML.trim().replace(/\D/g, ''),
         capturedValue: element.parentElement.parentElement.childElements()[2].innerHTML.trim().replace(/\D/g, ''),
@@ -120,7 +112,7 @@ var resetChargeDialog = function (data) {
     var elements = document.getElementsByClassName('charge-operation');
     for (var i = 0, l = elements.length; i < l; i++)
     {
-        elements[i].innerHTML=data.operation;
+        elements[i].innerHTML=data.charge.operationName;
     }
 
     elements = document.getElementsByName('total_or_partial');
