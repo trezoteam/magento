@@ -17,18 +17,17 @@ var confirmChargeOperation = function() {
 
     apiRequest('/mp-paymentmodule/charge',currentCharge,function(data){
         if(data !== false) {
-            document.getElementById('charge-dialog').innerHTML = currentDialogHtml;
-            initDialog();
-            resetChargeDialog({
-                operation: currentCharge.operation,
-                charge: currentCharge
-            });
             switch(data.status) {
                 case 200 :
-                    hideChargeDialog();
                     reloadAndGoToCharges();
                 break;
                 default:
+                    document.getElementById('charge-dialog').innerHTML = currentDialogHtml;
+                    initDialog();
+                    resetChargeDialog({
+                        operation: currentCharge.operation,
+                        charge: currentCharge
+                    });
                     showChargeDialogError(data.message,data.details);
             }
         }

@@ -6,7 +6,7 @@ class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_A
      * @param string $methodName
      * @param stdClass $charge
      */
-    public function paidMethods($methodName, $charge)
+    public function paidMethods($methodName, $charge, $manual = false)
     {
         $orderId = $charge->code;
         $chargeId = $charge->id;
@@ -19,6 +19,11 @@ class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_A
 
             $paidAmount = $this->getChargePaidAmount($charge);
             $formattedPaidAmount = $moneyHelper->toCurrencyFormat($paidAmount);
+            if ($manual) {
+                $formattedPaidAmount =
+                    'Updated manually through the module. Value: ' .
+                    $formattedPaidAmount;
+            }
 
             $invoiceHelper->addInvoiceToOrder($order, $paidAmount);
             $this->updateChargeInfo($methodName, $charge, $formattedPaidAmount);
