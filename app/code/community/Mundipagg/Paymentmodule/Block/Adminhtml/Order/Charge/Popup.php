@@ -1,7 +1,7 @@
 <?php
 
-class  Mundipagg_Paymentmodule_Block_Adminhtml_Order_Charge_Popup extends Mage_Adminhtml_Block_Widget_Form {
-
+class  Mundipagg_Paymentmodule_Block_Adminhtml_Order_Charge_Popup extends Mage_Adminhtml_Block_Widget_Form
+{
     protected $orderId = 0;
 
     protected function _construct()

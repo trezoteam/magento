@@ -50,7 +50,8 @@ class Mundipagg_Paymentmodule_Model_Api_Order
         return $this->updateCharge($chargeData, new CreateCancelChargeRequest());
     }
 
-    protected function updateCharge($chargeData,$chargeRequest) {
+    protected function updateCharge($chargeData,$chargeRequest)
+    {
         $chargeController = $this->getChargeController();
         $method = 'captureCharge';
         if ($chargeRequest instanceof CreateCancelChargeRequest) {
@@ -82,7 +83,8 @@ class Mundipagg_Paymentmodule_Model_Api_Order
         return $this->getMundiPaggApiClient()->getOrders();
     }
 
-    protected function getChargeController() {
+    protected function getChargeController()
+    {
         return $this->getMundiPaggApiClient()->getCharges();
     }
 

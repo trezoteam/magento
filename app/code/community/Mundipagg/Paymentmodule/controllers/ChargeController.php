@@ -4,9 +4,6 @@ class Mundipagg_Paymentmodule_ChargeController extends Mage_Core_Controller_Fron
 {
     public function preDispatch()
     {
-        $r = Mage::app()->getRequest();
-        $r = Mage::app()->getRequest()->getParam('source');
-        $r = json_decode(Mage::app()->getRequest()->getRawBody());
         parent::preDispatch();
         Mage::helper('paymentmodule/exception')->initExceptionHandler();
     }
@@ -25,7 +22,8 @@ class Mundipagg_Paymentmodule_ChargeController extends Mage_Core_Controller_Fron
         return $inputPassword === $adminPassword;
     }
 
-    protected function setResponse($status, $message, $details = null) {
+    protected function setResponse($status, $message, $details = null)
+    {
         $response = new stdClass();
         $response->message = $message;
         $response->status = intval($status);
@@ -104,7 +102,7 @@ class Mundipagg_Paymentmodule_ChargeController extends Mage_Core_Controller_Fron
                 }
 
                 //check if the order is valid
-               $additional = $this->getOrderAditionalInformation($body);
+                $additional = $this->getOrderAditionalInformation($body);
                 if (!isset($additional['mundipagg_payment_module_charges'])) {
                     $this->setResponse('404','Invalid Order');
                     return;
@@ -134,7 +132,7 @@ class Mundipagg_Paymentmodule_ChargeController extends Mage_Core_Controller_Fron
                 $this->setResponse('200','Success');
                 return;
             }
-        }catch(Throwable $e) {
+        } catch(Throwable $e) {
             Mage::helper('paymentmodule/exception')->registerException($e);
             $this->setResponse('500','Internal Server error. Please contact support.');
         }
