@@ -82,7 +82,11 @@ class Mundipagg_Paymentmodule_ChargeController extends Mage_Core_Controller_Fron
                 $charge->amount = $charge->operationType == "total" ? $charge->centsValue : $charge->operationValue;
 
                 $api = Mage::getModel('paymentmodule/api_order');
-                $response = $api->updateCharge($charge);
+                $apiMethod = 'cancelCharge';
+                if ($charge->operation === "Capture") {
+                    $apiMethod = 'captureCharge';
+                }
+                $response = $api->$apiMethod($charge);
 
                 if(is_string($response)) {
                     $responseMsg = $response;
@@ -103,12 +107,14 @@ class Mundipagg_Paymentmodule_ChargeController extends Mage_Core_Controller_Fron
                  * @var Mundipagg_Paymentmodule_Helper_Chargeoperations $chargeOperations
                  */
                 $chargeOperations = Mage::helper('paymentmodule/chargeoperations');
-                /*$chargeOperations->updateChargeInfo(
-                    $response->status,$response,
-                    'Updated manually through the module. Value: ' . ($charge->amount / 100)
-                );*/
-                $method = $response->status . 'Methods';
-                $chargeOperations->$method($response->status,$response,true);
+                if ($response->lastTransaction->operationType == "capture") {
+                    $method = 'paidMethods';
+                }
+                if ($response->lastTransaction->operationType == "cancel") {
+                    $method = 'canceledMethods';
+                }
+
+                $chargeOperations->$method($response->lastTransaction->operationType,$response,'',true);
 
                 $response = new stdClass();
                 $response->message = 'Success';

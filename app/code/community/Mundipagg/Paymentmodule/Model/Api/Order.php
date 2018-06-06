@@ -7,6 +7,8 @@
 
 require_once Mage::getBaseDir('lib') . '/autoload.php';
 
+use MundiAPILib\Models\CreateCancelChargeRequest;
+use MundiAPILib\Models\CreateCaptureChargeRequest;
 use MundiAPILib\MundiAPIClient;
 
 class Mundipagg_Paymentmodule_Model_Api_Order
@@ -40,20 +42,33 @@ class Mundipagg_Paymentmodule_Model_Api_Order
         }
     }
 
-    public function updateCharge($chargeData) {
-        $chargeRequest = new \MundiAPILib\Models\CreateCaptureChargeRequest();
+
+    public function captureCharge($chargeData) {
+        return $this->updateCharge($chargeData, new CreateCaptureChargeRequest());
+    }
+
+    public function cancelCharge($chargeData) {
+        return $this->updateCharge($chargeData, new CreateCancelChargeRequest());
+    }
+
+    protected function updateCharge($chargeData,$chargeRequest) {
+        $method = 'captureCharge';
+        if ($chargeRequest instanceof CreateCancelChargeRequest) {
+            $method = 'cancelCharge';
+        }
+
         $chargeRequest->amount = $chargeData->amount;
 
         $chargeController = $this->getChargeController();
 
         $helperLog = Mage::helper('paymentmodule/log');
-        $helperLog->info("Request UPDATE CHARGE");
+        $helperLog->info("Request MANUAL CHARGE UPDATE: " . $method);
         $helperLog->info(json_encode($chargeData,JSON_PRETTY_PRINT));
         $helperLog->info(json_encode($chargeRequest,JSON_PRETTY_PRINT));
         try {
-            $response = $chargeController->captureCharge($chargeData->id,$chargeRequest);
+            $response = $chargeController->$method($chargeData->id,$chargeRequest);
 
-            $helperLog->info("Response UPDATE CHARGE");
+            $helperLog->info("Response MANUAL CHARGE UPDATE: " . $method);
             $helperLog->info(json_encode($response,JSON_PRETTY_PRINT));
             return $response;
         } catch (\Exception $e) {

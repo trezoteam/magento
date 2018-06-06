@@ -6,7 +6,7 @@ class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_A
      * @param string $methodName
      * @param stdClass $charge
      */
-    public function paidMethods($methodName, $charge, $manual = false)
+    public function paidMethods($methodName, $charge, $extraComment = '', $manual = false)
     {
         $orderId = $charge->code;
         $chargeId = $charge->id;
@@ -34,7 +34,7 @@ class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_A
      * @param string $methodName
      * @param stdClass $charge
      */
-    public function canceledMethods($methodName, $charge, $extraComment = '')
+    public function canceledMethods($methodName, $charge, $extraComment = '', $manual = false)
     {
         $orderId = $charge->code;
         $order =
@@ -46,6 +46,12 @@ class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_A
 
         if ($canceledAmount) {
             $extraComment .= $moneyHelper->toCurrencyFormat($canceledAmount);
+        }
+
+        if ($manual) {
+            $extraComment =
+                'MP - Charge canceled: Updated manually through the module. Value: ' .
+                $moneyHelper->toCurrencyFormat($canceledAmount);
         }
 
         if ($order->getTotalPaid() > 0) {
@@ -83,7 +89,11 @@ class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_A
      */
     protected function getChargePaidAmount($charge)
     {
-        return $charge->lastTransaction->amount / 100;
+        if ($charge->lastTransaction->operationType == 'capture') {
+            return $charge->lastTransaction->amount / 100;
+        }
+
+        return 0;
     }
 
     /**
@@ -92,8 +102,8 @@ class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_A
      */
     protected function getChargeCanceledAmount($charge)
     {
-        if (isset($charge->canceled_amount)) {
-            return $charge->canceled_amount / 100;
+        if ($charge->lastTransaction->operationType == 'cancel') {
+            return $charge->lastTransaction->amount / 100;
         }
 
         return 0;
