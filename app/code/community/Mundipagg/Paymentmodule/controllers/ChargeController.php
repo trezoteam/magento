@@ -86,7 +86,7 @@ class Mundipagg_Paymentmodule_ChargeController extends Mage_Core_Controller_Fron
             if(is_string($response)) {
                 $responseMsg = $response;
                 $response = new stdClass();
-                $response->message = "Operation failed.";
+                $response->message = "Operation failed";
                 $response->details = $responseMsg;
                 $response->status = 403;
 

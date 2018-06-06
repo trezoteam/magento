@@ -35,7 +35,7 @@
                         <div>
                             <label>
                                 <span>Value to <span class="charge-operation"></span>:</span>
-                                <input type="number" min="0" step='.01' placeholder="Insert the value here" name="charge-operation-value" id="charge-operation-value">
+                                <input type="number" min="0" step='.01' name="charge-operation-value" id="charge-operation-value">
                             </label>
                         </div>
                     </div>
@@ -52,6 +52,7 @@
                 <br />
             </form>
         </div>
+        <div id="charge-dialog-errors" class="notification-global notification-global-warning"></div>
         <div class="read-more button-set">
             <button class="form-button" onclick="confirmChargeOperation();"><span class="charge-operation"></span> Charge</button>
             <button class="form-button back" onclick="hideChargeDialog();">
@@ -64,5 +65,6 @@
 <script>
     var currentOrderId = <?php echo $this->getOrderId(); ?>;
     var currentUsername = '<?php echo $this->getAdminUsername(); ?>';
-    document.getElementById('charge-dialog').hide();
+    //document.getElementById('charge-dialog').hide();
+    hideChargeDialog();
 </script>

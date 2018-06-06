@@ -2,6 +2,7 @@ var dialogIsInited = false;
 var currentCharge = {};
 var currentOrderId = '';
 var currentUsername = '';
+var currentDialogHtml = '';
 
 var confirmChargeOperation = function() {
 
@@ -10,14 +11,24 @@ var confirmChargeOperation = function() {
     currentCharge.operationValue = parseFloat(currentCharge.operationValue) * 100;
     currentCharge.username = currentUsername;
 
+    currentDialogHtml = document.getElementById('charge-dialog').innerHTML;
+    document.getElementById('charge-dialog').innerHTML = 'Please Wait...';
+
     apiRequest('/mp-paymentmodule/charge',currentCharge,function(data){
         if(data !== false) {
+            document.getElementById('charge-dialog').innerHTML = currentDialogHtml;
+            initDialog();
+            resetChargeDialog({
+                operation: currentCharge.operation,
+                charge: currentCharge
+            });
             switch(data.status) {
                 case 200 :
                     hideChargeDialog();
                     window.reload();
                 break;
                 default:
+                    showChargeDialogError(data.message,data.details);
                     console.log(data);
             }
 
@@ -46,7 +57,6 @@ function apiRequest(url, data, callback, method, json,callbackArgsObj) {
     return xhr;
 }
 
-
 var showChargeDialog = function(operation,element) {
     if (!dialogIsInited) {
         dialogIsInited = true;
@@ -64,21 +74,28 @@ var showChargeDialog = function(operation,element) {
     popup.show();
 };
 
+var showChargeDialogError = function(error,details) {
+    var message = error;
+    if (typeof details !== 'undefined') {
+        message += ' : ' + details;
+    }
+    var errorDiv = document.getElementById('charge-dialog-errors')
+    errorDiv.innerHTML = message;
+    errorDiv.show();
+};
+
 var initDialog = function() {
     var nodes = document.getElementsByName('total_or_partial');
     for (var i = 0, l = nodes.length; i < l; i++)
     {
         nodes[i].onchange = checkTotalOrPartial;
     }
-
-    var operationValue = document.getElementById('charge-operation-value');
 };
 
 var hideChargeDialog = function() {
-    var popup = document.getElementById('charge-dialog');
-    var modal = document.getElementById('message-popup-window-mask');
-    modal.hide();
-    popup.hide();
+    document.getElementById('charge-dialog').hide();
+    document.getElementById('charge-dialog-errors').hide();
+    document.getElementById('message-popup-window-mask').hide();
 };
 
 var getChargeDataFromElement =  function(element) {
