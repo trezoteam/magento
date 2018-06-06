@@ -45,14 +45,23 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Order_Charge_Grid extends Mage_Adm
         array_walk($aditional['mundipagg_payment_module_charges'],
             function ($item) use ($collection) {
                 $item['amount'] = $item['amount'] / 100;
-                $item['paid_amount'] =
-                    isset($item['paid_amount']) ? $item['paid_amount'] / 100 : 0.000000001;
+                $item['paid_amount'] =  0.000000001;
+                if ($item['last_transaction']['operation_type'] == 'capture') {
+                    $item['paid_amount'] = $item['last_transaction']['amount'] / 100;
+                }
+
+                $item['canceled_amount'] = 0.000000001;
 
                 $rowObj = new Varien_Object();
                 $rowObj->setData($item);
                 $collection->addItem($rowObj);
             }
         );
+
+        $items = [];
+        foreach($aditional['mundipagg_payment_module_charges'] as $item) {
+            $items[] = $item;//->getData();
+        }
 
         return $collection;
     }
@@ -93,7 +102,7 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Order_Charge_Grid extends Mage_Adm
 
         $this->addColumn('canceled_amount', [
             'header' => $this->__('Canceled Amount'),
-            'index'  => 'amount',
+            'index'  => 'canceled_amount',
             'type'   => 'currency',
             'currency_code' => $currency,
             'filter' => false,
@@ -121,7 +130,7 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Order_Charge_Grid extends Mage_Adm
             'getter'     => 'getId',
             'actions'   => [
                 [
-                    'caption' => Mage::helper('sales')->__('Capturar'),
+                    'caption' => $this->__('Capture'),
                     'onclick' => 'javascript:showChargeDialog("Capture",this);',
                     'field'   => 'id',
                     'class'   => 'form-button'
@@ -139,7 +148,7 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Order_Charge_Grid extends Mage_Adm
             'getter'     => 'getId',
             'actions'   => [
                 [
-                    'caption' => Mage::helper('sales')->__('Cancelar'),
+                    'caption' => $this->__('Cancel'),
                     'onclick' => 'javascript:showChargeDialog("Cancel",this);',
                     'field'   => 'id',
                     'class'   => 'form-button'

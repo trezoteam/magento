@@ -98,6 +98,15 @@ class Mundipagg_Paymentmodule_ChargeController extends Mage_Core_Controller_Fron
                 return;
             }
 
+            /**
+             * @var Mundipagg_Paymentmodule_Helper_Chargeoperations $chargeOperations
+             */
+            $chargeOperations = Mage::helper('paymentmodule/chargeoperations');
+            $chargeOperations->updateChargeInfo(
+                $response->status,$response,
+                'Updated manually through the module. Value: ' . ($charge->amount / 100)
+            );
+
             $response = new stdClass();
             $response->message = 'Success';
             $response->status = 200;

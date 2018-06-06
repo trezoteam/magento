@@ -7,6 +7,11 @@
 "Charge", "Cobrança"
 "Payment Method", "Método de Pagamento"
 "Amount", "Valor"
+"Capture","Capturar"
+"Cancel","Cancelar"
+"Captured Amount","Valor Capturado"
+"Canceled Amount","Valor Cancelado"
+
 
 "##### Configuração básica do módulo","########################################"
 "Module Basic Configuration","Configuração básica do módulo"
