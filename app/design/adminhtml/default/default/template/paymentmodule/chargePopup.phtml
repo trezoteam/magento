@@ -65,6 +65,12 @@
 <script>
     var currentOrderId = <?php echo $this->getOrderId(); ?>;
     var currentUsername = '<?php echo $this->getAdminUsername(); ?>';
-    //document.getElementById('charge-dialog').hide();
     hideChargeDialog();
+
+    document.onreadystatechange = () => {
+        if (document.readyState === 'complete') {
+            setTimeout(goToCharges,1);
+        }
+    };
+
 </script>

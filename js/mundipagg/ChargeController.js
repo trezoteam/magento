@@ -25,15 +25,27 @@ var confirmChargeOperation = function() {
             switch(data.status) {
                 case 200 :
                     hideChargeDialog();
-                    window.reload();
+                    reloadAndGoToCharges();
                 break;
                 default:
                     showChargeDialogError(data.message,data.details);
-                    console.log(data);
             }
-
         }
     },'POST');
+};
+
+var reloadAndGoToCharges = function() {
+    var url = new URL(window.location.href);
+    url.searchParams.set("mp-gotocharges",'');
+    window.location = url.href;
+};
+
+var goToCharges = function() {
+    debugger;
+    var url = new URL(window.location.href);
+    if (url.searchParams.get('mp-gotocharges') !== null) {
+        document.getElementById('sales_order_view_tabs_order_charges').click();
+    }
 };
 
 function apiRequest(url, data, callback, method, json,callbackArgsObj) {
