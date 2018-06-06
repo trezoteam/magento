@@ -18,7 +18,7 @@ var confirmChargeOperation = function() {
     apiRequest('/mp-paymentmodule/charge',currentCharge,function(data){
         if(data !== false) {
             switch(data.status) {
-                case 200 :
+                case 200:
                     reloadAndGoToCharges();
                 break;
                 default:
