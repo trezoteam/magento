@@ -62,6 +62,19 @@
     </div>
 </div>
 
+<div id="charge-dialog-wait-modal" style="display:none">
+    <div class="message-popup-head">
+        <h2>Please wait...</h2>
+    </div>
+    <div class="message-popup-content">
+        <div class="message">
+            <div style="text-align: center">
+                <img src="<?php echo $this->getSkinUrl('images/ajax-loader-tr.gif', array('_secure'=>true));?>" alt="loader">
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     var currentOrderId = <?php echo $this->getOrderId(); ?>;
     var currentUsername = '<?php echo $this->getAdminUsername(); ?>';

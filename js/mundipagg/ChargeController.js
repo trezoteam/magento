@@ -12,7 +12,8 @@ var confirmChargeOperation = function() {
     currentCharge.username = currentUsername;
 
     currentDialogHtml = document.getElementById('charge-dialog').innerHTML;
-    document.getElementById('charge-dialog').innerHTML = 'Please Wait...';
+    document.getElementById('charge-dialog').innerHTML =
+        document.getElementById('charge-dialog-wait-modal').innerHTML;
 
     apiRequest('/mp-paymentmodule/charge',currentCharge,function(data){
         if(data !== false) {
@@ -41,7 +42,6 @@ var reloadAndGoToCharges = function() {
 };
 
 var goToCharges = function() {
-    debugger;
     var url = new URL(window.location.href);
     if (url.searchParams.get('mp-gotocharges') !== null) {
         document.getElementById('sales_order_view_tabs_order_charges').click();
