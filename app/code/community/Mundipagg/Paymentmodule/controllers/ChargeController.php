@@ -99,7 +99,7 @@ class Mundipagg_Paymentmodule_ChargeController extends Mage_Core_Controller_Fron
                 $body = json_decode(Mage::app()->getRequest()->getRawBody());
 
                 if(!$this->isPasswordValid($body)) {
-                    $this->setResponseError('403','Invalid password');
+                    $this->setResponse('403','Invalid password');
                     return;
                 }
 
