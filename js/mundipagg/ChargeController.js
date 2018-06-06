@@ -5,10 +5,12 @@ var currentUsername = '';
 var currentDialogHtml = '';
 
 var confirmChargeOperation = function() {
-
-    currentCharge.credential = document.getElementById('charge-operation-credential').value;
-    currentCharge.operationValue =  document.getElementById('charge-operation-value').value;
-    currentCharge.operationValue = parseFloat(currentCharge.operationValue) * 100;
+    currentCharge.credential =
+        document.getElementById('charge-operation-credential').value;
+    currentCharge.operationValue =
+        document.getElementById('charge-operation-value').value;
+    currentCharge.operationValue =
+        parseFloat(currentCharge.operationValue) * 100;
     currentCharge.username = currentUsername;
 
     currentDialogHtml = document.getElementById('charge-dialog').innerHTML;
@@ -22,7 +24,8 @@ var confirmChargeOperation = function() {
                     reloadAndGoToCharges();
                 break;
                 default:
-                    document.getElementById('charge-dialog').innerHTML = currentDialogHtml;
+                    document.getElementById('charge-dialog').innerHTML =
+                        currentDialogHtml;
                     initDialog();
                     resetChargeDialog({
                         operation: currentCharge.operation,
@@ -47,8 +50,9 @@ var goToCharges = function() {
     }
 };
 
-function apiRequest(url, data, callback, method, json,callbackArgsObj) {
-    var xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+function apiRequest(url, data, callback, method, json, callbackArgsObj) {
+    var xhr = window.XMLHttpRequest ? 
+        new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
     xhr.open(method, url);
 
     if (json) {
@@ -110,14 +114,15 @@ var hideChargeDialog = function() {
 };
 
 var getChargeDataFromElement =  function(element) {
+    var tableRowTDs = element.parentElement.parentElement.childElements();
     return {
-        id: element.parentElement.parentElement.childElements()[0].innerHTML.trim(),
+        id: tableRowTDs[0].innerHTML.trim(),
         operationName: element.innerHTML.trim(),
-        stringValue: element.parentElement.parentElement.childElements()[1].innerHTML.trim(),
-        centsValue: element.parentElement.parentElement.childElements()[1].innerHTML.trim().replace(/\D/g, ''),
-        capturedValue: element.parentElement.parentElement.childElements()[2].innerHTML.trim().replace(/\D/g, ''),
-        canceledValue: element.parentElement.parentElement.childElements()[3].innerHTML.trim().replace(/\D/g, ''),
-        typeName: element.parentElement.parentElement.childElements()[5].innerHTML.trim(),
+        stringValue: tableRowTDs[1].innerHTML.trim(),
+        centsValue: tableRowTDs[1].innerHTML.trim().replace(/\D/g, ''),
+        capturedValue: tableRowTDs[2].innerHTML.trim().replace(/\D/g, ''),
+        canceledValue: tableRowTDs[3].innerHTML.trim().replace(/\D/g, ''),
+        typeName: tableRowTDs[5].innerHTML.trim(),
         orderId: currentOrderId
     };
 };
