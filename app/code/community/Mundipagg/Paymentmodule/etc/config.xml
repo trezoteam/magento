@@ -157,6 +157,14 @@
     </frontend>
 
     <adminhtml>
+        <layout>
+            <updates>
+                <paymentmodules module="Mundipagg_Paymentmodule">
+                    <file>paymentmodule.xml</file>
+                </paymentmodules>
+            </updates>
+        </layout>
+
         <translate>
             <modules>
                 <paymentmodule>
