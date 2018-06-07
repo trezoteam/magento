@@ -3,7 +3,7 @@
 class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_Abstract
 {
 
-    public function isTransactionHandled($orderId,$transactionId)
+    public function isTransactionHandled($orderId, $transactionId)
     {
         $additionalInformation =
             Mage::getModel('paymentmodule/standard')
@@ -19,7 +19,7 @@ class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_A
         );
     }
 
-    public function setTransactionAsHandled($orderId,$transaction)
+    public function setTransactionAsHandled($orderId, $transaction)
     {
         $payment =
             Mage::getModel('paymentmodule/standard')
@@ -34,7 +34,7 @@ class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_A
         }
 
         if (!$this->isTransactionHandled($orderId,$transaction['id'])) {
-            $this->addTransactionHistoryToOrder($orderId,$transaction,$additionalInformation);
+            $this->addTransactionHistoryToOrder($orderId, $transaction, $additionalInformation);
             array_push(
                 $additionalInformation['mundipagg_payment_handled_transactions'],
                 $transaction['id']
@@ -50,7 +50,7 @@ class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_A
             $additionalInformation['mundipagg_payment_transaction_history'] = [];
         }
 
-        if (!$this->isTransactionHandled($orderId,$transaction['id'])) {
+        if (!$this->isTransactionHandled($orderId, $transaction['id'])) {
             array_push(
                 $additionalInformation['mundipagg_payment_transaction_history'],
                 $transaction
