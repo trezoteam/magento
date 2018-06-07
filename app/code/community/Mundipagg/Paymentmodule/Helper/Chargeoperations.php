@@ -2,6 +2,47 @@
 
 class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_Abstract
 {
+
+    public function isTransactionHandled($orderId,$transactionId)
+    {
+        $additionalInformation =
+            Mage::getModel('paymentmodule/standard')
+                ->getAdditionalInformationForOrder($orderId);
+
+        if (!isset($additionalInformation['handledTransactions'])) {
+            return false;
+        }
+
+        return in_array(
+            $transactionId,
+            $additionalInformation['handledTransactions']
+        );
+    }
+
+    public function markTransactionAsHandled($orderId,$transactionId)
+    {
+        $payment =
+            Mage::getModel('paymentmodule/standard')
+                ->getOrderByIncrementOrderId($orderId)
+                ->getPayment();
+        $additionalInformation =
+            Mage::getModel('paymentmodule/standard')
+                ->getAdditionalInformationForOrder($orderId);
+
+        if (!isset($additionalInformation['handledTransactions'])) {
+            $additionalInformation['handledTransactions'] = [];
+        }
+
+        if (!$this->isTransactionHandled($orderId,$transactionId)) {
+            array_push(
+                $additionalInformation['handledTransactions'],
+                $transactionId
+            );
+            $payment->setAdditionalInformation($additionalInformation);
+            $payment->save();
+        }
+    }
+
     /**
      * @param string $methodName
      * @param stdClass $charge

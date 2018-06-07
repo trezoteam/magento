@@ -80,6 +80,7 @@ class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mundipagg_Pa
          * @todo fix charge handle
          */
         //processing charges;
+        $chargeOperations = Mage::helper('paymentmodule/chargeoperations');
         foreach ($response->charges as $chargeIndex => $charge) {
             $charge->code = $response->code;
 
@@ -96,6 +97,11 @@ class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mundipagg_Pa
                     }
                 }
             }
+
+            $chargeOperations->markTransactionAsHandled(
+                $charge->code,
+                $charge->lastTransaction->id
+            );
         }
 
         if(count($boletosInfo) > 0) {

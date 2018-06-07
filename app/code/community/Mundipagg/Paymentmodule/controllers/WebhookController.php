@@ -30,11 +30,32 @@ class Mundipagg_Paymentmodule_WebhookController extends Mage_Core_Controller_Fro
                 json_encode($body,JSON_PRETTY_PRINT)
             );
 
+
+
             switch ($webhookType) {
                 case 'order':
                     $this->webhookOrderUpdate($body->data, $webhookAction);
                     break;
                 case 'charge':
+                    $chargeOperations = Mage::helper('paymentmodule/chargeoperations');
+                    if ($chargeOperations->isTransactionHandled(
+                        $body->data->code,
+                        $body->data->last_transaction->id
+                    )) {
+                        $logger->warning(
+                            'Transaction ' .
+                            $body->data->last_transaction->id .
+                            ' already handled.'
+                        );
+
+                        return;
+                    }
+
+                    $chargeOperations->markTransactionAsHandled(
+                        $body->data->code,
+                        $body->data->last_transaction->id
+                    );
+
                     $this->webhookChargeUpdate($body->data, $webhookAction);
                     break;
                 default:
