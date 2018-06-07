@@ -89,8 +89,15 @@ class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_A
      */
     protected function getChargePaidAmount($charge)
     {
-        if ($charge->lastTransaction->operationType == 'capture') {
-            return $charge->lastTransaction->amount / 100;
+        if ($charge->lastTransaction == null) {
+            $operation = $charge->last_transaction->operation_type;
+            $amount = $charge->last_transaction->amount / 100;
+        } else {
+            $operation = $charge->lastTransaction->operationType;
+            $amount = $charge->lastTransaction->amount / 100;
+        }
+        if ($operation == 'capture') {
+            return $amount;
         }
 
         return 0;
@@ -102,8 +109,15 @@ class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_A
      */
     protected function getChargeCanceledAmount($charge)
     {
-        if ($charge->lastTransaction->operationType == 'cancel') {
-            return $charge->lastTransaction->amount / 100;
+        if ($charge->lastTransaction == null) {
+            $operation = $charge->last_transaction->operation_type;
+            $amount = $charge->last_transaction->amount / 100;
+        } else {
+            $operation = $charge->lastTransaction->operationType;
+            $amount = $charge->lastTransaction->amount / 100;
+        }
+        if ($operation == 'cancel') {
+            return $amount;
         }
 
         return 0;
