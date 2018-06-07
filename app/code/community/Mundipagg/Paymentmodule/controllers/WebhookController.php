@@ -50,10 +50,17 @@ class Mundipagg_Paymentmodule_WebhookController extends Mage_Core_Controller_Fro
 
                         return;
                     }
-
-                    $chargeOperations->markTransactionAsHandled(
+                    $lastTransaction = $body->data->last_transaction;
+                    $chargeOperations->setTransactionAsHandled(
                         $body->data->code,
-                        $body->data->last_transaction->id
+                        [
+                            'id' => $lastTransaction->id,
+                            'timestamp' => strtotime($lastTransaction->updated_at),
+                            'amount' => $lastTransaction->amount,
+                            'type' => $lastTransaction->operation_type,
+                            'chargeAmount' => $body->data->amount,
+                            'chargeId' => $body->data->id
+                        ]
                     );
 
                     $this->webhookChargeUpdate($body->data, $webhookAction);

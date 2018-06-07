@@ -98,9 +98,16 @@ class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mundipagg_Pa
                 }
             }
 
-            $chargeOperations->markTransactionAsHandled(
+            $chargeOperations->setTransactionAsHandled(
                 $charge->code,
-                $charge->lastTransaction->id
+                [
+                    'id' => $charge->lastTransaction->id,
+                    'timestamp' => $charge->lastTransaction->updatedAt->getTimestamp(),
+                    'amount' => $charge->lastTransaction->amount,
+                    'type' => $charge->lastTransaction->operationType,
+                    'chargeAmount' => $charge->amount,
+                    'chargeId' => $charge->id,
+                ]
             );
         }
 

@@ -9,17 +9,17 @@ class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_A
             Mage::getModel('paymentmodule/standard')
                 ->getAdditionalInformationForOrder($orderId);
 
-        if (!isset($additionalInformation['handledTransactions'])) {
+        if (!isset($additionalInformation['mundipagg_payment_handled_transactions'])) {
             return false;
         }
 
         return in_array(
             $transactionId,
-            $additionalInformation['handledTransactions']
+            $additionalInformation['mundipagg_payment_handled_transactions']
         );
     }
 
-    public function markTransactionAsHandled($orderId,$transactionId)
+    public function setTransactionAsHandled($orderId,$transaction)
     {
         $payment =
             Mage::getModel('paymentmodule/standard')
@@ -29,17 +29,32 @@ class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_A
             Mage::getModel('paymentmodule/standard')
                 ->getAdditionalInformationForOrder($orderId);
 
-        if (!isset($additionalInformation['handledTransactions'])) {
-            $additionalInformation['handledTransactions'] = [];
+        if (!isset($additionalInformation['mundipagg_payment_handled_transactions'])) {
+            $additionalInformation['mundipagg_payment_handled_transactions'] = [];
         }
 
-        if (!$this->isTransactionHandled($orderId,$transactionId)) {
+        if (!$this->isTransactionHandled($orderId,$transaction['id'])) {
+            $this->addTransactionHistoryToOrder($orderId,$transaction,$additionalInformation);
             array_push(
-                $additionalInformation['handledTransactions'],
-                $transactionId
+                $additionalInformation['mundipagg_payment_handled_transactions'],
+                $transaction['id']
             );
             $payment->setAdditionalInformation($additionalInformation);
             $payment->save();
+        }
+    }
+
+    public function addTransactionHistoryToOrder($orderId, $transaction, &$additionalInformation)
+    {
+        if (!isset($additionalInformation['mundipagg_payment_transaction_history'])) {
+            $additionalInformation['mundipagg_payment_transaction_history'] = [];
+        }
+
+        if (!$this->isTransactionHandled($orderId,$transaction['id'])) {
+            array_push(
+                $additionalInformation['mundipagg_payment_transaction_history'],
+                $transaction
+            );
         }
     }
 

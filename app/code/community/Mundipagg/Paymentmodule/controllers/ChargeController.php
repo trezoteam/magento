@@ -130,9 +130,16 @@ class Mundipagg_Paymentmodule_ChargeController extends Mage_Core_Controller_Fron
                 }
 
                 $chargeOperations = Mage::helper('paymentmodule/chargeoperations');
-                $chargeOperations->markTransactionAsHandled(
+                $chargeOperations->setTransactionAsHandled(
                     $response->code,
-                    $response->lastTransaction->id
+                    [
+                        'id' => $response->lastTransaction->id,
+                        'timestamp' => $response->lastTransaction->updatedAt->getTimestamp(),
+                        'amount' => $response->lastTransaction->amount,
+                        'type' => $response->lastTransaction->operationType,
+                        'chargeAmount' => $response->amount,
+                        'chargeId' => $response->id
+                    ]
                 );
 
                 $this->setResponse('200','Success');

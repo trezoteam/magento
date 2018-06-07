@@ -43,21 +43,39 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Order_Charge_Grid extends Mage_Adm
 
         $collection = new Varien_Data_Collection();
         array_walk($aditional['mundipagg_payment_module_charges'],
-            function ($item) use ($collection) {
+            function ($item) use ($collection,$aditional) {
                 $item['amount'] = $item['amount'] / 100;
 
-                if (!isset($item['paid_amount'])) {
-                    $item['paid_amount'] =  0.000000001;
-                    if ($item['last_transaction']['operation_type'] == 'capture') {
-                        $item['paid_amount'] = $item['last_transaction']['amount'];
+                $chargeHistory = array_filter(
+                    $aditional['mundipagg_payment_transaction_history'],
+                    function($history) use ($item){
+                        return $item['id'] == $history['chargeId'];
                     }
+                );
+
+                $captureTransactions = array_filter(
+                    $chargeHistory,
+                    function($history) {
+                        return $history['type'] == 'capture';
+                    }
+                );
+                $item['paid_amount'] = 0.000000001;
+                foreach ($captureTransactions as $capture) {
+                    $item['paid_amount'] += $capture['amount'];
                 }
                 $item['paid_amount'] = $item['paid_amount'] / 100;
 
-                $item['canceled_amount'] =  0.000000001;
-                if ($item['last_transaction']['operation_type'] == 'cancel') {
-                    $item['canceled_amount'] = $item['last_transaction']['amount'] / 100;
+                $canceledTransactions = array_filter(
+                    $chargeHistory,
+                    function($history) {
+                        return $history['type'] == 'cancel';
+                    }
+                );
+                $item['canceled_amount'] = 0.000000001;
+                foreach ($canceledTransactions as $canceled) {
+                    $item['canceled_amount'] += $canceled['amount'];
                 }
+                $item['canceled_amount'] = $item['canceled_amount'] / 100;
 
                 $rowObj = new Varien_Object();
                 $rowObj->setData($item);
