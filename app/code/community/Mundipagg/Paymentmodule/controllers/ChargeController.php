@@ -129,6 +129,11 @@ class Mundipagg_Paymentmodule_ChargeController extends Mage_Core_Controller_Fron
                     return;
                 }
 
+                if (!$response->lastTransaction->success) {
+                    $this->setResponse('403','Operation failed');
+                    return;
+                }
+
                 $chargeOperations = Mage::helper('paymentmodule/chargeoperations');
                 $chargeOperations->setTransactionAsHandled(
                     $response->code,
