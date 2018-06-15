@@ -43,8 +43,39 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Order_Charge_Grid extends Mage_Adm
 
         $collection = new Varien_Data_Collection();
         array_walk($aditional['mundipagg_payment_module_charges'],
-            function ($item) use ($collection) {
+            function ($item) use ($collection,$aditional) {
                 $item['amount'] = $item['amount'] / 100;
+
+                $chargeHistory = array_filter(
+                    $aditional['mundipagg_payment_transaction_history'],
+                    function($history) use ($item){
+                        return $item['id'] == $history['chargeId'];
+                    }
+                );
+
+                $captureTransactions = array_filter(
+                    $chargeHistory,
+                    function($history) {
+                        return $history['type'] == 'capture';
+                    }
+                );
+                $item['paid_amount'] = 0.000000001;
+                foreach ($captureTransactions as $capture) {
+                    $item['paid_amount'] += $capture['amount'];
+                }
+                $item['paid_amount'] = $item['paid_amount'] / 100;
+
+                $canceledTransactions = array_filter(
+                    $chargeHistory,
+                    function($history) {
+                        return $history['type'] == 'cancel';
+                    }
+                );
+                $item['canceled_amount'] = 0.000000001;
+                foreach ($canceledTransactions as $canceled) {
+                    $item['canceled_amount'] += $canceled['amount'];
+                }
+                $item['canceled_amount'] = $item['canceled_amount'] / 100;
 
                 $rowObj = new Varien_Object();
                 $rowObj->setData($item);
@@ -54,14 +85,18 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Order_Charge_Grid extends Mage_Adm
 
         return $collection;
     }
- 
+
+    /**
+     * @return Mage_Adminhtml_Block_Widget_Grid
+     * @throws Exception
+     */
     protected function _prepareColumns()
     {
         $helper = Mage::helper('paymentmodule/order');
         $currency = (string) Mage::getStoreConfig(Mage_Directory_Model_Currency::XML_PATH_CURRENCY_BASE);
  
         $this->addColumn('id', [
-            'header' => $helper->__('Charge Id'),
+            'header' => $this->__('Charge Id'),
             'index'  => 'id',
             'filter' => false,
             'sortable'  => false,
@@ -70,6 +105,24 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Order_Charge_Grid extends Mage_Adm
         $this->addColumn('amount', [
             'header' => $this->__('Amount'),
             'index'  => 'amount',
+            'type'   => 'currency',
+            'currency_code' => $currency,
+            'filter' => false,
+            'sortable'  => false
+        ]);
+
+        $this->addColumn('paid_amount', [
+            'header' => $this->__('Captured Amount'),
+            'index'  => 'paid_amount',
+            'type'   => 'currency',
+            'currency_code' => $currency,
+            'filter' => false,
+            'sortable'  => false
+        ]);
+
+        $this->addColumn('canceled_amount', [
+            'header' => $this->__('Canceled Amount'),
+            'index'  => 'canceled_amount',
             'type'   => 'currency',
             'currency_code' => $currency,
             'filter' => false,
@@ -89,8 +142,7 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Order_Charge_Grid extends Mage_Adm
             'filter' => false,
             'sortable'  => false
         ]);
-/*
-        Descomentar esse trecho para adicionar os botões de ações
+
         $this->addColumn('action_capture', [
             'header' => $helper->__(''),
             'width'     => '5%',
@@ -98,9 +150,10 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Order_Charge_Grid extends Mage_Adm
             'getter'     => 'getId',
             'actions'   => [
                 [
-                    'caption' => Mage::helper('sales')->__('Capturar'),
-                    'onclick' => 'javascript();',
-                    'field'   => 'id'
+                    'caption' => $this->__('Capture'),
+                    'onclick' => 'javascript:showChargeDialog("Capture",this);',
+                    'field'   => 'id',
+                    'class'   => 'form-button'
                 ]
             ],
             'filter'    => false,
@@ -115,16 +168,17 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Order_Charge_Grid extends Mage_Adm
             'getter'     => 'getId',
             'actions'   => [
                 [
-                    'caption' => Mage::helper('sales')->__('Cancelar'),
-                    'onclick' => 'javascript();',
-                    'field'   => 'id'
+                    'caption' => $this->__('Cancel'),
+                    'onclick' => 'javascript:showChargeDialog("Cancel",this);',
+                    'field'   => 'id',
+                    'class'   => 'form-button'
                 ]
             ],
             'filter'    => false,
             'sortable'  => false,
             'is_system' => true,
         ]);
- */
+
         return parent::_prepareColumns();
     }
  
