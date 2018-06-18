@@ -2,6 +2,12 @@
 
 class Mundipagg_Paymentmodule_Adminhtml_ChargeController extends Mage_Adminhtml_Controller_Action
 {
+    public function preDispatch()
+    {
+        parent::preDispatch();
+        Mage::helper('paymentmodule/exception')->initExceptionHandler();
+    }
+
     public function indexAction()
     {
         $this->loadLayout();

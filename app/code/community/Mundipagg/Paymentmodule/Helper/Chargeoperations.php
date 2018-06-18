@@ -2,11 +2,67 @@
 
 class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_Abstract
 {
+
+    public function isTransactionHandled($orderId, $transactionId)
+    {
+        $additionalInformation =
+            Mage::getModel('paymentmodule/standard')
+                ->getAdditionalInformationForOrder($orderId);
+
+        if (!isset($additionalInformation['mundipagg_payment_handled_transactions'])) {
+            return false;
+        }
+
+        return in_array(
+            $transactionId,
+            $additionalInformation['mundipagg_payment_handled_transactions']
+        );
+    }
+
+    public function setTransactionAsHandled($orderId, $transaction)
+    {
+        $payment =
+            Mage::getModel('paymentmodule/standard')
+                ->getOrderByIncrementOrderId($orderId)
+                ->getPayment();
+        $additionalInformation =
+            Mage::getModel('paymentmodule/standard')
+                ->getAdditionalInformationForOrder($orderId);
+
+        if (!isset($additionalInformation['mundipagg_payment_handled_transactions'])) {
+            $additionalInformation['mundipagg_payment_handled_transactions'] = [];
+        }
+
+        if (!$this->isTransactionHandled($orderId,$transaction['id'])) {
+            $this->addTransactionHistoryToOrder($orderId, $transaction, $additionalInformation);
+            array_push(
+                $additionalInformation['mundipagg_payment_handled_transactions'],
+                $transaction['id']
+            );
+            $payment->setAdditionalInformation($additionalInformation);
+            $payment->save();
+        }
+    }
+
+    public function addTransactionHistoryToOrder($orderId, $transaction, &$additionalInformation)
+    {
+        if (!isset($additionalInformation['mundipagg_payment_transaction_history'])) {
+            $additionalInformation['mundipagg_payment_transaction_history'] = [];
+        }
+
+        if (!$this->isTransactionHandled($orderId, $transaction['id'])) {
+            array_push(
+                $additionalInformation['mundipagg_payment_transaction_history'],
+                $transaction
+            );
+        }
+    }
+
     /**
      * @param string $methodName
      * @param stdClass $charge
      */
-    public function paidMethods($methodName, $charge)
+    public function paidMethods($methodName, $charge, $extraComment = '', $manual = false)
     {
         $orderId = $charge->code;
         $chargeId = $charge->id;
@@ -19,6 +75,11 @@ class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_A
 
             $paidAmount = $this->getChargePaidAmount($charge);
             $formattedPaidAmount = $moneyHelper->toCurrencyFormat($paidAmount);
+            if ($manual) {
+                $formattedPaidAmount =
+                    'Updated manually through the module. Value: ' .
+                    $formattedPaidAmount;
+            }
 
             $invoiceHelper->addInvoiceToOrder($order, $paidAmount);
             $this->updateChargeInfo($methodName, $charge, $formattedPaidAmount);
@@ -29,7 +90,7 @@ class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_A
      * @param string $methodName
      * @param stdClass $charge
      */
-    public function canceledMethods($methodName, $charge, $extraComment = '')
+    public function canceledMethods($methodName, $charge, $extraComment = '', $manual = false)
     {
         $orderId = $charge->code;
         $order =
@@ -41,6 +102,12 @@ class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_A
 
         if ($canceledAmount) {
             $extraComment .= $moneyHelper->toCurrencyFormat($canceledAmount);
+        }
+
+        if ($manual) {
+            $extraComment =
+                'MP - Charge canceled: Updated manually through the module. Value: ' .
+                $moneyHelper->toCurrencyFormat($canceledAmount);
         }
 
         if ($order->getTotalPaid() > 0) {
@@ -78,12 +145,18 @@ class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_A
      */
     protected function getChargePaidAmount($charge)
     {
-        $field = 'paid_amount';
-        if (!isset($charge->$field)) {
-            $field = 'amount';
+        if ($charge->lastTransaction == null) {
+            $operation = $charge->last_transaction->operation_type;
+            $amount = $charge->last_transaction->amount / 100;
+        } else {
+            $operation = $charge->lastTransaction->operationType;
+            $amount = $charge->lastTransaction->amount / 100;
+        }
+        if ($operation == 'capture') {
+            return $amount;
         }
 
-        return $charge->$field / 100;
+        return 0;
     }
 
     /**
@@ -92,8 +165,15 @@ class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_A
      */
     protected function getChargeCanceledAmount($charge)
     {
-        if (isset($charge->canceled_amount)) {
-            return $charge->canceled_amount / 100;
+        if ($charge->lastTransaction == null) {
+            $operation = $charge->last_transaction->operation_type;
+            $amount = $charge->last_transaction->amount / 100;
+        } else {
+            $operation = $charge->lastTransaction->operationType;
+            $amount = $charge->lastTransaction->amount / 100;
+        }
+        if ($operation == 'cancel') {
+            return $amount;
         }
 
         return 0;
