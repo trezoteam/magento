@@ -58,6 +58,16 @@
                         <![CDATA[<br><a href="http://www.mundipagg.com.br" target="_blank"><img title="MundiPagg" alt="MundiPagg" width="200" src="/skin/adminhtml/default/default/images/mundipagg/mundipagg-colorida.svg"/></a><br><br><br>]]>
                     </comment>
                     <fields>
+                        <module_version translate="label">
+                            <label>Version</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>Mundipagg_Paymentmodule_Block_Adminhtml_Version</frontend_model>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </module_version>
+
                         <heading_basic_config translate="label" module="paymentmodule">
                             <label>Module Basic Configuration</label>
                             <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
