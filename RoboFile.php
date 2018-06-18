@@ -54,6 +54,9 @@ class RoboFile extends \Robo\Tasks
             throw new Exception("Missing param: version number");
         }
 
+        //Prevent missing files running modman
+        $this->taskExec('modman repair')->run();
+
         $currentVersion = $this->currentVersion;
 
         $this->taskReplaceInFile($this->configXml)
