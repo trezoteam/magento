@@ -141,27 +141,27 @@ class Mundipagg_Paymentmodule_Model_Config_Card
         return Mage::getStoreConfig('mundipagg_config/installments_group/mastercard_incremental_interest');
     }
 
-    public function isHiperEnabled()
+    public function isHipercardEnabled()
     {
         return Mage::getStoreConfig('mundipagg_config/installments_group/hipercard_status');
     }
 
-    public function getHiperInterest()
+    public function getHipercardInterest()
     {
         return Mage::getStoreConfig('mundipagg_config/installments_group/hipercard_interest');
     }
 
-    public function getHiperMaxInstallmentsWithoutInterest()
+    public function getHipercardMaxInstallmentsWithoutInterest()
     {
         return Mage::getStoreConfig('mundipagg_config/installments_group/hipercard_max_no_interest');
     }
 
-    public function getHiperMaxInstallmentsNumber()
+    public function getHipercardMaxInstallmentsNumber()
     {
         return Mage::getStoreConfig('mundipagg_config/installments_group/hipercard_max_installments');
     }
 
-    public function getHiperIncrementalInterest()
+    public function getHipercardIncrementalInterest()
     {
         return Mage::getStoreConfig('mundipagg_config/installments_group/hipercard_incremental_interest');
     }

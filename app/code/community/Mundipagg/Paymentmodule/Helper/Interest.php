@@ -5,7 +5,7 @@ class Mundipagg_Paymentmodule_Helper_Interest extends Mage_Core_Helper_Abstract
     public function getInterestValue($installmentNum,$orderTotal,$cards = null,$cardBrand = 'default')
     {
         $installmentHelper = Mage::helper('paymentmodule/installment');
-        $allInstallments = $installmentHelper->getInstallments($orderTotal,$cards);
+        $allInstallments = $installmentHelper->getInstallments($orderTotal, $cards);
 
         $installmentInterest = 0;
 

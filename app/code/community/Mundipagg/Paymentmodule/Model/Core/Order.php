@@ -107,14 +107,18 @@ class Mundipagg_Paymentmodule_Model_Core_Order  extends Mundipagg_Paymentmodule_
         $totalInterest = 0;
 
         if ($method == 'creditcard') {
+
             $data = array_map(function ($item) use (&$totalInterest) {
-                $interest = $this->getInterestHelper()
-                    ->getInterestValue(
+                $interestHelper = $this->getInterestHelper();
+                $enabledBrands = $this->getConfigCards()->getEnabledBrands();
+
+                $interest = $interestHelper->getInterestValue(
                         $item['creditCardInstallments'],
                         $item['value'],
-                        $this->getConfigCards()->getEnabledBrands(),
+                        $enabledBrands,
                         $item['brand']
                     );
+
                 $item['value'] = $item['value'] + $interest;
                 $item['interest'] = $interest;
                 $totalInterest += $interest;
