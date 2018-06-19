@@ -16,30 +16,27 @@ class Mundipagg_Paymentmodule_Helper_Address extends Mage_Core_Helper_Abstract
 
     protected function getAddress($method, $order = null) {
         $standard = Mage::getModel('paymentmodule/standard');
+        $addressModel = Mage::getModel('paymentmodule/config_address');
         $checkoutSession = $standard->getCheckoutSession();
 
         $orderId = $checkoutSession->getLastOrderId();
         $order = $standard->getOrderByOrderId($orderId);
         $baseAddress = $order->$method();
+        $streetLines = $baseAddress->getStreet();
         $regionId = $baseAddress->getRegionId();
         $address = new Varien_Object();
 
-        list(
-            $customerStreet,
-            $customerNumber,
-            $customerComplement,
-            $customerNeighborhood
-            ) = $baseAddress->getStreet();
+        $customerStreet =
+            $this->splitStreetLines($streetLines, $addressModel->getStreet());
 
-        if (strlen($customerStreet) === 0) {
-            $customerStreet = self::NULL_ADDRESS_PLACE_HOLDER;
-        }
-        if (strlen($customerNumber) === 0) {
-            $customerNumber = self::NULL_ADDRESS_PLACE_HOLDER;
-        }
-        if (strlen($customerNeighborhood) === 0) {
-            $customerNeighborhood = self::NULL_ADDRESS_PLACE_HOLDER;
-        }
+        $customerNumber =
+            $this->splitStreetLines($streetLines, $addressModel->getNumber());
+
+        $customerComplement =
+            $this->splitStreetLines($streetLines, $addressModel->getComplement());
+
+        $customerNeighborhood =
+            $this->splitStreetLines($streetLines, $addressModel->getNeighborhood());
 
         $address->setStreet($customerStreet);
         $address->setNumber($customerNumber);
@@ -66,5 +63,16 @@ class Mundipagg_Paymentmodule_Helper_Address extends Mage_Core_Helper_Abstract
         $region = $standard->getRegionModel()->load($regionId);
 
         return $region->getCode();
+    }
+
+    protected function splitStreetLines($streetLines, $streetId)
+    {
+        $street = explode('_', $streetId);
+
+        if (isset($street[1]) && isset($streetLines[$street[1] -1])) {
+            return $streetLines[$street[1] -1];
+        }
+
+        return self::NULL_ADDRESS_PLACE_HOLDER;
     }
 }
