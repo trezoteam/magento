@@ -9,11 +9,13 @@ class Mundipagg_Paymentmodule_Helper_Address extends Mage_Core_Helper_Abstract
        return $this->getAddress('getBillingAddress');
     }
 
-    public function getShippingAddressInformation($order = null) {
+    public function getShippingAddressInformation($order = null)
+    {
         return $this->getAddress('getShippingAddress', $order);
     }
 
-    protected function getAddress($method, $order = null) {
+    protected function getAddress($method)
+    {
         $standard = Mage::getModel('paymentmodule/standard');
         $addressModel = Mage::getModel('paymentmodule/config_address');
         $checkoutSession = $standard->getCheckoutSession();
@@ -76,6 +78,5 @@ class Mundipagg_Paymentmodule_Helper_Address extends Mage_Core_Helper_Abstract
         });
 
         return $customerAddress;
-
     }
 }
