@@ -158,7 +158,8 @@
                     <fields>
                         <street translate="label">
                             <label>Street</label>
-                            <frontend_type>text</frontend_type>
+                            <frontend_type>select</frontend_type>
+                            <source_model>Mundipagg_Paymentmodule_Model_StreetFields</source_model>
                             <sort_order>0</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -166,7 +167,8 @@
                         </street>
                         <number translate="label">
                             <label>Number</label>
-                            <frontend_type>text</frontend_type>
+                            <frontend_type>select</frontend_type>
+                            <source_model>Mundipagg_Paymentmodule_Model_StreetFields</source_model>
                             <sort_order>0</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -174,7 +176,8 @@
                         </number>
                         <complement translate="label">
                             <label>Complement</label>
-                            <frontend_type>text</frontend_type>
+                            <frontend_type>select</frontend_type>
+                            <source_model>Mundipagg_Paymentmodule_Model_StreetFields</source_model>
                             <sort_order>0</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -182,8 +185,8 @@
                         </complement>
                         <neighborhood translate="label">
                             <label>Neighborhood</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>0</sort_order>
+                            <frontend_type>select</frontend_type>
+                            <source_model>Mundipagg_Paymentmodule_Model_StreetFields</source_model>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>

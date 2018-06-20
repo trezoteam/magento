@@ -2,7 +2,6 @@
 
 class Mundipagg_Paymentmodule_Helper_Address extends Mage_Core_Helper_Abstract
 {
-
     const NULL_ADDRESS_PLACE_HOLDER = '-';
 
     public function getCustomerAddressInformation()
@@ -22,28 +21,21 @@ class Mundipagg_Paymentmodule_Helper_Address extends Mage_Core_Helper_Abstract
         $orderId = $checkoutSession->getLastOrderId();
         $order = $standard->getOrderByOrderId($orderId);
         $baseAddress = $order->$method();
-        $streetLines = $baseAddress->getStreet();
-        $regionId = $baseAddress->getRegionId();
+        $region = $this->getStateByRegionId($baseAddress->getRegionId());
         $address = new Varien_Object();
 
-        $customerStreet =
-            $this->splitStreetLines($streetLines, $addressModel->getStreet());
+        $customerAddress =
+            $this->fillCustomerAddressArray(
+                $baseAddress->getStreet(),
+                $addressModel
+            );
 
-        $customerNumber =
-            $this->splitStreetLines($streetLines, $addressModel->getNumber());
-
-        $customerComplement =
-            $this->splitStreetLines($streetLines, $addressModel->getComplement());
-
-        $customerNeighborhood =
-            $this->splitStreetLines($streetLines, $addressModel->getNeighborhood());
-
-        $address->setStreet($customerStreet);
-        $address->setNumber($customerNumber);
-        $address->setComplement($customerComplement);
-        $address->setNeighborhood($customerNeighborhood);
+        $address->setStreet($customerAddress[0]);
+        $address->setNumber($customerAddress[1]);
+        $address->setComplement($customerAddress[2]);
+        $address->setNeighborhood($customerAddress[3]);
         $address->setCity($baseAddress->getCity());
-        $address->setState($this->getStateByRegionId($regionId));
+        $address->setState($region);
         $address->setCountry($baseAddress->getCountryId());
         $address->setZipCode($baseAddress->getPostcode());
         $address->setMetadata(null);
@@ -65,14 +57,25 @@ class Mundipagg_Paymentmodule_Helper_Address extends Mage_Core_Helper_Abstract
         return $region->getCode();
     }
 
-    protected function splitStreetLines($streetLines, $streetId)
+    protected function fillCustomerAddressArray($streetLines, $addressModel)
     {
-        $street = explode('_', $streetId);
+        $methods = ['getStreet','getNumber','getComplement','getNeighborhood'];
+        $customerAddress = [];
 
-        if (isset($street[1]) && isset($streetLines[$street[1] -1])) {
-            return $streetLines[$street[1] -1];
-        }
+        array_walk($methods, function($method, $index)
+            use (&$customerAddress, $addressModel, $streetLines) {
+            $customerAddress[$index] = self::NULL_ADDRESS_PLACE_HOLDER;
+            $streetLinesIndex = $addressModel->$method();
 
-        return self::NULL_ADDRESS_PLACE_HOLDER;
+            if (
+                isset($streetLines[$streetLinesIndex]) &&
+                $streetLines[$streetLinesIndex] !== ''
+            ) {
+                $customerAddress[$index] = $streetLines[$streetLinesIndex];
+            }
+        });
+
+        return $customerAddress;
+
     }
 }

@@ -196,10 +196,10 @@
                 <test_mode>1</test_mode>
             </general_group>
             <address_group>
-                <street>street_1</street>
-                <number>street_2</number>
-                <complement>street_3</complement>
-                <neighborhood>street_4</neighborhood>
+                <street>0</street>
+                <number>1</number>
+                <complement>2</complement>
+                <neighborhood>3</neighborhood>
             </address_group>
             <boleto_group>
                <boleto_status>0</boleto_status>
