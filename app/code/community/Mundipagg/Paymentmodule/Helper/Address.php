@@ -69,10 +69,7 @@ class Mundipagg_Paymentmodule_Helper_Address extends Mage_Core_Helper_Abstract
             $customerAddress[$index] = self::NULL_ADDRESS_PLACE_HOLDER;
             $streetLinesIndex = $addressModel->$method();
 
-            if (
-                isset($streetLines[$streetLinesIndex]) &&
-                $streetLines[$streetLinesIndex] !== ''
-            ) {
+            if (!empty($streetLines[$streetLinesIndex])) {
                 $customerAddress[$index] = $streetLines[$streetLinesIndex];
             }
         });
