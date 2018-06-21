@@ -52,6 +52,6 @@ class Mundipagg_Paymentmodule_WalletController extends Mage_Core_Controller_Fron
             }
         }
 
-        $this->_redirect('mundipagg/wallet/', ['_secure' => true]);
+        $this->_redirect('mp-paymentmodule/wallet/', ['_secure' => true]);
     }
 }
