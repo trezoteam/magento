@@ -34,6 +34,7 @@ class Mundipagg_Paymentmodule_Model_Api_Order
 
             $helperLog->info("Response");
             $helperLog->info(json_encode($response,JSON_PRETTY_PRINT));
+            
             return $response;
         } catch (\Exception $e) {
             $helperLog->error("Exception: " . $e->getMessage());

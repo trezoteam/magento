@@ -46,7 +46,7 @@ class Mundipagg_Paymentmodule_Model_Standard extends Mage_Payment_Model_Method_A
         $paymentMethod = $data->getMethod();
 
         $helperPayment = $this->getHelperPayment();
-        $paymentData = $helperPayment->getFormatedData($data->getData(), $paymentMethod);
+        $paymentData = $helperPayment->getFormattedData($data->getData(), $paymentMethod);
 
         try {
             $info = $this->getInfoInstance();

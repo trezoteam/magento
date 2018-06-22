@@ -22,7 +22,7 @@ class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mundipagg_Pa
 
         $response = $apiOrder->createPayment($paymentInfo);
 
-        $this->handleOrderResponse($response);
+        return $this->handleOrderResponse($response);
     }
 
     /**
@@ -40,16 +40,26 @@ class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mundipagg_Pa
             gettype($response) !== 'object' ||
             get_class($response) != GetOrderResponse::class
         ) {
-            $this->handleOrderFailure($response);
+            $this->handleCreateOrderError($response);
             $redirectTo->orderFailure();
-            return;
+
+            return false;
+        }
+
+        if ($response->status === 'failed') {
+            $this->handleOrderStatusFailed($response);
+            $redirectTo->orderFailure();
+
+            return false;
         }
 
         $this->handleOrderSuccess($response);
         $redirectTo->orderSuccess();
+
+        return true;
     }
 
-    private function handleOrderFailure($response)
+    private function handleCreateOrderError($response)
     {
         $helperLog = Mage::helper('paymentmodule/log');
         $orderId = $this->lastRealOrderId;
@@ -57,9 +67,24 @@ class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mundipagg_Pa
         $helperLog->error(json_encode($response,JSON_PRETTY_PRINT));
     }
 
+    private function handleOrderStatusFailed($response)
+    {
+        if (!empty($response->code) && is_object($response->charges[0])) {
+            $chargeHelper = Mage::helper('paymentmodule/charge');
+            $order = $this->getOrderByIncrementOrderId($response->code);
+
+            foreach ($response->charges as $chargeIndex => $charge) {
+                $chargeHelper->updateStatus($charge, $charge->status);
+            }
+
+            $order->cancel()->save();
+        }
+    }
+
     private function handleOrderSuccess($response)
     {
         $chargeHelper = Mage::helper('paymentmodule/charge');
+        $orderHelper = Mage::helper('paymentmodule/order');
 
         $savedCreditCard = Mage::helper('paymentmodule/savedcreditcard');
         $savedCreditCard->saveCards($response);
@@ -112,12 +137,17 @@ class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mundipagg_Pa
         }
 
         if(count($boletosInfo) > 0) {
-            //update additional information with boleto links.
-            $additionalInformation[$paymentMethod]['boleto'] = $boletosInfo;
-            $payment = $standard->getOrderByIncrementOrderId($orderId)->getPayment();
-            $payment->setAdditionalInformation($paymentMethod, $additionalInformation[$paymentMethod]);
-            $payment->save();
+            $this->updateAdditionalInformationWithBoletoLink(
+                $paymentMethod,
+                $additionalInformation,
+                $boletosInfo,
+                $standard,
+                $orderId
+            );
         }
+
+        //Update magento order status
+        $orderHelper->updateStatus($response, $response->status);
     }
 
     /**
@@ -228,5 +258,22 @@ class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mundipagg_Pa
         }
 
         return $items;
+    }
+
+    protected function updateAdditionalInformationWithBoletoLink(
+        $paymentMethod,
+        $additionalInformation,
+        $boletosInfo,
+        $standard,
+        $orderId
+    )
+    {
+        $additionalInformation[$paymentMethod]['boleto'] = $boletosInfo;
+        $payment = $standard->getOrderByIncrementOrderId($orderId)->getPayment();
+        $payment->setAdditionalInformation(
+            $paymentMethod,
+            $additionalInformation[$paymentMethod]
+        );
+        $payment->save();
     }
 }
