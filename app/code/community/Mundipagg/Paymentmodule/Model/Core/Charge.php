@@ -77,6 +77,15 @@ class Mundipagg_Paymentmodule_Model_Core_Charge extends Mundipagg_Paymentmodule_
     /**
      * Same as canceled
      * @param $charge
+     */
+    protected function failed($charge)
+    {
+        $this->canceled($charge);
+    }
+
+    /**
+     * Same as canceled
+     * @param $charge
      * @throws Varien_Exception
      */
     protected function paymentFailed($charge)

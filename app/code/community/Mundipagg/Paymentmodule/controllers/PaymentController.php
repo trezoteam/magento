@@ -26,8 +26,7 @@ class Mundipagg_Paymentmodule_PaymentController extends Mage_Core_Controller_Fro
         $model = Mage::getModel($methodModel);
 
         if ($model !== false) {
-            $model->processPayment($methodName);
-            return;
+            return $model->processPayment($methodName);
         }
 
         $this->_redirect('checkout/onepage/failure', ['_secure' => true]);

@@ -152,7 +152,7 @@ class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_A
             $operation = $charge->lastTransaction->operationType;
             $amount = $charge->lastTransaction->amount / 100;
         }
-        if ($operation == 'capture') {
+        if ($operation == 'auth_and_capture') {
             return $amount;
         }
 
@@ -194,7 +194,8 @@ class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_A
         $comment = $orderEnum->{$type}();
         $comment .= $extraComment . '<br>';
         $comment .= 'Charge id: ' . $charge->id . '<br>';
-        $comment .= 'Event: ' . $type;
+        $comment .= 'Event: ' . $type . '<br>';
+        $comment .= "Acquirer messange: " . $charge->lastTransaction->acquirerMessage;
 
         return $comment;
     }
