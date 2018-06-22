@@ -152,7 +152,12 @@ class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_A
             $operation = $charge->lastTransaction->operationType;
             $amount = $charge->lastTransaction->amount / 100;
         }
-        if ($operation == 'auth_and_capture') {
+
+        //To values for synchronous and asynchronous
+        if (
+            $operation == 'auth_and_capture' ||
+            $operation == 'capture'
+        ) {
             return $amount;
         }
 
