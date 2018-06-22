@@ -2,7 +2,7 @@
 
 class Mundipagg_Paymentmodule_Helper_Paymentformat extends Mage_Core_Helper_Abstract
 {
-    public function getFormatedData($data, $paymentMethod)
+    public function getFormattedData($data, $paymentMethod)
     {
         $result = array_filter(
             $data,
@@ -76,9 +76,10 @@ class Mundipagg_Paymentmodule_Helper_Paymentformat extends Mage_Core_Helper_Abst
 
     protected function getAmountFromPaymentData($paymentData)
     {
+        $monetary = Mage::helper('paymentmodule/monetary');
         $amount = 0;
         foreach ($paymentData as $payment) {
-            $amount += (float) str_replace(",", ".", $payment['value']);
+            $amount += $monetary->toFloat($payment['value']);
         }
 
         return $amount;

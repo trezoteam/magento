@@ -6,13 +6,18 @@ class Mundipagg_Paymentmodule_Helper_Monetary extends Mage_Core_Helper_Abstract
         return floatval($amount) * 100;
     }
 
+    public function toFloat($amount)
+    {
+        return preg_replace('/[^0-9]/', '', $amount) / 100;
+    }
+
     public function toCurrencyFormat($amountInCents)
     {
         return Mage::helper('core')->currency($amountInCents, true, false);
     }
 
     public function formatDecimals($number) {
-        return number_format($number, 2);
+        return number_format($number, 2, ',', '.');
     }
 
     public function getCurrentCurrencySymbol()
