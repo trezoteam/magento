@@ -36,6 +36,6 @@ class Mundipagg_Paymentmodule_Model_Boleto extends Mundipagg_Paymentmodule_Model
         /**
          * @todo Validate payment
          */
-        return;
+        return true;
     }
 }
