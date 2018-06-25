@@ -33,12 +33,6 @@ class Mundipagg_Paymentmodule_Model_Boleto extends Mundipagg_Paymentmodule_Model
 
     public function validatePaymentData($paymentData)
     {
-        foreach ($paymentData as $boleto) {
-            if (!isset($boleto['taxvat'])) {
-                return false;
-            }
-        }
-
         return true;
     }
 }
