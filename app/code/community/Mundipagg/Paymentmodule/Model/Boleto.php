@@ -33,6 +33,9 @@ class Mundipagg_Paymentmodule_Model_Boleto extends Mundipagg_Paymentmodule_Model
 
     public function validatePaymentData($paymentData)
     {
-        return true;
+        /**
+         * @todo Validate payment
+         */
+        return;
     }
 }
