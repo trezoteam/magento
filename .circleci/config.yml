@@ -58,6 +58,7 @@ jobs:
              cp .circleci/data/Dockerfile .
              cp .circleci/data/wait-for-mysql.sh .
              cp .circleci/data/magento_module_install.sql .
+             cp .circleci/data/brazilian_states.sql .
       - run:
           name: Build image base for modifications
           command: |
@@ -74,11 +75,13 @@ jobs:
       - run:
           name: Activate and setup Plugin
           command: |
-             docker exec -it newimage /root/bin/modman repair
+             docker exec -it newimage /root/bin/modman repair --force
              docker exec -it newimage /bin/sh -c "ls"
              docker exec -it newimage php index.php
              docker exec -it newimage /bin/sh -c \
                "mysql magento < /app/.modman/magento/magento_module_install.sql"
+             docker exec -it newimage /bin/sh -c \
+                            "mysql magento < /app/.modman/magento/brazilian_states.sql"
              docker exec -it newimage mysql magento -e \
                "INSERT INTO magento.core_config_data (scope, scope_id, path, value) VALUES \
                ('default', 0, 'mundipagg_config/general_group/sk_test', '${API_TEST_SECRET_KEY}'), \
@@ -97,7 +100,7 @@ jobs:
                "cd /app/.modman/magento && \
                rm -rf .github .circleci .git .gitignore && \
                rm -rf Dockerfile wait-for-mysql.sh \
-               magento_module_install.sql LICENSE *.MD"
+               magento_module_install.sql brazilian_states.sql LICENSE *.MD"
       - deploy:
           name: Commit and push Docker image
           command: |
