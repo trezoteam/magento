@@ -1,0 +1,9 @@
+default:
+    extensions:
+        Behat\MinkExtension:
+            goutte: ~
+            selenium2:
+                browser: chrome
+
+
+
