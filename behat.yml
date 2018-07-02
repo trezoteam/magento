@@ -1,9 +1,10 @@
 default:
     extensions:
-        Behat\MinkExtension:
-            goutte: ~
-            selenium2:
-                browser: chrome
-
-
-
+        Behat\MinkExtension\Extension:
+          base_url: http://m1m1.localhost
+          browser_name: chrome
+          default_session: selenium2
+          goutte: ~
+          selenium2:
+              wd_host: 127.0.0.1:9515
+              browser: chrome
