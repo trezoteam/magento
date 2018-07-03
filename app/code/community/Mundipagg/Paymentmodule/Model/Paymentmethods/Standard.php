@@ -251,8 +251,7 @@ class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mundipagg_Pa
 
                 $itemInfo['amount'] = round($item->getPrice() * 100);
                 $itemInfo['quantity'] = (int) $item->getQtyOrdered();
-                $itemInfo['description'] = 'item description';
-
+                $itemInfo['description'] = $item->getName();
                 $items[] = $itemInfo;
             }
         }
