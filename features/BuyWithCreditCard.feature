@@ -1,6 +1,5 @@
-Feature: Visa Credit Card Order
-
-  Scenario: Buying a product with boleto
+Feature: Create order with boleto
+  Scenario: Buying a product with credit card
     Given I am on "/index.php/catalog/product/view/id/1"
     Then I wait for text "ADD TO CART" to appear, for 10 seconds
     And I click in element ".btn-cart"
@@ -9,7 +8,7 @@ Feature: Visa Credit Card Order
     And I wait for text "Register and Checkout" to appear, for 10 seconds
     And I click in element "#checkout-step-login div div ul li:last-child input"
     And I click in element "#onepage-guest-register-button"
-    When I fill in "billing:firstname" with "Teste"
+    And I fill in "billing:firstname" with "Teste"
     And I fill in "billing:lastname" with "Teste"
     And I fill in "billing:email" with a random email
     And I fill in "billing:street1" with "Teste Rua"
@@ -35,8 +34,9 @@ Feature: Visa Credit Card Order
     And I click in element "#review-buttons-container button"
     And I wait for text "Clique aqui para" to appear, for 10 seconds
     And I click in element "#mundipagg-checkout-success-order-info a"
-    And document should open in new tab
-    Then I wait for text "Instruções de Impressão" to appear, for 10 seconds
+    When document should open in new tab
+    Then I wait for text "R$ 105,00" to appear, for 15 seconds
+
 #    And I click in element "#p_method_paymentmodule_creditcard"
 #    And I fill in "paymentmodule_creditcard_creditcard_1_mundicheckout-number" with "4916318338556377"
 #    And I fill in "paymentmodule_creditcard_creditcard_1_mundicheckout-holdername" with "Teste Teste"
@@ -46,4 +46,4 @@ Feature: Visa Credit Card Order
 #    And I click in element "#paymentmodule_creditcard_creditcard_1_mundicheckout-creditCard-installments"
 #    And I click in element "#paymentmodule_creditcard_creditcard_1_mundicheckout-cvv"
 #    And I wait for text "1x de R$105,00 sem juros , Total: R$105,00" to appear, for 10 seconds
-#    And I select "1x de R$105,00 sem juros , Total: R$105,00" from "paymentmodule_creditcard_creditcard_1_mundicheckout-expyear"
+#    And I select "1x de R$105,00 sem juros , Total: R$105,00" from "paymentmodule_creditcard_creditcard_1_mundicheckout-expy
