@@ -110,19 +110,6 @@
     </div>
 
     <div class="input-box">
-        <label><?php echo $this->__('State'); ?> <span class="required"></span></label><br/>
-        <select
-                type="text"
-                id="<?php echo "$elementId"?>_multi_buyer_state"
-                name="payment[<?php echo "$elementId"?>_multiBuyerState]"
-                disabled="true"
-                class="required-entry"
-                >
-            <option value=""><?php echo $this->__('Select an Country'); ?></option>
-        </select>
-    </div>
-
-    <div class="input-box">
         <label><?php echo $this->__('Country'); ?> <span class="required"></span></label><br/>
         <select
                 id="<?php echo "$elementId"?>_multi_buyer_country"
@@ -140,4 +127,17 @@
             ?>
         </select>
     </div>
+
+    <div class="input-box">
+        <label><?php echo $this->__('State'); ?> <span class="required"></span></label><br/>
+        <select
+                type="text"
+                id="<?php echo "$elementId"?>_multi_buyer_state"
+                name="payment[<?php echo "$elementId"?>_multiBuyerState]"
+                disabled="true"
+                class="required-entry"
+        >
+            <option value=""><?php echo $this->__('Select an Country'); ?></option>
+        </select>
+    </div> 
 </div>
