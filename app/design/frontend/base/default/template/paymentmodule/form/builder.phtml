@@ -7,6 +7,15 @@ $orderTotal = $this->getGrandTotal();
     <ul id="payment_form_<?php echo $_code; ?>" style="display:none;">
         <li>
             <div>
+                <?php if(count($structure) > 1) { ?>
+                    <br>
+                    <h3 class="mundipaggMultiPaymentSubtotal">
+                        <?php echo $this->__('Subtotal'); ?>
+                        <span class="<?php echo $_code; ?>_subtotal">
+                            <?php echo $this->toCurrencyFormat($orderTotal); ?>
+                        </span>
+                    </h3>
+                <?php } ?>
                 <ul >
                     <?php foreach($structure as $element): ?>
                     <li style="clear:both">

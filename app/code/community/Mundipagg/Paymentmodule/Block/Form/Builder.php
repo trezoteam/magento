@@ -100,4 +100,15 @@ class Mundipagg_Paymentmodule_Block_Form_Builder extends Mundipagg_Paymentmodule
 
         return $grandTotal;
     }
+
+    public function toCurrencyFormat($amount)
+    {
+        $moneyHelper = Mage::helper('paymentmodule/monetary');
+        return $moneyHelper->toCurrencyFormat($amount);
+    }
+
+    public function countPaymentMethods()
+    {
+        return $this->getElementCount();
+    }
 }
