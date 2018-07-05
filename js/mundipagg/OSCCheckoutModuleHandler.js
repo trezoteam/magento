@@ -42,6 +42,7 @@ OSCCheckoutModuleHandler.prototype.init = function() {
         if (Object.keys(response).includes('grand_total')) {
             var grandTotal = response.grand_total.replace(/\D/g, '');
             grandTotal = parseFloat(grandTotal/100);
+            jQuery('.mundipaggMultiPaymentSubtotal span').html(response.grand_total);
             MundiPagg.grandTotal = grandTotal;
             Object.keys(MundiPagg.paymentMethods).each(function(method){
                 MundiPagg.paymentMethods[method].setValueInputAutobalanceEvents();
