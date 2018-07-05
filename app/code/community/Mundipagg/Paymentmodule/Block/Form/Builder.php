@@ -58,7 +58,6 @@ class Mundipagg_Paymentmodule_Block_Form_Builder extends Mundipagg_Paymentmodule
         $retn = $retn->toHtml();
 
         return $retn;
-
     }
 
     public function getMultiBuyerHtml($parentElement)
