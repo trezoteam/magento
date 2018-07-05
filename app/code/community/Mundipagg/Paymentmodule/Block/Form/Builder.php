@@ -52,9 +52,12 @@ class Mundipagg_Paymentmodule_Block_Form_Builder extends Mundipagg_Paymentmodule
             $data ['parent_index'] = $this->getElementCount()[$parentElement];
         }
 
-        $retn = $retn->createBlock("paymentmodule/form_partial_$element",'',
+        $retn = $retn->createBlock(
+            "paymentmodule/form_partial_$element",
+            '',
             $data
         );
+
         $retn = $retn->toHtml();
 
         return $retn;
