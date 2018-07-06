@@ -108,14 +108,19 @@ class Mundipagg_Paymentmodule_Model_Core_Order  extends Mundipagg_Paymentmodule_
 
         if ($method == 'creditcard') {
             $data = array_map(function ($item) use (&$totalInterest) {
-                $interest = $this->getInterestHelper()
-                    ->getInterestValue(
-                        $item['creditCardInstallments'],
-                        $item['value'],
-                        $this->getConfigCards()->getEnabledBrands(),
-                        $item['brand']
-                    );
-                $item['value'] = $item['value'] + $interest;
+                $monetary = Mage::helper('paymentmodule/monetary');
+
+                $interestHelper = $this->getInterestHelper();
+                $enabledBrands = $this->getConfigCards()->getEnabledBrands();
+
+                $interest = $interestHelper->getInterestValue(
+                    $item['creditCardInstallments'],
+                    $item['value'],
+                    $enabledBrands,
+                    $item['brand']
+                );
+
+                $item['value'] = $monetary->toFloat($item['value'])  + $interest;
                 $item['interest'] = $interest;
                 $totalInterest += $interest;
 

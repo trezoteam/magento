@@ -29,7 +29,7 @@
 "Unavailable brand", "Bandeira indisponível"
 
 "####### Informações extras de checkout","#####################################"
-"Click <a href='%s'>here</a> to show your billet for <strong>%s %s</strong> payment.", "Clique <a href='%s'>aqui</a> para mostrar seu boleto para o pagamento de <strong>%s %s</strong>."
+"Click <a href='%s' target='__blank'>here</a> to show your billet for <strong>%s %s</strong> payment.", "Clique <a href='%s' target='__blank'>aqui</a> para mostrar seu boleto para o pagamento de <strong>%s %s</strong>."
 
 "####### Multi buyer","##################################################"
 "Fill other buyer data", "Informar dados de outro comprador"
@@ -43,4 +43,5 @@
 "State", "Estado"
 "Country", "País"
 "Select an Country", "Selecione um País"
-"Select", "Selecione"
+"Select", "Selecione",
+"Subtotal", "Subtotal"

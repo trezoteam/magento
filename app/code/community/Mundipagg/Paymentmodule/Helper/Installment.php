@@ -47,7 +47,7 @@ class Mundipagg_Paymentmodule_Helper_Installment extends Mage_Core_Helper_Abstra
         $cardConfig = Mage::getModel('paymentmodule/config_card');
 
         if(!$cards) {
-            $cards = array('Visa', 'Mastercard', 'Hiper', 'Diners', 'Amex', 'Elo');
+            $cards = array('Visa', 'Mastercard', 'Hipercard', 'Diners', 'Amex', 'Elo');
         }
         $installments = array();
 
@@ -71,13 +71,13 @@ class Mundipagg_Paymentmodule_Helper_Installment extends Mage_Core_Helper_Abstra
 
     protected function getInstallmentsWithoutInterest($total, $max)
     {
-        $installments = array();
+        $installments = [];
         $monetary = Mage::helper('paymentmodule/monetary');
         $currencySymbol = $monetary->getCurrentCurrencySymbol();
 
         for ($i = 1; $i <= $max; $i++) {
             $totalAmount = $monetary->formatDecimals($total);
-            $amount = $monetary->formatDecimals($totalAmount / $i);
+            $amount = $monetary->formatDecimals($total / $i);
 
             $installments[] = array(
                 'amount' =>  $currencySymbol . $amount,
@@ -97,7 +97,7 @@ class Mundipagg_Paymentmodule_Helper_Installment extends Mage_Core_Helper_Abstra
 
         for ($i = $maxWithout + 1; $i <= $max; $i++) {
             $totalAmount = $monetary->formatDecimals($total * (1 + ($interest / 100)));
-            $amount = $monetary->formatDecimals($totalAmount / $i);
+            $amount = $monetary->formatDecimals($total / $i);
             $currencySymbol = $monetary->getCurrentCurrencySymbol();
 
             $installments[] = array(

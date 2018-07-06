@@ -40,18 +40,24 @@ class Mundipagg_Paymentmodule_Block_Form_Builder extends Mundipagg_Paymentmodule
     public function getPartialHTML($element,$parentElement = '')
     {
         $grandTotal = $this->getGrandTotal();
-
         $retn = $this->getLayout();
-        $retn = $retn->createBlock("paymentmodule/form_partial_$element",'',
-            [
-                'code' => $this->getMethodCode(),
-                'element_index' => $this->getIndexFor($element),
-                'show_value_input' => count($this->getStructure()) > 1,
-                'grand_total' => number_format($grandTotal, "2", ",", ""),
-                'parent_element' => $parentElement,
-                'parent_index' => $this->getElementCount()[$parentElement]
-            ]
+        $data = [
+            'code' => $this->getMethodCode(),
+            'element_index' => $this->getIndexFor($element),
+            'show_value_input' => count($this->getStructure()) > 1,
+            'grand_total' => number_format($grandTotal, "2", ",", ""),
+            'parent_element' => $parentElement
+        ];
+        if ($parentElement !== '') {
+            $data ['parent_index'] = $this->getElementCount()[$parentElement];
+        }
+
+        $retn = $retn->createBlock(
+            "paymentmodule/form_partial_$element",
+            '',
+            $data
         );
+
         $retn = $retn->toHtml();
 
         return $retn;
@@ -93,5 +99,16 @@ class Mundipagg_Paymentmodule_Block_Form_Builder extends Mundipagg_Paymentmodule
         $grandTotal = $checkout->getQuote()->getGrandTotal();
 
         return $grandTotal;
+    }
+
+    public function toCurrencyFormat($amount)
+    {
+        $moneyHelper = Mage::helper('paymentmodule/monetary');
+        return $moneyHelper->toCurrencyFormat($amount);
+    }
+
+    public function countPaymentMethods()
+    {
+        return $this->getElementCount();
     }
 }
