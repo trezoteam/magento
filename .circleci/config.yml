@@ -57,13 +57,14 @@ jobs:
              cp .circleci/data/Dockerfile .
              cp .circleci/data/wait-for-mysql.sh .
              cp .circleci/data/magento_module_install.sql .
+             cp .circleci/data/brazilian_states.sql .
       - run:
           name: Build image base for modifications
           command: |
              cd /app
              docker build -t ${DOCKER_ACCOUNT}/${PROJECT_NAME}:latest .
              docker run --name newimage -d -p3306:3306 -p80:80 ${DOCKER_ACCOUNT}/${PROJECT_NAME}:latest
-             docker cp /app/. newimage:app/.modman/opencart
+             docker cp /app/. newimage:app/.modman/magento
              docker exec -it newimage ls
       - run:
           name: Wait for MySQL Service
@@ -111,8 +112,7 @@ jobs:
               apt-get -y update && apt-get -y install google-chrome-unstable"
             docker exec -i newimage sh -c \
               "cd /app/.modman/magento && composer update -vvv"
-            docker exec -i newimage sh -c \
-              "cd /app/.modman/magento/features/bootstrap && echo 'BASE_URL=http://localhost' > .env"
+
       - run:
           name: Run Functional Tests
           command: |
@@ -205,7 +205,7 @@ workflows:
   build_publish_deploy:
     jobs:
       - build
-      - test
+      - test:
           requires:
             - build
       - publish:
