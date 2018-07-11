@@ -56,7 +56,7 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Order_Charge_Grid extends Mage_Adm
                 $captureTransactions = array_filter(
                     $chargeHistory,
                     function($history) {
-                        return $history['type'] == 'capture';
+                        return strpos($history['type'], 'capture') !== false;
                     }
                 );
                 $item['paid_amount'] = 0.000000001;
@@ -76,6 +76,10 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Order_Charge_Grid extends Mage_Adm
                     $item['canceled_amount'] += $canceled['amount'];
                 }
                 $item['canceled_amount'] = $item['canceled_amount'] / 100;
+
+                if ($item['canceled_amount'] > $item['amount']) {
+                    $item['canceled_amount'] = $item['amount'];
+                }
 
                 $rowObj = new Varien_Object();
                 $rowObj->setData($item);
