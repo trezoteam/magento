@@ -146,6 +146,17 @@ class FeatureContext extends MinkContext
     }
 
     /**
+     * @When /^(?:|I )wait for (?P<wait>(?:\d+)*) seconds$/
+     * @param $element
+     * @param $wait
+     * @throws \Exception
+     */
+    public function iWaitForNSeconds($wait)
+    {
+        return sleep($wait);
+    }
+
+    /**
      * @When /^(?:|I )wait for element "(?P<element>(?:[^"]|\\")*)" to become visible$/
      * @param $element
      * @throws \Exception
