@@ -100,6 +100,7 @@ class Mundipagg_Paymentmodule_Helper_Installment extends Mage_Core_Helper_Abstra
             $amount = $monetary->formatDecimals($total / $i);
             $currencySymbol = $monetary->getCurrentCurrencySymbol();
 
+            $interest = round($interest,2);
             $installments[] = array(
                 'amount' =>  $currencySymbol . $amount,
                 'times' => $i,

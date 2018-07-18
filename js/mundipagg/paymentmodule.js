@@ -460,7 +460,7 @@ function fillInstallments(data) {
         if (data[i].interest > 0) {
             data[i].interestMessage =
                 " " + MundiPagg.Locale.getTranslaction("with") + " " +
-                parseFloat(data[i].interest).toFixed(2) +
+                parseFloat(data[i].interest) +
                 interestPercent + " , Total: " + data[i].totalAmount ;
         }
 
