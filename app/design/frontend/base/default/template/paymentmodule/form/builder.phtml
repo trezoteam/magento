@@ -11,7 +11,8 @@ $orderTotal = $this->getGrandTotal();
                     <br>
                     <h3 class="mundipaggMultiPaymentSubtotal">
                         <?php echo $this->__('Subtotal'); ?>
-                        <span class="<?php echo $_code; ?>_subtotal">
+                        <span class="<?php echo $_code; ?>_subtotal paymentmodule_subtotal"
+                            data-value="<?php echo $orderTotal?>">
                             <?php echo $this->toCurrencyFormat($orderTotal); ?>
                         </span>
                     </h3>

@@ -69,6 +69,10 @@ function fillSavedCreditCardInstallments(elementId) {
     var baseUrl = jQuery("#baseUrl").val();
     var value = jQuery("#" + elementId + "_value").val();
 
+    if (value == "" || value == "0.00") {
+        value = (jQuery("span.paymentmodule_subtotal").data('value') / 2).toString();
+    }
+
     var argsObj = {
         elementId: elementId,
         installmentsBaseValue: value
@@ -329,6 +333,7 @@ function getBrand(elementId) {
     var baseUrl = jQuery("#baseUrl").val();
     var creditCardNumber = jQuery("#" + elementId +"_mundicheckout-number").val();
     var value = jQuery("#" + elementId +"_value").val();
+
     var argsObj = {
         elementId : elementId,
         installmentsBaseValue: value
@@ -455,7 +460,7 @@ function fillInstallments(data) {
         if (data[i].interest > 0) {
             data[i].interestMessage =
                 " " + MundiPagg.Locale.getTranslaction("with") + " " +
-                data[i].interest +
+                parseFloat(data[i].interest) +
                 interestPercent + " , Total: " + data[i].totalAmount ;
         }
 
