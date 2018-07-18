@@ -137,7 +137,7 @@ abstract class Mundipagg_Paymentmodule_Model_Api_Standard
             return $this->getCustomerFromMultiBuyer($payment);
         }
 
-        return $this->getCustomerFromSession($payment['taxvat']);
+        return $this->getCustomerFromSession();
     }
 
     /**
@@ -153,6 +153,7 @@ abstract class Mundipagg_Paymentmodule_Model_Api_Standard
         $customerRequest->address = $this->getAddressFromSession();
         $customerRequest->type = 'individual';
         $customerRequest->email = $customer->getEmail();
+        $customerRequest->document = $customer->getDocument();
 
         return $customerRequest;
     }
