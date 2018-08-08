@@ -3,7 +3,7 @@
     $elementIndex = $this->getElementIndex();
     $elementId = $_code . "_creditcard_". $elementIndex;
     $elementClass = $_code . "_creditcard";
-    $showValueInput = $this->getShowValueInput();
+    $isMultiPayment = $this->getShowValueInput();
     $grandTotal = $this->getGrandTotal();
     $savedCreditCards = $this->getSavedCreditCards();
     $isSavedCreditCardsEnabled = $this->isSavedCreditCardsEnabled();
@@ -18,7 +18,10 @@
 <div class="input-box <?php echo "$elementClass"?>_tokenDiv"
      id="<?php echo "$elementId"?>_tokenDiv"
      data-mundicheckout-app-id="<?php echo $this->getPublicKey(); ?>">
-    <h6><?php echo $this->__('Credit Card') . ' ' . $elementIndex; ?></h6>
+
+    <?php if ($isMultiPayment) { ?>
+        <h6><?php echo $this->__('Credit Card') . ' ' . $elementIndex; ?></h6>
+    <?php } ?>
 
     <div class="input-box">
         <?php
@@ -35,7 +38,7 @@
         <br><br>
     </div>
 
-    <?php if($showValueInput === true) : ?>
+    <?php if($isMultiPayment === true) : ?>
         <div class="input-box">
             <label><?php echo $this->__('Value'); ?> (Ex: 100.50)<span class="required"></span></label><br/>
             <input
