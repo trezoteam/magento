@@ -3,13 +3,13 @@
     $elementIndex = $this->getElementIndex();
     $elementId = $_code . "_boleto_". $elementIndex;
     $elementClass = $_code . "_boleto";
-    $showValueInput = $this->getShowValueInput();
+    $isMultiPayment = $this->getShowValueInput();
     $grandTotal = $this->getGrandTotal();
 ?>
 
 <div class="input-box">
-    <h6><?php echo $this->__('Billet') . ' ' . $elementIndex; ?></h6>
-    <?php if($showValueInput === true) : ?>
+    <?php if ($isMultiPayment === true) : ?>
+        <h6><?php echo $this->__('Billet') . ' ' . $elementIndex; ?></h6>
         <div class="input-box">
             <label><?php echo $this->__('Value'); ?> (Ex: 100.50)<span class="required"></span></label><br/>
             <input
