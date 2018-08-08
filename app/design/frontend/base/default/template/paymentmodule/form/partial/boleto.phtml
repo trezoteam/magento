@@ -8,10 +8,8 @@
 ?>
 
 <div class="input-box">
-    <?php if ($isMultiPayment) { ?>
+    <?php if ($isMultiPayment === true) : ?>
         <h6><?php echo $this->__('Billet') . ' ' . $elementIndex; ?></h6>
-    <?php } ?>
-    <?php if($isMultiPayment === true) : ?>
         <div class="input-box">
             <label><?php echo $this->__('Value'); ?> (Ex: 100.50)<span class="required"></span></label><br/>
             <input
