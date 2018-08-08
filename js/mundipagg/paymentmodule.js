@@ -417,6 +417,10 @@ function getInstallments(baseUrl, brandName, argsObj) {
     var selectedInstallment = jQuery("#" + argsObj.elementId + "_mundicheckout-creditCard-installments").val();
     MundiPagg.selectedInstallments[argsObj.elementId] = selectedInstallment;
 
+    if (tmp <= 0) {
+        return;
+    }
+
     apiRequest(
         baseUrl + '/mp-paymentmodule/creditcard/getinstallments/' + brandName + value,
         '',

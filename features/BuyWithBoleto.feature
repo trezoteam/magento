@@ -1,6 +1,6 @@
-Feature: Create order with credit card
+Feature: Create order with boleto
   @javascript
-  Scenario: Buying a product with credit card
+  Scenario: Buying a product with boleto
     Given I am on "/index.php/aviator-sunglasses.html"
     Then I wait for text "Gunmetal" to appear, for 15 seconds
     And I submit the form with id "#product_addtocart_form"
@@ -28,18 +28,11 @@ Feature: Create order with credit card
     And I wait for text "Flat" to appear, for 15 seconds
     And I use jquery to click on element "#s_method_flatrate_flatrate"
     And I use jquery to click on element "#shipping-method-buttons-container button"
-    And I wait for text "Mundipagg Credit Card" to appear, for 15 seconds
-    And I click in element "#p_method_paymentmodule_creditcard"
-    And I fill in "paymentmodule_creditcard_creditcard_1_mundicheckout-number" with "4916318338556377"
-    And I fill in "paymentmodule_creditcard_creditcard_1_mundicheckout-holdername" with "Teste Teste"
-    And I select "01" from "paymentmodule_creditcard_creditcard_1_mundicheckout-expmonth"
-    And I select "2025" from "paymentmodule_creditcard_creditcard_1_mundicheckout-expyear"
-    And I fill in "paymentmodule_creditcard_creditcard_1_mundicheckout-cvv" with "123"
-    And I click in element "#paymentmodule_creditcard_creditcard_1_mundicheckout-cvv"
-    And I wait for 10 seconds
-    And I select "1x of $300,00 without interest , Total: $300,00" from "paymentmodule_creditcard_creditcard_1_mundicheckout-creditCard-installments"
+    And I wait for text "Mundipagg Boleto" to appear, for 15 seconds
+    And I use jquery to click on element "#p_method_paymentmodule_boleto"
     And I use jquery to click on element "#payment-buttons-container button"
-    And I wait for text "PLACE ORDER" to appear, for 10 seconds
+    And I wait for text "PLACE ORDER" to appear, for 20 seconds
     And I use jquery to click on element "#review-buttons-container button"
-    And I wait for text "THANK YOU FOR YOUR PURCHASE!" to appear, for 10 seconds
-    Then I wait for text "CONTINUE SHOPPING" to appear, for 15 seconds
+    And I wait for text "Click here to" to appear, for 10 seconds
+    And I follow the element "#mundipagg-checkout-success-order-info a" href
+    Then I wait for text "Instru" to appear, for 15 seconds
