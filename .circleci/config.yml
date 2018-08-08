@@ -42,7 +42,87 @@ jobs:
           root: /
           paths:
             - app
+  test:
+    working_directory: /
+    docker:
+      - image: docker:17.05.0-ce-git
+    steps:
+      - setup_remote_docker
+      - attach_workspace:
+          at: /
+      - run:
+          name: Copy CI files to root
+          command: |
+             cd /app
+             cp .circleci/data/Dockerfile .
+             cp .circleci/data/wait-for-mysql.sh .
+             cp .circleci/data/magento_module_install.sql .
+             cp .circleci/data/brazilian_states.sql .
+      - run:
+          name: Build image base for modifications
+          command: |
+             cd /app
+             docker build -t ${DOCKER_ACCOUNT}/${PROJECT_NAME}:latest .
+             docker run --name newimage -d -p3306:3306 -p80:80 ${DOCKER_ACCOUNT}/${PROJECT_NAME}:latest
+             docker cp /app/. newimage:app/.modman/magento
+             docker exec -it newimage ls
+      - run:
+          name: Wait for MySQL Service
+          command: |
+            docker exec -it newimage sh /app/.modman/magento/wait-for-mysql.sh
+            docker exec -it newimage rm /app/.modman/magento/wait-for-mysql.sh
+      - run:
+          name: Activate and setup Plugin
+          command: |
+            docker exec -it newimage /root/bin/modman repair --force
+            docker exec -it newimage /bin/sh -c "ls"
+            docker exec -it newimage php index.php
+            docker exec -it newimage /bin/sh -c \
+              "mysql magento < /app/.modman/magento/magento_module_install.sql"
+            docker exec -it newimage /bin/sh -c \
+                           "mysql magento < /app/.modman/magento/brazilian_states.sql"
+            docker exec -it newimage mysql magento -e \
+              "INSERT INTO magento.core_config_data (scope, scope_id, path, value) VALUES \
+              ('default', 0, 'mundipagg_config/general_group/sk_test', '${API_TEST_SECRET_KEY}'), \
+              ('default', 0, 'mundipagg_config/general_group/pk_test', '${API_TEST_PUBLIC_KEY}');"
+            docker exec -it newimage /bin/sh -c \
+              "mv /app/errors/local.xml.sample /app/errors/local.xml"
+            docker exec -it newimage /bin/sh -c \
+              "chown -R www-data:root /app/"
+      - run:
+          name: Clear useless files
+          command: |
+             docker exec -i newimage sh -c \
+               "cd /app/.modman/magento && \
+               rm -rf .github .circleci .git .gitignore && \
+               rm -rf Dockerfile wait-for-mysql.sh \
+               magento_module_install.sql brazilian_states.sql LICENSE *.MD"
+      - run:
+          name: Commit basic configs into Docker image
+          command: |
+           sleep 5 && docker stop newimage
+           docker commit newimage ${DOCKER_ACCOUNT}/${PROJECT_NAME}:latest
+           sleep 5 && docker start newimage
+      - run:
+          name: Install and run Functional Tests dependencies
+          command: |
+            docker exec -i newimage sh -c \
+              "wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
+              echo 'deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main' | tee /etc/apt/sources.list.d/google-chrome.list && \
+              apt-get -y update && apt-get -y install google-chrome-unstable"
+            docker exec -i newimage sh -c \
+              "cd /app/.modman/magento && composer update -vvv"
 
+      - run:
+          name: Run Functional Tests
+          command: |
+            docker exec --detach newimage google-chrome-unstable --disable-gpu --no-sandbox --headless --remote-debugging-address=127.0.0.1 --remote-debugging-port=9222 &
+            docker exec -i newimage sh -c "cd /app/.modman/magento && php lib/bin/behat"
+      - run:
+          name: Reset image and set final configurations
+          command: |
+            sleep 5 && docker rm -f newimage
+            docker run --name newimage -d -p3306:3306 -p80:80 ${DOCKER_ACCOUNT}/${PROJECT_NAME}:latest
   publish:
     working_directory: /
     docker:
@@ -111,7 +191,6 @@ jobs:
              docker tag ${DOCKER_ACCOUNT}/${PROJECT_NAME} "${DOCKER_ACCOUNT}/${PROJECT_NAME}:${CIRCLE_BRANCH}"
              docker tag ${DOCKER_ACCOUNT}/${PROJECT_NAME} "${DOCKER_ACCOUNT}/${PROJECT_NAME}:${CIRCLE_SHA1:0:8}"
              docker push "${DOCKER_ACCOUNT}/${PROJECT_NAME}"
-
   deploy_staging:
      machine: true
      steps:
@@ -126,9 +205,12 @@ workflows:
   build_publish_deploy:
     jobs:
       - build
-      - publish:
+      - test:
           requires:
             - build
+      - publish:
+          requires:
+            - test
           filters:
             branches:
               only: master
