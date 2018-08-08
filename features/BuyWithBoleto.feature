@@ -36,14 +36,3 @@ Feature: Create order with boleto
     And I wait for text "Click here to" to appear, for 10 seconds
     And I follow the element "#mundipagg-checkout-success-order-info a" href
     Then I wait for text "Instru" to appear, for 15 seconds
-
-#    And I click in element "#p_method_paymentmodule_creditcard"
-#    And I fill in "paymentmodule_creditcard_creditcard_1_mundicheckout-number" with "4916318338556377"
-#    And I fill in "paymentmodule_creditcard_creditcard_1_mundicheckout-holdername" with "Teste Teste"
-#    And I select "01" from "paymentmodule_creditcard_creditcard_1_mundicheckout-expmonth"
-#    And I select "2025" from "paymentmodule_creditcard_creditcard_1_mundicheckout-expyear"
-#    And I fill in "paymentmodule_creditcard_creditcard_1_mundicheckout-cvv" with "123"
-#    And I click in element "#paymentmodule_creditcard_creditcard_1_mundicheckout-creditCard-installments"
-#    And I click in element "#paymentmodule_creditcard_creditcard_1_mundicheckout-cvv"
-#    And I wait for text "1x de R$105,00 sem juros , Total: R$105,00" to appear, for 10 seconds
-#    And I select "1x de R$105,00 sem juros , Total: R$105,00" from "paymentmodule_creditcard_creditcard_1_mundicheckout-expy
