@@ -34,12 +34,12 @@ class Mundipagg_Paymentmodule_Model_Creditcard extends Mundipagg_Paymentmodule_M
     public function validatePaymentData($paymentData)
     {
         foreach ($paymentData as $creditCard) {
-            $enabledBrands = strtolower($this->getConfigModel()->getEnabledBrands());
+            $enabledBrands = $this->getConfigModel()->getEnabledBrands();
 
             if (
                 !in_array(
-                    $enabledBrands,
-                    strtolower($creditCard['brand'])
+                    strtolower($creditCard['brand']),
+                    $enabledBrands
                 ) && !$this->validateInstallments($creditCard)
 
             ) {
