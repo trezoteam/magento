@@ -105,13 +105,15 @@ class Mundipagg_Paymentmodule_Model_Standard extends Mage_Payment_Model_Method_A
 
         $customer = new Varien_Object();
 
+        $document = preg_replace('/[^0-9]/', '',$order->getCustomerTaxvat());
+
         $name = $order->getCustomerFirstname();
         $name .= ' ' .  $order->getCustomerMiddlename();
         $name .= ' ' .  $order->getCustomerLastname();
         $customer->setName($name);
         $customer->setEmail($order->getCustomerEmail());
         $customer->setId(null);
-        $customer->setDocument($order->getCustomerTaxvat());
+        $customer->setDocument($document);
         $customer->setCustomer($customer);
 
         return $customer;
