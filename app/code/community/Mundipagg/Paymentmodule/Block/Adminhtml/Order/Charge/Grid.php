@@ -57,7 +57,6 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Order_Charge_Grid extends Mage_Adm
     /* The second parameter ($key) does not used but is passed by array_walk function to the anonymous function */
     public function createCollection($item, $key, $params)
     {
-
         $item['amount'] = $item['amount'] / 100;
 
         $chargeHistory = array_filter(
