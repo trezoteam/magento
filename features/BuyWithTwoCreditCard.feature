@@ -39,7 +39,7 @@ Feature: Create order with two credit card
     And I select "2025" from "paymentmodule_twocreditcards_creditcard_1_mundicheckout-expyear"
     And I fill in "paymentmodule_twocreditcards_creditcard_1_mundicheckout-cvv" with "123"
     And I click in element "#paymentmodule_twocreditcards_creditcard_1_mundicheckout-cvv"
-    And I wait for 10 seconds
+    And I wait for 20 seconds
     And I select "1x of $150,00 without interest , Total: $150,00" from "paymentmodule_twocreditcards_creditcard_1_mundicheckout-creditCard-installments"
 
     # Fill Second Credit Card Data
@@ -49,7 +49,7 @@ Feature: Create order with two credit card
     And I select "2026" from "paymentmodule_twocreditcards_creditcard_2_mundicheckout-expyear"
     And I fill in "paymentmodule_twocreditcards_creditcard_2_mundicheckout-cvv" with "123"
     And I click in element "#paymentmodule_twocreditcards_creditcard_2_mundicheckout-cvv"
-    And I wait for 10 seconds
+    And I wait for 20 seconds
     And I select "1x of $150,00 without interest , Total: $150,00" from "paymentmodule_twocreditcards_creditcard_2_mundicheckout-creditCard-installments"
 
 #    And I use jquery to click on element "#p_method_paymentmodule_boleto"

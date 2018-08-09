@@ -42,52 +42,64 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Order_Charge_Grid extends Mage_Adm
         }
 
         $collection = new Varien_Data_Collection();
-        array_walk($aditional['mundipagg_payment_module_charges'],
-            function ($item) use ($collection,$aditional) {
-                $item['amount'] = $item['amount'] / 100;
 
-                $chargeHistory = array_filter(
-                    $aditional['mundipagg_payment_transaction_history'],
-                    function($history) use ($item){
-                        return $item['id'] == $history['chargeId'];
-                    }
-                );
+        if (isset($aditional['mundipagg_payment_module_charges'])) {
 
-                $captureTransactions = array_filter(
-                    $chargeHistory,
-                    function($history) {
-                        return strpos($history['type'], 'capture') !== false;
-                    }
-                );
-                $item['paid_amount'] = 0.000000001;
-                foreach ($captureTransactions as $capture) {
-                    $item['paid_amount'] += $capture['amount'];
-                }
-                $item['paid_amount'] = $item['paid_amount'] / 100;
+            array_walk($aditional['mundipagg_payment_module_charges'],
+                [$this, 'createCollection'],
+                ['collection' => $collection, 'aditional' => $aditional]
+            );
+        }
 
-                $canceledTransactions = array_filter(
-                    $chargeHistory,
-                    function($history) {
-                        return $history['type'] == 'cancel';
-                    }
-                );
-                $item['canceled_amount'] = 0.000000001;
-                foreach ($canceledTransactions as $canceled) {
-                    $item['canceled_amount'] += $canceled['amount'];
-                }
-                $item['canceled_amount'] = $item['canceled_amount'] / 100;
+        return $collection;
+    }
 
-                if ($item['canceled_amount'] > $item['amount']) {
-                    $item['canceled_amount'] = $item['amount'];
-                }
+    /* The second parameter ($key) does not used but is passed by array_walk function to the anonymous function */
+    public function createCollection($item, $key, $params)
+    {
 
-                $rowObj = new Varien_Object();
-                $rowObj->setData($item);
-                $collection->addItem($rowObj);
+        $item['amount'] = $item['amount'] / 100;
+
+        $chargeHistory = array_filter(
+            $params['aditional']['mundipagg_payment_transaction_history'],
+            function($history) use ($item){
+                return $item['id'] == $history['chargeId'];
             }
         );
 
-        return $collection;
+        $captureTransactions = array_filter(
+            $chargeHistory,
+            function($history) {
+                return strpos($history['type'], 'capture') !== false;
+            }
+        );
+
+        $item['paid_amount'] = 0.000000001;
+        foreach ($captureTransactions as $capture) {
+            $item['paid_amount'] += $capture['amount'];
+        }
+        $item['paid_amount'] = $item['paid_amount'] / 100;
+
+        $canceledTransactions = array_filter(
+            $chargeHistory,
+            function($history) {
+                return $history['type'] == 'cancel';
+            }
+        );
+
+        $item['canceled_amount'] = 0.000000001;
+        foreach ($canceledTransactions as $canceled) {
+            $item['canceled_amount'] += $canceled['amount'];
+        }
+        $item['canceled_amount'] = $item['canceled_amount'] / 100;
+
+        if ($item['canceled_amount'] > $item['amount']) {
+            $item['canceled_amount'] = $item['amount'];
+        }
+
+        $rowObj = new Varien_Object();
+        $rowObj->setData($item);
+        return $params['collection']->addItem($rowObj);
     }
 
     /**
