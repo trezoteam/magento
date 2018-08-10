@@ -47,6 +47,8 @@
             id="<?php echo $elementId; ?>_multi_buyer_taxvat"
             name="payment[<?php echo $elementId; ?>_multiBuyerTaxvat]"
             class="<?php echo $elementClass; ?>_validate-mundipagg-cpf required-entry"
+            onkeyup="validateTaxVat(this)"
+            maxlength="16"
     />
 
     <div class="input-box">
