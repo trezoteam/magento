@@ -4,7 +4,6 @@ use Mundipagg\Integrity\SystemInfoInterface;
 
 class Mundipagg_Paymentmodule_Helper_MagentoSystemInfo implements SystemInfoInterface
 {
-
     public function getModuleVersion()
     {
         $data = \Mage::helper('paymentmodule')->getMetaData();
