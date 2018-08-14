@@ -22,3 +22,6 @@ app/locale/*                                                    app/locale/
 lib/*                                                           lib/
 js/mundipagg/*                                                  js/mundipagg/
 mundipagg_payment_module.xml                                    var/connect/
+
+#this file
+modman .modman/magento/app/code/community/Mundipagg/Paymentmodule/etc/maintenance/modman
