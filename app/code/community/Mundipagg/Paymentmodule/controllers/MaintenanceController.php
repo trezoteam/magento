@@ -21,8 +21,14 @@ class Mundipagg_Paymentmodule_MaintenanceController extends Mage_Core_Controller
             \Mage::helper('paymentmodule/MagentoSystemInfo')
         );
 
+        $generalInformation = $integrityController->getSystemInformation();
+        $integrityCheck = $integrityController->getIntegrityCheck();
+
+        $generalInformation['moduleCheckSum'] = md5(json_encode($integrityCheck['files]']));
+
         echo '<pre>';
-        print_r($integrityController->getSystemInformation());
+        print_r($generalInformation);
+        print_r($integrityCheck);
 
         die();
     }
