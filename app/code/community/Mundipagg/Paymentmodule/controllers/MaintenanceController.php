@@ -14,7 +14,6 @@ class Mundipagg_Paymentmodule_MaintenanceController extends Mage_Core_Controller
         \Mage::helper('paymentmodule/exception')->initExceptionHandler();
     }
 
-
     public function versionAction()
     {
         $integrityController = new IntegrityController(
@@ -22,48 +21,20 @@ class Mundipagg_Paymentmodule_MaintenanceController extends Mage_Core_Controller
         );
 
         $integrityCheck = $integrityController->getIntegrityCheck();
-
         $generalInformation = $integrityController->getSystemInformation();
         $generalInformation['moduleCheckSum'] = md5(json_encode($integrityCheck['files]']));
 
-        echo '<pre>';
-
         //showing environment and module info
-        echo "<h3>Module info</h3>";
-        echo '<pre>';
-        print_r($generalInformation);
-        echo '</pre>';
-        echo json_encode($generalInformation);
+        $integrityController->showGeneralInfo("Module info", $generalInformation);
 
         //showing integrity check result
-        if (count($integrityCheck['newFiles']) > 0) {
-            echo "<h3 style='color:red'>Warning! New files were added to module directories!</h3>";
-            echo '<pre>';
-            print_r($integrityCheck['newFiles']);
-            echo '</pre>';
-            echo json_encode($integrityCheck['newFiles']);
-        }
+        $integrityController->showNonEmptyInfo("Warning! New files were added to module directories!", $integrityCheck['newFiles']);
+        $integrityController->showNonEmptyInfo("Warning! Module files were modified!", $integrityCheck['alteredFiles']);
+        $integrityController->showNonEmptyInfo("Warning! Module files become unreadable!", $integrityCheck['unreadableFiles']);
 
-        if (count($integrityCheck['alteredFiles']) > 0) {
-            echo "<h3 style='color:red'>Warning! Module files were modified!</h3>";
-            echo '<pre>';
-            print_r($integrityCheck['alteredFiles']);
-            echo '</pre>';
-            echo json_encode($integrityCheck['alteredFiles']);
-        }
-
-        if (count($integrityCheck['unreadableFiles']) > 0) {
-            echo "<h3 style='color:red'>Warning! Module files become unreadable!</h3>";
-            echo '<pre>';
-            print_r($integrityCheck['unreadableFiles']);
-            echo '</pre>';
-            echo json_encode($integrityCheck['unreadableFiles']);
-        }
-
-        echo '<h3>File List ('.count($integrityCheck['files']).')</h3><pre>';
-        print_r($integrityCheck['files']);
-        echo '</pre>';
-        echo json_encode($integrityCheck['files']);
-
+        $integrityController->showGeneralInfo(
+            'File List ('.count($integrityCheck['files']).')',
+            $integrityCheck['files']
+        );
     }
 }

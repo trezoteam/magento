@@ -39,4 +39,24 @@ class IntegrityController
         return $integrityCheck;
     }
 
+    public function showGeneralInfo($title, $info)
+    {
+        echo "<h3>$title</h3>";
+        echo '<pre>';
+        print_r($info);
+        echo '</pre>';
+        echo json_encode($info);
+    }
+
+    public function showNonEmptyInfo($message, $info)
+    {
+        if (count($info) > 0) {
+            echo "<h3 style='color:red'>$message</h3>";
+            echo '<pre>';
+            print_r($info);
+            echo '</pre>';
+            echo json_encode($info);
+        }
+    }
+
 }

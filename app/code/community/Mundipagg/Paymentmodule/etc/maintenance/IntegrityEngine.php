@@ -30,7 +30,6 @@ class IntegrityEngine
                 $filesError[] = $file;
                 continue;
             }
-
             $md5Files[$file] = md5_file($file);
         }
 
@@ -60,6 +59,7 @@ class IntegrityEngine
                 $md5[$file] = $this->generateFilesPath($file, $ignored);
             }
         }
+
         return $md5;
     }
 
@@ -119,7 +119,6 @@ class IntegrityEngine
     {
         $list = [];
         foreach ($array as $rawLine) {
-
             if (
                 substr($rawLine,0,1) !== '#' &&
                 strlen($rawLine) > 0
@@ -143,10 +142,10 @@ class IntegrityEngine
 
     public function isDirectoriesIgnored(array $directories, $line)
     {
-
         $array = array_filter($directories, function ($dir) use ($line) {
             return  strpos($line, $dir) !== 0;
         });
+
         return count($array) !== count($directories);
     }
 
