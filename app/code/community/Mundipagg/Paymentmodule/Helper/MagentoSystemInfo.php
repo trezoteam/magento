@@ -1,8 +1,8 @@
 <?php
 
-use Mundipagg\Integrity\ISystemInfo;
+use Mundipagg\Integrity\SystemInfoInterface;
 
-class Mundipagg_Paymentmodule_Helper_MagentoSystemInfo implements ISystemInfo
+class Mundipagg_Paymentmodule_Helper_MagentoSystemInfo implements SystemInfoInterface
 {
 
     public function getModuleVersion()

@@ -2,7 +2,7 @@
 
 namespace Mundipagg\Integrity;
 
-interface ISystemInfo
+interface SystemInfoInterface
 {
 
     public function getModuleVersion();

@@ -4,10 +4,10 @@ namespace Mundipagg\Integrity;
 
 class IntegrityController
 {
-    /** @var ISystemInfo */
+    /** @var SystemInfoInterface */
     protected $systemInfo;
 
-    public function __construct(ISystemInfo $systemInfo)
+    public function __construct(SystemInfoInterface $systemInfo)
     {
         $this->systemInfo = $systemInfo;
     }
