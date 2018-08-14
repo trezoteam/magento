@@ -115,7 +115,6 @@ class IntegrityEngine
         return [];
     }
 
-
     public function getFileListFromArrayData($array, $ignoredDir = [], $fileOrigin = self::MODMAN_CHECK)
     {
         $list = [];

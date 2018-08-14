@@ -22,7 +22,8 @@ class IntegrityController
             'moduleVersion' => $this->systemInfo->getModuleVersion(),
             'platformVersion' => $this->systemInfo->getPlatformVersion(),
             'platformRootDir' => $this->systemInfo->getPlatformRootDir(),
-            'directoriesIgnored' => $this->systemInfo->getDirectoriesIgnored()
+            'directoriesIgnored' => $this->systemInfo->getDirectoriesIgnored(),
+            'installType' => $this->systemInfo->getInstallType()
         ];
     }
 

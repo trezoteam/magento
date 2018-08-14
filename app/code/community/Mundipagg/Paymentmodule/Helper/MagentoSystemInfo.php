@@ -39,4 +39,14 @@ class Mundipagg_Paymentmodule_Helper_MagentoSystemInfo implements ISystemInfo
     {
         return '/app/app/code/community/Mundipagg/Paymentmodule/etc/maintenance/integrityCheck';
     }
+
+    public function getInstallType()
+    {
+        $installType = 'package';
+        if (is_dir('./.modman')) {
+            $installType = 'modman';
+        }
+
+        return $installType;
+    }
 }

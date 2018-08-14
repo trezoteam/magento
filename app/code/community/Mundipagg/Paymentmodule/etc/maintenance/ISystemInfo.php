@@ -16,4 +16,6 @@ interface ISystemInfo
     public function getModmanPath();
 
     public function getIntegrityCheckPath();
+
+    public function getInstallType();
 }
