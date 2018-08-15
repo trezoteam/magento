@@ -26,8 +26,11 @@ class Mundipagg_Paymentmodule_MaintenanceController extends Mage_Core_Controller
         $integrityController = new IntegrityController($magentoSystemInfo);
 
         $integrityCheck = $integrityController->getIntegrityCheck();
+        $logInfo = $integrityController->getLogInfo();
         $generalInformation = $integrityController->getSystemInformation();
         $generalInformation['moduleCheckSum'] = md5(json_encode($integrityCheck['files]']));
+        $generalInformation['magentoLogsDirectory'] = $logInfo['magentoLogsDirectory'];
+        $generalInformation['logConfigs'] = $logInfo['logConfigs'];
 
         //showing environment and module info
         $integrityController->showGeneralInfo("Module info", $generalInformation);
@@ -53,6 +56,9 @@ class Mundipagg_Paymentmodule_MaintenanceController extends Mage_Core_Controller
             $integrityCheck['files']
         );
 
+        echo '<h3>phpinfo()</h3>';
+        phpinfo();
+
     }
 
     public function logsAction()
@@ -67,7 +73,41 @@ class Mundipagg_Paymentmodule_MaintenanceController extends Mage_Core_Controller
 
         $integrityController = new IntegrityController($magentoSystemInfo);
 
-        echo '<pre>';
-        print_r($integrityController->getLogInfo());
+        $url = '/mp-paymentmodule/maintenance/donwloadLog';
+        $url .= '?token=' . \Mage::app()->getRequest()->getParam('token');
+
+        $integrityController->showLogInfo($url, $integrityController->listLogFiles());
+    }
+
+    public function donwloadLogAction()
+    {
+        $magentoSystemInfo = \Mage::helper('paymentmodule/MagentoSystemInfo');
+        $integrityController = new IntegrityController($magentoSystemInfo);
+
+        if ($magentoSystemInfo->checkMaintenanceRouteAccessPermition()) {
+            header('HTTP/1.0 401 Unauthorized');
+            $this->getResponse()->setBody('Unauthorized');
+            return;
+        }
+
+        $file = \Mage::app()->getRequest()->getParam('file');
+        if (!$file) {
+            header('HTTP/1.0 404 Not Found');
+            $this->getResponse()->setBody('Resource not found');
+            return;
+        }
+
+        $file = base64_decode($file);
+
+        if (!is_readable($file) || !in_array($file, $integrityController->listLogFiles())) {
+            header('HTTP/1.0 403 Not Found');
+            $this->getResponse()->setBody('Forbidden');
+            return;
+        }
+
+        if (!$integrityController->compactFile($file)) {
+            header('HTTP/1.0 500 Internal Server Error');
+            $this->getResponse()->setBody('Zip encoding failure');
+        }
     }
 }

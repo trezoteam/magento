@@ -41,8 +41,7 @@ class IntegrityController
 
     public function getLogInfo()
     {
-        $integrityEngine = new IntegrityEngine();
-        $logs = $integrityEngine->listFilesOnDir($this->systemInfo->getLogsDir());
+        $logs = $this->listLogFiles();
         return [
             'files' => $logs,
             'logConfigs' => [
@@ -51,6 +50,18 @@ class IntegrityController
             ],
             'magentoLogsDirectory' => $this->systemInfo->getLogsDir()
         ];
+    }
+
+    public function compactFile($file)
+    {
+        $compactor = new FileCompactor($file);
+        return $compactor->compact();
+    }
+
+    public function listLogFiles()
+    {
+        $integrityEngine = new IntegrityEngine();
+        return $integrityEngine->listFilesOnDir($this->systemInfo->getLogsDir());
     }
 
     public function showGeneralInfo($title, $info)
@@ -70,6 +81,24 @@ class IntegrityController
             print_r($info);
             echo '</pre>';
             echo json_encode($info);
+        }
+    }
+
+    public function showLogInfo($url, $info)
+    {
+        echo '<h3>Logs ('.count($info).')</h3><pre>';
+        foreach($info as $logFile) {
+            $link = "<strong style='color:red'>$logFile</strong><br />";
+            if (is_readable($logFile)) {
+                $fileRoute =  $url;
+                $fileRoute .= '&file=' . base64_encode($logFile);
+
+                $link =
+                    '<a href="'.$fileRoute.'" target="_self">' .
+                    $logFile . ' (' . filesize($logFile) . ' bytes)'.
+                    '</a><br />';
+            }
+            echo $link;
         }
     }
 }
