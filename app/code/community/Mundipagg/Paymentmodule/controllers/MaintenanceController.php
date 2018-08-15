@@ -15,9 +15,15 @@ class Mundipagg_Paymentmodule_MaintenanceController extends Mage_Core_Controller
 
     public function versionAction()
     {
-        $integrityController = new IntegrityController(
-            \Mage::helper('paymentmodule/MagentoSystemInfo')
-        );
+        $magentoSystemInfo = \Mage::helper('paymentmodule/MagentoSystemInfo');
+
+        if ($magentoSystemInfo->checkMaintenanceRouteAccessPermition()) {
+            header('HTTP/1.0 401 Unauthorized');
+            $this->getResponse()->setBody('Unauthorized');
+            return;
+        }
+
+        $integrityController = new IntegrityController($magentoSystemInfo);
 
         $integrityCheck = $integrityController->getIntegrityCheck();
         $generalInformation = $integrityController->getSystemInformation();
@@ -46,5 +52,22 @@ class Mundipagg_Paymentmodule_MaintenanceController extends Mage_Core_Controller
             'File List ('.count($integrityCheck['files']).')',
             $integrityCheck['files']
         );
+
+    }
+
+    public function logsAction()
+    {
+        $magentoSystemInfo = \Mage::helper('paymentmodule/MagentoSystemInfo');
+
+        if ($magentoSystemInfo->checkMaintenanceRouteAccessPermition()) {
+            header('HTTP/1.0 401 Unauthorized');
+            $this->getResponse()->setBody('Unauthorized');
+            return;
+        }
+
+        $integrityController = new IntegrityController($magentoSystemInfo);
+
+        echo '<pre>';
+        print_r($integrityController->getLogInfo());
     }
 }

@@ -18,4 +18,12 @@ interface SystemInfoInterface
     public function getIntegrityCheckPath();
 
     public function getInstallType();
+
+    public function getLogsDir();
+
+    public function getDefaultLogFiles();
+
+    public function getModulePrefixLogFile();
+
+    public function checkMaintenanceRouteAccessPermition();
 }

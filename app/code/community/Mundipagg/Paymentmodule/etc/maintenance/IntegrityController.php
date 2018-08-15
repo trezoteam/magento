@@ -39,6 +39,20 @@ class IntegrityController
         return $integrityCheck;
     }
 
+    public function getLogInfo()
+    {
+        $integrityEngine = new IntegrityEngine();
+        $logs = $integrityEngine->listFilesOnDir($this->systemInfo->getLogsDir());
+        return [
+            'files' => $logs,
+            'logConfigs' => [
+                'includes' => $this->systemInfo->getDefaultLogFiles(),
+                'moduleFilenamePrefix' => $this->systemInfo->getModulePrefixLogFile()
+            ],
+            'magentoLogsDirectory' => $this->systemInfo->getLogsDir()
+        ];
+    }
+
     public function showGeneralInfo($title, $info)
     {
         echo "<h3>$title</h3>";
