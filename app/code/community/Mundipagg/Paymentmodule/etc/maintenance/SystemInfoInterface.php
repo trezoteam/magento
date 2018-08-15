@@ -28,4 +28,6 @@ interface SystemInfoInterface
     public function getSecretKey();
 
     public function getRequestParams();
+
+    public function getDownloadRouter();
 }

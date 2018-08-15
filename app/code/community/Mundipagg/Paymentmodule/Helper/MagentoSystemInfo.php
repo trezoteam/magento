@@ -77,4 +77,9 @@ class Mundipagg_Paymentmodule_Helper_MagentoSystemInfo implements SystemInfoInte
     {
         return \Mage::app()->getRequest()->getParams();
     }
+
+    public function getDownloadRouter()
+    {
+        return '/mp-paymentmodule/maintenance/donwloadLog';
+    }
 }

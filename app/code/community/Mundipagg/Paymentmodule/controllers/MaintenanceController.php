@@ -69,10 +69,7 @@ class Mundipagg_Paymentmodule_MaintenanceController extends Mage_Core_Controller
             return;
         }
 
-        $url = '/mp-paymentmodule/maintenance/donwloadLog';
-        $url .= '?token=' . \Mage::app()->getRequest()->getParam('token');
-
-        $integrityController->showLogInfo($url, $integrityController->listLogFiles());
+        $integrityController->showLogInfo();
     }
 
     public function donwloadLogAction()

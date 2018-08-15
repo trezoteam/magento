@@ -97,13 +97,17 @@ class IntegrityController
         }
     }
 
-    public function showLogInfo($url, $info)
+    public function showLogInfo()
     {
-        echo '<h3>Logs ('.count($info).')</h3><pre>';
-        foreach($info as $logFile) {
+        $params = $this->systemInfo->getRequestParams();
+
+        echo '<h3>Logs ('.count($this->listLogFiles()).')</h3><pre>';
+        foreach($this->listLogFiles() as $logFile) {
             $link = "<strong style='color:red'>$logFile</strong><br />";
             if (is_readable($logFile)) {
-                $fileRoute =  $url;
+                $fileRoute =  $this->systemInfo->getDownloadRouter();
+                $fileRoute .= '?token=';
+                $fileRoute .= isset($params['token']) ? $params['token'] : '';
                 $fileRoute .= '&file=' . base64_encode($logFile);
 
                 $link =
