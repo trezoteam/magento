@@ -15,15 +15,13 @@ class Mundipagg_Paymentmodule_MaintenanceController extends Mage_Core_Controller
 
     public function versionAction()
     {
-        $magentoSystemInfo = \Mage::helper('paymentmodule/MagentoSystemInfo');
+        $integrityController = $this->getIntegrityController();
 
-        if ($magentoSystemInfo->checkMaintenanceRouteAccessPermition()) {
+        if ($integrityController->checkMaintenanceRouteAccessPermition()) {
             header('HTTP/1.0 401 Unauthorized');
             $this->getResponse()->setBody('Unauthorized');
             return;
         }
-
-        $integrityController = new IntegrityController($magentoSystemInfo);
 
         $integrityCheck = $integrityController->getIntegrityCheck();
         $logInfo = $integrityController->getLogInfo();
@@ -63,15 +61,13 @@ class Mundipagg_Paymentmodule_MaintenanceController extends Mage_Core_Controller
 
     public function logsAction()
     {
-        $magentoSystemInfo = \Mage::helper('paymentmodule/MagentoSystemInfo');
+        $integrityController = $this->getIntegrityController();
 
-        if ($magentoSystemInfo->checkMaintenanceRouteAccessPermition()) {
+        if ($integrityController->checkMaintenanceRouteAccessPermition()) {
             header('HTTP/1.0 401 Unauthorized');
             $this->getResponse()->setBody('Unauthorized');
             return;
         }
-
-        $integrityController = new IntegrityController($magentoSystemInfo);
 
         $url = '/mp-paymentmodule/maintenance/donwloadLog';
         $url .= '?token=' . \Mage::app()->getRequest()->getParam('token');
@@ -81,10 +77,9 @@ class Mundipagg_Paymentmodule_MaintenanceController extends Mage_Core_Controller
 
     public function donwloadLogAction()
     {
-        $magentoSystemInfo = \Mage::helper('paymentmodule/MagentoSystemInfo');
-        $integrityController = new IntegrityController($magentoSystemInfo);
+        $integrityController = $this->getIntegrityController();
 
-        if ($magentoSystemInfo->checkMaintenanceRouteAccessPermition()) {
+        if ($integrityController->checkMaintenanceRouteAccessPermition()) {
             header('HTTP/1.0 401 Unauthorized');
             $this->getResponse()->setBody('Unauthorized');
             return;
@@ -109,5 +104,10 @@ class Mundipagg_Paymentmodule_MaintenanceController extends Mage_Core_Controller
             header('HTTP/1.0 500 Internal Server Error');
             $this->getResponse()->setBody('Zip encoding failure');
         }
+    }
+
+    protected function getIntegrityController()
+    {
+        return new IntegrityController(\Mage::helper('paymentmodule/MagentoSystemInfo'));
     }
 }

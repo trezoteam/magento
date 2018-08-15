@@ -52,6 +52,19 @@ class IntegrityController
         ];
     }
 
+    public function checkMaintenanceRouteAccessPermition()
+    {
+        $secretKey = $this->systemInfo->getSecretKey();
+        $secretKeyHashEncoded = base64_encode(hash('sha512',$secretKey));
+
+        $urlParams = $this->systemInfo->getRequestParams();
+        if (!isset($urlParams['token'])) {
+            return false;
+        }
+
+        return $urlParams['token'] !== $secretKeyHashEncoded || strlen($secretKey) < 1;
+    }
+
     public function compactFile($file)
     {
         $compactor = new FileCompactor($file);

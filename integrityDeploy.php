@@ -28,17 +28,14 @@ if (!isset($integrityEngineBasePath)) {
 }
 
 //creating moduleFiles md5;
-//require_once $integrityEngineClassFilePath;
-require_once './lib/autoload.php';
+$autoload = $argv[1];
+require_once $autoload;
 $integrityEngine = new \Mundipagg\Integrity\IntegrityEngine();
 
 $modmanRawData = file_get_contents($modmanFilePath);
 $rawLines = explode("\n",$modmanRawData);
 
-$directoriesIgnored = [
-    "./lib/",
-    "./var/connect/"
-];
+$directoriesIgnored = explode(',', $argv[2]);
 
 $listFiles = $integrityEngine->getFileListFromArrayData($rawLines, $directoriesIgnored);
 $integrityData = $integrityEngine->generateMD5FromArray($listFiles);

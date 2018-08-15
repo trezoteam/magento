@@ -67,13 +67,14 @@ class Mundipagg_Paymentmodule_Helper_MagentoSystemInfo implements SystemInfoInte
         return \Mage::helper('paymentmodule/log')->getModuleLogFilenamePrefix();
     }
 
-    public function checkMaintenanceRouteAccessPermition()
+    public function getSecretKey()
     {
         $generalConfig = \Mage::getModel('paymentmodule/config_general');
-        $publicKey = $generalConfig->getPublicKey();
-        $publicKeyHashEncoded = base64_encode(hash('sha512',$publicKey));
-        $urlToken = \Mage::app()->getRequest()->getParam('token');
+        return $generalConfig->getSecretKey();
+    }
 
-        return $urlToken !== $publicKeyHashEncoded || strlen($publicKey) < 1;
+    public function getRequestParams()
+    {
+        return \Mage::app()->getRequest()->getParams();
     }
 }

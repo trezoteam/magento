@@ -25,5 +25,7 @@ interface SystemInfoInterface
 
     public function getModulePrefixLogFile();
 
-    public function checkMaintenanceRouteAccessPermition();
+    public function getSecretKey();
+
+    public function getRequestParams();
 }
