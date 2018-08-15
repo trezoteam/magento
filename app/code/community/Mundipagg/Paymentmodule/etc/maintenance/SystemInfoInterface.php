@@ -19,11 +19,15 @@ interface SystemInfoInterface
 
     public function getInstallType();
 
-    public function getLogsDir();
+    public function getLogsDirs();
+
+    public function getDefaultLogDir();
+
+    public function getModuleLogDir();
 
     public function getDefaultLogFiles();
 
-    public function getModulePrefixLogFile();
+    public function getModuleLogFilenamePrefix();
 
     public function getSecretKey();
 

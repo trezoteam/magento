@@ -24,11 +24,7 @@ class Mundipagg_Paymentmodule_MaintenanceController extends Mage_Core_Controller
         }
 
         $integrityCheck = $integrityController->getIntegrityCheck();
-        $logInfo = $integrityController->getLogInfo();
         $generalInformation = $integrityController->getSystemInformation();
-        $generalInformation['moduleCheckSum'] = md5(json_encode($integrityCheck['files]']));
-        $generalInformation['magentoLogsDirectory'] = $logInfo['magentoLogsDirectory'];
-        $generalInformation['logConfigs'] = $logInfo['logConfigs'];
 
         //showing environment and module info
         $integrityController->showGeneralInfo("Module info", $generalInformation);
@@ -56,7 +52,6 @@ class Mundipagg_Paymentmodule_MaintenanceController extends Mage_Core_Controller
 
         echo '<h3>phpinfo()</h3>';
         phpinfo();
-
     }
 
     public function logsAction()
@@ -72,7 +67,7 @@ class Mundipagg_Paymentmodule_MaintenanceController extends Mage_Core_Controller
         $integrityController->showLogInfo();
     }
 
-    public function donwloadLogAction()
+    public function downloadLogAction()
     {
         $integrityController = $this->getIntegrityController();
 
@@ -92,7 +87,7 @@ class Mundipagg_Paymentmodule_MaintenanceController extends Mage_Core_Controller
         $file = base64_decode($file);
 
         if (!is_readable($file) || !in_array($file, $integrityController->listLogFiles())) {
-            header('HTTP/1.0 403 Not Found');
+            header('HTTP/1.0 403 Forbidden');
             $this->getResponse()->setBody('Forbidden');
             return;
         }

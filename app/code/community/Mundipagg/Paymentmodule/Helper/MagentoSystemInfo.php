@@ -49,7 +49,20 @@ class Mundipagg_Paymentmodule_Helper_MagentoSystemInfo implements SystemInfoInte
         return $installType;
     }
 
-    public function getLogsDir()
+    public function getLogsDirs()
+    {
+        return [
+            'magentoLogsDirectory' => $this->getDefaultLogDir(),
+            'moduleLogsDirectory' => $this->getModuleLogDir()
+        ];
+    }
+
+    public function getDefaultLogDir()
+    {
+        return \Mage::getBaseDir('log');
+    }
+
+    public function getModuleLogDir()
     {
         return \Mage::getBaseDir('log');
     }
@@ -62,7 +75,7 @@ class Mundipagg_Paymentmodule_Helper_MagentoSystemInfo implements SystemInfoInte
         ];
     }
 
-    public function getModulePrefixLogFile()
+    public function getModuleLogFilenamePrefix()
     {
         return \Mage::helper('paymentmodule/log')->getModuleLogFilenamePrefix();
     }
@@ -80,6 +93,6 @@ class Mundipagg_Paymentmodule_Helper_MagentoSystemInfo implements SystemInfoInte
 
     public function getDownloadRouter()
     {
-        return '/mp-paymentmodule/maintenance/donwloadLog';
+        return '/mp-paymentmodule/maintenance/downloadLog';
     }
 }

@@ -14,7 +14,7 @@ class IntegrityController
 
     public function getSystemInformation()
     {
-        return [
+        $generalInformation =  [
             'integrityScript' => __FILE__,
             'modmanFilePath' => $this->systemInfo->getModmanPath(),
             'integrityCheckFile' => $this->systemInfo->getIntegrityCheckPath(),
@@ -23,8 +23,14 @@ class IntegrityController
             'platformVersion' => $this->systemInfo->getPlatformVersion(),
             'platformRootDir' => $this->systemInfo->getPlatformRootDir(),
             'directoriesIgnored' => $this->systemInfo->getDirectoriesIgnored(),
-            'installType' => $this->systemInfo->getInstallType()
+            'installType' => $this->systemInfo->getInstallType(),
         ];
+
+        $generalInformation['moduleCheckSum'] = md5(json_encode($this->listLogFiles()));
+        $generalInformation = array_merge($generalInformation, $this->getLogInfo());
+
+        return $generalInformation;
+
     }
 
     public function getIntegrityCheck()
@@ -41,15 +47,19 @@ class IntegrityController
 
     public function getLogInfo()
     {
-        $logs = $this->listLogFiles();
         return [
-            'files' => $logs,
-            'logConfigs' => [
-                'includes' => $this->systemInfo->getDefaultLogFiles(),
-                'moduleFilenamePrefix' => $this->systemInfo->getModulePrefixLogFile()
-            ],
-            'magentoLogsDirectory' => $this->systemInfo->getLogsDir()
+            'logConfigs' => $this->getLogConfigs(),
+            'magentoLogsDirectory' => $this->systemInfo->getDefaultLogDir(),
+            'moduleLogsDirectory' => $this->systemInfo->getModuleLogDir()
         ];
+    }
+
+    public function getLogConfigs()
+    {
+       return [
+           'includes' => $this->systemInfo->getDefaultLogFiles(),
+           'moduleFilenamePrefix' => $this->systemInfo->getModuleLogFilenamePrefix()
+       ];
     }
 
     public function checkMaintenanceRouteAccessPermition()
@@ -74,7 +84,11 @@ class IntegrityController
     public function listLogFiles()
     {
         $integrityEngine = new IntegrityEngine();
-        return $integrityEngine->listFilesOnDir($this->systemInfo->getLogsDir());
+        $listLogFiles = [];
+        foreach (array_unique($this->systemInfo->getLogsDirs()) as $dir) {
+            $listLogFiles = array_merge($listLogFiles, $integrityEngine->listFilesOnDir($dir));
+        }
+        return $listLogFiles;
     }
 
     public function showGeneralInfo($title, $info)
