@@ -143,7 +143,7 @@ class IntegrityEngine
     public function isDirectoriesIgnored(array $directories, $line)
     {
         $array = array_filter($directories, function ($dir) use ($line) {
-            return  strpos($line, $dir) !== 0;
+            return  strpos($line, trim($dir)) !== 0;
         });
 
         return count($array) !== count($directories);

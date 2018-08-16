@@ -48,4 +48,51 @@ class Mundipagg_Paymentmodule_Helper_MagentoSystemInfo implements SystemInfoInte
 
         return $installType;
     }
+
+    public function getLogsDirs()
+    {
+        return [
+            'magentoLogsDirectory' => $this->getDefaultLogDir(),
+            'moduleLogsDirectory' => $this->getModuleLogDir()
+        ];
+    }
+
+    public function getDefaultLogDir()
+    {
+        return \Mage::getBaseDir('log');
+    }
+
+    public function getModuleLogDir()
+    {
+        return \Mage::getBaseDir('log');
+    }
+
+    public function getDefaultLogFiles()
+    {
+        return [
+            \Mage::getStoreConfig('dev/log/file'),
+            \Mage::getStoreConfig('dev/log/exception_file'),
+        ];
+    }
+
+    public function getModuleLogFilenamePrefix()
+    {
+        return \Mage::helper('paymentmodule/log')->getModuleLogFilenamePrefix();
+    }
+
+    public function getSecretKey()
+    {
+        $generalConfig = \Mage::getModel('paymentmodule/config_general');
+        return $generalConfig->getSecretKey();
+    }
+
+    public function getRequestParams()
+    {
+        return \Mage::app()->getRequest()->getParams();
+    }
+
+    public function getDownloadRouter()
+    {
+        return '/mp-paymentmodule/maintenance/downloadLog';
+    }
 }

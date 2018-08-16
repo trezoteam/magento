@@ -15,13 +15,16 @@ class Mundipagg_Paymentmodule_MaintenanceController extends Mage_Core_Controller
 
     public function versionAction()
     {
-        $integrityController = new IntegrityController(
-            \Mage::helper('paymentmodule/MagentoSystemInfo')
-        );
+        $integrityController = $this->getIntegrityController();
+
+        if ($integrityController->checkMaintenanceRouteAccessPermition()) {
+            header('HTTP/1.0 401 Unauthorized');
+            $this->getResponse()->setBody('Unauthorized');
+            return;
+        }
 
         $integrityCheck = $integrityController->getIntegrityCheck();
         $generalInformation = $integrityController->getSystemInformation();
-        $generalInformation['moduleCheckSum'] = md5(json_encode($integrityCheck['files]']));
 
         //showing environment and module info
         $integrityController->showGeneralInfo("Module info", $generalInformation);
@@ -46,5 +49,57 @@ class Mundipagg_Paymentmodule_MaintenanceController extends Mage_Core_Controller
             'File List ('.count($integrityCheck['files']).')',
             $integrityCheck['files']
         );
+
+        echo '<h3>phpinfo()</h3>';
+        phpinfo();
+    }
+
+    public function logsAction()
+    {
+        $integrityController = $this->getIntegrityController();
+
+        if ($integrityController->checkMaintenanceRouteAccessPermition()) {
+            header('HTTP/1.0 401 Unauthorized');
+            $this->getResponse()->setBody('Unauthorized');
+            return;
+        }
+
+        $integrityController->showLogInfo();
+    }
+
+    public function downloadLogAction()
+    {
+        $integrityController = $this->getIntegrityController();
+
+        if ($integrityController->checkMaintenanceRouteAccessPermition()) {
+            header('HTTP/1.0 401 Unauthorized');
+            $this->getResponse()->setBody('Unauthorized');
+            return;
+        }
+
+        $file = \Mage::app()->getRequest()->getParam('file');
+        if (!$file) {
+            header('HTTP/1.0 404 Not Found');
+            $this->getResponse()->setBody('Resource not found');
+            return;
+        }
+
+        $file = base64_decode($file);
+
+        if (!is_readable($file) || !in_array($file, $integrityController->listLogFiles())) {
+            header('HTTP/1.0 403 Forbidden');
+            $this->getResponse()->setBody('Forbidden');
+            return;
+        }
+
+        if (!$integrityController->compactFile($file)) {
+            header('HTTP/1.0 500 Internal Server Error');
+            $this->getResponse()->setBody('Zip encoding failure');
+        }
+    }
+
+    protected function getIntegrityController()
+    {
+        return new IntegrityController(\Mage::helper('paymentmodule/MagentoSystemInfo'));
     }
 }
