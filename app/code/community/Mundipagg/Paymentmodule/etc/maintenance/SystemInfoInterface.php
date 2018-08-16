@@ -33,5 +33,7 @@ interface SystemInfoInterface
 
     public function getRequestParams();
 
+    public function getRequestParam($param);
+
     public function getDownloadRouter();
 }

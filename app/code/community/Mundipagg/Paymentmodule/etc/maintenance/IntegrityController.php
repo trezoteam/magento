@@ -7,9 +7,102 @@ class IntegrityController
     /** @var SystemInfoInterface */
     protected $systemInfo;
 
-    public function __construct(SystemInfoInterface $systemInfo)
+    /** @var OrderInfoInterface  */
+    protected $orderInfo;
+
+    /** @var IntegrityViewer */
+    public $viewer;
+
+    public function __construct(SystemInfoInterface $systemInfo, OrderInfoInterface $orderInfo)
     {
         $this->systemInfo = $systemInfo;
+        $this->orderInfo = $orderInfo;
+
+        $this->viewer = $this->getIntegrityViewer();
+    }
+
+    public function __call($name, $arguments)
+    {
+        if ($this->checkMaintenanceRouteAccessPermition()) {
+            throw new IntegrityException('HTTP/1.0 401 Unauthorized', 'Unauthorized', 401);
+        }
+
+        return call_user_func_array([$this, $name], $arguments);
+    }
+
+    protected function renderOrderInfo()
+    {
+        $request = $this->systemInfo->getRequestParams();
+        $this->orderInfo->loadOrder($request['orderID']);
+
+        $this->viewer->handleDefaultInfoView("#Order", $this->orderInfo->getOrder()->getData());
+        $this->viewer->handleDefaultInfoView("#History", $this->orderInfo->getOrderHistory());
+        $this->viewer->handleDefaultInfoView("#Charges", $this->orderInfo->getOrderCharges());
+        $this->viewer->handleDefaultInfoView("#Invoices", $this->orderInfo->getOrderInvoices());
+    }
+
+    protected function renderLogInfo()
+    {
+        $params = $this->systemInfo->getRequestParams();
+
+        $this->viewer->handleLogListView(
+            $this->listLogFiles(),
+            $this->systemInfo->getDownloadRouter(),
+            $params
+        );
+    }
+
+    protected function renderSystemInfo()
+    {
+        $integrityCheck = $this->getIntegrityCheck();
+
+        $this->viewer->handleDefaultInfoView(
+            "Module info",
+            $this->getSystemInformation()
+        );
+        $this->viewer->handleNonEmptyInfoView(
+            "Warning! New files were added to module directories!",
+            $integrityCheck['newFiles']
+        );
+
+        $this->viewer->handleNonEmptyInfoView(
+            "Warning! Module files were modified!",
+            $integrityCheck['alteredFiles']
+        );
+
+        $this->viewer->handleNonEmptyInfoView(
+            "Warning! Module files become unreadable!",
+            $integrityCheck['unreadableFiles']
+        );
+
+        $this->viewer->handleDefaultInfoView(
+            'File List ('.count($integrityCheck['files']).')',
+            $integrityCheck['files']
+        );
+
+        echo '<h3>phpinfo()</h3>';
+        phpinfo();
+    }
+
+    protected function downloadLogFile()
+    {
+        $file = $this->systemInfo->getRequestParam('file');
+        if (!$file) {
+            throw new IntegrityException('HTTP/1.0 404 Not Found', 'Resource not found', 404);
+        }
+
+        $file = base64_decode($file);
+
+        if (!is_readable($file) || !in_array($file, $this->listLogFiles())) {
+            throw new IntegrityException('HTTP/1.0 403 Forbidden', 'Forbidden', 403);
+        }
+
+        if (!$this->compactFile($file)) {
+            throw new IntegrityException(
+                'HTTP/1.0 500 Internal Server Error',
+                'Zip encoding failure',
+                500);
+        }
     }
 
     public function getSystemInformation()
@@ -30,19 +123,17 @@ class IntegrityController
         $generalInformation = array_merge($generalInformation, $this->getLogInfo());
 
         return $generalInformation;
-
     }
 
     public function getIntegrityCheck()
     {
-        $modmanPath = $this->systemInfo->getModmanPath();
-        $integrityPath = $this->systemInfo->getIntegrityCheckPath();
-        $directoriesIgnored = $this->systemInfo->getDirectoriesIgnored();
-
         $integrityEngine = new IntegrityEngine();
-        $integrityCheck= $integrityEngine->verifyIntegrity($modmanPath, $integrityPath, $directoriesIgnored);
 
-        return $integrityCheck;
+        return $integrityEngine->verifyIntegrity(
+            $this->systemInfo->getModmanPath(),
+            $this->systemInfo->getIntegrityCheckPath(),
+            $this->systemInfo->getDirectoriesIgnored()
+        );
     }
 
     public function getLogInfo()
@@ -62,6 +153,22 @@ class IntegrityController
        ];
     }
 
+    public function listLogFiles()
+    {
+        $integrityEngine = new IntegrityEngine();
+        $listLogFiles = [];
+        foreach (array_unique($this->systemInfo->getLogsDirs()) as $dir) {
+            $listLogFiles = array_merge($listLogFiles, $integrityEngine->listFilesOnDir($dir));
+        }
+        return $listLogFiles;
+    }
+
+    public function compactFile($file)
+    {
+        $compactor = new FileCompactor($file);
+        return $compactor->compact();
+    }
+
     public function checkMaintenanceRouteAccessPermition()
     {
         $secretKey = $this->systemInfo->getSecretKey();
@@ -75,61 +182,8 @@ class IntegrityController
         return $urlParams['token'] !== $secretKeyHashEncoded || strlen($secretKey) < 1;
     }
 
-    public function compactFile($file)
+    protected function getIntegrityViewer()
     {
-        $compactor = new FileCompactor($file);
-        return $compactor->compact();
-    }
-
-    public function listLogFiles()
-    {
-        $integrityEngine = new IntegrityEngine();
-        $listLogFiles = [];
-        foreach (array_unique($this->systemInfo->getLogsDirs()) as $dir) {
-            $listLogFiles = array_merge($listLogFiles, $integrityEngine->listFilesOnDir($dir));
-        }
-        return $listLogFiles;
-    }
-
-    public function showGeneralInfo($title, $info)
-    {
-        echo "<h3>$title</h3>";
-        echo '<pre>';
-        print_r($info);
-        echo '</pre>';
-        echo json_encode($info);
-    }
-
-    public function showNonEmptyInfo($message, $info)
-    {
-        if (count($info) > 0) {
-            echo "<h3 style='color:red'>$message</h3>";
-            echo '<pre>';
-            print_r($info);
-            echo '</pre>';
-            echo json_encode($info);
-        }
-    }
-
-    public function showLogInfo()
-    {
-        $params = $this->systemInfo->getRequestParams();
-
-        echo '<h3>Logs ('.count($this->listLogFiles()).')</h3><pre>';
-        foreach($this->listLogFiles() as $logFile) {
-            $link = "<strong style='color:red'>$logFile</strong><br />";
-            if (is_readable($logFile)) {
-                $fileRoute =  $this->systemInfo->getDownloadRouter();
-                $fileRoute .= '?token=';
-                $fileRoute .= isset($params['token']) ? $params['token'] : '';
-                $fileRoute .= '&file=' . base64_encode($logFile);
-
-                $link =
-                    '<a href="'.$fileRoute.'" target="_self">' .
-                    $logFile . ' (' . filesize($logFile) . ' bytes)'.
-                    '</a><br />';
-            }
-            echo $link;
-        }
+        return new IntegrityViewer();
     }
 }

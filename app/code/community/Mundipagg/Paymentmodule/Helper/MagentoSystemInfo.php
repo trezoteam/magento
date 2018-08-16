@@ -95,4 +95,9 @@ class Mundipagg_Paymentmodule_Helper_MagentoSystemInfo implements SystemInfoInte
     {
         return '/mp-paymentmodule/maintenance/downloadLog';
     }
+
+    public function getRequestParam($param)
+    {
+        return \Mage::app()->getRequest()->getParam($param);
+    }
 }
