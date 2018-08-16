@@ -187,11 +187,18 @@ abstract class Mundipagg_Paymentmodule_Model_Api_Standard
     {
         $customerRequest = new CreateCustomerRequest();
 
+        $document = preg_replace('/[^0-9]/', '', $customer['multiBuyerTaxvat']);
+
+        $type = 'individual';
+        if (strlen($document) > 11) {
+            $type = 'company';
+        }
+
         $customerRequest->name = $customer['multiBuyerName'];
         $customerRequest->email = $customer['multiBuyerEmail'];
-        $customerRequest->document = $customer['multiBuyerTaxvat'];
+        $customerRequest->document = $document;
         $customerRequest->address = $this->getAddressFromMultiBuyer($customer);
-        $customerRequest->type = 'individual';
+        $customerRequest->type = $type;
 
         return $customerRequest;
     }

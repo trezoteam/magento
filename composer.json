@@ -23,7 +23,8 @@
 
   "autoload": {
     "psr-4": {
-      "Mundipagg\\": "app/"
+      "Mundipagg\\": "app/",
+      "Mundipagg\\Integrity\\": "app/code/community/Mundipagg/Paymentodule/etc/maintenance/"
     }
   },
 

@@ -57,6 +57,11 @@ class Mundipagg_Paymentmodule_Helper_Log extends Mage_Core_Helper_Abstract
         }
     }
 
+    public function getModuleLogFilenamePrefix()
+    {
+        return "Mundipagg_PaymentModule_";
+    }
+
     protected function write($msg)
     {
         $logIsEnabled = boolval(Mage::getStoreConfig('mundipagg_config/general_group/logs'));
@@ -67,7 +72,7 @@ class Mundipagg_Paymentmodule_Helper_Log extends Mage_Core_Helper_Abstract
 
         $metaData = Mage::helper('paymentmodule/data')->getMetaData();
         $version = $metaData['module_version'];
-        $file = "Mundipagg_PaymentModule_" . date('Y-m-d') . ".log";
+        $file =  $this->getModuleLogFilenamePrefix() . date('Y-m-d') . ".log";
         $method = $this->method;
         $newMsg = "v{$version} ";
 

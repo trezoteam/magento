@@ -1,5 +1,5 @@
 <_>
-   <form_key>ojWMFq0MwAAWrW5n</form_key>
+   <form_key>8FSPFxw6MW4RkxWm</form_key>
    <name>Mundipagg_Payment_Module</name>
    <channel>community</channel>
    <version_ids>
@@ -15,118 +15,12 @@ IMPORTANTE
 Em qualquer procedimento de instalação ou update existem riscos, aconselhamos sempre criar backups de sua loja e efetuar qualquer procedimento em ambiente de desenvolvimento antes, nunca diretamente em produção. Não nos responsabilizamos por eventuais incidentes causados por negligenciar este alerta ou por uso de produtos ou serviços de terceiros.</description>
    <license>MIT</license>
    <license_uri/>
-   <version>1.3.0</version>
+   <version>1.4.0</version>
    <stability>beta</stability>
-   <notes>Fix credit card backend validation
--Add tests of credit card on behat
--Hide payment index when is single payment.
--Implement functional tests
--Fix empty installment value on multi method
--:bug: Fix undefined index of taxvat
--Fix value of charge paid
--Show order total in multi payment form
--Fix Undefined index
--Change state and country sort order of multibuyer form
--Get correct cpf field
--Handle payment failed response
--Create from-to for address fields
--Run modman in robofile and change configuration sort order
--This reverts commit 873f3827d07147a4a86a65c2e378c65192f119e0.
--Merge develop into master
--Show module version on config
--Fix cancel/capture failure handling
--Cancel and capture by module
--Merge develop into Master
--Null address inputs handling
--Guest Checkout Fixes
--Fix saved card to guest
--Fix installments calculations on frontend
--266 fix apply interest
--Apply interest on the order
--Use magento data to fill dropdown of country and state
--Add Multiple checkout module support
--Create charge screen
--Deal with charge response
--Merge Develop into Master
--Bug/244 filling correct value configured of capture
--Merge Develop into Master
--Fix compatibility with the oldest module
--Create module version updater
--Change module routes
--Fix configurable product
--Fixes Multibuyer with boleto + credit cards
--Added Multicurrency support.
--Add CI with CircleCI and Rancher
--Implement Multibuyer frontend
--Improve module logging.
--Fixed multipayment value input balance weird behavior
--Fix amex doesn't transactioning
--Mundipagg brand update
--Fix module break on saved card checkout
--Create multi buyer payment
--Choose enabled brands when default installments option is enabled
--Remove credit card data from backend
--Remove null coalesce operator
--Module i18n
--Merge develop into master
--Closes mundipagg/plug-team#74, closes mundipagg/plug-team#127, closes mundipagg/plug-team#128 and closes mundipagg/plug-team#129.  
--Value balance on multipayment
--Closes mundipagg/plug-team#127
--Fix config title not showed on checkout
--Closes mundipagg/plug-team#129.
--Boleto link on checkout success
--Closes mundipagg/plug-team#128.
--Saved Credit cards wallet and javascript adjusts.
--Closes mundipagg/plug-team#74
--closes mundipagg/plug-team#76
--Fix GitHub templates
--#76 Fix config.xml.
--#76 create install script
--Add module package xml guide.
--Merge develop into master
--Refatorar backend
--Mod 284 remover codigo desnecessario
--Frontend Architectural changes
--Backend architectural changes
--Implement Boleto + Creditcard payment Method
--Validation and bug fixes.
--Implements the backend functionalities of Boleto + CC Payment Method
-- Implements the frontend functionalities of Boleto + CC Payment Method
--Merge Develop into Master
--Deal with order response
--Add a Codacy badge to README.md
--Deal with API response
--Deal with all webhooks
--Deal with order canceled
--Deal with order paid
-- Deal with refunded, partialRefunded and partialCanceled
--Deal with charge paid, overpaid and underpaid
--Deal with charge created.
--Feature/mod 231 add api to respond to weebhook
--Feature/mod 234 add antifraude
--Add installments and interest to Order 
--Add Shipping info in order request
--Handle Order/Charge statuses changes.
--Log order request and response
--Show installments by creditcard brand
--Get creditcard bin and show brand image
--Fix state code
--Validate checkout fields
--Add phpcs and phpcs to composer scripts section
--Add credit card payment to the module
--Get Token
--Add credit card form
--Add js to checkout screen
--Update sdk source
--Create credit card transaction
--Feature/show mundipagg payment
--Add namespace and fix menus
--add sdk to project
--Feature/insert icons
--Feature/mod 92 create config screens
--Create module
--Update README.
--</notes>
+   <notes>- Fixed charge screen broken
+- Fix document filtering to accept only numbers send to api
+- Create checksum validate
+- Create log maintenance</notes>
    <authors>
       <name>
          <name>mundipagg</name>
@@ -155,7 +49,7 @@ Em qualquer procedimento de instalação ou update existem riscos, aconselhamos 
             <max/>
          </max>
          <files>
-            <files>                                                       </files>
+            <files>                                                        </files>
          </files>
       </package>
       <extension>
