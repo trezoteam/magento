@@ -10,7 +10,7 @@ class IntegrityException extends \Exception
 
     function __construct($header = "", $message = "", $code = 0, Throwable $previous = null)
     {
-        $this->setHeader($header);
+        $this->header = $header;
         parent::__construct($message, $code, $previous);
     }
 
@@ -20,13 +20,5 @@ class IntegrityException extends \Exception
     public function getHeader()
     {
         return $this->header;
-    }
-
-    /**
-     * @param mixed $header
-     */
-    public function setHeader($header)
-    {
-        $this->header = $header;
     }
 }

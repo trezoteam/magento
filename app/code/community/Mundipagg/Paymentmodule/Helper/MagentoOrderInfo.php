@@ -4,7 +4,6 @@ use Mundipagg\Integrity\AbstractOrderInfo;
 
 class Mundipagg_Paymentmodule_Helper_MagentoOrderInfo extends AbstractOrderInfo
 {
-
     protected function _loadOrder($id)
     {
         return \Mage::getModel('sales/order')->loadByIncrementId($id);

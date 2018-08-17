@@ -27,13 +27,20 @@ class IntegrityController
             throw new IntegrityException('HTTP/1.0 401 Unauthorized', 'Unauthorized', 401);
         }
 
+        if (!method_exists($this, $name)) {
+            throw new IntegrityException('HTTP/1.0 404 Not Found', 'Method not found', 404);
+        }
+
         return call_user_func_array([$this, $name], $arguments);
     }
 
     protected function renderOrderInfo()
     {
-        $request = $this->systemInfo->getRequestParams();
-        $this->orderInfo->loadOrder($request['orderID']);
+        $orderId = $this->systemInfo->getRequestParam('orderID');
+        if (empty($orderId)) {
+            throw new IntegrityException('HTTP/1.0 404 Not Found', 'Resource not found', 404);
+        }
+        $this->orderInfo->loadOrder($orderId);
 
         $this->viewer->handleDefaultInfoView("#Order", $this->orderInfo->getOrder()->getData());
         $this->viewer->handleDefaultInfoView("#History", $this->orderInfo->getOrderHistory());
