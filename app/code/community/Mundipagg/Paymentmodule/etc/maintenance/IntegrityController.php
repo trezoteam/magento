@@ -186,7 +186,7 @@ class IntegrityController
             return false;
         }
 
-        return $urlParams['token'] !== $secretKeyHashEncoded || strlen($secretKey) < 1;
+        return $urlParams['token'] === $secretKeyHashEncoded && strlen($secretKey) > 1;
     }
 
     protected function getIntegrityViewer()
