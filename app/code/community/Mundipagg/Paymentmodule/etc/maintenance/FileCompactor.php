@@ -28,7 +28,7 @@ class FileCompactor
             header('Content-Disposition: attachment; filename='.$downloadFileName.'.zip');
             header('Pragma: no-cache');
             readfile($zipFileName);
-            return;
+            return true;
         }
 
         return false;

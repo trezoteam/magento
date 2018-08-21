@@ -2,7 +2,7 @@
 
 require_once Mage::getBaseDir('lib') . '/autoload.php';
 
-use Mundipagg\Integrity\MagentoSystemInfo;
+use Mundipagg\Integrity\IntegrityException;
 use Mundipagg\Integrity\IntegrityController;
 
 class Mundipagg_Paymentmodule_MaintenanceController extends Mage_Core_Controller_Front_Action
@@ -15,91 +15,56 @@ class Mundipagg_Paymentmodule_MaintenanceController extends Mage_Core_Controller
 
     public function versionAction()
     {
-        $integrityController = $this->getIntegrityController();
-
-        if ($integrityController->checkMaintenanceRouteAccessPermition()) {
-            header('HTTP/1.0 401 Unauthorized');
-            $this->getResponse()->setBody('Unauthorized');
+        try {
+            $this->getIntegrityController()->renderSystemInfo();
+        } catch (IntegrityException $e) {
+            $this->getResponse()
+                    ->setBody($e->getMessage())
+                    ->setHeader($e->getHeader(), $e->getCode(), true);
             return;
         }
-
-        $integrityCheck = $integrityController->getIntegrityCheck();
-        $generalInformation = $integrityController->getSystemInformation();
-
-        //showing environment and module info
-        $integrityController->showGeneralInfo("Module info", $generalInformation);
-
-        //showing integrity check result
-        $integrityController->showNonEmptyInfo(
-            "Warning! New files were added to module directories!",
-            $integrityCheck['newFiles']
-        );
-
-        $integrityController->showNonEmptyInfo(
-            "Warning! Module files were modified!",
-            $integrityCheck['alteredFiles']
-        );
-
-        $integrityController->showNonEmptyInfo(
-            "Warning! Module files become unreadable!",
-            $integrityCheck['unreadableFiles']
-        );
-
-        $integrityController->showGeneralInfo(
-            'File List ('.count($integrityCheck['files']).')',
-            $integrityCheck['files']
-        );
-
-        echo '<h3>phpinfo()</h3>';
-        phpinfo();
     }
 
     public function logsAction()
     {
-        $integrityController = $this->getIntegrityController();
-
-        if ($integrityController->checkMaintenanceRouteAccessPermition()) {
-            header('HTTP/1.0 401 Unauthorized');
-            $this->getResponse()->setBody('Unauthorized');
+        try {
+            $this->getIntegrityController()->renderLogInfo();
+        } catch (IntegrityException $e) {
+            $this->getResponse()
+                ->setBody($e->getMessage())
+                ->setHeader($e->getHeader(), $e->getCode(), true);
             return;
         }
-
-        $integrityController->showLogInfo();
     }
 
     public function downloadLogAction()
     {
-        $integrityController = $this->getIntegrityController();
-
-        if ($integrityController->checkMaintenanceRouteAccessPermition()) {
-            header('HTTP/1.0 401 Unauthorized');
-            $this->getResponse()->setBody('Unauthorized');
+        try {
+            $this->getIntegrityController()->downloadLogFile();
+        } catch (IntegrityException $e) {
+            $this->getResponse()
+                ->setBody($e->getMessage())
+                ->setHeader($e->getHeader(), $e->getCode(), true);
             return;
         }
+    }
 
-        $file = \Mage::app()->getRequest()->getParam('file');
-        if (!$file) {
-            header('HTTP/1.0 404 Not Found');
-            $this->getResponse()->setBody('Resource not found');
-            return;
-        }
-
-        $file = base64_decode($file);
-
-        if (!is_readable($file) || !in_array($file, $integrityController->listLogFiles())) {
-            header('HTTP/1.0 403 Forbidden');
-            $this->getResponse()->setBody('Forbidden');
-            return;
-        }
-
-        if (!$integrityController->compactFile($file)) {
-            header('HTTP/1.0 500 Internal Server Error');
-            $this->getResponse()->setBody('Zip encoding failure');
+    public function orderAction()
+    {
+        try{
+            $this->getIntegrityController()->renderOrderInfo();
+        }catch (Exception $e) {
+            $this->getResponse()
+                ->setBody($e->getMessage())
+                ->setHeader($e->getHeader(), $e->getCode(), true);
         }
     }
 
     protected function getIntegrityController()
     {
-        return new IntegrityController(\Mage::helper('paymentmodule/MagentoSystemInfo'));
+        return new IntegrityController(
+            \Mage::helper('paymentmodule/MagentoSystemInfo'),
+            \Mage::helper('paymentmodule/MagentoOrderInfo')
+        );
     }
 }
