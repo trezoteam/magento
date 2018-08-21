@@ -6,7 +6,16 @@ class Mundipagg_Paymentmodule_Helper_MagentoOrderInfo extends AbstractOrderInfo
 {
     protected function _loadOrder($id)
     {
-        return \Mage::getModel('sales/order')->loadByIncrementId($id);
+        $order = \Mage::getModel('sales/order')->loadByIncrementId($id);
+        if (!$order->getIncrementId()) {
+            return null;
+        }
+        return $order;
+    }
+
+    protected function _getOrderInfo()
+    {
+        return $this->getOrder()->getData();
     }
 
     protected function _getOrderHistory()

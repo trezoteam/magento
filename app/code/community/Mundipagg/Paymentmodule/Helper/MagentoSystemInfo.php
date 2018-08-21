@@ -93,7 +93,7 @@ class Mundipagg_Paymentmodule_Helper_MagentoSystemInfo implements SystemInfoInte
 
     public function getDownloadRouter()
     {
-        return '/mp-paymentmodule/maintenance/downloadLog';
+        return '/mp-paymentmodule/maintenance/downloadLog?';
     }
 
     public function getRequestParam($param)

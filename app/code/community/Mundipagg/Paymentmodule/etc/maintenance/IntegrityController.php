@@ -23,7 +23,7 @@ class IntegrityController
 
     public function __call($name, $arguments)
     {
-        if ($this->checkMaintenanceRouteAccessPermition()) {
+        if (!$this->checkMaintenanceRouteAccessPermition()) {
             throw new IntegrityException('HTTP/1.0 401 Unauthorized', 'Unauthorized', 401);
         }
 
@@ -42,7 +42,7 @@ class IntegrityController
         }
         $this->orderInfo->loadOrder($orderId);
 
-        $this->viewer->handleDefaultInfoView("#Order", $this->orderInfo->getOrder()->getData());
+        $this->viewer->handleDefaultInfoView("#Order", $this->orderInfo->getOrderInfo());
         $this->viewer->handleDefaultInfoView("#History", $this->orderInfo->getOrderHistory());
         $this->viewer->handleDefaultInfoView("#Charges", $this->orderInfo->getOrderCharges());
         $this->viewer->handleDefaultInfoView("#Invoices", $this->orderInfo->getOrderInvoices());
