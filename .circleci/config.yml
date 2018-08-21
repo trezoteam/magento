@@ -89,6 +89,8 @@ jobs:
               "mv /app/errors/local.xml.sample /app/errors/local.xml"
             docker exec -it newimage /bin/sh -c \
               "chown -R www-data:root /app/"
+            docker exec -i newimage sh -c \
+              "cd /app/.modman/magento && composer update -vvv"
       - run:
           name: Clear useless files
           command: |

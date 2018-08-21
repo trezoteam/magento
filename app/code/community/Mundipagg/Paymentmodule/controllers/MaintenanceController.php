@@ -2,8 +2,8 @@
 
 require_once Mage::getBaseDir('lib') . '/autoload.php';
 
-use Mundipagg\Integrity\IntegrityException;
-use Mundipagg\Integrity\IntegrityController;
+use \Mundipagg\Integrity\IntegrityException;
+use \Mundipagg\Integrity\IntegrityController;
 
 class Mundipagg_Paymentmodule_MaintenanceController extends Mage_Core_Controller_Front_Action
 {
@@ -51,9 +51,9 @@ class Mundipagg_Paymentmodule_MaintenanceController extends Mage_Core_Controller
 
     public function orderAction()
     {
-        try{
+        try {
             $this->getIntegrityController()->renderOrderInfo();
-        }catch (Exception $e) {
+        } catch (IntegrityException $e) {
             $this->getResponse()
                 ->setBody($e->getMessage())
                 ->setHeader($e->getHeader(), $e->getCode(), true);
