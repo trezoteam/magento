@@ -1,5 +1,5 @@
 <_>
-   <form_key>8FSPFxw6MW4RkxWm</form_key>
+   <form_key>CO7AFApJaWpxdvIf</form_key>
    <name>Mundipagg_Payment_Module</name>
    <channel>community</channel>
    <version_ids>
@@ -15,12 +15,9 @@ IMPORTANTE
 Em qualquer procedimento de instalação ou update existem riscos, aconselhamos sempre criar backups de sua loja e efetuar qualquer procedimento em ambiente de desenvolvimento antes, nunca diretamente em produção. Não nos responsabilizamos por eventuais incidentes causados por negligenciar este alerta ou por uso de produtos ou serviços de terceiros.</description>
    <license>MIT</license>
    <license_uri/>
-   <version>1.4.0</version>
+   <version>1.5.0</version>
    <stability>beta</stability>
-   <notes>- Fixed charge screen broken
-- Fix document filtering to accept only numbers send to api
-- Create checksum validate
-- Create log maintenance</notes>
+   <notes>- Create order report</notes>
    <authors>
       <name>
          <name>mundipagg</name>
@@ -49,7 +46,7 @@ Em qualquer procedimento de instalação ou update existem riscos, aconselhamos 
             <max/>
          </max>
          <files>
-            <files>                                                        </files>
+            <files>                                                          </files>
          </files>
       </package>
       <extension>

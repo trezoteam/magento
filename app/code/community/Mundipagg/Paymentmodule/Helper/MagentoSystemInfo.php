@@ -31,12 +31,12 @@ class Mundipagg_Paymentmodule_Helper_MagentoSystemInfo implements SystemInfoInte
 
     public function getModmanPath()
     {
-        return '/app/app/code/community/Mundipagg/Paymentmodule/etc/maintenance/modman';
+        return $this->getPlatformRootDir() . '/app/code/community/Mundipagg/Paymentmodule/etc/maintenance/modman';
     }
 
     public function getIntegrityCheckPath()
     {
-        return '/app/app/code/community/Mundipagg/Paymentmodule/etc/maintenance/integrityCheck';
+        return $this->getPlatformRootDir() . '/app/code/community/Mundipagg/Paymentmodule/etc/maintenance/integrityCheck';
     }
 
     public function getInstallType()
@@ -93,6 +93,11 @@ class Mundipagg_Paymentmodule_Helper_MagentoSystemInfo implements SystemInfoInte
 
     public function getDownloadRouter()
     {
-        return '/mp-paymentmodule/maintenance/downloadLog';
+        return '/mp-paymentmodule/maintenance/downloadLog?';
+    }
+
+    public function getRequestParam($param)
+    {
+        return \Mage::app()->getRequest()->getParam($param);
     }
 }
