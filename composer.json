@@ -19,7 +19,8 @@
   "scripts": {
     "phpcs": "phpcs --standard=lib/magento-ecg/coding-standard/Ecg app/code/community/Mundipagg/Paymentmodule/",
     "phpcbf": "phpcbf --standard=lib/magento-ecg/coding-standard/Ecg app/code/community/Mundipagg/Paymentmodule/",
-    "robo": "robo"
+    "robo": "robo",
+    "integrity-check": "./integrityPrePushCheck.sh"
   },
 
   "autoload": {
