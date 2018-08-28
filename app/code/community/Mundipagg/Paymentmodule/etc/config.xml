@@ -195,6 +195,10 @@
                 <logs>1</logs>
                 <test_mode>1</test_mode>
             </general_group>
+            <log_group>
+                <enabled>1</enabled>
+                <log_path>var/log</log_path>
+            </log_group>
             <address_group>
                 <street>0</street>
                 <number>1</number>
