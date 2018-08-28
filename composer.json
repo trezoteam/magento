@@ -13,7 +13,6 @@
     "behat/mink-selenium2-driver": "~1.2",
     "dmore/behat-chrome-extension": "^1.2",
     "felipebool/crook": "^0.0.12"
-
   },
 
   "scripts": {
