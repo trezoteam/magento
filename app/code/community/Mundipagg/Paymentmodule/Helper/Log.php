@@ -5,10 +5,20 @@ class Mundipagg_Paymentmodule_Helper_Log extends Mage_Core_Helper_Abstract
     protected $level;
     protected $method;
     protected $logLabel = '';
+    protected $addHostName = false;
+    protected $logger;
+    protected $logPath;
 
     public function __construct($method = '')
     {
         $this->method = $method;
+        $this->addHostName = Mage::getStoreConfig('mundipagg_config/log_group/host_name') == '1';
+        $this->logger = Mage::helper('paymentmodule/logger');
+
+        $this->logPath = Mage::getStoreConfig('mundipagg_config/log_group/log_path');
+        if (Mage::getStoreConfig('mundipagg_config/log_group/non_default_dir') != '1') {
+            $this->logPath = Mage::getBaseDir('var') . DS . 'log';
+        }
     }
 
     public function setMethod($method)
@@ -72,7 +82,13 @@ class Mundipagg_Paymentmodule_Helper_Log extends Mage_Core_Helper_Abstract
 
         $metaData = Mage::helper('paymentmodule/data')->getMetaData();
         $version = $metaData['module_version'];
-        $file =  $this->getModuleLogFilenamePrefix() . date('Y-m-d') . ".log";
+
+        $file =  $this->getModuleLogFilenamePrefix() . date('Y-m-d');
+        if ($this->addHostName) {
+            $file .= '_' . gethostname();
+        }
+
+        $file .= ".log";
         $method = $this->method;
         $newMsg = "v{$version} ";
 
@@ -88,6 +104,6 @@ class Mundipagg_Paymentmodule_Helper_Log extends Mage_Core_Helper_Abstract
             $newMsg .= $msg;
         }
 
-        Mage::log($newMsg, $this->level, $file);
+        $this->logger->log($newMsg, $this->level, $file, $this->logPath);
     }
 }
