@@ -163,7 +163,7 @@
                             </comment>
                         </enabled>
 
-                        <add_host_name>
+                        <host_name>
                             <label>Add host name to log filename</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -175,18 +175,12 @@
                                 <enabled>1</enabled>
                             </depends>
                             <comment>
-                                <![CDATA[
-                                    Enabling this option will add the host name to the log filename.
-                                    As the host name being <strong>&lt;HOST PLACEHOLDER&gt;</strong>,
-                                    the log file will be saved with the following name: <br /><br />
-
-                                    var/log/&lt;MODULE_LOG_PREFIX_PLACEHOLDER&gt;_&lt;CURRENT_DATE_PLACEHOLDER&gt;_<strong>&lt;HOST PLACEHOLDER&gt;</strong>.log
-                                ]]>
+                                <model>Mundipagg_Paymentmodule_Model_Config_Form_Log_Hostname</model>
                             </comment>
-                        </add_host_name>
+                        </host_name>
 
                         <non_default_dir translate="label">
-                            <label>Save logs on non-default directory</label>
+                            <label>Save logs to non-default directory</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>3</sort_order>
