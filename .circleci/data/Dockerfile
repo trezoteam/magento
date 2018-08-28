@@ -1,4 +1,4 @@
-FROM thiagobarradas/magento:1.9.3.7-php7.0
+FROM thiagobarradas/magento:1.9.3.7-php7.1
 MAINTAINER Embeddables Team <embeddables@mundipagg.com>
 
 WORKDIR /app
