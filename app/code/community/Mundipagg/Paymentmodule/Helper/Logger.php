@@ -2,7 +2,6 @@
 
 class Mundipagg_Paymentmodule_Helper_Logger extends Mage_Core_Helper_Abstract
 {
-
     /**
      * @param string $message
      * @param integer $level
@@ -10,7 +9,7 @@ class Mundipagg_Paymentmodule_Helper_Logger extends Mage_Core_Helper_Abstract
      * @param string $logDir
      * @param bool $forceLog
      */
-    public static function log($message, $level = null, $file = '', $logDir = null ,$forceLog = false)
+    public static function log($message, $level = null, $file = '', $logDir = null, $forceLog = false)
     {
         if (!Mage::getConfig()) {
             return;
