@@ -9,7 +9,7 @@ class Mundipagg_Paymentmodule_Model_Config_General
 
     public function isLogEnabled()
     {
-        return Mage::getStoreConfig('mundipagg_config/general_group/logs') == 1;
+        return Mage::getStoreConfig('mundipagg_config/log_group/enabled') == 1;
     }
 
     protected function getProdSecretKey()

@@ -192,7 +192,7 @@
                             </depends>
                             <comment>
                                 <![CDATA[
-                                    As default, the log files will be saved
+                                    As default, the log files will be saved to the
                                     Magento default log directory, <strong>var/log</strong>,
                                     on Magento install root directory.<br />
                                     Enable this options to set a non-default
@@ -203,6 +203,7 @@
                         <log_path translate="label">
                             <label>Logs Directory</label>
                             <frontend_type>text</frontend_type>
+                            <backend_model>Mundipagg_Paymentmodule_Model_Config_Form_Log_Path</backend_model>
                             <sort_order>4</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -212,7 +213,7 @@
                                 <non_default_dir>1</non_default_dir>
                             </depends>
                             <comment>
-                                Directory in which log files will be saved.
+                               <model>Mundipagg_Paymentmodule_Model_Config_Form_Log_Path</model>
                             </comment>
                         </log_path>
                     </fields>
