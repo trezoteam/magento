@@ -155,6 +155,18 @@ abstract class Mundipagg_Paymentmodule_Model_Api_Standard
         $customerRequest->email = $customer->getEmail();
         $customerRequest->document = $customer->getDocument();
 
+        //loading order to get addresses and phone.
+        $checkoutSession = $standard->getCheckoutSession();
+        $orderId = $checkoutSession->getLastRealOrderId();
+        $order = $standard->getOrderByIncrementOrderId($orderId);
+
+        //filtering numbers from phone number
+        $rawBillingPhone = $order->getBillingAddress()->getTelephone();
+        $phoneHelper = Mage::helper('paymentmodule/phone');
+        $phoneInfo = $phoneHelper->extractPhoneVarienFromRawPhoneNumber($rawBillingPhone);
+
+        $customerRequest->phones = $this->getCreatePhonesRequest($phoneInfo);
+
         return $customerRequest;
     }
 
@@ -199,6 +211,12 @@ abstract class Mundipagg_Paymentmodule_Model_Api_Standard
         $customerRequest->document = $document;
         $customerRequest->address = $this->getAddressFromMultiBuyer($customer);
         $customerRequest->type = $type;
+
+        $rawPhone = $customer['multiBuyerPhone'];
+        $phoneHelper = Mage::helper('paymentmodule/phone');
+        $phoneInfo = $phoneHelper->extractPhoneVarienFromRawPhoneNumber($rawPhone);
+
+        $customerRequest->phones = $this->getCreatePhonesRequest($phoneInfo);
 
         return $customerRequest;
     }

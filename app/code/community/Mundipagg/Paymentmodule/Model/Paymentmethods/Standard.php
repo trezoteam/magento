@@ -221,14 +221,17 @@ class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mundipagg_Pa
      */
     protected function getCustomerPhonesInformation()
     {
-        $phones = new Varien_Object();
+        //loading order to get addresses and phone.
+        $standard = Mage::getModel('paymentmodule/standard');
+        $checkoutSession = $standard->getCheckoutSession();
+        $orderId = $checkoutSession->getLastRealOrderId();
+        $order = $standard->getOrderByIncrementOrderId($orderId);
 
-        // @todo it must not be hard coded
-        $phones->setCountryCode('55');
-        $phones->setNumber('9999999999');
-        $phones->setAreacode('21');
+        //filtering numbers from phone number
+        $rawBillingPhone = $order->getBillingAddress()->getTelephone();
 
-        return $phones;
+        $phoneHelper = Mage::helper('paymentmodule/phone');
+        return $phoneHelper->extractPhoneVarienFromRawPhoneNumber($rawBillingPhone);
     }
 
     /**
