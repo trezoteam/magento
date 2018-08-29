@@ -229,16 +229,9 @@ class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mundipagg_Pa
 
         //filtering numbers from phone number
         $rawBillingPhone = $order->getBillingAddress()->getTelephone();
-        $billingPhone = preg_replace( '/[^0-9]/', '', $rawBillingPhone);
-        $billingPhone = ltrim($billingPhone,'0');
 
-        $phones = new Varien_Object();
-
-        $phones->setCountryCode('55');
-        $phones->setAreacode(substr($billingPhone,0,2));
-        $phones->setNumber(substr($billingPhone,2));
-
-        return $phones;
+        $phoneHelper = Mage::helper('paymentmodule/phone');
+        return $phoneHelper->extractPhoneVarienFromRawPhoneNumber($rawBillingPhone);
     }
 
     /**

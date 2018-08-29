@@ -162,16 +162,10 @@ abstract class Mundipagg_Paymentmodule_Model_Api_Standard
 
         //filtering numbers from phone number
         $rawBillingPhone = $order->getBillingAddress()->getTelephone();
-        $billingPhone = preg_replace( '/[^0-9]/', '', $rawBillingPhone);
-        $billingPhone = ltrim($billingPhone,'0');
+        $phoneHelper = Mage::helper('paymentmodule/phone');
+        $phoneInfo = $phoneHelper->extractPhoneVarienFromRawPhoneNumber($rawBillingPhone);
 
-        $phones = new Varien_Object();
-
-        $phones->setCountryCode('55');
-        $phones->setAreacode(substr($billingPhone,0,2));
-        $phones->setNumber(substr($billingPhone,2));
-
-        $customerRequest->phones = $this->getCreatePhonesRequest($phones);
+        $customerRequest->phones = $this->getCreatePhonesRequest($phoneInfo);
 
         return $customerRequest;
     }
@@ -219,13 +213,8 @@ abstract class Mundipagg_Paymentmodule_Model_Api_Standard
         $customerRequest->type = $type;
 
         $rawPhone = $customer['multiBuyerPhone'];
-        $phone = preg_replace( '/[^0-9]/', '', $rawPhone);
-        $phone = ltrim($phone,'0');
-
-        $phoneInfo = new Varien_Object();
-        $phoneInfo->setCountryCode('55');
-        $phoneInfo->setAreacode(substr($phone,0,2));
-        $phoneInfo->setNumber(substr($phone,2));
+        $phoneHelper = Mage::helper('paymentmodule/phone');
+        $phoneInfo = $phoneHelper->extractPhoneVarienFromRawPhoneNumber($rawPhone);
 
         $customerRequest->phones = $this->getCreatePhonesRequest($phoneInfo);
 
