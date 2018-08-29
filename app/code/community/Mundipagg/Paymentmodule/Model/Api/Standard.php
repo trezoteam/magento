@@ -155,6 +155,24 @@ abstract class Mundipagg_Paymentmodule_Model_Api_Standard
         $customerRequest->email = $customer->getEmail();
         $customerRequest->document = $customer->getDocument();
 
+        //loading order to get addresses and phone.
+        $checkoutSession = $standard->getCheckoutSession();
+        $orderId = $checkoutSession->getLastRealOrderId();
+        $order = $standard->getOrderByIncrementOrderId($orderId);
+
+        //filtering numbers from phone number
+        $rawBillingPhone = $order->getBillingAddress()->getTelephone();
+        $billingPhone = preg_replace( '/[^0-9]/', '', $rawBillingPhone);
+        $billingPhone = ltrim($billingPhone,'0');
+
+        $phones = new Varien_Object();
+
+        $phones->setCountryCode('55');
+        $phones->setAreacode(substr($billingPhone,0,2));
+        $phones->setNumber(substr($billingPhone,2));
+
+        $customerRequest->phones = $this->getCreatePhonesRequest($phones);
+
         return $customerRequest;
     }
 
@@ -199,6 +217,17 @@ abstract class Mundipagg_Paymentmodule_Model_Api_Standard
         $customerRequest->document = $document;
         $customerRequest->address = $this->getAddressFromMultiBuyer($customer);
         $customerRequest->type = $type;
+
+        $rawPhone = $customer['multiBuyerPhone'];
+        $phone = preg_replace( '/[^0-9]/', '', $rawPhone);
+        $phone = ltrim($phone,'0');
+
+        $phoneInfo = new Varien_Object();
+        $phoneInfo->setCountryCode('55');
+        $phoneInfo->setAreacode(substr($phone,0,2));
+        $phoneInfo->setNumber(substr($phone,2));
+
+        $customerRequest->phones = $this->getCreatePhonesRequest($phoneInfo);
 
         return $customerRequest;
     }

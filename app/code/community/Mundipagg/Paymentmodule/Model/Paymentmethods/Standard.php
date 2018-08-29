@@ -234,7 +234,6 @@ class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mundipagg_Pa
 
         $phones = new Varien_Object();
 
-        // @todo it must not be hard coded
         $phones->setCountryCode('55');
         $phones->setAreacode(substr($billingPhone,0,2));
         $phones->setNumber(substr($billingPhone,2));
