@@ -3,6 +3,7 @@
 class Mundipagg_Paymentmodule_Helper_Address extends Mage_Core_Helper_Abstract
 {
     const NULL_ADDRESS_PLACE_HOLDER = '-';
+    const NONE = false;
 
     public function getCustomerAddressInformation()
     {
@@ -23,6 +24,11 @@ class Mundipagg_Paymentmodule_Helper_Address extends Mage_Core_Helper_Abstract
         $orderId = $checkoutSession->getLastOrderId();
         $order = $standard->getOrderByOrderId($orderId);
         $baseAddress = $order->$method();
+
+        if ($baseAddress == false) {
+            return self::NONE;
+        }
+
         $region = $this->getStateByRegionId($baseAddress->getRegionId());
         $address = new Varien_Object();
 
