@@ -7,6 +7,8 @@ use MundiAPILib\Models\CreatePhoneRequest;
 use MundiAPILib\Models\CreatePhonesRequest;
 use MundiAPILib\Models\CreateShippingRequest;
 
+use Mundipagg_Paymentmodule_Helper_Address as AddressHelper;
+
 abstract class Mundipagg_Paymentmodule_Model_Api_Standard
 {
     protected function getCurrentCurrencyCode()
@@ -72,11 +74,22 @@ abstract class Mundipagg_Paymentmodule_Model_Api_Standard
     }
 
     protected function getShippingRequest($shippingInformation) {
+
+        /*
+         * In case of a virtual product, the shipping address does not exists.
+         * Therefore, the shippingRequests should be null.
+         */
+
+        $address = $shippingInformation->getAddress();
+        if ($address === AddressHelper::NONE) {
+            return null;
+        }
+
         $shippingRequest = new CreateShippingRequest();
 
         $shippingRequest->amount = round($shippingInformation->getAmount());
         $shippingRequest->description = $shippingInformation->getDescription();
-        $shippingRequest->address = $this->getCreateAddressRequest($shippingInformation->getAddress());
+        $shippingRequest->address = $this->getCreateAddressRequest($address);
 
         return $shippingRequest;
     }
