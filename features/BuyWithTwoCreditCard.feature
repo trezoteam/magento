@@ -33,6 +33,8 @@ Feature: Create order with two credit card
     And I click in element "#p_method_paymentmodule_twocreditcards"
 
     # Fill First Credit Card Data
+    And I wait for 1 seconds
+    And I fill in "paymentmodule_twocreditcards_creditcard_1_value" with "100"
     And I fill in "paymentmodule_twocreditcards_creditcard_1_mundicheckout-number" with "4916318338556377"
     And I fill in "paymentmodule_twocreditcards_creditcard_1_mundicheckout-holdername" with "Teste Teste"
     And I select "01" from "paymentmodule_twocreditcards_creditcard_1_mundicheckout-expmonth"
@@ -40,7 +42,7 @@ Feature: Create order with two credit card
     And I fill in "paymentmodule_twocreditcards_creditcard_1_mundicheckout-cvv" with "123"
     And I click in element "#paymentmodule_twocreditcards_creditcard_1_mundicheckout-cvv"
     And I wait for 20 seconds
-    And I select "1x of $150,00 without interest , Total: $150,00" from "paymentmodule_twocreditcards_creditcard_1_mundicheckout-creditCard-installments"
+    And I select "1x of $100,00 without interest , Total: $100,00" from "paymentmodule_twocreditcards_creditcard_1_mundicheckout-creditCard-installments"
 
     # Fill Second Credit Card Data
     And I fill in "paymentmodule_twocreditcards_creditcard_2_mundicheckout-number" with "4916318338556377"
@@ -50,7 +52,7 @@ Feature: Create order with two credit card
     And I fill in "paymentmodule_twocreditcards_creditcard_2_mundicheckout-cvv" with "123"
     And I click in element "#paymentmodule_twocreditcards_creditcard_2_mundicheckout-cvv"
     And I wait for 20 seconds
-    And I select "1x of $150,00 without interest , Total: $150,00" from "paymentmodule_twocreditcards_creditcard_2_mundicheckout-creditCard-installments"
+    And I select "1x of $200,00 without interest , Total: $200,00" from "paymentmodule_twocreditcards_creditcard_2_mundicheckout-creditCard-installments"
 
 #    And I use jquery to click on element "#p_method_paymentmodule_boleto"
     And I use jquery to click on element "#payment-buttons-container button"

@@ -4,7 +4,7 @@ VALUES (NULL , 'default', '0', 'dev/template/allow_symlink', '1');
 INSERT INTO magento.core_config_data (scope, scope_id, path, value) VALUES
 -- module
 ('default', 0, 'mundipagg_config/general_group/module_status', '1'),
-('default', 0, 'mundipagg_config/general_group/logs', '1'),
+('default', 0, 'mundipagg_config/log_group/enabled', '1'),
 ('default', 0, 'mundipagg_config/general_group/sk_prod', null),
 ('default', 0, 'mundipagg_config/general_group/pk_prod', null),
 ('default', 0, 'mundipagg_config/general_group/test_mode', '1'),

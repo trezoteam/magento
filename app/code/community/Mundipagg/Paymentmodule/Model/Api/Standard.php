@@ -7,6 +7,8 @@ use MundiAPILib\Models\CreatePhoneRequest;
 use MundiAPILib\Models\CreatePhonesRequest;
 use MundiAPILib\Models\CreateShippingRequest;
 
+use Mundipagg_Paymentmodule_Helper_Address as AddressHelper;
+
 abstract class Mundipagg_Paymentmodule_Model_Api_Standard
 {
     protected function getCurrentCurrencyCode()
@@ -72,11 +74,22 @@ abstract class Mundipagg_Paymentmodule_Model_Api_Standard
     }
 
     protected function getShippingRequest($shippingInformation) {
+
+        /*
+         * In case of a virtual product, the shipping address does not exists.
+         * Therefore, the shippingRequests should be null.
+         */
+
+        $address = $shippingInformation->getAddress();
+        if ($address === AddressHelper::NONE) {
+            return null;
+        }
+
         $shippingRequest = new CreateShippingRequest();
 
         $shippingRequest->amount = round($shippingInformation->getAmount());
         $shippingRequest->description = $shippingInformation->getDescription();
-        $shippingRequest->address = $this->getCreateAddressRequest($shippingInformation->getAddress());
+        $shippingRequest->address = $this->getCreateAddressRequest($address);
 
         return $shippingRequest;
     }
@@ -155,6 +168,18 @@ abstract class Mundipagg_Paymentmodule_Model_Api_Standard
         $customerRequest->email = $customer->getEmail();
         $customerRequest->document = $customer->getDocument();
 
+        //loading order to get addresses and phone.
+        $checkoutSession = $standard->getCheckoutSession();
+        $orderId = $checkoutSession->getLastRealOrderId();
+        $order = $standard->getOrderByIncrementOrderId($orderId);
+
+        //filtering numbers from phone number
+        $rawBillingPhone = $order->getBillingAddress()->getTelephone();
+        $phoneHelper = Mage::helper('paymentmodule/phone');
+        $phoneInfo = $phoneHelper->extractPhoneVarienFromRawPhoneNumber($rawBillingPhone);
+
+        $customerRequest->phones = $this->getCreatePhonesRequest($phoneInfo);
+
         return $customerRequest;
     }
 
@@ -199,6 +224,12 @@ abstract class Mundipagg_Paymentmodule_Model_Api_Standard
         $customerRequest->document = $document;
         $customerRequest->address = $this->getAddressFromMultiBuyer($customer);
         $customerRequest->type = $type;
+
+        $rawPhone = $customer['multiBuyerPhone'];
+        $phoneHelper = Mage::helper('paymentmodule/phone');
+        $phoneInfo = $phoneHelper->extractPhoneVarienFromRawPhoneNumber($rawPhone);
+
+        $customerRequest->phones = $this->getCreatePhonesRequest($phoneInfo);
 
         return $customerRequest;
     }

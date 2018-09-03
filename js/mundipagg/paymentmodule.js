@@ -103,6 +103,9 @@ function fillSavedCreditCardInstallments(elementId) {
  * @returns {XMLHttpRequest}
  */
 function apiRequest(url, data, callback, method, json,callbackArgsObj) {
+    if (typeof method == 'undefined') {
+        method = 'GET';
+    }
     var xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
     xhr.open(method, url);
 
