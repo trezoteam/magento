@@ -1039,6 +1039,7 @@
                     </fields>
                 </installments_group>
 
+                <!-- VOUCHER -->
                 <voucher_group translate="label" module="paymentmodule">
                     <label>General voucher configuration</label>
                     <frontend_type>text</frontend_type>
@@ -1103,6 +1104,7 @@
                     </fields>
                 </voucher_group>
 
+                <!-- VOUCHER BRANDS -->
                 <voucher_brands_group translate="label" module="paymentmodule">
                     <label>Voucher brands configuration</label>
                     <frontend_type>text</frontend_type>
@@ -1110,8 +1112,6 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-
-
                     <fields>
                         <!-- VR -->
                         <vr_configuration translate="label">
@@ -1132,7 +1132,7 @@
                             <show_in_store>1</show_in_store>
                         </vr_status>
 
-                        <!-- Sodexo -->
+                        <!-- SODEXO -->
                         <sodexo_configuration translate="label">
                             <label><![CDATA[<img title='Sodexo' alt='Sodexo' width='32' src='/skin/adminhtml/default/default/images/mundipagg/icons/sodexo.jpg'/> <div style='margin:-29px 0 13px 40px'> Sodexo configuration</div>]]></label>
                             <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
@@ -1160,7 +1160,6 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-
                     <fields>
                         <manage_multibuyer translate="label">
                             <label>Multi-Buyer configuration</label>
