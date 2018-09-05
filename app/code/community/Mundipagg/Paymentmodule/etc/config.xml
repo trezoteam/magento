@@ -249,6 +249,14 @@
                 <active>1</active>
                 <payment_action>authorize</payment_action>
             </paymentmodule_twocreditcards>
+
+            <paymentmodule_voucher>
+                <model>paymentmodule/voucher</model>
+                <title>Mundipagg - Voucher</title>
+                <allowspecific>0</allowspecific>
+                <active>1</active>
+                <payment_action>authorize</payment_action>
+            </paymentmodule_voucher>
         </payment>
     </default>
 </config>
