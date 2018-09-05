@@ -66,7 +66,7 @@ function fillSavedCreditCardInstallments(elementId) {
     var brandName = jQuery("#" + elementId + "_mundicheckout-SavedCreditCard")
         .children("option:selected")
         .attr("data-brand");
-    var baseUrl = jQuery("#baseUrl").val();
+    var baseUrl = jQuery(".baseUrl").val();
     var value = jQuery("#" + elementId + "_value").val();
 
     if (value == "" || value == "0.00") {
@@ -333,7 +333,7 @@ function getBrandWithDelay(elementId) {
 function getBrand(elementId) {
 
     var brandName = jQuery("#" + elementId +"_mundipaggBrandName").val();
-    var baseUrl = jQuery("#baseUrl").val();
+    var baseUrl = jQuery(".baseUrl").val();
     var creditCardNumber = jQuery("#" + elementId +"_mundicheckout-number").val();
     var value = jQuery("#" + elementId +"_value").val();
 
@@ -374,7 +374,7 @@ function fillBrandData(data,argsObj) {
     if (data.brand != "" && data.brand != undefined) {
 
         showBrandImage(data.brand,argsObj.elementId);
-        getInstallments(jQuery("#baseUrl").val(), data.brandName,argsObj);
+        getInstallments(jQuery(".baseUrl").val(), data.brandName,argsObj);
 
         jQuery("#"+argsObj.elementId+"_mundicheckout-creditCard-installments").html("");
         jQuery("#"+argsObj.elementId+"_brand_name").val(data.brandName);
