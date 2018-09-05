@@ -38,8 +38,8 @@ class Mundipagg_Paymentmodule_Model_Config_Voucher
         $installmentsConfig = $this->getInstallmentsConfig();
 
         return [
-            'vr' => $installmentsConfig['amex_status'],
-            'sodexo' => $installmentsConfig['diners_status']
+            'vr' => $installmentsConfig['vr_status'],
+            'sodexo' => $installmentsConfig['sodexo_status']
         ];
     }
 
