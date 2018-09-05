@@ -35,11 +35,9 @@ class Mundipagg_Paymentmodule_Model_Config_Voucher
 
     public function getBrandStatuses()
     {
-        $installmentsConfig = $this->getInstallmentsConfig();
-
         return [
-            'vr' => $installmentsConfig['vr_status'],
-            'sodexo' => $installmentsConfig['sodexo_status']
+            'vr' => $this->isVrEnabled(),
+            'sodexo' => $this->isSodexoEnabled()
         ];
     }
 
@@ -59,11 +57,11 @@ class Mundipagg_Paymentmodule_Model_Config_Voucher
 
     public function isVrEnabled()
     {
-        return Mage::getStoreConfig('mundipagg_config/installments_group/vr_status');
+        return Mage::getStoreConfig('mundipagg_config/voucher_brands_group/vr_status');
     }
 
     public function isSodexoEnabled()
     {
-        return Mage::getStoreConfig('mundipagg_config/installments_group/sodexo_status');
+        return Mage::getStoreConfig('mundipagg_config/voucher_brands_group/sodexo_status');
     }
 }

@@ -102,7 +102,10 @@ function fillSavedCreditCardInstallments(elementId) {
  * @param data
  * @returns {XMLHttpRequest}
  */
-function apiRequest(url, data, callback, method, json,callbackArgsObj) {
+function apiRequest(url, data, callback, method, json, callbackArgsObj) {
+
+
+
     if (typeof method == 'undefined') {
         method = 'GET';
     }
@@ -115,9 +118,9 @@ function apiRequest(url, data, callback, method, json,callbackArgsObj) {
 
     xhr.onreadystatechange = function () {
         if (xhr.readyState > 3 && xhr.status == 200) {
-            callback(JSON.parse(xhr.responseText),callbackArgsObj);
+            callback(JSON.parse(xhr.responseText), callbackArgsObj);
         }else{
-            callback(false);
+            callback(false, callbackArgsObj);
         }
     };
 
@@ -189,7 +192,7 @@ function initPaymentMethod(methodCode,orderTotal)
                 var elementIndex = triggerId
                     .replace(methodCode + '_creditcard_','')
                     .replace('_mundicheckout-expiration-date','');
-                var elementId = methodCode + "_creditcard_"+ elementIndex;
+                var elementId = methodCode + "_creditcard_" + elementIndex;
 
                 if (!isNewCard(elementId)) {
                     return true;
@@ -349,12 +352,15 @@ function getBrand(elementId) {
         return;
     }
 
+
+
     if (typeof creditCardNumber !== 'undefined') {
         if (
             creditCardNumber.length > 5 &&
             (brandName === "" || typeof value !== 'undefined')
         ) {
             var bin = creditCardNumber.substring(0, 6);
+
             apiRequest(
                 "https://api.mundipagg.com/bin/v1/" + bin,
                 "",
@@ -364,38 +370,75 @@ function getBrand(elementId) {
                 argsObj
             );
         }
+
         if (creditCardNumber.length < 6) {
             clearBrand(elementId);
         }
     }
 }
 
-function fillBrandData(data,argsObj) {
-    if (data.brand != "" && data.brand != undefined) {
+function fillBrandData(data, argsObj) {
 
-        showBrandImage(data.brand,argsObj.elementId);
-        getInstallments(jQuery(".baseUrl").val(), data.brandName,argsObj);
+    brandList = getBrandList(argsObj);
 
-        jQuery("#"+argsObj.elementId+"_mundicheckout-creditCard-installments").html("");
-        jQuery("#"+argsObj.elementId+"_brand_name").val(data.brandName);
+
+    if (
+        data.brand != "" &&
+        data.brand != undefined &&
+        brandList.indexOf(data.brand) > 0
+    ) {
+        clearBrand(data.brand, argsObj.elementId);
+        showBrandImage(data.brand, argsObj.elementId);
+
+        installmentsSelect =
+            "#" + argsObj.elementId +
+            "_mundicheckout-creditCard-installments";
+
+        if(jQuery(installmentsSelect).html() != undefined) {
+            getInstallments(jQuery(".baseUrl").val(), data.brandName, argsObj);
+            jQuery(installmentsSelect).html('');
+        }
+
+        jQuery("#" + argsObj.elementId + "_brand_name").val(data.brandName);
+        jQuery("#" + argsObj.elementId + '_disabled_brand_message').hide();
+        return;
     }
+
+    jQuery("#" + argsObj.elementId + '_disabled_brand_message').show();
+
+}
+
+function getBrandList(argsObj) {
+
+    var brandList = [];
+    jQuery("#" + argsObj.elementId + "_tokenDiv")
+        .children('.input-box')
+        .children('.mundipagg-brand-image')
+        .each(function () {
+            brandList.push(jQuery(this).attr('brand-name'));
+        });
+
+    return brandList;
 }
 
 function clearBrand(elementId){
     jQuery("#"+elementId+"_mundipaggBrandName").val("");
-    jQuery("#"+elementId+"_mundipaggBrandImage").html("");
+    jQuery(".mundipagg-brand-image").removeClass("half-opacity");
     jQuery("#"+elementId+"_mundicheckout-creditCard-installments").html("");
     jQuery("#"+elementId+"_mundipagg_creditcard_brand").val(""); //@fixme Is this really necessary?
+    jQuery("#" + elementId + '_disabled_brand_message').hide();
 }
 
-function showBrandImage(brandName,elementId) {
-    var html = "<img src='https://dashboard.mundipagg.com/emb/images/brands/" + brandName + ".jpg' ";
-    html += " class='mundipaggImage' width='26'>";
+function showBrandImage(brandName, elementId) {
 
-    jQuery("#"+elementId+"_brand_name").val(brandName);
+    brandName = brandName.toLowerCase();
 
-    jQuery("#"+elementId+"_mundipaggBrandName").val(brandName);
-    jQuery("#"+elementId+"_mundipaggBrandImage" ).html(html);
+    jQuery(".mundipagg-brand-image").addClass('half-opacity');
+
+    jQuery("#" + elementId + "_tokenDiv")
+        .find('.' + brandName)
+        .removeClass('half-opacity')
+    ;
 }
 
 /**
@@ -434,7 +477,7 @@ function getInstallments(baseUrl, brandName, argsObj) {
     );
 }
 
-function switchInstallments(data,argsObj) {
+function switchInstallments(data, argsObj) {
     jQuery('.disabledBrandMessage').hide();
 
     if (data) {
@@ -446,7 +489,8 @@ function switchInstallments(data,argsObj) {
         jQuery("#"+ argsObj.elementId + "_mundicheckout-creditCard-installments").html(html);
 
         if (MundiPagg.selectedInstallments[argsObj.elementId] != "" ) {
-            jQuery("#"+ argsObj.elementId + "_mundicheckout-creditCard-installments").val(MundiPagg.selectedInstallments[argsObj.elementId]);
+            jQuery("#"+ argsObj.elementId + "_mundicheckout-creditCard-installments")
+                .val(MundiPagg.selectedInstallments[argsObj.elementId]);
         }
     } else {
         if(argsObj !== undefined && argsObj.elementId != undefined) {
