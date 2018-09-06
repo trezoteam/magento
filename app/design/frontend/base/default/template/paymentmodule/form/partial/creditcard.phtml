@@ -32,7 +32,8 @@
         ?>
             <img
                 src="<?php echo $brandImage; ?>"
-                style="float: left; width: 30px; margin-right: 5px;"
+                class="mundipagg-brand-image <?php echo $brand; ?>"
+                brand-name="<?php echo $brand; ?>"
             />
         <?php } ?>
         <br><br>
@@ -99,7 +100,6 @@
         <?php echo $this->__('Card number'); ?><span class="required"></span>
     </label>
     <div class="input-box newCreditCard-<?php echo $elementId?>" <?php echo $new; ?>>
-        <span id="<?php echo "$elementId"?>_mundipaggBrandImage" class="mundipaggBrandImage"></span>
         <input type="hidden" id="<?php echo "$elementId"?>_mundipaggBrandName" value="">
         <input
                 type="text"
@@ -227,7 +227,6 @@
             type="hidden"
             id="<?php echo "$elementId"?>_mundicheckout-token"
             name="payment[<?php echo "$elementId"?>_token]">
-
     <br>
 
 </div>

@@ -129,7 +129,7 @@ function apiRequest(url, data, callback, method, json, callbackArgsObj) {
     return xhr;
 }
 
-function getCreditCardToken(pkKey,elementId, callback) {
+function getCreditCardToken(pkKey, elementId, callback) {
     if(validateCreditCardData(elementId)){
         apiRequest(
             'https://api.mundipagg.com/core/v1/tokens?appId=' + pkKey,
@@ -229,6 +229,7 @@ function isNewCard(elementId)
 
     try {
         isNew = jQuery('#' + elementId + '_mundicheckout-SavedCreditCard');
+
         isNew =
             isNew.children("option:selected").val() === 'new' ||
             typeof isNew.children("option:selected").val() === 'undefined';
@@ -380,7 +381,6 @@ function getBrand(elementId) {
 function fillBrandData(data, argsObj) {
 
     brandList = getBrandList(argsObj);
-
 
     if (
         data.brand != "" &&
