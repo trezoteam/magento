@@ -95,7 +95,6 @@ function fillSavedCreditCardInstallments(elementId) {
     getInstallments(baseUrl, brandName, argsObj);
 }
 
-
 /**
  * Call API
  * @param url string
@@ -103,8 +102,6 @@ function fillSavedCreditCardInstallments(elementId) {
  * @returns {XMLHttpRequest}
  */
 function apiRequest(url, data, callback, method, json, callbackArgsObj) {
-
-
 
     if (typeof method == 'undefined') {
         method = 'GET';
@@ -160,7 +157,6 @@ function validateCreditCardData(elementId) {
     ){
         return true;
     }else{
-
         return false;
     }
 }
@@ -171,7 +167,7 @@ function getCurrentYear() {
 }
 
 //validations
-function initPaymentMethod(methodCode,orderTotal)
+function initPaymentMethod(methodCode, orderTotal)
 {
     MundiPagg.init(function(){
         MundiPagg.grandTotal = orderTotal;
@@ -207,6 +203,8 @@ function initPaymentMethod(methodCode,orderTotal)
         //value balance
         var amountInputs = jQuery('#payment_form_' + methodCode).find('.multipayment-value-input');
 
+        verifyFilledCreditCardFields();
+
         //distribute amount through amount inputs;
         if (amountInputs.length > 1) {
             var distributedAmount = parseFloat(MundiPagg.grandTotal);
@@ -216,6 +214,8 @@ function initPaymentMethod(methodCode,orderTotal)
             });
         }
     });
+
+    verifyFilledCreditCardFields();
 
     //trigger change events on certain inputs
     var paymentMethodForm = jQuery('#payment_form_' + methodCode);
@@ -299,10 +299,9 @@ function getFormData(elementId) {
         number: clearCardNumber(document.getElementById(elementId + '_mundicheckout-number')),
         exp_month: document.getElementById(elementId + '_mundicheckout-expmonth').value,
         exp_year: document.getElementById(elementId + '_mundicheckout-expyear').value,
-        cvv: clearCvv(document.getElementById(elementId + '_mundicheckout-cvv'))
+        cvv: clearCvv(document.getElementById(elementId + '_mundicheckout-cvv')),
+        holder_document: getCustomerDocument(elementId)
     };
-
-    //jQuery("#" + elementId + "_brand_name").val('');
 
     if (!isNewCard(elementId)) {
         var brandName = jQuery('#' + elementId + '_mundicheckout-SavedCreditCard')
@@ -313,6 +312,7 @@ function getFormData(elementId) {
 
 var isElementValueBusy = {};
 function getBrandWithDelay(elementId) {
+
     if (typeof isElementValueBusy[elementId] === 'undefined') {
         isElementValueBusy[elementId] = false;
     }
@@ -339,6 +339,7 @@ function getBrand(elementId) {
     var brandName = jQuery("#" + elementId +"_mundipaggBrandName").val();
     var baseUrl = jQuery(".baseUrl").val();
     var creditCardNumber = jQuery("#" + elementId +"_mundicheckout-number").val();
+    jQuery("#" + elementId +"_mundicheckout-number").attr('value', creditCardNumber);
     var value = jQuery("#" + elementId +"_value").val();
 
     var argsObj = {
@@ -350,10 +351,9 @@ function getBrand(elementId) {
         brandName = jQuery("#" + elementId + "_mundicheckout-SavedCreditCard")
             .children("option:selected").attr("data-brand");
         getInstallments(baseUrl, brandName, argsObj);
-        return;
+
+        showBrandImage(brandName, elementId);
     }
-
-
 
     if (typeof creditCardNumber !== 'undefined') {
         if (
@@ -387,7 +387,7 @@ function fillBrandData(data, argsObj) {
         data.brand != undefined &&
         brandList.indexOf(data.brand) > 0
     ) {
-        clearBrand(data.brand, argsObj.elementId);
+        clearBrand(argsObj.elementId);
         showBrandImage(data.brand, argsObj.elementId);
 
         installmentsSelect =
@@ -405,7 +405,6 @@ function fillBrandData(data, argsObj) {
     }
 
     jQuery("#" + argsObj.elementId + '_disabled_brand_message').show();
-
 }
 
 function getBrandList(argsObj) {
@@ -422,10 +421,10 @@ function getBrandList(argsObj) {
 }
 
 function clearBrand(elementId){
-    jQuery("#"+elementId+"_mundipaggBrandName").val("");
-    jQuery(".mundipagg-brand-image").removeClass("half-opacity");
-    jQuery("#"+elementId+"_mundicheckout-creditCard-installments").html("");
-    jQuery("#"+elementId+"_mundipagg_creditcard_brand").val(""); //@fixme Is this really necessary?
+    if(jQuery("#" + elementId + "_mundicheckout-number").val().length < 6) {
+        jQuery("#" + elementId + "_brandDiv").children('img').removeClass("half-opacity");
+        jQuery("#"+elementId+"_mundicheckout-creditCard-installments").html("");
+    }
     jQuery("#" + elementId + '_disabled_brand_message').hide();
 }
 
@@ -433,8 +432,7 @@ function showBrandImage(brandName, elementId) {
 
     brandName = brandName.toLowerCase();
 
-    jQuery(".mundipagg-brand-image").addClass('half-opacity');
-
+    jQuery("#" + elementId + "_brandDiv").children('img').addClass("half-opacity");
     jQuery("#" + elementId + "_tokenDiv")
         .find('.' + brandName)
         .removeClass('half-opacity')
@@ -546,7 +544,6 @@ function toggleMultiBuyerForm(elementId)
         return;
     }
     disableMultibuyerForm(elementId);
-
 }
 
 function enableMultibuyerForm(elementId)
@@ -591,4 +588,33 @@ function toogleSavedCreditCard(elementId) {
     }
 
     jQuery('#' + elementId + '_multi_buyer_enabled').attr('disabled', false);
+}
+
+function getCustomerDocument(elementId) {
+    if (
+        jQuery("input[name='billing[taxvat]']").val() != undefined &&
+        jQuery("input[name='billing[taxvat]']").val().length > 10
+    ) {
+        return jQuery("input[name='billing[taxvat]']").val();
+    }
+
+    if (
+        jQuery("input[name='billing[vat_id]']").val() != undefined &&
+        jQuery("input[name='billing[vat_id]']").val().length > 10
+    ) {
+        return jQuery("input[name='billing[vat_id]']").val();
+    }
+
+    if (
+        jQuery('#' + elementId + '_mundicheckout-cpf').val() != undefined &&
+        jQuery('#' + elementId + '_mundicheckout-cpf').val().length > 10
+    ) {
+        return jQuery('#' + elementId + '_mundicheckout-cpf').val();
+    }
+}
+
+function verifyFilledCreditCardFields() {
+    jQuery('.validate-cc-number').each(function () {
+        getBrand(jQuery(this).attr('id'));
+    });
 }

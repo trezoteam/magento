@@ -2,12 +2,13 @@
 $_code = $this->getCode();
 $elementIndex = $this->getElementIndex();
 $elementId = $_code . "_voucher_". $elementIndex;
-$elementClass = $_code . "_voucher_";
+$elementClass = $_code . "_voucher";
 $isMultiPayment = $this->getShowValueInput();
 $grandTotal = $this->getGrandTotal();
 $savedCreditCards = $this->getSavedCreditCards();
 $isSavedCreditCardsEnabled = $this->isSavedCreditCardsEnabled();
 $enabledBrands = $this->getEnabledBrands();
+$customerDocument = $this->getCustomerDocument();
 
     $new = '';
     if ($savedCreditCards) {
@@ -23,7 +24,7 @@ $enabledBrands = $this->getEnabledBrands();
         <h6><?php echo $this->__('Voucher') . ' ' . $elementIndex; ?></h6>
     <?php } ?>
 
-    <div class="input-box">
+    <div class="input-box" id="<?php echo "$elementId"?>_brandDiv">
         <?php
             $brandUrl = 'https://dashboard.mundipagg.com/emb/images/brands/';
 
@@ -110,6 +111,8 @@ $enabledBrands = $this->getEnabledBrands();
                 onchange="getFormData('<?php echo $elementId?>'); getBrand('<?php echo $elementId?>');"
                 maxlength="19"
         >
+
+        <input type="hidden" id="<?php echo "$elementId"?>_mundicheckout-cpf" value="<?php echo $customerDocument; ?>" />
 
         <div
                 id="<?php echo "$elementId"?>_disabled_brand_message"
