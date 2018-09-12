@@ -46,11 +46,7 @@ class Mundipagg_Paymentmodule_Block_Form_Partial_Voucher extends Mundipagg_Payme
         $customerSavedCreditCards = [];
 
         foreach ($savedCards as $card) {
-            if(
-            in_array(strtolower($card->getBrandName()),
-                $enabledBrands
-            )
-            ) {
+            if (in_array(strtolower($card->getBrandName()), $enabledBrands)) {
                 $customerSavedCreditCards[] = $card;
             }
         }
