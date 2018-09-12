@@ -75,7 +75,7 @@ OSCCheckoutModuleHandler.prototype.setSavePaymentInterceptor = function () {
             _self.updateInputBalanceValues();
 
             //for each of creditcard forms
-            jQuery('.' + _self.methodCode + "_" + methodName + "_tokenDiv").each(function(index,element) {
+            jQuery('.' + _self.methodCode + "_" + methodName + "_tokenDiv").each(function(index, element) {
 
                 var elementId = element.id.replace('_tokenDiv', '');
                 if (isNewCard(elementId)) {
