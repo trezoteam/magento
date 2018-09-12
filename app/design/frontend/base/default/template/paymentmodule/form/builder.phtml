@@ -3,6 +3,7 @@ $_code = $this->getMethodCode();
 $structure = $this->getStructure();
 $orderTotal = $this->getGrandTotal();
 ?>
+
 <fieldset>
     <ul id="payment_form_<?php echo $_code; ?>" style="display:none;">
         <li>
@@ -22,10 +23,10 @@ $orderTotal = $this->getGrandTotal();
                     <li style="clear:both">
                         <?php echo $this->getPartialHtml($element); ?>
                         <?php echo $this->getMultiBuyerHtml($element); ?>
-                        <br /><hr />
+
                     </li>
                     <?php endforeach; ?>
-                    <input type="hidden" id="baseUrl" value="<?php echo Mage::getUrl('');?>"/>
+                    <input type="hidden" class="baseUrl" value="<?php echo Mage::getUrl('');?>"/>
                 </ul>
             </div>
         </li>

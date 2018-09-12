@@ -1,6 +1,6 @@
 function getState(obj) {
 
-    var baseUrl = jQuery("#baseUrl").val();
+    var baseUrl = jQuery(".baseUrl").val();
 
     var url = baseUrl + "/mp-paymentmodule/multibuyer/getRegions/";                                                                                                                        
         url += "?country_id=" + obj.value;
