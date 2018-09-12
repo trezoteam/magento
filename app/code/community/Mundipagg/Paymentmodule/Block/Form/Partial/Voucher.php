@@ -30,7 +30,7 @@ class Mundipagg_Paymentmodule_Block_Form_Partial_Voucher extends Mundipagg_Payme
             $savedCreditCardsHelper->isSavedCreditCardsEnabled()
         ) {
             if ($onlyEnabledCards) {
-                $savedCards = $savedCreditCardsHelper->enabledSavedCreditCards();
+                $savedCards = $savedCreditCardsHelper->enabledSavedCreditCards('voucher');
                 return $this->filterAllowedSavedCreditCardBrands($savedCards);
             }
 
