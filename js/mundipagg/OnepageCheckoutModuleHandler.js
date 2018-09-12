@@ -19,14 +19,17 @@ OnepageCheckoutModuleHandler.prototype.setSavePaymentInterceptor = function () {
     var _self = this;
     Payment.prototype.save = Payment.prototype.save.wrap(function(save) {
         _self.resetBeforeCheckout(save);
-        if(!_self.isHandlingNeeded() || !_self.hasCardInfo()) {
+
+        code = _self.methodCode.split('_');
+        methodName = code[1];
+        if(!_self.isHandlingNeeded() || !_self.hasCardInfo(methodName)) {
             return _self.placeOrderFunction();
         }
 
         _self.updateInputBalanceValues();
 
         //for each of creditcard forms
-        jQuery('.' + _self.methodCode + "_creditcard_tokenDiv").each(function(index,element) {
+        jQuery('.' + _self.methodCode + "_" + methodName + "_tokenDiv").each(function(index, element) {
             var elementId = element.id.replace('_tokenDiv', '');
             if (isNewCard( elementId) ) {
                 var key = document.getElementById(element.id)
