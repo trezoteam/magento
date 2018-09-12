@@ -25,7 +25,7 @@ class Mundipagg_Paymentmodule_Helper_Savedcreditcard extends Mage_Core_Helper_Ab
 
         $additionalInformation = $standard->getAdditionalInformationForOrder($orderId‌);
         $paymentMethod = $additionalInformation['mundipagg_payment_method'];
-        $cards = $additionalInformation[$paymentMethod]['creditcard'];
+        $cards = reset($additionalInformation[$paymentMethod]);
 
         foreach ($cards as $key => $card) {
             if (
@@ -124,15 +124,15 @@ class Mundipagg_Paymentmodule_Helper_Savedcreditcard extends Mage_Core_Helper_Ab
 
     /**
      * Filter for enabled credit card brands
-     * @param array $enabledBrands
+     * @param string $type
      * @return array
      */
-    public function enabledSavedCreditCards()
+    public function enabledSavedCreditCards($type = 'card')
     {
         $enabledSavedCreditCards = [];
 
         $savedCreditCards = $this->getCurrentCustomerSavedCards();
-        $enabledBrands = Mage::getModel('paymentmodule/config_card')
+        $enabledBrands = Mage::getModel('paymentmodule/config_' . $type)
             ->getEnabledBrands();
 
         foreach ($savedCreditCards as $savedCreditCard) {
