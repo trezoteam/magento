@@ -43,6 +43,19 @@ OSCCheckoutModuleHandler.prototype.init = function() {
             var grandTotal = response.grand_total.replace(/\D/g, '');
             grandTotal = parseFloat(grandTotal/100);
             jQuery('.mundipaggMultiPaymentSubtotal span').html(response.grand_total);
+
+            console.log(grandTotal);
+
+            jQuery('.mundipagg-grand-total').each(function () {
+                if(grandTotal > 0) {
+                    jQuery(this).val(grandTotal);
+                }
+            });
+
+            jQuery('.savedCreditCardSelect').each(function () {
+                jQuery(this).change();
+            });
+
             MundiPagg.grandTotal = grandTotal;
             Object.keys(MundiPagg.paymentMethods).each(function(method){
                 MundiPagg.paymentMethods[method].setValueInputAutobalanceEvents();

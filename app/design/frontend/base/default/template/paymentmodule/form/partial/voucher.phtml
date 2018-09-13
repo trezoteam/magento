@@ -35,6 +35,7 @@ $customerDocument = $this->getCustomerDocument();
                 src="<?php echo $brandImage; ?>"
                 class="mundipagg-brand-image <?php echo $brand; ?>"
                 brand-name="<?php echo $brand; ?>"
+
             />
         <?php } ?>
         <br><br>
@@ -52,7 +53,9 @@ $customerDocument = $this->getCustomerDocument();
                     title="<?php echo $this->__('Value'); ?> (Ex: 100,50)"
                     class="required-entry multipayment-value-input"
                     onchange="getBrandWithDelay('<?php echo $elementId?>');"
-                    value="">
+                    value=""
+                    class="mundipagg-grand-total"
+            >
         </div>
         <br>
     <?php else: ?>
