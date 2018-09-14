@@ -42,4 +42,3 @@ Feature: Create order with credit card
     And I wait for text "PLACE ORDER" to appear, for 10 seconds
     And I use jquery to click on element "#review-buttons-container button"
     And I wait for text "THANK YOU FOR YOUR PURCHASE!" to appear, for 10 seconds
-    Then I wait for text "CONTINUE SHOPPING" to appear, for 15 seconds
