@@ -62,9 +62,6 @@ function initSavedCreditCardInstallments() {
     });
 }
 
-
-
-
 function fillSavedCreditCardInstallments(elementId) {
     var brandName = jQuery("#" + elementId + "_mundicheckout-SavedCreditCard")
         .children("option:selected")
