@@ -57,10 +57,12 @@
     <?php else: ?>
         <div class="input-box">
             <input
-                    type="hidden"
-                    id="<?php echo $elementId; ?>_value"
-                    name="payment[<?php echo $elementId; ?>_value]"
-                    value="<?php echo $grandTotal; ?>">
+                type="hidden"
+                id="<?php echo $elementId; ?>_value"
+                name="payment[<?php echo $elementId; ?>_value]"
+                value="<?php echo $grandTotal; ?>"
+                class="mundipagg-grand-total"
+            >
         </div>
     <?php endif; ?>
 
