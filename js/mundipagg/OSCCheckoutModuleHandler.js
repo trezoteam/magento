@@ -41,8 +41,19 @@ OSCCheckoutModuleHandler.prototype.init = function() {
 
         if (Object.keys(response).includes('grand_total')) {
             var grandTotal = response.grand_total.replace(/\D/g, '');
-            grandTotal = parseFloat(grandTotal/100);
+            grandTotal = parseFloat(grandTotal/100).toFixed(2);
             jQuery('.mundipaggMultiPaymentSubtotal span').html(response.grand_total);
+
+            jQuery('.mundipagg-grand-total').each(function () {
+                if(grandTotal > 0) {
+                    jQuery(this).val(grandTotal);
+                }
+            });
+
+            jQuery('.savedCreditCardSelect').each(function () {
+                jQuery(this).change();
+            });
+
             MundiPagg.grandTotal = grandTotal;
             Object.keys(MundiPagg.paymentMethods).each(function(method){
                 MundiPagg.paymentMethods[method].setValueInputAutobalanceEvents();

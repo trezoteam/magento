@@ -113,6 +113,16 @@ function apiRequest(url, data, callback, method, json, callbackArgsObj) {
         xhr.setRequestHeader("content-type", "application/json");
     }
 
+    if (callback) {
+        apiCallback(xhr, callback, callbackArgsObj);
+    }
+
+    xhr.send(JSON.stringify(data));
+
+    return xhr;
+}
+
+function apiCallback(xhr, callback, callbackArgsObj) {
     xhr.onreadystatechange = function () {
         if (xhr.readyState > 3 && xhr.status == 200) {
             callback(JSON.parse(xhr.responseText), callbackArgsObj);
@@ -120,10 +130,6 @@ function apiRequest(url, data, callback, method, json, callbackArgsObj) {
             callback(false, callbackArgsObj);
         }
     };
-
-    xhr.send(JSON.stringify(data));
-
-    return xhr;
 }
 
 function getCreditCardToken(pkKey, elementId, callback) {
