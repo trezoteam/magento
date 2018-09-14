@@ -41,10 +41,8 @@ OSCCheckoutModuleHandler.prototype.init = function() {
 
         if (Object.keys(response).includes('grand_total')) {
             var grandTotal = response.grand_total.replace(/\D/g, '');
-            grandTotal = parseFloat(grandTotal/100);
+            grandTotal = parseFloat(grandTotal/100).toFixed(2);
             jQuery('.mundipaggMultiPaymentSubtotal span').html(response.grand_total);
-
-            console.log(grandTotal);
 
             jQuery('.mundipagg-grand-total').each(function () {
                 if(grandTotal > 0) {
