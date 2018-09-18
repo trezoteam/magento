@@ -30,8 +30,6 @@ class Mundipagg_Paymentmodule_WebhookController extends Mage_Core_Controller_Fro
                 json_encode($body,JSON_PRETTY_PRINT)
             );
 
-
-
             switch ($webhookType) {
                 case 'order':
                     $this->webhookOrderUpdate($body->data, $webhookAction);

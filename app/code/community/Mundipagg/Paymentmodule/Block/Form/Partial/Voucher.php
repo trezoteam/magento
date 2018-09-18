@@ -1,11 +1,11 @@
 <?php
 
-class Mundipagg_Paymentmodule_Block_Form_Partial_Creditcard extends Mundipagg_Paymentmodule_Block_Base
+class Mundipagg_Paymentmodule_Block_Form_Partial_Voucher extends Mundipagg_Paymentmodule_Block_Base
 {
     protected function _construct()
     {
         parent::_construct();
-        $this->setTemplate('paymentmodule/form/partial/creditcard.phtml');
+        $this->setTemplate('paymentmodule/form/partial/voucher.phtml');
     }
 
     public function getPublicKey()
@@ -30,7 +30,7 @@ class Mundipagg_Paymentmodule_Block_Form_Partial_Creditcard extends Mundipagg_Pa
             $savedCreditCardsHelper->isSavedCreditCardsEnabled()
         ) {
             if ($onlyEnabledCards) {
-                $savedCards = $savedCreditCardsHelper->enabledSavedCreditCards();
+                $savedCards = $savedCreditCardsHelper->enabledSavedCreditCards('voucher');
                 return $this->filterAllowedSavedCreditCardBrands($savedCards);
             }
 
@@ -62,7 +62,13 @@ class Mundipagg_Paymentmodule_Block_Form_Partial_Creditcard extends Mundipagg_Pa
 
     public function getEnabledBrands()
     {
-        return Mage::getModel('paymentmodule/config_card')
+        return Mage::getModel('paymentmodule/config_voucher')
             ->getEnabledBrands();
+    }
+
+    public function getCustomerDocument()
+    {
+        $customer = Mage::getSingleton('customer/session')->getCustomer();
+        return $customer->getData('taxvat');
     }
 }

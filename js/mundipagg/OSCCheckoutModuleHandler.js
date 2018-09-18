@@ -41,8 +41,19 @@ OSCCheckoutModuleHandler.prototype.init = function() {
 
         if (Object.keys(response).includes('grand_total')) {
             var grandTotal = response.grand_total.replace(/\D/g, '');
-            grandTotal = parseFloat(grandTotal/100);
+            grandTotal = parseFloat(grandTotal/100).toFixed(2);
             jQuery('.mundipaggMultiPaymentSubtotal span').html(response.grand_total);
+
+            jQuery('.mundipagg-grand-total').each(function () {
+                if(grandTotal > 0) {
+                    jQuery(this).val(grandTotal);
+                }
+            });
+
+            jQuery('.savedCreditCardSelect').each(function () {
+                jQuery(this).change();
+            });
+
             MundiPagg.grandTotal = grandTotal;
             Object.keys(MundiPagg.paymentMethods).each(function(method){
                 MundiPagg.paymentMethods[method].setValueInputAutobalanceEvents();
@@ -57,27 +68,32 @@ OSCCheckoutModuleHandler.prototype.setSavePaymentInterceptor = function () {
     if (Object.keys(MundiPagg.paymentMethods).length === 1) {
         OSCForm.placeOrderButton.stopObserving('click');
     }
-    OSCForm.placeOrderButton.observe('click',function(){
+    OSCForm.placeOrderButton.observe('click', function(){
         if (OSCForm.validate()) {
+
             _self.resetBeforeCheckout(OSCForm.placeOrder,OSCForm);
             if(!_self.isHandlingNeeded()) {
                 return;
             }
 
-            if (!_self.hasCardInfo()) {
+            code = _self.methodCode.split('_');
+            methodName = code[1];
+
+            if (!_self.hasCardInfo(methodName)) {
                 return OSCForm.placeOrder();
             }
 
             _self.updateInputBalanceValues();
 
             //for each of creditcard forms
-            jQuery('.' + _self.methodCode + "_creditcard_tokenDiv").each(function(index,element) {
+            jQuery('.' + _self.methodCode + "_" + methodName + "_tokenDiv").each(function(index, element) {
+
                 var elementId = element.id.replace('_tokenDiv', '');
                 if (isNewCard(elementId)) {
                     var key = document.getElementById(element.id)
                         .getAttribute('data-mundicheckout-app-id');
                     getCreditCardToken(key, elementId, function(response){
-                        _self.handleTokenGenerationResponse(response,element);
+                        _self.handleTokenGenerationResponse(response, element);
                     }.bind(_self));
                     return;
                 }

@@ -29,8 +29,9 @@ AbstractCheckoutModuleHandler.prototype.isHandlingNeeded = function () {
 };
 
 //@Todo this method do not belongs to this class...
-AbstractCheckoutModuleHandler.prototype.hasCardInfo = function () {
-    var creditCardTokenDiv = '.'  + this.methodCode + "_creditcard_tokenDiv";
+AbstractCheckoutModuleHandler.prototype.hasCardInfo = function (method) {
+
+    var creditCardTokenDiv = '.'  + this.methodCode + "_" + method + "_tokenDiv";
     var hasCardInfo = false;
     var _self = this;
 

@@ -10,3 +10,14 @@
 .hidden{
     display: none;
 }
+
+.mundipagg-brand-image{
+    float: left;
+    width: 50px;
+    margin-right: 5px;
+}
+
+.half-opacity{
+    opacity: 0.15;
+    filter: alpha(opacity=15);/*IE <= 8*/
+}

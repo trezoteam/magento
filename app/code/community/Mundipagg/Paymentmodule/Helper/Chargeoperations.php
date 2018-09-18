@@ -98,10 +98,12 @@ class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_A
                 ->loadByIncrementId($orderId);
 
         $moneyHelper = Mage::helper('paymentmodule/monetary');
-        $canceledAmount = $this->getChargeCanceledAmount($charge);
+        $canceledAmount = $charge->canceled_amount * 0.01;
 
         if ($canceledAmount) {
-            $extraComment .= $moneyHelper->toCurrencyFormat($canceledAmount);
+            $extraComment .= $moneyHelper->toCurrencyFormat(
+                $this->getChargeCanceledAmount($charge)
+            );
         }
 
         if ($manual) {
@@ -111,10 +113,9 @@ class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_A
         }
 
         if ($order->getTotalPaid() > 0) {
-            $totalRefunded = $order->getTotalRefunded() + $canceledAmount;
             $order
-                ->setTotalRefunded($totalRefunded)
-                ->setBaseTotalRefunded($totalRefunded)
+                ->setTotalRefunded($canceledAmount)
+                ->setBaseTotalRefunded($canceledAmount)
                 ->save();
         }
 
