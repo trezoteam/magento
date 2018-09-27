@@ -25,7 +25,7 @@ Feature: Create order with credit card
     And I fill in "billing:customer_password" with "test123"
     And I fill in "billing:confirm_password" with "test123"
     And I use jquery to click on element "#billing-buttons-container button"
-    And I wait for text "Flat" to appear, for 15 seconds
+    And I wait for text "Flat" to appear, for 45 seconds
     And I use jquery to click on element "#s_method_flatrate_flatrate"
     And I use jquery to click on element "#shipping-method-buttons-container button"
     And I wait for text "Mundipagg Credit Card" to appear, for 15 seconds
@@ -39,6 +39,6 @@ Feature: Create order with credit card
     And I wait for 10 seconds
     And I select "1x of $300,00 without interest , Total: $300,00" from "paymentmodule_creditcard_creditcard_1_mundicheckout-creditCard-installments"
     And I use jquery to click on element "#payment-buttons-container button"
-    And I wait for text "PLACE ORDER" to appear, for 10 seconds
+    And I wait for text "PLACE ORDER" to appear, for 50 seconds
     And I use jquery to click on element "#review-buttons-container button"
-    And I wait for text "THANK YOU FOR YOUR PURCHASE!" to appear, for 40 seconds
+    And I wait for text "THANK YOU FOR YOUR PURCHASE!" to appear, for 60 seconds
