@@ -79,14 +79,14 @@ OSCCheckoutModuleHandler.prototype.setSavePaymentInterceptor = function () {
             code = _self.methodCode.split('_');
             methodName = code[1];
 
-            if (!_self.hasCardInfo(methodName)) {
+            if (!_self.hasCardInfo()) {
                 return OSCForm.placeOrder();
             }
 
             _self.updateInputBalanceValues();
 
             //for each of creditcard forms
-            jQuery('.' + _self.methodCode + "_" + methodName + "_tokenDiv").each(function(index, element) {
+            jQuery('.' + _self.methodCode + "_creditcard_tokenDiv").each(function(index, element) {
 
                 var elementId = element.id.replace('_tokenDiv', '');
                 if (isNewCard(elementId)) {
