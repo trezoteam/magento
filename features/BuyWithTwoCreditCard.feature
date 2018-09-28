@@ -28,7 +28,7 @@ Feature: Create order with two credit card
     And I wait for text "Flat" to appear, for 45 seconds
     And I use jquery to click on element "#s_method_flatrate_flatrate"
     And I use jquery to click on element "#shipping-method-buttons-container button"
-    And I wait for text "Mundipagg Credit Card" to appear, for 45 seconds
+    And I wait for text "Mundipagg Credit Card" to appear
 
     And I click in element "#p_method_paymentmodule_twocreditcards"
 
@@ -59,4 +59,4 @@ Feature: Create order with two credit card
     And I use jquery to click on element "#payment-buttons-container button"
     And I wait for text "PLACE ORDER" to appear, for 50 seconds
     And I use jquery to click on element "#review-buttons-container button"
-    And I wait for text "THANK YOU FOR YOUR PURCHASE!" to appear, for 60 seconds
+    And I wait for text "THANK YOU FOR YOUR PURCHASE!" to appear
