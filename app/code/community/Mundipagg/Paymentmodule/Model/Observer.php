@@ -90,7 +90,9 @@ class Mundipagg_Paymentmodule_Model_Observer extends Varien_Event_Observer
             count($integrityCheck['newFiles']) > 0 ||
             count($integrityCheck['unreadableFiles']) > 0
         ) {
-            $this->insertIntegrityViolationNotification();
+            $notificationId = $this->insertIntegrityViolationNotification();
+            $notification = mage::getModel("adminnotification/inbox");
+            $notification->load($notificationId -1);
         }
     }
 
@@ -98,11 +100,11 @@ class Mundipagg_Paymentmodule_Model_Observer extends Varien_Event_Observer
     {
         $data = array(
             'severity'      => Mage_AdminNotification_Model_Inbox::SEVERITY_CRITICAL,
-            'title'         => 'Module Integrity Violated!',
+            'title'         => 'Mundipagg Module Integrity Violated!',
             'description'   => 'Foram detectadas alterações no módulo de pagamentos Mundipagg.',
             //'url'           => 'https://www.github.com/mundipagg/magento'
         );
-        $this->insertNotification($data);
+        return $this->insertNotification($data);
     }
 
     private function insertNotification($data)
@@ -110,6 +112,7 @@ class Mundipagg_Paymentmodule_Model_Observer extends Varien_Event_Observer
         $data = array_merge(
             $data,
             array(
+                'mp' =>'test',
                 'is_read'       => 0,
                 'is_remove'     => 0,
                 'data_added'    => now()
@@ -117,7 +120,9 @@ class Mundipagg_Paymentmodule_Model_Observer extends Varien_Event_Observer
         );
         $notification = mage::getModel("adminnotification/inbox");
         $notification->setData($data);
+
         $notification->save();
+        return $notification->getNotificationId();
     }
 
     private function checkModuleVersion()
