@@ -78,18 +78,8 @@ class Mundipagg_Paymentmodule_Model_Observer extends Varien_Event_Observer
 
     private function checkModuleIntegrity()
     {
-        require_once Mage::getBaseDir('lib') . '/autoload.php';
-        $integrityController = new IntegrityController(
-            \Mage::helper('paymentmodule/MagentoSystemInfo'),
-            \Mage::helper('paymentmodule/MagentoOrderInfo')
-        );
-        $integrityCheck = $integrityController->getIntegrityCheck();
-
-        if (
-            count($integrityCheck['alteredFiles']) > 0 ||
-            count($integrityCheck['newFiles']) > 0 ||
-            count($integrityCheck['unreadableFiles']) > 0
-        ) {
+        $integrityBlock = Mage::getBlockSingleton('paymentmodule/adminhtml_notification_integrityviolation');
+        if ($integrityBlock->isViolated()) {
             $notificationId = $this->insertIntegrityViolationNotification();
             $notification = mage::getModel("adminnotification/inbox");
             $notification->load($notificationId -1);
@@ -127,6 +117,6 @@ class Mundipagg_Paymentmodule_Model_Observer extends Varien_Event_Observer
 
     private function checkModuleVersion()
     {
-
+        //@todo
     }
 }
