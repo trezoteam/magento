@@ -216,7 +216,8 @@ function initPaymentMethod(methodCode, orderTotal)
             var distributedAmount = parseFloat(MundiPagg.grandTotal);
             distributedAmount /= amountInputs.length;
             jQuery(amountInputs).each(function(index,element) {
-                jQuery(element).val(distributedAmount);
+                var formatted = parseFloat(distributedAmount).toFixed(2);
+                jQuery(element).val(formatted);
             });
         }
     });
