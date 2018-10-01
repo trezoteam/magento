@@ -65,4 +65,39 @@ class Mundipagg_Paymentmodule_Model_Observer extends Varien_Event_Observer
         return Mage::app()->getRequest();
     }
 
+    public function adminLoginChecks()
+    {
+        //check integrity
+        $this->checkModuleIntegrity();
+
+
+        //@todo check version
+    }
+
+    private function checkModuleIntegrity()
+    {
+        $this->insertNotification();
+    }
+
+    private function insertNotification()
+    {
+        $data = array(
+            'severity'      => Mage_AdminNotification_Model_Inbox::SEVERITY_MINOR,
+            'title'         => 'Test title',
+            'description'   => 'Test description',
+            'url'           => 'https://www.github.com/mundipagg/magento',
+            'is_read'       => 0,
+            'is_remove'     => 0,
+            'data_added'    => now()
+        );
+
+        $notification = mage::getModel("adminnotification/inbox");
+        $notification->setData($data);
+        $notification->save();
+    }
+
+    private function checkModuleVersion()
+    {
+
+    }
 }
