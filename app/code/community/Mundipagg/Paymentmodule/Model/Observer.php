@@ -1,5 +1,7 @@
 <?php
 
+use Mundipagg\Integrity\IntegrityController;
+
 class Mundipagg_Paymentmodule_Model_Observer extends Varien_Event_Observer
 {
     public function addAccountCreditcardWalletMenuItem(Varien_Event_Observer $observer)
@@ -76,21 +78,43 @@ class Mundipagg_Paymentmodule_Model_Observer extends Varien_Event_Observer
 
     private function checkModuleIntegrity()
     {
-        $this->insertNotification();
+        require_once Mage::getBaseDir('lib') . '/autoload.php';
+        $integrityController = new IntegrityController(
+            \Mage::helper('paymentmodule/MagentoSystemInfo'),
+            \Mage::helper('paymentmodule/MagentoOrderInfo')
+        );
+        $integrityCheck = $integrityController->getIntegrityCheck();
+
+        if (
+            count($integrityCheck['alteredFiles']) > 0 ||
+            count($integrityCheck['newFiles']) > 0 ||
+            count($integrityCheck['unreadableFiles']) > 0
+        ) {
+            $this->insertIntegrityViolationNotification();
+        }
     }
 
-    private function insertNotification()
+    private function insertIntegrityViolationNotification()
     {
         $data = array(
-            'severity'      => Mage_AdminNotification_Model_Inbox::SEVERITY_MINOR,
-            'title'         => 'Test title',
-            'description'   => 'Test description',
-            'url'           => 'https://www.github.com/mundipagg/magento',
-            'is_read'       => 0,
-            'is_remove'     => 0,
-            'data_added'    => now()
+            'severity'      => Mage_AdminNotification_Model_Inbox::SEVERITY_CRITICAL,
+            'title'         => 'Module Integrity Violated!',
+            'description'   => 'Foram detectadas alterações no módulo de pagamentos Mundipagg.',
+            //'url'           => 'https://www.github.com/mundipagg/magento'
         );
+        $this->insertNotification($data);
+    }
 
+    private function insertNotification($data)
+    {
+        $data = array_merge(
+            $data,
+            array(
+                'is_read'       => 0,
+                'is_remove'     => 0,
+                'data_added'    => now()
+            )
+        );
         $notification = mage::getModel("adminnotification/inbox");
         $notification->setData($data);
         $notification->save();
