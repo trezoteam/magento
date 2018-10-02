@@ -1,5 +1,7 @@
 <?php
 
+use Mundipagg\Integrity\IntegrityController;
+
 class Mundipagg_Paymentmodule_Model_Observer extends Varien_Event_Observer
 {
     public function addAccountCreditcardWalletMenuItem(Varien_Event_Observer $observer)
@@ -65,4 +67,56 @@ class Mundipagg_Paymentmodule_Model_Observer extends Varien_Event_Observer
         return Mage::app()->getRequest();
     }
 
+    public function adminLoginChecks()
+    {
+        //check integrity
+        $this->checkModuleIntegrity();
+
+
+        //@todo check version
+    }
+
+    private function checkModuleIntegrity()
+    {
+        $integrityBlock = Mage::getBlockSingleton('paymentmodule/adminhtml_notification_integrityviolation');
+        if ($integrityBlock->isViolated()) {
+            $notificationId = $this->insertIntegrityViolationNotification();
+            $notification = mage::getModel("adminnotification/inbox");
+            $notification->load($notificationId -1);
+        }
+    }
+
+    private function insertIntegrityViolationNotification()
+    {
+        $data = array(
+            'severity'      => Mage_AdminNotification_Model_Inbox::SEVERITY_CRITICAL,
+            'title'         => 'Mundipagg Module Integrity Violated!',
+            'description'   => 'Foram detectadas alterações no módulo de pagamentos Mundipagg.',
+            //'url'           => 'https://www.github.com/mundipagg/magento'
+        );
+        return $this->insertNotification($data);
+    }
+
+    private function insertNotification($data)
+    {
+        $data = array_merge(
+            $data,
+            array(
+                'mp' =>'test',
+                'is_read'       => 0,
+                'is_remove'     => 0,
+                'data_added'    => now()
+            )
+        );
+        $notification = mage::getModel("adminnotification/inbox");
+        $notification->setData($data);
+
+        $notification->save();
+        return $notification->getNotificationId();
+    }
+
+    private function checkModuleVersion()
+    {
+        //@todo
+    }
 }
