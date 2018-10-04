@@ -1,4 +1,5 @@
 Feature: Create order with credit card
+
   @javascript
   Scenario: Buying a product with credit card
     Given I am on "/index.php/aviator-sunglasses.html"
@@ -95,9 +96,9 @@ Feature: Create order with credit card
     And I fill in "paymentmodule_creditcard_creditcard_1_multi_buyer_complement" with "Multibuyer Complemento"
     And I fill in "paymentmodule_creditcard_creditcard_1_multi_buyer_neighborhood" with "Multibuyer Bairro"
     And I fill in "paymentmodule_creditcard_creditcard_1_multi_buyer_city" with "Multibuyer Cidade"
-    And I select "Brazil" from "paymentmodule_boleto_boleto_1_multi_buyer_country"
+    And I select "Brazil" from "paymentmodule_creditcard_creditcard_1_multi_buyer_country"
     And I wait for 2 seconds
-    And I select "Rio de Janeiro" from "paymentmodule_boleto_boleto_1_multi_buyer_state"
+    And I select "Rio de Janeiro" from "paymentmodule_creditcard_creditcard_1_multi_buyer_state"
     And I use jquery to click on element "#payment-buttons-container button"
     And I use jquery to click on element "#payment-buttons-container button"
     And I wait for 20 seconds
@@ -197,9 +198,9 @@ Feature: Create order with credit card
     And I fill in "paymentmodule_creditcard_creditcard_1_multi_buyer_complement" with "Multibuyer Complemento"
     And I fill in "paymentmodule_creditcard_creditcard_1_multi_buyer_neighborhood" with "Multibuyer Bairro"
     And I fill in "paymentmodule_creditcard_creditcard_1_multi_buyer_city" with "Multibuyer Cidade"
-    And I select "Brazil" from "paymentmodule_boleto_boleto_1_multi_buyer_country"
+    And I select "Brazil" from "paymentmodule_creditcard_creditcard_1_multi_buyer_country"
     And I wait for 2 seconds
-    And I select "Rio de Janeiro" from "paymentmodule_boleto_boleto_1_multi_buyer_state"
+    And I select "Rio de Janeiro" from "paymentmodule_creditcard_creditcard_1_multi_buyer_state"
     And I use jquery to click on element "#payment-buttons-container button"
     And I use jquery to click on element "#payment-buttons-container button"
     And I wait for 20 seconds
@@ -228,12 +229,9 @@ Feature: Create order with credit card
     And I submit the form with id "#product_addtocart_form"
     And I wait for text "SHOPPING CART" to appear, for 20 seconds
     And I click in element ".btn-proceed-checkout"
-    And I wait for text "Checkout as Guest" to appear, for 20 seconds
-    And I click in element "#checkout-step-login div div ul li:first-child input"
-    And I click in element "#onepage-guest-register-button"
+    And I wait for text "Billing Information" to appear, for 20 seconds
     And I fill in "billing:firstname" with "Teste"
     And I fill in "billing:lastname" with "Teste"
-    And I fill in "billing:email" with a random email
     And I fill in "billing:street1" with "Teste Rua"
     And I fill in "billing:street2" with "Teste número"
     And I fill in "billing:street3" with "Teste complemento"
@@ -243,7 +241,6 @@ Feature: Create order with credit card
     And I select "Rio de Janeiro" from "billing[region_id]"
     And I fill in "billing:postcode" with "200000000"
     And I fill in "billing:telephone" with "2125222222"
-    And I fill in "billing:taxvat" with "67632474277"
     And I use jquery to click on element "#billing-buttons-container button"
     And I wait for text "Flat" to appear
     And I use jquery to click on element "#s_method_flatrate_flatrate"
@@ -282,12 +279,8 @@ Feature: Create order with credit card
     And I submit the form with id "#product_addtocart_form"
     And I wait for text "SHOPPING CART" to appear, for 20 seconds
     And I click in element ".btn-proceed-checkout"
-    And I wait for text "Checkout as Guest" to appear, for 20 seconds
-    And I click in element "#checkout-step-login div div ul li:first-child input"
-    And I click in element "#onepage-guest-register-button"
     And I fill in "billing:firstname" with "Teste"
     And I fill in "billing:lastname" with "Teste"
-    And I fill in "billing:email" with a random email
     And I fill in "billing:street1" with "Teste Rua"
     And I fill in "billing:street2" with "Teste número"
     And I fill in "billing:street3" with "Teste complemento"
@@ -297,7 +290,6 @@ Feature: Create order with credit card
     And I select "Rio de Janeiro" from "billing[region_id]"
     And I fill in "billing:postcode" with "200000000"
     And I fill in "billing:telephone" with "2125222222"
-    And I fill in "billing:taxvat" with "67632474277"
     And I use jquery to click on element "#billing-buttons-container button"
     And I wait for text "Flat" to appear
     And I use jquery to click on element "#s_method_flatrate_flatrate"
@@ -325,9 +317,9 @@ Feature: Create order with credit card
     And I fill in "paymentmodule_creditcard_creditcard_1_multi_buyer_complement" with "Multibuyer Complemento"
     And I fill in "paymentmodule_creditcard_creditcard_1_multi_buyer_neighborhood" with "Multibuyer Bairro"
     And I fill in "paymentmodule_creditcard_creditcard_1_multi_buyer_city" with "Multibuyer Cidade"
-    And I select "Brazil" from "paymentmodule_boleto_boleto_1_multi_buyer_country"
+    And I select "Brazil" from "paymentmodule_creditcard_creditcard_1_multi_buyer_country"
     And I wait for 2 seconds
-    And I select "Rio de Janeiro" from "paymentmodule_boleto_boleto_1_multi_buyer_state"
+    And I select "Rio de Janeiro" from "paymentmodule_creditcard_creditcard_1_multi_buyer_state"
     And I use jquery to click on element "#payment-buttons-container button"
     And I use jquery to click on element "#payment-buttons-container button"
     And I wait for 20 seconds
