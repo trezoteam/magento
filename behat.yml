@@ -1,18 +1,7 @@
 local:
-    extensions:
-        Behat\MinkExtension:
-          base_url: http://m1m1.localhost
-          browser_name: chrome
-          default_session: selenium2
-          goutte: ~
-          selenium2:
-              wd_host: 127.0.0.1:9222
-              browser: chrome
-
-localsample:
   extensions:
     Behat\MinkExtension:
-      base_url: http://m1m1-sample.localhost
+      base_url: http://m1m1.localhost
       browser_name: chrome
       default_session: selenium2
       goutte: ~
