@@ -27,6 +27,8 @@ Feature: Create order with two credit card
 
 #    And I use jquery to click on element "#p_method_paymentmodule_boleto"
     And I use jquery to click on element "#payment-buttons-container button"
+    And I wait for 1 seconds
+    And I use jquery to click on element "#payment-buttons-container button"
     And I wait for text "PLACE ORDER" to appear, for 50 seconds
     And I use jquery to click on element "#review-buttons-container button"
     And I wait for text "THANK YOU FOR YOUR PURCHASE!" to appear
