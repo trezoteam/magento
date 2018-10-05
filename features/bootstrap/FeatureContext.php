@@ -1,4 +1,6 @@
 <?php
+
+use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Mink\Exception\ResponseTextException;
 use Behat\MinkExtension\Context\MinkContext;
 
@@ -14,6 +16,12 @@ class FeatureContext extends MinkContext
     /** @BeforeScenario */
     public function beforeScenario($event)
     {
+        if ($event->getScenario()->hasTag('smartStep')) {
+            throw new PendingException(
+                'This is a partial @smartStep Scenario and should not be isolatedly executed.'
+            );
+        }
+
         $this->scenarioTokens = null;
         try {
             //trying to save examples to use in @smartStep
@@ -300,7 +308,7 @@ class FeatureContext extends MinkContext
     {
         $field = $this->replacePlaceholdersByTokens($field);
         $field = $this->fixStepArgument($field);
-        $value = rand(100, 9999) . "@test.com";
+        $value = rand(900000, 9999999) . "@test.com";
         $this->getSession()->getPage()->fillField($field, $value);
     }
 
@@ -346,5 +354,13 @@ class FeatureContext extends MinkContext
         } else {
             throw new Exception('Element not found');
         }
+    }
+
+    /**
+     * @Given /^a new session$/
+     */
+    public function newSession()
+    {
+        $this->getSession()->reset();
     }
 }

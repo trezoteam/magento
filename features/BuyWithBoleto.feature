@@ -1,5 +1,8 @@
 Feature: Create order with boleto
 
+  Background:
+    Given a new session
+
  @javascript
   Scenario: Buying a product with boleto
     Given I add a Aviator Sunglasses to cart and go to checkout
