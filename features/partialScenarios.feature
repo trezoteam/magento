@@ -6,7 +6,7 @@ Feature: Partial Scenarios
     Given I am on "/index.php/aviator-sunglasses.html"
     Then I wait for text "Gunmetal" to appear, for 15 seconds
     And I submit the form with id "#product_addtocart_form"
-    And I wait for text "SHOPPING CART" to appear, for 20 seconds
+    And I wait for text "SHOPPING CART" to appear, for 30 seconds
     And I click in element ".btn-proceed-checkout"
 
   #fill in billing address info
@@ -41,7 +41,7 @@ Feature: Partial Scenarios
   #register on checkout
   @javascript @smartStep
   Scenario: I register on Checkout
-    Given I wait for text "Register and Checkout" to appear, for 20 seconds
+    Given I wait for text "Register and Checkout" to appear, for 30 seconds
     And I click in element "#checkout-step-login div div ul li:last-child input"
     And I click in element "#onepage-guest-register-button"
     And I fill in "billing:firstname" with "Register"
@@ -56,7 +56,7 @@ Feature: Partial Scenarios
   #guest checkout
   @javascript @smartStep
   Scenario: I checkout as guest
-    Given I wait for text "Checkout as Guest" to appear, for 20 seconds
+    Given I wait for text "Checkout as Guest" to appear, for 30 seconds
     And I click in element "#checkout-step-login div div ul li:first-child input"
     And I click in element "#onepage-guest-register-button"
     And I fill in "billing:firstname" with "Guest"

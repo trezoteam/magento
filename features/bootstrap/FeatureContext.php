@@ -11,18 +11,23 @@ class FeatureContext extends MinkContext
     private $currentStep = null;
     private $scenarioTokens = null;
 
-    /** @BeforeStep */
-    public function beforeStep($event)
+    /** @BeforeScenario */
+    public function beforeScenario($event)
     {
-        $this->currentStep  = $event->getStep();
-
         $this->scenarioTokens = null;
         try {
             //trying to save examples to use in @smartStep
             $this->scenarioTokens =
-                $event->getFeature()->getScenarios()[0]->getExamples()[0]->getTokens();
+                $event->getScenario()->getTokens();
         }catch(Throwable $e) {}
     }
+
+    /** @BeforeStep */
+    public function beforeStep($event)
+    {
+        $this->currentStep  = $event->getStep();
+    }
+
     /**
      * Show an animation when waiting for a step
      * @param int $remaning Amount in seconds remaing on wait.
