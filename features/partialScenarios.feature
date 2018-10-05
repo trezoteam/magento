@@ -91,3 +91,23 @@ Feature: Partial Scenarios
     And I select "Brazil" from "<payment_method_code>_<form_type_1>_1_multi_buyer_country"
     And I wait for 2 seconds
     And I select "Rio de Janeiro" from "<payment_method_code>_<form_type_1>_1_multi_buyer_state"
+
+  #fill first credit card Data
+  @javascript @smartStep
+  Scenario: I fill first credit card data
+    And I fill in "<payment_method_code>_creditcard_1_mundicheckout-number" with "4916318338556377"
+    And I fill in "<payment_method_code>_creditcard_1_mundicheckout-holdername" with "first Teste Teste"
+    And I select "01" from "<payment_method_code>_creditcard_1_mundicheckout-expmonth"
+    And I select "2025" from "<payment_method_code>_creditcard_1_mundicheckout-expyear"
+    And I fill in "<payment_method_code>_creditcard_1_mundicheckout-cvv" with "123"
+    And I click in element "#<payment_method_code>_creditcard_1_mundicheckout-cvv"
+
+  #fill second credit card Data
+  @javascript @smartStep
+  Scenario: I fill second credit card data
+    And I fill in "<payment_method_code>_creditcard_2_mundicheckout-number" with "4916318338556377"
+    And I fill in "<payment_method_code>_creditcard_2_mundicheckout-holdername" with "second Teste Teste"
+    And I select "01" from "<payment_method_code>_creditcard_2_mundicheckout-expmonth"
+    And I select "2025" from "<payment_method_code>_creditcard_2_mundicheckout-expyear"
+    And I fill in "<payment_method_code>_creditcard_2_mundicheckout-cvv" with "123"
+    And I click in element "#<payment_method_code>_creditcard_2_mundicheckout-cvv"
