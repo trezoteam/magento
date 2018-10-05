@@ -24,14 +24,14 @@ Feature: Create order with boleto
     And I select 'Flat' shipping method
     And I wait for text "Mundipagg Boleto" to appear, for 45 seconds
     And I use jquery to click on element "#p_method_paymentmodule_boleto"
-    And I wait for text "Fill other buyer data" to appear, for 120 seconds
+    And I wait for text "Fill other buyer data" to appear, for 300 seconds
     And I fill the first multibuyer form inputs
     And I use jquery to click on element "#payment-buttons-container button"
     And I wait for text "PLACE ORDER" to appear, for 90 seconds
     And I use jquery to click on element "#review-buttons-container button"
-    And I wait for text "Click here to" to appear, for 120 seconds
+    And I wait for text "Click here to" to appear, for 300 seconds
     And I follow the element "#mundipagg-checkout-success-order-info a" href
-    Then I wait for text "Instru" to appear, for 120 seconds
+    Then I wait for text "Instru" to appear, for 300 seconds
 
     Examples:
       | payment_method_code | form_type_1 |
@@ -47,9 +47,9 @@ Feature: Create order with boleto
     And I use jquery to click on element "#payment-buttons-container button"
     And I wait for text "PLACE ORDER" to appear, for 90 seconds
     And I use jquery to click on element "#review-buttons-container button"
-    And I wait for text "Click here to" to appear, for 120 seconds
+    And I wait for text "Click here to" to appear, for 300 seconds
     And I follow the element "#mundipagg-checkout-success-order-info a" href
-    Then I wait for text "Instru" to appear, for 120 seconds
+    Then I wait for text "Instru" to appear, for 300 seconds
 
   @javascript
   Scenario Outline: A guest buying a product with boleto and using a multibuyer
@@ -58,14 +58,14 @@ Feature: Create order with boleto
     And I select 'Flat' shipping method
     And I wait for text "Mundipagg Boleto" to appear, for 45 seconds
     And I use jquery to click on element "#p_method_paymentmodule_boleto"
-    And I wait for text "Fill other buyer data" to appear, for 120 seconds
+    And I wait for text "Fill other buyer data" to appear, for 300 seconds
     And I fill the first multibuyer form inputs
     And I use jquery to click on element "#payment-buttons-container button"
     And I wait for text "PLACE ORDER" to appear, for 90 seconds
     And I use jquery to click on element "#review-buttons-container button"
-    And I wait for text "Click here to" to appear, for 120 seconds
+    And I wait for text "Click here to" to appear, for 300 seconds
     And I follow the element "#mundipagg-checkout-success-order-info a" href
-    Then I wait for text "Multibuyer Teste" to appear, for 120 seconds
+    Then I wait for text "Multibuyer Teste" to appear, for 300 seconds
 
   Examples:
   | payment_method_code | form_type_1 |
@@ -83,7 +83,7 @@ Feature: Create order with boleto
     And I use jquery to click on element "#payment-buttons-container button"
     And I wait for text "PLACE ORDER" to appear, for 90 seconds
     And I use jquery to click on element "#review-buttons-container button"
-    And I wait for text "Click here to" to appear, for 120 seconds
+    And I wait for text "Click here to" to appear, for 300 seconds
     And I follow the element "#mundipagg-checkout-success-order-info a" href
     Then I wait for text "Instru" to appear, for 45 seconds
 
@@ -95,16 +95,16 @@ Feature: Create order with boleto
     And I fill in billing address info
     And I use jquery to click on element "#billing-buttons-container button"
     And I select 'Flat' shipping method
-    And I wait for text "Mundipagg Boleto" to appear, for 120 seconds
+    And I wait for text "Mundipagg Boleto" to appear, for 300 seconds
     And I use jquery to click on element "#p_method_paymentmodule_boleto"
     And I wait for text "Fill other buyer data" to appear, for 40 seconds
     And I fill the first multibuyer form inputs
     And I use jquery to click on element "#payment-buttons-container button"
     And I wait for text "PLACE ORDER" to appear, for 90 seconds
     And I use jquery to click on element "#review-buttons-container button"
-    And I wait for text "Click here to" to appear, for 120 seconds
+    And I wait for text "Click here to" to appear, for 300 seconds
     And I follow the element "#mundipagg-checkout-success-order-info a" href
-    Then I wait for text "Instru" to appear, for 120 seconds
+    Then I wait for text "Instru" to appear, for 300 seconds
 
     Examples:
       | payment_method_code | form_type_1 |
