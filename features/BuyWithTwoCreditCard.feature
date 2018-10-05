@@ -8,7 +8,7 @@ Feature: Create order with two credit card
     Given I add a Aviator Sunglasses to cart and go to checkout
     And I register on Checkout
     And I select 'Flat' shipping method
-    And I wait for text "Mundipagg Two Credit Cards" to appear
+    And I wait for text "Mundipagg Two Credit Cards" to appear, for 120 seconds
 
     And I click in element "#p_method_paymentmodule_twocreditcards"
 
@@ -32,7 +32,7 @@ Feature: Create order with two credit card
     And I wait for text "PLACE ORDER" to appear, for 50 seconds
     And I wait for 2 seconds
     And I use jquery to click on element "#review-buttons-container button"
-    And I wait for text "THANK YOU FOR YOUR PURCHASE!" to appear
+    And I wait for text "THANK YOU FOR YOUR PURCHASE!" to appear, for 120 seconds
 
     Examples:
       | payment_method_code |

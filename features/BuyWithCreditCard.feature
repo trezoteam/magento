@@ -32,13 +32,13 @@ Feature: Create order with credit card
     And I fill first credit card data
     And I wait for 10 seconds
     And I select "1x of $300,00 without interest , Total: $300,00" from "paymentmodule_creditcard_creditcard_1_mundicheckout-creditCard-installments"
-    And I wait for text "Fill other buyer data" to appear
+    And I wait for text "Fill other buyer data" to appear, for 120 seconds
     And I fill the first multibuyer form inputs
     And I use jquery to click on element "#payment-buttons-container button"
     And I wait for 20 seconds
     And I wait for text "Grand Total" to appear, for 90 seconds
     And I use jquery to click on element "#review-buttons-container button"
-    And I wait for text "THANK YOU FOR YOUR PURCHASE!" to appear
+    And I wait for text "THANK YOU FOR YOUR PURCHASE!" to appear, for 120 seconds
 
     Examples:
       | payment_method_code | form_type_1 |
@@ -73,13 +73,13 @@ Feature: Create order with credit card
     And I fill first credit card data
     And I wait for 10 seconds
     And I select "1x of $300,00 without interest , Total: $300,00" from "paymentmodule_creditcard_creditcard_1_mundicheckout-creditCard-installments"
-    And I wait for text "Fill other buyer data" to appear
+    And I wait for text "Fill other buyer data" to appear, for 120 seconds
     And I fill the first multibuyer form inputs
     And I use jquery to click on element "#payment-buttons-container button"
     And I wait for 20 seconds
     And I wait for text "Grand Total" to appear, for 90 seconds
     And I use jquery to click on element "#review-buttons-container button"
-    And I wait for text "THANK YOU FOR YOUR PURCHASE!" to appear
+    And I wait for text "THANK YOU FOR YOUR PURCHASE!" to appear, for 120 seconds
 
     Examples:
       | payment_method_code | form_type_1 |
@@ -118,13 +118,13 @@ Feature: Create order with credit card
     And I fill first credit card data
     And I wait for 10 seconds
     And I select "1x of $300,00 without interest , Total: $300,00" from "paymentmodule_creditcard_creditcard_1_mundicheckout-creditCard-installments"
-    And I wait for text "Fill other buyer data" to appear
+    And I wait for text "Fill other buyer data" to appear, for 120 seconds
     And I fill the first multibuyer form inputs
     And I use jquery to click on element "#payment-buttons-container button"
     And I wait for 20 seconds
     And I wait for text "Grand Total" to appear, for 90 seconds
     And I use jquery to click on element "#review-buttons-container button"
-    And I wait for text "THANK YOU FOR YOUR PURCHASE!" to appear
+    And I wait for text "THANK YOU FOR YOUR PURCHASE!" to appear, for 120 seconds
 
     Examples:
       | payment_method_code | form_type_1 |
