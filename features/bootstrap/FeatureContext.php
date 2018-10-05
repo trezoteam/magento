@@ -9,11 +9,19 @@ class FeatureContext extends MinkContext
 {
     /** @var Behat\Gherkin\Node\StepNode */
     private $currentStep = null;
+    private $scenarioTokens = null;
 
     /** @BeforeStep */
     public function beforeStep($event)
     {
         $this->currentStep  = $event->getStep();
+
+        $this->scenarioTokens = null;
+        try {
+            //trying to save examples to use in @smartStep
+            $this->scenarioTokens =
+                $event->getFeature()->getScenarios()[0]->getExamples()[0]->getTokens();
+        }catch(Throwable $e) {}
     }
     /**
      * Show an animation when waiting for a step
@@ -94,6 +102,7 @@ class FeatureContext extends MinkContext
      */
     public function clickInElement($element)
     {
+        $element = $this->replacePlaceholdersByTokens($element);
         $session = $this->getSession();
         $locator = $this->fixStepArgument($element);
         $xpath = $session->getSelectorsHandler()->selectorToXpath('css', $locator);
@@ -103,6 +112,16 @@ class FeatureContext extends MinkContext
         }
 
         $element->click();
+    }
+
+    private function replacePlaceholdersByTokens($element)
+    {
+        if (is_array($this->scenarioTokens)) {
+            foreach ($this->scenarioTokens as $key => $value) {
+                $element = str_replace("<$key>",$value,$element);
+            }
+        }
+        return $element;
     }
 
     /**

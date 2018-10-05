@@ -72,3 +72,21 @@ Feature: Partial Scenarios
     Given I wait for text "Flat" to appear, for 45 seconds
     And I use jquery to click on element "#s_method_flatrate_flatrate"
     And I use jquery to click on element "#shipping-method-buttons-container button"
+
+  @javascript @smartStep
+  Scenario: I fill the first multibuyer form inputs
+    Given I click in element "#<payment_method_code>_<form_type_1>_1_multi_buyer_enabled"
+    And I wait for 5 seconds
+    And I fill in "<payment_method_code>_<form_type_1>_1_multi_buyer_name" with "Multibuyer Teste"
+    And I fill in "<payment_method_code>_<form_type_1>_1_multi_buyer_email" with a random email
+    And I fill in "<payment_method_code>_<form_type_1>_1_multi_buyer_phone" with "212533333"
+    And I fill in "<payment_method_code>_<form_type_1>_1_multi_buyer_taxvat" with "52419830660"
+    And I fill in "<payment_method_code>_<form_type_1>_1_multi_buyer_zip_code" with "200000000"
+    And I fill in "<payment_method_code>_<form_type_1>_1_multi_buyer_street" with "Multibuyer Rua"
+    And I fill in "<payment_method_code>_<form_type_1>_1_multi_buyer_number" with "23"
+    And I fill in "<payment_method_code>_<form_type_1>_1_multi_buyer_complement" with "Multibuyer Complemento"
+    And I fill in "<payment_method_code>_<form_type_1>_1_multi_buyer_neighborhood" with "Multibuyer Bairro"
+    And I fill in "<payment_method_code>_<form_type_1>_1_multi_buyer_city" with "Multibuyer Cidade"
+    And I select "Brazil" from "<payment_method_code>_<form_type_1>_1_multi_buyer_country"
+    And I wait for 2 seconds
+    And I select "Rio de Janeiro" from "<payment_method_code>_<form_type_1>_1_multi_buyer_state"
