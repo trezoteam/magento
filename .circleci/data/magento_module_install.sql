@@ -49,6 +49,7 @@ UPDATE magento.core_config_data SET value = 'exception.log' WHERE path = 'dev/lo
 UPDATE magento.core_config_data SET value = '4' WHERE path = 'customer/address/street_lines';
 UPDATE magento.core_config_data SET value = '1' WHERE path = 'customer/create_account/vat_frontend_visibility';
 UPDATE magento.core_config_data SET value = 'req' WHERE path = 'customer/address/taxvat_show';
+UPDATE magento.core_config_data SET value = '1' WHERE path = 'system/smtp/disable';
 UPDATE magento.customer_eav_attribute set multiline_count = 4 where attribute_id = 25;
 UPDATE magento.customer_eav_attribute set is_visible = 4 where attribute_id = 15;
 
