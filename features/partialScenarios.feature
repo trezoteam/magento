@@ -73,6 +73,7 @@ Feature: Partial Scenarios
     And I use jquery to click on element "#s_method_flatrate_flatrate"
     And I use jquery to click on element "#shipping-method-buttons-container button"
 
+  #fill first multibuyer
   @javascript @smartStep
   Scenario: I fill the first multibuyer form inputs
     Given I click in element "#<payment_method_code>_<form_type_1>_1_multi_buyer_enabled"

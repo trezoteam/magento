@@ -72,21 +72,9 @@ Feature: Create order with boleto
     And I wait for text "Mundipagg Boleto" to appear, for 45 seconds
     And I use jquery to click on element "#p_method_paymentmodule_boleto"
     And I wait for text "Fill other buyer data" to appear
-    And I click in element "#<payment_method_code>_<form_type_1>_1_multi_buyer_enabled"
-    And I wait for 5 seconds
-    And I fill in "<payment_method_code>_<form_type_1>_1_multi_buyer_name" with "Multibuyer Teste"
-    And I fill in "<payment_method_code>_<form_type_1>_1_multi_buyer_email" with a random email
-    And I fill in "<payment_method_code>_<form_type_1>_1_multi_buyer_phone" with "212533333"
-    And I fill in "<payment_method_code>_<form_type_1>_1_multi_buyer_taxvat" with "52419830660"
-    And I fill in "<payment_method_code>_<form_type_1>_1_multi_buyer_zip_code" with "200000000"
-    And I fill in "<payment_method_code>_<form_type_1>_1_multi_buyer_street" with "Multibuyer Rua"
-    And I fill in "<payment_method_code>_<form_type_1>_1_multi_buyer_number" with "23"
-    And I fill in "<payment_method_code>_<form_type_1>_1_multi_buyer_complement" with "Multibuyer Complemento"
-    And I fill in "<payment_method_code>_<form_type_1>_1_multi_buyer_neighborhood" with "Multibuyer Bairro"
-    And I fill in "<payment_method_code>_<form_type_1>_1_multi_buyer_city" with "Multibuyer Cidade"
-    And I select "Brazil" from "<payment_method_code>_<form_type_1>_1_multi_buyer_country"
-    And I wait for 2 seconds
-    And I select "Rio de Janeiro" from "<payment_method_code>_<form_type_1>_1_multi_buyer_state"
+
+    And I fill the first multibuyer form inputs
+
     And I use jquery to click on element "#payment-buttons-container button"
     And I wait for text "PLACE ORDER" to appear, for 90 seconds
     And I use jquery to click on element "#review-buttons-container button"

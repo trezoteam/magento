@@ -114,6 +114,30 @@ class FeatureContext extends MinkContext
         $element->click();
     }
 
+    /**
+     * Overriding fillField to make it compatible with @smartStep in Scenario Outline.
+     *
+     * @param $field
+     * @param $value
+     */
+    public function fillField($field, $value)
+    {
+        $field = $this->replacePlaceholdersByTokens($field);
+        parent::fillField($field, $value);
+    }
+
+    /**
+     * Overriding selectOption to make it compatible with @smartStep in Scenario Outline.
+     *
+     * @param $select
+     * @param $option
+     */
+    public function selectOption($select, $option)
+    {
+        $select = $this->replacePlaceholdersByTokens($select);
+        parent::selectOption($select, $option);
+    }
+
     private function replacePlaceholdersByTokens($element)
     {
         if (is_array($this->scenarioTokens)) {
@@ -269,6 +293,7 @@ class FeatureContext extends MinkContext
 
     public function iFillInWithARandomEmail($field)
     {
+        $field = $this->replacePlaceholdersByTokens($field);
         $field = $this->fixStepArgument($field);
         $value = rand(100, 9999) . "@test.com";
         $this->getSession()->getPage()->fillField($field, $value);
