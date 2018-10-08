@@ -90,7 +90,7 @@ jobs:
             docker exec -it newimage /bin/sh -c \
               "chown -R www-data:root /app/"
             docker exec -i newimage sh -c \
-              "cd /app/.modman/magento && composer update -vvv"
+              "cd /app/.modman/magento && composer update -vvv && /root/bin/modman repair --force"
       - run:
           name: Clear useless files
           command: |
@@ -115,11 +115,14 @@ jobs:
             docker exec -i newimage sh -c \
               "cd /app/.modman/magento && \
               composer config --global github-oauth.github.com "${GITHUB_TOKEN}" && \
-              composer update -vvv"
+              composer update -vvv && /root/bin/modman repair --force"
 
       - run:
           name: Run Functional Tests
           command: |
+            docker exec -it newimage php index.php
+            docker exec -i newimage mysql magento -e "select * from magento.cataloginventory_stock_item where  product_id = 337;"
+            docker exec -i newimage mysql magento -e "select * from magento.core_config_data where  path like '%allow_symlink';"
             docker exec --detach newimage google-chrome-unstable --disable-gpu --no-sandbox --headless --remote-debugging-address=127.0.0.1 --remote-debugging-port=9222 &
             docker exec -i newimage sh -c "cd /app/.modman/magento && php lib/bin/behat"
       - run:
