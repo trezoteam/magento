@@ -41,7 +41,7 @@ Feature: Create order with boleto
     Examples:
       | payment_method_code | form_type_1 |
       | paymentmodule_boleto | boleto |
-        
+
  @javascript
   Scenario: Buying a product with boleto
     Given I add a Aviator Sunglasses to cart and go to checkout

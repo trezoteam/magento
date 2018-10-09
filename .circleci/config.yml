@@ -58,6 +58,7 @@ jobs:
              cp .circleci/data/wait-for-mysql.sh .
              cp .circleci/data/magento_module_install.sql .
              cp .circleci/data/brazilian_states.sql .
+             cp .circleci/data/ciTestRunner.sh .
       - run:
           name: Build image base for modifications
           command: |
@@ -98,7 +99,7 @@ jobs:
                "cd /app/.modman/magento && \
                rm -rf .github .circleci .git .gitignore && \
                rm -rf Dockerfile wait-for-mysql.sh \
-               magento_module_install.sql brazilian_states.sql LICENSE *.MD"
+                 magento_module_install.sql brazilian_states.sql LICENSE *.MD"
       - run:
           name: Commit basic configs into Docker image
           command: |
@@ -120,11 +121,8 @@ jobs:
       - run:
           name: Run Functional Tests
           command: |
-            docker exec -it newimage php index.php
-            docker exec -i newimage mysql magento -e "select * from magento.cataloginventory_stock_item where  product_id = 337;"
-            docker exec -i newimage mysql magento -e "select * from magento.core_config_data where  path like '%allow_symlink';"
             docker exec --detach newimage google-chrome-unstable --disable-gpu --no-sandbox --headless --remote-debugging-address=127.0.0.1 --remote-debugging-port=9222 &
-            docker exec -i newimage sh -c "cd /app/.modman/magento && php lib/bin/behat"
+            docker exec -i newimage sh -c 'cd /app/.modman/magento && ./ciTestRunner.sh "lib/bin/behat"'
       - run:
           name: Reset image and set final configurations
           command: |
