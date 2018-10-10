@@ -79,7 +79,7 @@ Feature: Partial Scenarios
     And I fill in "email" with the fixed email
     And I fill in "pass" with "test123"
     And I click in element "#send2"
-    And I wait for 3 seconds
+    And I wait for 1 seconds
     Then I should see "MY DASHBOARD" appear
 
   #register on checkout

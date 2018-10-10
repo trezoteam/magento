@@ -171,7 +171,10 @@ class FeatureContext extends MinkContext
      */
     public function selectIfPresent($select, $option)
     {
-        if ($this->getSession()->getPage()->findField($select) !== null) {
+        $select = $this->replacePlaceholdersByTokens($select);
+        $option = $this->replacePlaceholdersByTokens($option);
+
+        if ($this->getSession()->getPage()->findField($select)) {
             $this->selectOption($select, $option);
         }
     }
