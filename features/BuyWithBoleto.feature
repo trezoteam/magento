@@ -41,8 +41,8 @@ Feature: Create order with boleto
     Then I wait for text "Instru" to appear, for 120 seconds
 
     Examples:
-      | payment_method_code | form_type_1 | element_index 1 |
-      | paymentmodule_boleto | boleto | 1                   |
+      | payment_method_code | form_type_1 | element_index_1 |
+      | paymentmodule_boleto | boleto | 1 |
 
  @javascript
   Scenario: Buying a product with boleto
@@ -77,7 +77,7 @@ Feature: Create order with boleto
     Then I wait for text "Instru" to appear, for 120 seconds
 
     Examples:
-      | payment_method_code | form_type_1 | element_index 1 |
+      | payment_method_code | form_type_1 | element_index_1 |
       | paymentmodule_boleto | boleto | 1                   |
 
   @javascript
@@ -110,8 +110,8 @@ Feature: Create order with boleto
     And I wait for text "Click here to" to appear, for 120 seconds
     And I wait for element "#mundipagg-checkout-success-order-info a" to appear, for 120 seconds
     And I follow the element "#mundipagg-checkout-success-order-info a" href
-    Then I wait for text "Multibuyer Teste" to appear, for 120 seconds
+    Then I wait for text "Multibuyer One Teste" to appear, for 120 seconds
 
   Examples:
-    | payment_method_code | form_type_1 | element_index 1 |
+    | payment_method_code | form_type_1 | element_index_1 |
     | paymentmodule_boleto | boleto | 1                   |

@@ -38,6 +38,50 @@ Feature: Partial Scenarios
     And I click in element ".buttons-set button"
     Then I should be on "index.php/customer/account/index/"
 
+  #pre register fixed user
+  @javascript @smartStep
+  Scenario: I pre-register the fixed user
+    Given I am on "index.php/customer/account/login/"
+    Then I wait for text "LOGIN OR CREATE AN ACCOUNT" to appear, for 5 seconds
+    And I click in element ".new-users .buttons-set a"
+    Then I should be on "index.php/customer/account/create/"
+    And I fill in "firstname" with "Fixed"
+    And I fill in "lastname" with "Fixed"
+    And I fill in "email" with the fixed email
+    And I fill in "taxvat" with "67632474277"
+    And I fill in "password" with "test123"
+    And I fill in "confirmation" with "test123"
+    And I click in element ".buttons-set button"
+    Then I should see "MY DASHBOARD" appear
+
+  #fill address to the fixed user
+  @javascript @smartStep
+  Scenario: I fill address for the fixed user
+    Given I am on "index.php/customer/address/new/"
+    Then I wait for text "ADD NEW ADDRESS" to appear, for 5 seconds
+    And I fill in "street_1" with "Ruaf"
+    And I fill in "street_2" with "númerof"
+    And I fill in "street_3" with "complementof"
+    And I fill in "street_4" with "Bairrof"
+    And I fill in "city" with "Cidadef"
+    And I select "Brazil" from "country_id"
+    And I select "Rio de Janeiro" from "region_id"
+    And I fill in "postcode" with "200000000"
+    And I fill in "telephone" with "2125222222"
+    And I press "Save Address"
+    Then I should see "The address has been saved"
+
+  #log with fixed user
+  @javascript @smartStep
+  Scenario: I log in with the fixed user
+    Given I am on "index.php/customer/account/login/"
+    Then I wait for text "LOGIN OR CREATE AN ACCOUNT" to appear, for 5 seconds
+    And I fill in "email" with the fixed email
+    And I fill in "pass" with "test123"
+    And I click in element "#send2"
+    And I wait for 3 seconds
+    Then I should see "MY DASHBOARD" appear
+
   #register on checkout
   @javascript @smartStep
   Scenario: I register on Checkout

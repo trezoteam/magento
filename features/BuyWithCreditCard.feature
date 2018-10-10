@@ -4,6 +4,11 @@ Feature: Create order with credit card
     Given a new session
 
   @javascript
+  Scenario: I log in with the fixed user to save creditcards in
+    Given I pre-register the fixed user
+    And I fill address for the fixed user
+
+  @javascript
   Scenario Outline: Buying a product with credit card
     Given I add a Aviator Sunglasses to cart and go to checkout
     And I register on Checkout
@@ -41,8 +46,8 @@ Feature: Create order with credit card
     And I wait for text "THANK YOU FOR YOUR PURCHASE!" to appear, for 120 seconds
 
     Examples:
-      | payment_method_code | form_type_1 |
-      | paymentmodule_creditcard | creditcard |
+      | payment_method_code | form_type_1 | element_index_1 |
+      | paymentmodule_creditcard | creditcard | 1           |
 
   @javascript
   Scenario Outline: A guest buying a product with credit card
@@ -82,14 +87,13 @@ Feature: Create order with credit card
     And I wait for text "THANK YOU FOR YOUR PURCHASE!" to appear, for 120 seconds
 
     Examples:
-      | payment_method_code | form_type_1 |
-      | paymentmodule_creditcard | creditcard |
+      | payment_method_code | form_type_1 | element_index_1 |
+      | paymentmodule_creditcard | creditcard | 1           |
 
   @javascript
   Scenario Outline: Create account and buying a product with credit card
-    Given I pre-register my user
+    Given I log in with the fixed user
     When I add a Aviator Sunglasses to cart and go to checkout
-    And I fill in billing address info
     And I use jquery to click on element "#billing-buttons-container button"
     And I select 'Flat' shipping method
     And I wait for text "Mundipagg Credit Card" to appear, for 15 seconds
@@ -108,9 +112,8 @@ Feature: Create order with credit card
 
   @javascript
   Scenario Outline: Create account and buying a product with credit card and using multi-buyer
-    Given I pre-register my user
+    Given I log in with the fixed user
     When I add a Aviator Sunglasses to cart and go to checkout
-    And I fill in billing address info
     And I use jquery to click on element "#billing-buttons-container button"
     And I select 'Flat' shipping method
     And I wait for text "Mundipagg Credit Card" to appear, for 15 seconds
@@ -127,5 +130,5 @@ Feature: Create order with credit card
     And I wait for text "THANK YOU FOR YOUR PURCHASE!" to appear, for 120 seconds
 
     Examples:
-      | payment_method_code | form_type_1 |
-      | paymentmodule_creditcard | creditcard |
+      | payment_method_code | form_type_1 | element_index_1 |
+      | paymentmodule_creditcard | creditcard | 1           |

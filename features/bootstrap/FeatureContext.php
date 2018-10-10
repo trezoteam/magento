@@ -12,6 +12,17 @@ class FeatureContext extends MinkContext
     /** @var Behat\Gherkin\Node\StepNode */
     private $currentStep = null;
     private $scenarioTokens = null;
+    private static $featureHash = null;
+
+    /** @BeforeFeature */
+    public static function beforeFeature($event)
+    {
+        self::$featureHash = null;
+        $requestTime = $_SERVER['REQUEST_TIME'];
+        $featureTitle = $event->getFeature()->getTitle();
+        $hash = hash('sha512',$featureTitle . $requestTime);
+        self::$featureHash = substr($hash,0,16);
+    }
 
     /** @BeforeScenario */
     public function beforeScenario($event)
@@ -309,6 +320,21 @@ class FeatureContext extends MinkContext
         $field = $this->replacePlaceholdersByTokens($field);
         $field = $this->fixStepArgument($field);
         $value = rand(900000, 9999999) . "@test.com";
+        $this->getSession()->getPage()->fillField($field, $value);
+    }
+
+    /**
+     * @Given /^I fill in "([^"]*)" with the fixed email$/
+     * @param $element
+     * @throws \Exception
+     */
+
+    public function iFillInWithTheFixedEmail($field)
+    {
+
+        $field = $this->replacePlaceholdersByTokens($field);
+        $field = $this->fixStepArgument($field);
+        $value = self::$featureHash . "@test.com";
         $this->getSession()->getPage()->fillField($field, $value);
     }
 
