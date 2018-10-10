@@ -159,7 +159,21 @@ class FeatureContext extends MinkContext
     public function selectOption($select, $option)
     {
         $select = $this->replacePlaceholdersByTokens($select);
+        $option = $this->replacePlaceholdersByTokens($option);
         parent::selectOption($select, $option);
+    }
+
+    /**
+     * @When /^If "(?P<select>(?:[^"]|\\")*)" is present, I select "(?P<option>(?:[^"]|\\")*)" from it$/
+     * @param $text
+     * @param $wait
+     * @throws \Exception
+     */
+    public function selectIfPresent($select, $option)
+    {
+        if ($this->getSession()->getPage()->findField($select) !== null) {
+            $this->selectOption($select, $option);
+        }
     }
 
     private function replacePlaceholdersByTokens($element)

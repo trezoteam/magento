@@ -158,6 +158,7 @@ Feature: Partial Scenarios
   #fill first credit card Data
   @javascript @smartStep
   Scenario: I fill first credit card data
+    And If "<payment_method_code>_creditcard_1_mundicheckout-SavedCreditCard" is present, I select "Fill Data" from it
     And I fill in "<payment_method_code>_creditcard_1_mundicheckout-number" with "4916318338556377"
     And I fill in "<payment_method_code>_creditcard_1_mundicheckout-holdername" with "first Teste Teste"
     And I select "01" from "<payment_method_code>_creditcard_1_mundicheckout-expmonth"
@@ -168,6 +169,7 @@ Feature: Partial Scenarios
   #fill second credit card Data
   @javascript @smartStep
   Scenario: I fill second credit card data
+    And If "<payment_method_code>_creditcard_2_mundicheckout-SavedCreditCard" is present, I select "Fill Data" from it
     And I fill in "<payment_method_code>_creditcard_2_mundicheckout-number" with "4916318338556377"
     And I fill in "<payment_method_code>_creditcard_2_mundicheckout-holdername" with "second Teste Teste"
     And I select "01" from "<payment_method_code>_creditcard_2_mundicheckout-expmonth"

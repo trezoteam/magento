@@ -99,6 +99,7 @@ Feature: Create order with credit card
     And I wait for text "Mundipagg Credit Card" to appear, for 15 seconds
     And I click in element "#p_method_paymentmodule_creditcard"
     And I fill first credit card data
+    And I use jquery to click on element "#<payment_method_code>_creditcard_1_mundicheckout-save-credit-card"
     And I wait for 10 seconds
     And I select "1x of $300,00 without interest , Total: $300,00" from "paymentmodule_creditcard_creditcard_1_mundicheckout-creditCard-installments"
     And I use jquery to click on element "#payment-buttons-container button"
