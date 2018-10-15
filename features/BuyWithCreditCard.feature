@@ -100,7 +100,7 @@ Feature: Create order with credit card
     And I click in element "#p_method_paymentmodule_creditcard"
     And I fill first credit card data
     And I use jquery to click on element "#<payment_method_code>_creditcard_1_mundicheckout-save-credit-card"
-    And I wait for 10 seconds
+    And I wait for 15 seconds
     And I select "6x of $50,00 with 1% of interest , Total: $303,00" from "<payment_method_code>_creditcard_1_mundicheckout-creditCard-installments"
     And I use jquery to click on element "#payment-buttons-container button"
     And I wait for text "PLACE ORDER" to appear, for 90 seconds
@@ -122,7 +122,7 @@ Feature: Create order with credit card
     And I wait for text "Mundipagg Credit Card" to appear, for 15 seconds
     And I click in element "#p_method_paymentmodule_creditcard"
     And I fill first credit card data
-    And I wait for 10 seconds
+    And I wait for 15 seconds
     And I select "1x of $300,00 without interest , Total: $300,00" from "<payment_method_code>_<form_type_1>_<element_index_1>_mundicheckout-creditCard-installments"
     And I wait for text "Fill other buyer data" to appear, for 120 seconds
     And I fill the first multibuyer form inputs
@@ -145,7 +145,7 @@ Feature: Create order with credit card
     And I wait for text "Mundipagg Credit Card" to appear, for 15 seconds
     And I click in element "#p_method_paymentmodule_creditcard"
     And I select "Visa xxxx-xxxx-xxxx-6377" from "<payment_method_code>_creditcard_1_mundicheckout-SavedCreditCard"
-    And I wait for 10 seconds
+    And I wait for 15 seconds
     And I select "6x of $50,00 with 1% of interest , Total: $303,00" from "<payment_method_code>_creditcard_1_mundicheckout-creditCard-installments"
     And I use jquery to click on element "#payment-buttons-container button"
     And I wait for text "PLACE ORDER" to appear, for 90 seconds
