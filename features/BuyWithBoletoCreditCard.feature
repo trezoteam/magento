@@ -13,7 +13,7 @@ Feature: Create order with boleto and credit card
     Given I add a Aviator Sunglasses to cart and go to checkout
     And I checkout as guest
     And I select 'Flat' shipping method
-    And I wait for text "Mundipagg Boleto + Creditcard" to appear, for 120 seconds
+    And I wait for text "Mundipagg Credit Card and Boleto" to appear, for 120 seconds
     And I click in element "#p_method_<payment_method_code>"
     # Fill Boleto info
     And I wait for 1 seconds
@@ -39,7 +39,7 @@ Feature: Create order with boleto and credit card
     Given I add a Aviator Sunglasses to cart and go to checkout
     And I checkout as guest
     And I select 'Flat' shipping method
-    And I wait for text "Mundipagg Boleto + Creditcard" to appear, for 120 seconds
+    And I wait for text "Mundipagg Credit Card and Boleto" to appear, for 120 seconds
     And I click in element "#p_method_<payment_method_code>"
     # Fill Boleto info
     And I wait for 1 seconds
@@ -68,7 +68,7 @@ Feature: Create order with boleto and credit card
     Given I add a Aviator Sunglasses to cart and go to checkout
     And I checkout as guest
     And I select 'Flat' shipping method
-    And I wait for text "Mundipagg Boleto + Creditcard" to appear, for 120 seconds
+    And I wait for text "Mundipagg Credit Card and Boleto" to appear, for 120 seconds
     And I click in element "#p_method_<payment_method_code>"
     # Fill Boleto info
     And I wait for 1 seconds
@@ -99,7 +99,7 @@ Feature: Create order with boleto and credit card
     Given I add a Aviator Sunglasses to cart and go to checkout
     And I register on Checkout
     And I select 'Flat' shipping method
-    And I wait for text "Mundipagg Boleto + Creditcard" to appear, for 120 seconds
+    And I wait for text "Mundipagg Credit Card and Boleto" to appear, for 120 seconds
     And I click in element "#p_method_<payment_method_code>"
     # Fill Boleto info
     And I wait for 1 seconds
@@ -125,7 +125,7 @@ Feature: Create order with boleto and credit card
     Given I add a Aviator Sunglasses to cart and go to checkout
     And I register on Checkout
     And I select 'Flat' shipping method
-    And I wait for text "Mundipagg Boleto + Creditcard" to appear, for 120 seconds
+    And I wait for text "Mundipagg Credit Card and Boleto" to appear, for 120 seconds
     And I click in element "#p_method_<payment_method_code>"
     # Fill Boleto info
     And I wait for 1 seconds
@@ -154,7 +154,7 @@ Feature: Create order with boleto and credit card
     Given I add a Aviator Sunglasses to cart and go to checkout
     And I register on Checkout
     And I select 'Flat' shipping method
-    And I wait for text "Mundipagg Boleto + Creditcard" to appear, for 120 seconds
+    And I wait for text "Mundipagg Credit Card and Boleto" to appear, for 120 seconds
     And I click in element "#p_method_<payment_method_code>"
     # Fill Boleto info
     And I wait for 1 seconds
@@ -186,7 +186,7 @@ Feature: Create order with boleto and credit card
     When I add a Aviator Sunglasses to cart and go to checkout
     And I use jquery to click on element "#billing-buttons-container button"
     And I select 'Flat' shipping method
-    And I wait for text "Mundipagg Boleto + Creditcard" to appear, for 120 seconds
+    And I wait for text "Mundipagg Credit Card and Boleto" to appear, for 120 seconds
     And I click in element "#p_method_<payment_method_code>"
     # Fill Boleto info
     And I wait for 1 seconds
@@ -218,7 +218,7 @@ Feature: Create order with boleto and credit card
     When I add a Aviator Sunglasses to cart and go to checkout
     And I use jquery to click on element "#billing-buttons-container button"
     And I select 'Flat' shipping method
-    And I wait for text "Mundipagg Boleto + Creditcard" to appear, for 120 seconds
+    And I wait for text "Mundipagg Credit Card and Boleto" to appear, for 120 seconds
     And I click in element "#p_method_<payment_method_code>"
     # Fill Boleto info
     And I wait for 1 seconds

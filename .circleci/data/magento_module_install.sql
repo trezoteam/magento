@@ -32,7 +32,7 @@ INSERT INTO magento.core_config_data (scope, scope_id, path, value) VALUES
 ('default', 0, 'mundipagg_config/boletocreditcard_group/boleto_cards_operation_type', 'AuthAndCapture'),
 ('default', 0, 'mundipagg_config/installments_group/default_status', '1'),
 ('default', 0, 'mundipagg_config/installments_group/default_max_installments', '12'),
-('default', 0, 'mundipagg_config/installments_group/default_max_without_interest', '3'),
+('default', 0, 'mundipagg_config/installments_group/default_max_without_interest', '5'),
 ('default', 0, 'mundipagg_config/installments_group/default_interest', '1'),
 ('default', 0, 'mundipagg_config/installments_group/default_incremental_interest', '1'),
 ('default', 0, 'mundipagg_config/installments_group/visa_status', '1'),
