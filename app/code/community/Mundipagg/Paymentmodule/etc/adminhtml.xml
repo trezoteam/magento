@@ -9,8 +9,12 @@
                                 <children>
                                     <mundipagg_config translate="title" module="paymentmodule">
                                         <title>Mundipagg</title>
-                                        <sort_order>666</sort_order>
+                                        <sort_order>0</sort_order>
                                     </mundipagg_config>
+                                    <mundipagg_recurrence_templates translate="title" module="paymentmodule">
+                                        <title>Mundipagg Recurrence Templates</title>
+                                        <sort_order>1</sort_order>
+                                    </mundipagg_recurrence_templates>
                                 </children>
                             </config>
                         </children>

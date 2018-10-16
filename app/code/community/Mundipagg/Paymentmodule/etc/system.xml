@@ -1238,5 +1238,36 @@
                 </recurrence_group>
             </groups>
         </mundipagg_config>
+
+        <mundipagg_recurrence_templates translate="label" module="paymentmodule">
+            <label>Recurrence templates</label>
+            <tab>paymentmoduleconfig</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>2000</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <group_1 translate="label">
+                    <label>Recurrence templates</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>4</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <text_input translate="label">
+                            <label>My Input Field: </label>
+                            <comment>My Comment</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </text_input>
+                    </fields>
+                </group_1>
+            </groups>
+        </mundipagg_recurrence_templates>
     </sections>
 </config>
