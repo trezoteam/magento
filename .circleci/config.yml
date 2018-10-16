@@ -58,6 +58,7 @@ jobs:
              cp .circleci/data/wait-for-mysql.sh .
              cp .circleci/data/magento_module_install.sql .
              cp .circleci/data/brazilian_states.sql .
+             cp .circleci/data/ciTestRunner.sh .
       - run:
           name: Build image base for modifications
           command: |
@@ -90,7 +91,7 @@ jobs:
             docker exec -it newimage /bin/sh -c \
               "chown -R www-data:root /app/"
             docker exec -i newimage sh -c \
-              "cd /app/.modman/magento && composer update -vvv"
+              "cd /app/.modman/magento && composer update -vvv && /root/bin/modman repair --force"
       - run:
           name: Clear useless files
           command: |
@@ -98,7 +99,7 @@ jobs:
                "cd /app/.modman/magento && \
                rm -rf .github .circleci .git .gitignore && \
                rm -rf Dockerfile wait-for-mysql.sh \
-               magento_module_install.sql brazilian_states.sql LICENSE *.MD"
+                 magento_module_install.sql brazilian_states.sql LICENSE *.MD"
       - run:
           name: Commit basic configs into Docker image
           command: |
@@ -113,18 +114,38 @@ jobs:
               echo 'deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main' | tee /etc/apt/sources.list.d/google-chrome.list && \
               apt-get -y update && apt-get -y install google-chrome-unstable"
             docker exec -i newimage sh -c \
-              "cd /app/.modman/magento && composer update -vvv"
+              "cd /app/.modman/magento && \
+              composer config --global github-oauth.github.com "${GITHUB_TOKEN}" && \
+              composer update -vvv && /root/bin/modman repair --force"
 
       - run:
           name: Run Functional Tests
           command: |
-            docker exec --detach newimage google-chrome-unstable --disable-gpu --no-sandbox --headless --remote-debugging-address=127.0.0.1 --remote-debugging-port=9222 &
-            docker exec -i newimage sh -c "cd /app/.modman/magento && php lib/bin/behat"
+            docker exec --detach newimage google-chrome-unstable --disable-gpu --no-sandbox --headless --remote-debugging-address=127.0.0.1 --remote-debugging-port=9222 --disable-extensions &
+            docker exec -i newimage sh -c 'cd /app/.modman/magento && ./ciTestRunner.sh "lib/bin/behat"'
+
       - run:
           name: Reset image and set final configurations
           command: |
             sleep 5 && docker rm -f newimage
             docker run --name newimage -d -p3306:3306 -p80:80 ${DOCKER_ACCOUNT}/${PROJECT_NAME}:latest
+
+      - run:
+          name: Failure Handling - Retrieving log files
+          command: |
+            cd /
+            mkdir failure_logs
+            cd failure_logs
+            mkdir magento
+            mkdir apache
+            docker cp newimage:/app/var/log/ ./magento
+            docker cp newimage:/var/log/apache2/ ./apache
+            docker cp newimage:/app/.modman/magento/failureScreenshots .
+          when: on_fail
+
+      - store_artifacts:
+          path: /failure_logs
+
   publish:
     working_directory: /
     docker:
