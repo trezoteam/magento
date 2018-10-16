@@ -2,6 +2,7 @@ Feature: Create order with credit card
 
   Background:
     Given a new session
+    And I define failure screenshot dir as "./failureScreenshots"
 
   @javascript
   Scenario: I log in with the fixed user to save creditcards in

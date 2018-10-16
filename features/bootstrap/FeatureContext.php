@@ -13,6 +13,26 @@ class FeatureContext extends MinkContext
     private $currentStep = null;
     private $scenarioTokens = null;
     private static $featureHash = null;
+    private $screenshotDir = DIRECTORY_SEPARATOR . 'tmp';
+
+    /**
+     * @AfterStep
+     * @param $event
+     */
+    public function afterStepFailureScreenshot($event)
+    {
+        $e = $event->getTestResult()->getCallResult()->getException();
+        if ($e) {
+            if (!file_exists($this->screenshotDir)) {
+                mkdir($this->screenshotDir);
+            }
+            $filename = tempnam ( $this->screenshotDir  , "failure_screenshoot_" );
+            unlink($filename);
+            $filename .= ".png";
+            $this->screenshot($filename);
+            echo "saved failure screenshot to '$filename'";
+        }
+    }
 
     /** @BeforeFeature */
     public static function beforeFeature($event)
@@ -405,5 +425,28 @@ class FeatureContext extends MinkContext
     public function newSession()
     {
         $this->getSession()->reset();
+        //throw new Exception("as");
     }
+
+    /**
+     * @Given /^I define failure screenshot dir as "([^"]*)"$/
+     */
+    public function setScreenshotDir($dir)
+    {
+        $this->screenshotDir = $dir;
+    }
+
+    /**
+     * @Given /^I save a screenshot to "([^"]*)" file$/
+     */
+    public function screenshot($filename)
+    {
+        $driver =  $this->getSession()->getDriver();
+        $data = $driver->getScreenshot();
+        $file = fopen($filename, "w");
+        fwrite($file,$data);
+        fclose($file);
+    }
+
+
 }
