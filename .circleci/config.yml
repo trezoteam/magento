@@ -123,11 +123,28 @@ jobs:
           command: |
             docker exec --detach newimage google-chrome-unstable --disable-gpu --no-sandbox --headless --remote-debugging-address=127.0.0.1 --remote-debugging-port=9222 &
             docker exec -i newimage sh -c 'cd /app/.modman/magento && ./ciTestRunner.sh "lib/bin/behat"'
+
       - run:
           name: Reset image and set final configurations
           command: |
             sleep 5 && docker rm -f newimage
             docker run --name newimage -d -p3306:3306 -p80:80 ${DOCKER_ACCOUNT}/${PROJECT_NAME}:latest
+
+      - run:
+          name: Failure Handling - Retrieving log files
+          command: |
+            cd /
+            mkdir failure_logs
+            cd failure_logs
+            mkdir magento
+            mkdir apache
+            docker cp newimage:/app/var/log/ ./magento
+            docker cp newimage:/var/log/apache2/ ./apache
+          when: on_fail
+
+      - store_artifacts:
+          path: /failure_logs
+
   publish:
     working_directory: /
     docker:
