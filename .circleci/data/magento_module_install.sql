@@ -16,7 +16,7 @@ INSERT INTO magento.core_config_data (scope, scope_id, path, value) VALUES
 ('default', 0, 'mundipagg_config/boleto_group/boleto_due_at', '3'),
 ('default', 0, 'mundipagg_config/boleto_group/boleto_instructions', 'Pagar ate o vencimento.'),
 ('default', 0, 'mundipagg_config/twocreditcards_group/twocreditcards_status', '1'),
-('default', 0, 'mundipagg_config/twocreditcards_group/twocreditcards_payment_title', 'Mundipagg 2 Credit Cards'),
+('default', 0, 'mundipagg_config/twocreditcards_group/twocreditcards_payment_title', 'Mundipagg Two Credit Cards'),
 ('default', 0, 'mundipagg_config/creditcard_group/cards_config_status', '1'),
 ('default', 0, 'mundipagg_config/creditcard_group/creditcard_payment_title', 'Mundipagg Credit Card'),
 ('default', 0, 'mundipagg_config/creditcard_group/invoice_name', 'Magento STG'),
@@ -32,9 +32,9 @@ INSERT INTO magento.core_config_data (scope, scope_id, path, value) VALUES
 ('default', 0, 'mundipagg_config/boletocreditcard_group/boleto_cards_operation_type', 'AuthAndCapture'),
 ('default', 0, 'mundipagg_config/installments_group/default_status', '1'),
 ('default', 0, 'mundipagg_config/installments_group/default_max_installments', '12'),
-('default', 0, 'mundipagg_config/installments_group/default_max_without_interest', '3'),
+('default', 0, 'mundipagg_config/installments_group/default_max_without_interest', '5'),
 ('default', 0, 'mundipagg_config/installments_group/default_interest', '1'),
-('default', 0, 'mundipagg_config/installments_group/default_incremental_interest', '0.5'),
+('default', 0, 'mundipagg_config/installments_group/default_incremental_interest', '1'),
 ('default', 0, 'mundipagg_config/installments_group/visa_status', '1'),
 ('default', 0, 'mundipagg_config/installments_group/mastercard_status', '1'),
 ('default', 0, 'mundipagg_config/installments_group/hipercard_status', '1'),
@@ -49,8 +49,12 @@ UPDATE magento.core_config_data SET value = 'exception.log' WHERE path = 'dev/lo
 UPDATE magento.core_config_data SET value = '4' WHERE path = 'customer/address/street_lines';
 UPDATE magento.core_config_data SET value = '1' WHERE path = 'customer/create_account/vat_frontend_visibility';
 UPDATE magento.core_config_data SET value = 'req' WHERE path = 'customer/address/taxvat_show';
+UPDATE magento.core_config_data SET value = '1' WHERE path = 'system/smtp/disable';
 UPDATE magento.customer_eav_attribute set multiline_count = 4 where attribute_id = 25;
 UPDATE magento.customer_eav_attribute set is_visible = 4 where attribute_id = 15;
+UPDATE magento.core_config_data SET value = '0' WHERE path LIKE 'carriers/%/active' AND path NOT LIKE 'carriers/freeshipping/active' AND path NOT LIKE 'carriers/flatrate/active';
+
+UPDATE magento.cataloginventory_stock_item SET qty = 30000 WHERE product_id = 337;
 
 -- creating user
 
