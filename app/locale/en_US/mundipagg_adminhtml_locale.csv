@@ -1,5 +1,13 @@
-"##### Genérico","#############################################################"
+"##### Generic","#############################################################"
 "Payment Method", "Payment Method"
 "Charge", "Charge"
 "Charges", "Charges"
+
+"#### Recurrence configuration","########################################"
+"Recurrence configuration", "Recurrence configuration"
+"Enable single subscription", "Enable single subscription"
+"Enable subscription by plan", "Enable subscription by plan"
+"Enable payment method update by customer", "Enable payment method update by customer"
+"Enable subscription installments", "Enable subscription installments"
+"Checkout conflict message","Checkout conflict message"
 

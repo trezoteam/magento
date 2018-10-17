@@ -84,3 +84,11 @@
 
 "#### Configuração de multicomprador","########################################"
 "Multi-Buyer configuration","Configuração de Multi-Comprador"
+
+"#### Configuração de recorrência","########################################"
+"Recurrence configuration", "Configuração de recorrência"
+"Enable single subscription", "Habilitar assinatura avulsa"
+"Enable subscription by plan", "Habilitar assinatura por plano"
+"Enable payment method update by customer", "Habilitar atualização de método de pagamento pelo comprador"
+"Enable subscription installments", "Habilitar parcelamento de assinatura"
+"Checkout conflict message","Mensagem de conflito no checkout"
