@@ -1,7 +1,7 @@
 <config>
     <modules>
         <Mundipagg_Paymentmodule>
-            <version>1.7.1</version>
+            <version>1.8.0</version>
         </Mundipagg_Paymentmodule>
     </modules>
 
@@ -68,6 +68,16 @@
         </fieldsets>
 
         <events>
+            <admin_session_user_login_success>
+                <observers>
+                    <mundipagg_admin_login_checks>
+                        <type>singleton</type>
+                        <class>paymentmodule/observer</class>
+                        <method>adminLoginChecks</method>
+                    </mundipagg_admin_login_checks>
+                </observers>
+            </admin_session_user_login_success>
+
             <controller_action_layout_load_before>
                 <observers>
                     <mundipagg_account_creditcard_wallet_menu_item>

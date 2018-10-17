@@ -25,7 +25,21 @@ class Mundipagg_Paymentmodule_Helper_Savedcreditcard extends Mage_Core_Helper_Ab
 
         $additionalInformation = $standard->getAdditionalInformationForOrder($orderId‌);
         $paymentMethod = $additionalInformation['mundipagg_payment_method'];
-        $cards = reset($additionalInformation[$paymentMethod]);
+
+        reset($additionalInformation[$paymentMethod]);
+        $cards = [];
+        array_walk(
+            $additionalInformation[$paymentMethod],
+            function($primitivePayments, $primitiveType) use (&$cards) {
+                foreach ($primitivePayments as $primitivePayment) {
+                    $payment = [];
+                    if ($primitiveType === "creditcard") {
+                        $payment = $primitivePayment;
+                    }
+                    $cards[] = $payment;
+                }
+            }
+        );
 
         foreach ($cards as $key => $card) {
             if (
@@ -33,8 +47,8 @@ class Mundipagg_Paymentmodule_Helper_Savedcreditcard extends Mage_Core_Helper_Ab
                 $card['saveCreditCard'] === 'on'
             ) {
                 $this->save(
-                    $response->charges[$key -1]->lastTransaction->card,
-                    $response->charges[$key -1]->customer->id,
+                    $response->charges[$key]->lastTransaction->card,
+                    $response->charges[$key]->customer->id,
                     $customerId
                 );
             }
