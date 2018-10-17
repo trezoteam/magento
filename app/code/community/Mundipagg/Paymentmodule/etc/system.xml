@@ -2,7 +2,7 @@
 <config>
     <tabs>
         <paymentmoduleconfig translate="label" module="paymentmodule">
-            <label>Mundipagg</label>
+            <label><![CDATA[<div style="position:absolute;"><img id="rec-template" alt="" border="0" width="12" style="margin-top:2px;" /> &nbsp;Mundipagg</div>&nbsp;<script>$("rec-template").src = "/skin/adminhtml/default/default/images/mundipagg/icons/logo-mundipagg-icon.png";</script>]]></label>
             <sort_order>100</sort_order>
         </paymentmoduleconfig>
     </tabs>
@@ -39,7 +39,7 @@
         </payment>
 
         <mundipagg_config translate="label" module="paymentmodule">
-            <label><![CDATA[<div style="position: absolute;"><img id="magepal_block" alt="" border="0" width="16" /> &nbsp;Mundipagg</div>&nbsp;<script>$("magepal_block").src = "/skin/adminhtml/default/default/images/mundipagg/icons/logo-mundipagg-icon.png";</script>]]></label>
+            <label>Module configuration</label>
             <tab>paymentmoduleconfig</tab>
             <sort_order>1000</sort_order>
             <show_in_default>1</show_in_default>
