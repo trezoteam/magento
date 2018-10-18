@@ -84,8 +84,8 @@ jobs:
                            "mysql magento < /app/.modman/magento/brazilian_states.sql"
             docker exec -it newimage mysql magento -e \
               "INSERT INTO magento.core_config_data (scope, scope_id, path, value) VALUES \
-              ('default', 0, 'mundipagg_config/general_group/sk_test', '${API_TEST_SECRET_KEY}'), \
-              ('default', 0, 'mundipagg_config/general_group/pk_test', '${API_TEST_PUBLIC_KEY}');"
+              ('default', 0, 'mundipagg_config/general_group/sk_test', '${API_TEST_CI_SECRET_KEY}'), \
+              ('default', 0, 'mundipagg_config/general_group/pk_test', '${API_TEST_CI_PUBLIC_KEY}');"
             docker exec -it newimage /bin/sh -c \
               "mv /app/errors/local.xml.sample /app/errors/local.xml"
             docker exec -it newimage /bin/sh -c \

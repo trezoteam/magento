@@ -2,7 +2,7 @@
 <config>
     <tabs>
         <paymentmoduleconfig translate="label" module="paymentmodule">
-            <label>Mundipagg</label>
+            <label><![CDATA[<div style="position:absolute;"><img id="rec-template" alt="" border="0" width="12" style="margin-top:2px;" /> &nbsp;Mundipagg</div>&nbsp;<script>$("rec-template").src = "/skin/adminhtml/default/default/images/mundipagg/icons/logo-mundipagg-icon.png";</script>]]></label>
             <sort_order>100</sort_order>
         </paymentmoduleconfig>
     </tabs>
@@ -12,7 +12,7 @@
             <groups>
                 <mundipagg_info type="group" translate="label">
                     <label>Mundipagg - Payment methods</label>
-                    <sort_order>666</sort_order>
+                    <sort_order>667</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>0</show_in_store>
@@ -39,7 +39,7 @@
         </payment>
 
         <mundipagg_config translate="label" module="paymentmodule">
-            <label><![CDATA[<div style="position: absolute;"><img id="magepal_block" alt="" border="0" width="16" /> &nbsp;Mundipagg</div>&nbsp;<script>$("magepal_block").src = "/skin/adminhtml/default/default/images/mundipagg/icons/logo-mundipagg-icon.png";</script>]]></label>
+            <label>Module configuration</label>
             <tab>paymentmoduleconfig</tab>
             <sort_order>1000</sort_order>
             <show_in_default>1</show_in_default>
@@ -1181,7 +1181,101 @@
                         </multibuyer_status>
                     </fields>
                 </multibuyer_group>
+
+                <recurrence_group translate="label" module="paymentmodule">
+                    <label>Recurrence configuration</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>1600</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <recurrence_configuration_header translate="label">
+                            <label>Recurrence configuration</label>
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </recurrence_configuration_header>
+                        <enable_single_subscription translate="label">
+                            <label>Enable single subscription</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enable_single_subscription>
+                        <enable_subscriptino_by_plan translate="label">
+                            <label>Enable subscription by plan</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enable_subscriptino_by_plan>
+                        <enable_payment_method_update_by_customer translate="label">
+                            <label>Enable payment method update by customer</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enable_payment_method_update_by_customer>
+                        <enable_subscription_installments translate="label">
+                            <label>Enable subscription installments</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>4</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enable_subscription_installments>
+                        <checkout_conflict_method translate="label">
+                            <label>Checkout conflict message</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>4</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </checkout_conflict_method>
+                    </fields>
+                </recurrence_group>
             </groups>
         </mundipagg_config>
+
+        <mundipagg_recurrence_templates translate="label" module="paymentmodule">
+            <label>Recurrence templates</label>
+            <tab>paymentmoduleconfig</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>2000</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <group_1 translate="label">
+                    <label>Recurrence templates</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>4</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <text_input translate="label">
+                            <label>My Input Field: </label>
+                            <comment>My Comment</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </text_input>
+                    </fields>
+                </group_1>
+            </groups>
+        </mundipagg_recurrence_templates>
     </sections>
 </config>
