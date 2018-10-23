@@ -18,6 +18,9 @@
                     <savedcreditcard>
                         <table>paymentmodule_savedcreditcard</table>
                     </savedcreditcard>
+                    <recurrencetemplate>
+                        <table>paymentmodule_recurrencetemplate</table>
+                    </recurrencetemplate>
                 </entities>
             </paymentmodule_resource>
         </models>

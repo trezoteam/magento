@@ -5,7 +5,7 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Recurrence_Template_Grid extends M
     public function __construct()
     {
         parent::__construct();
-        $this->setId('order_charge_grid');
+        $this->setId('recurrence_template');
         $this->setFilterVisibility(false);
         $this->setPagerVisibility(false);
         $this->setSaveParametersInSession(true);
@@ -18,88 +18,25 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Recurrence_Template_Grid extends M
 
     protected function _prepareCollection()
     {
-        //$orderId = Mage::app()->getRequest()->getParam('order_id');
-        $orderId = 105;
+        $model = Mage::getModel('paymentmodule/recurrencetemplate');
+        $collection = $model->getResourceCollection()
 
-        $collection = Mage::getResourceModel('sales/order_collection')
-            ->join(['b' => 'sales/order_payment'],
-                'main_table.entity_id = b.parent_id',
-                ['additional_information' => 'additional_information']
+            ->load();
+
+        $collection->addFieldToSelect(
+            array(
+                'id',
+                'name',
+                'description',
+                'accept_credit_card',
+                'accept_boleto'
             )
-            ->addFieldToFilter('main_table.entity_id', $orderId);
+        );
 
-        $collection = $this->createChargeCollection($collection);
         $this->setCollection($collection);
         parent::_prepareCollection();
 
         return $this;
-    }
-
-    protected function createChargeCollection($collection)
-    {
-        $aditional = [];
-        foreach ($collection as $order) {
-            $aditional = unserialize($order->additional_information);
-        }
-
-        $collection = new Varien_Data_Collection();
-
-        if (isset($aditional['mundipagg_payment_module_charges'])) {
-
-            array_walk($aditional['mundipagg_payment_module_charges'],
-                [$this, 'createCollection'],
-                ['collection' => $collection, 'aditional' => $aditional]
-            );
-        }
-
-        return $collection;
-    }
-
-    /* The second parameter ($key) does not used but is passed by array_walk function to the anonymous function */
-    public function createCollection($item, $key, $params)
-    {
-        $item['amount'] = $item['amount'] / 100;
-
-        $chargeHistory = array_filter(
-            $params['aditional']['mundipagg_payment_transaction_history'],
-            function($history) use ($item){
-                return $item['id'] == $history['chargeId'];
-            }
-        );
-
-        $captureTransactions = array_filter(
-            $chargeHistory,
-            function($history) {
-                return strpos($history['type'], 'capture') !== false;
-            }
-        );
-
-        $item['paid_amount'] = 0.000000001;
-        foreach ($captureTransactions as $capture) {
-            $item['paid_amount'] += $capture['amount'];
-        }
-        $item['paid_amount'] = $item['paid_amount'] / 100;
-
-        $canceledTransactions = array_filter(
-            $chargeHistory,
-            function($history) {
-                return $history['type'] == 'cancel';
-            }
-        );
-
-        $item['canceled_amount'] = 0.000000001;
-        foreach ($canceledTransactions as $canceled) {
-            $item['canceled_amount'] += $canceled['amount'];
-        }
-        $item['canceled_amount'] = $item['canceled_amount'] / 100;
-
-        if ($item['canceled_amount'] > $item['amount']) {
-            $item['canceled_amount'] = $item['amount'];
-        }
-
-        $rowObj = new Varien_Object();
-        $rowObj->setData($item);
-        return $params['collection']->addItem($rowObj);
     }
 
     /**
@@ -111,89 +48,76 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Recurrence_Template_Grid extends M
         $helper = Mage::helper('paymentmodule/order');
         $currency = (string) Mage::getStoreConfig(Mage_Directory_Model_Currency::XML_PATH_CURRENCY_BASE);
 
-        $this->addColumn('id', [
-            'header' => $this->__('Charge Id'),
+        $this->addColumn('id', array(
+            'header' => $this->__('Id'),
             'index'  => 'id',
             'filter' => false,
             'sortable'  => false,
-        ]);
+        ));
 
-        $this->addColumn('amount', [
-            'header' => $this->__('Amount'),
-            'index'  => 'amount',
-            'type'   => 'currency',
-            'currency_code' => $currency,
+        $this->addColumn('name', array(
+            'header' => $this->__('Name'),
+            'index'  => 'name',
             'filter' => false,
-            'sortable'  => false
-        ]);
+            'sortable'  => true,
+        ));
 
-        $this->addColumn('paid_amount', [
-            'header' => $this->__('Captured Amount'),
-            'index'  => 'paid_amount',
-            'type'   => 'currency',
-            'currency_code' => $currency,
+        $this->addColumn('description', array(
+            'header' => $this->__('Description'),
+            'index'  => 'description',
             'filter' => false,
-            'sortable'  => false
-        ]);
+            'sortable'  => true,
+        ));
 
-        $this->addColumn('canceled_amount', [
-            'header' => $this->__('Canceled Amount'),
-            'index'  => 'canceled_amount',
-            'type'   => 'currency',
-            'currency_code' => $currency,
+        $this->addColumn('accept_credit_card', array(
+            'header' => $this->__('Accept credit card'),
+            'index'  => 'accept_credit_card',
             'filter' => false,
-            'sortable'  => false
-        ]);
+            'sortable'  => true,
+        ));
 
-        $this->addColumn('status', [
-            'header' => $helper->__('Status'),
-            'index'  => 'status',
+        $this->addColumn('accept_credit_boleto', array(
+            'header' => $this->__('Accept boleto'),
+            'index'  => 'accept_boleto',
             'filter' => false,
-            'sortable'  => false
-        ]);
+            'sortable'  => true,
+        ));
 
-        $this->addColumn('payment_method', [
-            'header' => $this->__('Payment Method'),
-            'index'  => 'payment_method',
-            'filter' => false,
-            'sortable'  => false
-        ]);
-
-        $this->addColumn('action_capture', [
+        $this->addColumn('action_delete', array(
             'header' => $helper->__(''),
             'width'     => '5%',
             'type'      => 'action',
             'getter'     => 'getId',
-            'actions'   => [
-                [
-                    'caption' => $this->__('Capture'),
-                    'onclick' => 'javascript:showChargeDialog("Capture",this);',
+            'actions'   => array(
+                array(
+                    'caption' => $this->__('Delete'),
                     'field'   => 'id',
                     'class'   => 'form-button'
-                ]
-            ],
+                ),
+
+            ),
             'filter'    => false,
             'sortable'  => false,
             'is_system' => true,
-        ]);
+        ));
 
-        $this->addColumn('action_cancel', [
+        $this->addColumn('action_edit', array(
             'header' => $helper->__(''),
             'width'     => '5%',
             'type'      => 'action',
             'getter'     => 'getId',
-            'actions'   => [
-                [
-                    'caption' => $this->__('Cancel'),
-                    'onclick' => 'javascript:showChargeDialog("Cancel",this);',
+            'actions'   => array(
+                array(
+                    'caption' => $this->__('Edit'),
                     'field'   => 'id',
                     'class'   => 'form-button'
-                ]
-            ],
+                ),
+
+            ),
             'filter'    => false,
             'sortable'  => false,
             'is_system' => true,
-        ]);
+        ));
 
         return parent::_prepareColumns();
     }

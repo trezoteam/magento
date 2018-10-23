@@ -19,4 +19,14 @@
         </reference>
     </adminhtml_sales_order_view>
 
+    <adminhtml_system_config_edit translate="label">
+        <reference name="before_body_end">
+            <block type="page/html_head" name="mp-paymentmodule-charge-controller" as="mp-paymentmodule-charge-controller" after="-" template="paymentmodule/extras.phtml">
+                <action method="addItem">
+                    <type>js</type>
+                    <name>mundipagg/ChargeController.js</name>
+                </action>
+            </block>
+        </reference>
+    </adminhtml_system_config_edit>
 </layout>

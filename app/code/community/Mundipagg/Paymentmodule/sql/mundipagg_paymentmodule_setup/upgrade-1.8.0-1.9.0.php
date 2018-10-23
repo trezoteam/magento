@@ -7,7 +7,7 @@ $prefix = Mage::getConfig()->getTablePrefix();
 
 $installer->run('
     CREATE TABLE IF NOT EXISTS 
-    `' . $prefix . 'paymentmodule_recurrence_template` (
+    `' . $prefix . 'paymentmodule_recurrencetemplate` (
         `id`                    int PRIMARY KEY NOT NULL AUTO_INCREMENT,
         `is_disabled`           TINYINT NOT NULL DEFAULT 0,
         `is_single`             TINYINT NOT NULL DEFAULT 0,

@@ -1,4 +1,19 @@
 <config>
+    <menu>
+        <mycustomtab module="paymentmodule" translate="title">
+            <title><![CDATA[Mundipagg]]></title>
+            <sort_order>100</sort_order>
+            <children>
+                <declaration module="paymentmodule" translate="title">
+                    <title>
+                        <![CDATA[Recurrence templates]]>
+                    </title>
+                    <sort_order>3</sort_order>
+                    <action>adminhtml/recurrencetemplate</action>
+                </declaration>
+            </children>
+        </mycustomtab>
+    </menu>
     <acl>
         <resources>
             <admin>
