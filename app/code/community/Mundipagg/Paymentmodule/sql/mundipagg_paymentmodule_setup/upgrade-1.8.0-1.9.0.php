@@ -5,9 +5,9 @@ $installer->startSetup();
 
 $prefix = Mage::getConfig()->getTablePrefix();
 
-$installer->run('
+$installer->run("
     CREATE TABLE IF NOT EXISTS 
-    `' . $prefix . 'paymentmodule_recurrencetemplate` (
+    `" . $prefix . "paymentmodule_recurrencetemplate` (
         `id`                    INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
         `is_disabled`           TINYINT NOT NULL DEFAULT 0,
         `is_single`             TINYINT NOT NULL DEFAULT 0,
@@ -23,12 +23,12 @@ $installer->run('
         `created_at`            TIMESTAMP    DEFAULT current_timestamp, 
         `updated_at`            TIMESTAMP    DEFAULT current_timestamp ON UPDATE current_timestamp
     )
-'
+"
 );
 
 $installer->run("
     CREATE TABLE IF NOT EXISTS 
-    `' . $prefix . 'paymentmodule_recurrencetemplaterepetition` (
+    `" . $prefix . "paymentmodule_recurrencetemplaterepetition` (
         `id` INT NOT NULL AUTO_INCREMENT,
         `template_id` INT NOT NULL,
         `cycles` INT NOT NULL,
@@ -47,19 +47,19 @@ $installer->run("
 "
 );
 
-$installer->run('
+$installer->run("
     CREATE TABLE IF NOT EXISTS 
-    `' . $prefix . 'paymentmodule_recurrenceproduct` (
+    `" . $prefix . "paymentmodule_recurrenceproduct` (
         `id`                    int PRIMARY KEY NOT NULL AUTO_INCREMENT,
         `created_at`            TIMESTAMP    DEFAULT current_timestamp, 
         `updated_at`            TIMESTAMP    DEFAULT current_timestamp ON UPDATE current_timestamp
     )
-'
+"
 );
 
 $installer->run("
     CREATE TABLE IF NOT EXISTS 
-    `' . $prefix . 'paymentmodule_recurrencesubproduct` (
+    `" . $prefix . "paymentmodule_recurrencesubproduct` (
         `id` INT NOT NULL AUTO_INCREMENT,
         `recurrency_product_id` INT NOT NULL,
         `product_id` INT NOT NULL,
@@ -80,7 +80,7 @@ $installer->run("
 
 $installer->run("
     CREATE TABLE IF NOT EXISTS 
-    `' . $prefix . 'paymentmodule_recurrenceproduct` (
+    `" . $prefix . "paymentmodule_recurrenceproduct` (
         `id` INT NOT NULL AUTO_INCREMENT,
         `is_disabled` TINYINT NOT NULL DEFAULT 0,
         `product_id` INT NOT NULL,
