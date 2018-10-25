@@ -32,7 +32,8 @@
   "autoload": {
     "psr-4": {
       "Mundipagg\\": "app/",
-      "Mundipagg\\Integrity\\": "app/code/community/Mundipagg/Paymentmodule/etc/maintenance/"
+      "Mundipagg\\Integrity\\": "app/code/community/Mundipagg/Paymentmodule/etc/maintenance/",
+      "Mundipagg\\Recurrence\\": "app/code/community/Mundipagg/Paymentmodule/etc/recurrence/"
     }
   },
 

@@ -29,4 +29,9 @@
             </block>
         </reference>
     </adminhtml_system_config_edit>
+
+    <adminhtml_recurrencetemplate_new>
+        <block type="core/template" output="toHtml" name="templateBlock" template="paymentmodule/recurrencetemplate.phtml">
+        </block>
+    </adminhtml_recurrencetemplate_new>
 </layout>
