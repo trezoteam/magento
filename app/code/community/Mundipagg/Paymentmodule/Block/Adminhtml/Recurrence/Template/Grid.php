@@ -21,16 +21,6 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Recurrence_Template_Grid extends M
         $model = Mage::getModel('paymentmodule/recurrencetemplate');
         $collection = $model->getResourceCollection()->load();
 
-        $collection->addFieldToSelect(
-            array(
-                'id',
-                'name',
-                'description',
-                'accept_credit_card',
-                'accept_boleto'
-            )
-        );
-
         $this->setCollection($collection);
         parent::_prepareCollection();
 

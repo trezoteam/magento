@@ -108,13 +108,13 @@ class TemplateRepository extends AbstractRep
             GROUP BY t.id  
         ";
 
-        $result = $this->db->query($query . ";");
-        if ($result->num_rows < 1 ) {
+        $result = $this->db->fetch($query . ";");
+        if (count($result) < 1 ) {
             return null;
         }
 
         return (new TemplateRootFactory())
-            ->createFromDBData($result->rows[0]);
+            ->createFromDBData($result[0]);
     }
 
     public function listEntities($limit = 0, $listDisabled = true)
