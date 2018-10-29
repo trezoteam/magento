@@ -39,9 +39,9 @@ class Templates extends Recurrence
             if (isset($postData['template-id'])) {
                 $templateRoot->getTemplate()->setId($postData['template-id']);
 
-                if (isset($this->openCart->request->get['updateChildren'])) {
+                if (isset($postData['updateChildren'])) {
                     $this->updateTemplate(
-                        $this->openCart->request->get['updateChildren'],
+                        $postData['updateChildren'],
                         $templateRoot
                     );
                 }
@@ -61,49 +61,9 @@ class Templates extends Recurrence
     protected function updateTemplate($updateChildren, $templateRoot)
     {
         if (filter_var($updateChildren, FILTER_VALIDATE_BOOLEAN)) {
-            return $this->updateChildrenProduct($templateRoot);
+            //return $this->updateChildrenProduct($templateRoot);
         }
-        return $this->removeDependency($templateRoot);
-    }
-
-    protected function updateChildrenProduct($templateRoot)
-    {
-        if ($templateRoot->getTemplate()->isSingle()) {
-            return;
-        }
-
-        $recurrencyProductRepository = new RecurrencyProductRepository(new OpencartPlatformDatabaseDecorator($this->openCart->db));
-        $childProducts = $recurrencyProductRepository->getAllWithTemplateId(
-            $templateRoot->getTemplate()->getId(),
-            0,
-            false
-        );
-
-        foreach ($childProducts as $recurrencyProduct) {
-
-            $recurrencyProduct->setTemplate($templateRoot);
-            $recurrencyProductRepository->save($recurrencyProduct);
-
-            $planApi = new PlanApi($this->openCart);
-            $planApi->save($recurrencyProduct);
-
-        }
-    }
-
-    protected function removeDependency($templateRoot)
-    {
-        if ($templateRoot->getTemplate()->isSingle()) {
-            return;
-        }
-
-        $recurrencyProductRepository = new RecurrencyProductRepository(new OpencartPlatformDatabaseDecorator($this->openCart->db));
-        $recurrencyProductRepository->removeTemplateDependency($templateRoot);
-    }
-
-    protected function handleFormError()
-    {
-        $this->setBaseCreationFormData($this->openCart->error);
-        $this->render('templates/create');
+        //return $this->removeDependency($templateRoot);
     }
 
     protected function validatePostData($postData)
