@@ -105,7 +105,7 @@ class Mundipagg_Paymentmodule_Adminhtml_RecurrencetemplateController extends Mag
          */
     }
 
-    protected function deleteAction()
+    public function deleteAction()
     {
         /**
          * @todo remove this mock
@@ -131,7 +131,7 @@ class Mundipagg_Paymentmodule_Adminhtml_RecurrencetemplateController extends Mag
          */
     }
 
-    protected function saveTemplateAction()
+    public function saveTemplateAction()
     {
         /**
          * @todo remove this mock
