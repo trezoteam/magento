@@ -1,1 +1,9 @@
 <?php echo $this->getCssJsHtml(); ?>
+
+<script>
+    var split = BASE_URL.split("key/");
+    var templateUrl = "key/" + split[1];
+
+    var link = document.getElementById("recurrence-template-link");
+    link.href = templateUrl;
+</script>

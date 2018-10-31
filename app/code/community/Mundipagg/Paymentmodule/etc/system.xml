@@ -2,7 +2,7 @@
 <config>
     <tabs>
         <paymentmoduleconfig translate="label" module="paymentmodule">
-            <label><![CDATA[<div style="position:absolute;"><img id="rec-template" alt="" border="0" width="12" style="margin-top:2px;" /> &nbsp;Mundipagg</div>&nbsp;<script>$("rec-template").src = "/skin/adminhtml/default/default/images/mundipagg/icons/logo-mundipagg-icon.png";</script>]]></label>
+            <label><![CDATA[<div style="position:absolute;"><img id="mundi-menu" alt="" border="0" width="12" style="margin-top:2px;" /> &nbsp;Mundipagg</div>&nbsp;<script>$("mundi-menu").src = "/skin/adminhtml/default/default/images/mundipagg/icons/logo-mundipagg-icon.png";</script>]]></label>
             <sort_order>100</sort_order>
         </paymentmoduleconfig>
     </tabs>
@@ -39,7 +39,9 @@
         </payment>
 
         <mundipagg_config translate="label" module="paymentmodule">
-            <label>Module configuration</label>
+            <label>
+                <![CDATA[Module configuration]]>
+            </label>
             <tab>paymentmoduleconfig</tab>
             <sort_order>1000</sort_order>
             <show_in_default>1</show_in_default>
@@ -1248,7 +1250,8 @@
         </mundipagg_config>
 
         <mundipagg_recurrence_templates translate="label" module="paymentmodule">
-            <label>Recurrence templates</label>
+            <label><![CDATA[<div id='recurrence-template-tab'>Recurrence templates</div>&nbsp;]]>
+            </label>
             <tab>paymentmoduleconfig</tab>
             <frontend_type>text</frontend_type>
             <sort_order>2000</sort_order>

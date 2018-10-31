@@ -1,7 +1,7 @@
 <config>
     <modules>
         <Mundipagg_Paymentmodule>
-            <version>1.8.0</version>
+            <version>1.9.1</version>
         </Mundipagg_Paymentmodule>
     </modules>
 
@@ -18,6 +18,9 @@
                     <savedcreditcard>
                         <table>paymentmodule_savedcreditcard</table>
                     </savedcreditcard>
+                    <recurrencetemplate>
+                        <table>paymentmodule_recurrencetemplate</table>
+                    </recurrencetemplate>
                 </entities>
             </paymentmodule_resource>
         </models>
