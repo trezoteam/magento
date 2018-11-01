@@ -23,11 +23,34 @@ class Mundipagg_Paymentmodule_Adminhtml_RecurrencetemplateController extends Mag
         $this->renderLayout();
     }
 
+    public function editAction()
+    {
+
+        $id  = $this->getRequest()->getParam('id');
+
+        $resource = Mage::getSingleton('core/resource');
+
+        $templateRepository =
+            new TemplateRepository(
+                new MagentoPlatformDatabaseDecorator($resource)
+            );
+
+        $templateRoot = $templateRepository->find($id);
+
+//        if ($templateRoot->getId() ||)
+
+        $this->loadLayout();
+        $this->_setActiveMenu('mundipagg/recurrencetemplate');
+        $this->_addContent($this->getLayout()->createBlock('paymentmodule/adminhtml_recurrence_edit'))
+            ->_addLeft($this->getLayout()->createBlock('paymentmodule/adminhtml_recurrence_edit_tabs'));
+        $this->renderLayout();
+    }
+
     public function newAction()
     {
         $this->_title($this->__('Mundipagg'))
             ->_title($this->__('Recurrence templates'))
-            ->_title($this->__('Edit'));
+            ->_title($this->__('New Template'));
 
         /**
          * @todo remove this actions from here
@@ -35,9 +58,11 @@ class Mundipagg_Paymentmodule_Adminhtml_RecurrencetemplateController extends Mag
         //$this->createAction();
         //$this->updateAction();
         //$this->saveTemplateAction();
-        $this->deleteAction();
+        //$this->deleteAction();
 
         $this->loadLayout();
+        $this->_addContent($this->getLayout()->createBlock('paymentmodule/adminhtml_recurrence_edit'))
+            ->_addLeft($this->getLayout()->createBlock('paymentmodule/adminhtml_recurrence_edit_tabs'));
         $this->renderLayout();
     }
 

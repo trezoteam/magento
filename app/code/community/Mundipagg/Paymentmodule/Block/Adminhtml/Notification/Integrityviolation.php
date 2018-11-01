@@ -1,5 +1,7 @@
 <?php
 
+require_once Mage::getBaseDir('lib') . '/autoload.php';
+
 use Mundipagg\Integrity\IntegrityController;
 
 class Mundipagg_Paymentmodule_Block_Adminhtml_Notification_Integrityviolation extends Mage_Adminhtml_Block_Template
@@ -12,7 +14,6 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Notification_Integrityviolation ex
 
     public function isViolated()
     {
-        require_once Mage::getBaseDir('lib') . '/autoload.php';
         $integrityController = new IntegrityController(
             \Mage::helper('paymentmodule/MagentoSystemInfo'),
             \Mage::helper('paymentmodule/MagentoOrderInfo')
