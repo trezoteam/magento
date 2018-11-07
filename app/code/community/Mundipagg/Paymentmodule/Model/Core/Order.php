@@ -120,7 +120,7 @@ class Mundipagg_Paymentmodule_Model_Core_Order  extends Mundipagg_Paymentmodule_
                     $item['brand']
                 );
 
-                $value = $monetary->toFloat($item['value']) + $interest;;
+                $value = $monetary->toFloat($item['value']) + $interest;
                 $item['value'] = number_format($value, 2, '.', '');
                 $item['interest'] = $interest;
                 $totalInterest += $interest;
