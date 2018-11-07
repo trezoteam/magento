@@ -29,7 +29,8 @@ OnepageCheckoutModuleHandler.prototype.setSavePaymentInterceptor = function () {
         _self.updateInputBalanceValues();
 
         //for each of creditcard forms
-        jQuery('.' + _self.methodCode + "_creditcard_tokenDiv").each(function(index, element) {
+        var type = (_self.methodCode.indexOf("voucher") >= 0) ? 'voucher' : 'creditcard';
+        jQuery('.' + _self.methodCode + '_' + type + '_tokenDiv').each(function(index, element) {
             var elementId = element.id.replace('_tokenDiv', '');
             if (isNewCard( elementId) ) {
                 var key = document.getElementById(element.id)
