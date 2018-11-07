@@ -201,8 +201,8 @@ class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mundipagg_Pa
 
         $monetaryHelper = Mage::helper('paymentmodule/monetary');
         $shipping = new Varien_Object();
-
-        $shipping->setAmount($monetaryHelper->toCents($order->getShippingAmount()));
+        $amount = number_format($order->getShippingAmount(), 2);
+        $shipping->setAmount($monetaryHelper->toCents($amount));
         $shipping->setDescription($order->getShippingDescription());
         $shipping->setAddress($this->getShippingAddressInformation($order));
 
