@@ -2,6 +2,7 @@
 
 require_once Mage::getBaseDir('lib') . '/autoload.php';
 
+use Mundipagg\Recurrence\Aggregates\Template\TemplateRoot;
 use Mundipagg\Recurrence\Controller\Templates;
 use Mundipagg\Recurrence\Factories\TemplateRootFactory;
 use Mundipagg\Recurrence\Repositories\Decorators\MagentoPlatformDatabaseDecorator;
@@ -9,6 +10,7 @@ use Mundipagg\Recurrence\Repositories\TemplateRepository;
 
 class Mundipagg_Paymentmodule_Adminhtml_RecurrencetemplateController extends Mage_Adminhtml_Controller_Action
 {
+    protected $errors;
     public function preDispatch()
     {
         parent::preDispatch();
@@ -25,9 +27,6 @@ class Mundipagg_Paymentmodule_Adminhtml_RecurrencetemplateController extends Mag
 
     public function editAction()
     {
-
-        $id  = $this->getRequest()->getParam('id');
-
         $resource = Mage::getSingleton('core/resource');
 
         $templateRepository =
@@ -35,15 +34,57 @@ class Mundipagg_Paymentmodule_Adminhtml_RecurrencetemplateController extends Mag
                 new MagentoPlatformDatabaseDecorator($resource)
             );
 
+        $id  = $this->getRequest()->getParam('id');
         $templateRoot = $templateRepository->find($id);
 
-//        if ($templateRoot->getId() ||)
+        if ($templateRoot && $templateRoot->getId()) {
 
-        $this->loadLayout();
-        $this->_setActiveMenu('mundipagg/recurrencetemplate');
-        $this->_addContent($this->getLayout()->createBlock('paymentmodule/adminhtml_recurrence_edit'))
-            ->_addLeft($this->getLayout()->createBlock('paymentmodule/adminhtml_recurrence_edit_tabs'));
-        $this->renderLayout();
+            $tab = $templateRoot->getTemplate()->isSingle() ? 'single' : 'plan';
+            $this->getRequest()->setParam('tab', $tab);
+
+            $templateData = $this->formatTemplateData($templateRoot);
+            Mage::register('template_data', $templateData);
+
+            $this->loadLayout();
+            $this->_setActiveMenu('mundipagg/recurrencetemplate');
+            $this->_addContent($this->getLayout()->createBlock('paymentmodule/adminhtml_recurrence_edit'))
+                ->_addLeft($this->getLayout()->createBlock('paymentmodule/adminhtml_recurrence_edit_tabs'));
+            $this->renderLayout();
+        } else {
+            Mage::getSingleton('adminhtml/session')->addError('Template does not exist');
+            $this->_redirect('adminhtml/recurrencetemplate', ['_secure' => true]);
+        }
+
+    }
+
+    /**
+     * @todo Move to another class
+     */
+    public function formatTemplateData(TemplateRoot $template)
+    {
+        return [
+            'name' => $template->getTemplate()->getName(),
+            'description' => $template->getTemplate()->getDescription(),
+            'installments' => $this->formatInstallments($template->getTemplate()->getInstallments()),
+            'expiry_type'   => $template->getDueAt()->getType(),
+            'expiry_date'   => $template->getDueAt()->getValue(),
+            'cycle' => $template->getRepetitions()[0]->getCycles(),
+            'frequency' => $template->getRepetitions()[0]->getFrequency(),
+            'type' => $template->getRepetitions()[0]->getIntervalType(),
+            'trial' => $template->getTemplate()->getTrial(),
+        ];
+    }
+
+    /**
+     * @todo Move to another class
+     */
+    public function formatInstallments($installments)
+    {
+        $result = array_map(function ($installment) {
+            return $installment->getValue();
+        }, $installments);
+
+        return implode(',', $result);
     }
 
     public function newAction()
@@ -52,141 +93,60 @@ class Mundipagg_Paymentmodule_Adminhtml_RecurrencetemplateController extends Mag
             ->_title($this->__('Recurrence templates'))
             ->_title($this->__('New Template'));
 
-        /**
-         * @todo remove this actions from here
-         */
-        //$this->createAction();
-        //$this->updateAction();
-        //$this->saveTemplateAction();
-        //$this->deleteAction();
-
         $this->loadLayout();
-        $this->_addContent($this->getLayout()->createBlock('paymentmodule/adminhtml_recurrence_edit'))
-            ->_addLeft($this->getLayout()->createBlock('paymentmodule/adminhtml_recurrence_edit_tabs'));
+        $this->_addContent($this->getLayout()
+                ->createBlock('paymentmodule/adminhtml_recurrence_edit'));
+        $this->_addLeft($this->getLayout()
+                ->createBlock('paymentmodule/adminhtml_recurrence_edit_tabs'));
         $this->renderLayout();
-    }
-
-    public function createAction()
-    {
-        /**
-         * @todo remove this mock
-         */
-        //$postData = $this->getRequest()->getParams();
-        $postData = [
-            'allow_installment' => "1",
-             'description' => "descricao",
-             'expiry_date' => "9",
-             'expiry_type' => "X",
-             'installments' => "1,4,7",
-             'intervals' => [
-                 [
-                     'cycles'=> '1',
-                     'frequency' => '4',
-                     'type' => 'M'
-                 ]
-             ],
-             'name' => "template para plano 2",
-             'payment_method' => [
-                 0 => 'credit_card',
-                 1 => 'boleto'
-             ],
-             'trial' => "12"
-        ];
-
-        $resource = Mage::getSingleton('core/resource');
-
-        $templates = new Templates($resource);
-        $templates->saveTemplate($postData);
-    }
-
-    public function updateAction()
-    {
-        /**
-         * @todo remove this mock
-         */
-        //$getData = $this->getRequest()->getParams('templateId);
-        $getData['templateId'] = 1;
-
-        if (!isset($getData['templateId'])) {
-            return $this->createAction();
-        }
-
-        $resource = Mage::getSingleton('core/resource');
-
-        $templateRepository =
-            new TemplateRepository(
-                new MagentoPlatformDatabaseDecorator($resource)
-            );
-
-        $templateRoot = $templateRepository->find($getData['templateId']);
-
-        $this->setBaseCreationFormData();
-    }
-
-    protected function setBaseCreationFormData()
-    {
-        /**
-         * @todo Implement this method
-         */
     }
 
     public function deleteAction()
     {
-        /**
-         * @todo remove this mock
-         */
-        //$getData = $this->getRequest()->getParams('templateId);
-        $getData['templateId'] = 2;
+        $getData = $this->getRequest()->getParams();
 
-        if (isset($getData['templateId'])) {
+        if (isset($getData['id'])) {
             $resource = Mage::getSingleton('core/resource');
 
             $templateRepository =
                 new TemplateRepository(
                     new MagentoPlatformDatabaseDecorator($resource)
                 );
-            $templateRoot = $templateRepository->find($getData['templateId']);
+
+            $templateRoot = $templateRepository->find($getData['id']);
             if ($templateRoot !== null) {
                 $templateRepository->delete($templateRoot);
             }
         }
 
-        /**
-         * @todo redirect
-         */
+        $this->_redirect('adminhtml/recurrencetemplate', ['_secure' => true]);
     }
 
-    public function saveTemplateAction()
+    public function savePlanAction()
     {
-        /**
-         * @todo remove this mock
-         */
-        //$postData = $this->getRequest()->getParams();
-        $postData = [
-            'template-id' => 1,
-            'allow_installment' => "1",
-            'description' => "descricao",
-            'expiry_date' => "9",
-            'expiry_type' => "X",
-            'installments' => "1,4,7",
-            'intervals' => [
-                [
-                    'cycles'=> '1',
-                    'frequency' => '4',
-                    'type' => 'M'
-                ]
-            ],
-            'name' => "template para plano atualizado",
-            'payment_method' => [
-                0 => 'credit_card',
-                1 => 'boleto'
-            ],
-            'trial' => "12"
+        $this->_forward('save');
+    }
+
+    public function saveSingleAction()
+    {
+        $this->_forward('save', null, null, ['single' => true]);
+    }
+
+    public function saveAction()
+    {
+        $postData = $this->getRequest()->getParams();
+
+        $allowInstallment = [
+            'allow_installment' => empty($postData['installments']) ? false : true
         ];
+
+        $postData = array_merge($postData, $allowInstallment);
 
         $templateRootFactory = new TemplateRootFactory();
         if (!$this->validatePostData($postData)) {
-            return $this->handleFormError();
+            Mage::getSingleton('adminhtml/session')
+                ->addError($this->errors['recurrency_plan_input_error']);
+            $this->_redirect('adminhtml/recurrencetemplate', ['_secure' => true]);
         }
 
         try {
@@ -198,8 +158,8 @@ class Mundipagg_Paymentmodule_Adminhtml_RecurrencetemplateController extends Mag
                     new MagentoPlatformDatabaseDecorator($resource)
                 );
 
-            if (isset($postData['template-id'])) {
-                $templateRoot->getTemplate()->setId($postData['template-id']);
+            if (isset($postData['id'])) {
+                $templateRoot->getTemplate()->setId($postData['id']);
                 $updateChildren = $this->getRequest()->getParam('updateChildren');
 
                 if (isset($updateChildren)) {
@@ -209,26 +169,23 @@ class Mundipagg_Paymentmodule_Adminhtml_RecurrencetemplateController extends Mag
 
             $templateRepository->save($templateRoot);
         }catch(Exception $e) {
-            $e->getMessage();
-            throw $e;
+            Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+            $this->_redirect('adminhtml/recurrencetemplate', ['_secure' => true]);
         }
 
-        /**
-         * @todo Redirect
-         */
+        $this->_redirect('adminhtml/recurrencetemplate', ['_secure' => true]);
     }
 
     protected function validatePostData($postData)
     {
-        $errors = [];
         try {
             //creating a templateRoot from json_data just to validate the input.
             (new TemplateRootFactory)->createFromPostData($postData);
         } catch (\Exception $exception) {
-            $errors['recurrency_plan_input_error'] = $exception->getMessage();
+            $this->errors['recurrency_plan_input_error'] = $exception->getMessage();
         }
 
-        if (count($errors)) {
+        if (count($this->errors)) {
             /**
              * @todo Do something with errors
              */
