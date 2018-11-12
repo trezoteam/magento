@@ -19,7 +19,9 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Recurrence_Template_Grid extends M
     protected function _prepareCollection()
     {
         $model = Mage::getModel('paymentmodule/recurrencetemplate');
-        $collection = $model->getResourceCollection()->load();
+        $collection = $model->getResourceCollection()
+            ->addFieldToFilter('is_disabled', array('eq' => 0))
+            ->load();
 
         $this->setCollection($collection);
         parent::_prepareCollection();
