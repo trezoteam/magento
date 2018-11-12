@@ -301,7 +301,7 @@ function getFormData(elementId) {
     }
 
     toTokenApi[elementId].card = {
-        type: "credit",
+        type: getCardType(elementId),
         holder_name: clearHolderName(document.getElementById(elementId + '_mundicheckout-holdername')),
         number: clearCardNumber(document.getElementById(elementId + '_mundicheckout-number')),
         exp_month: document.getElementById(elementId + '_mundicheckout-expmonth').value,
@@ -392,7 +392,7 @@ function fillBrandData(data, argsObj) {
     if (
         data.brand != "" &&
         data.brand != undefined &&
-        brandList.indexOf(data.brand) > 0
+        brandList.indexOf(data.brand) >= 0
     ) {
         clearBrand(argsObj.elementId);
         showBrandImage(data.brand, argsObj.elementId);
@@ -624,4 +624,11 @@ function verifyFilledCreditCardFields() {
     jQuery('.validate-cc-number').each(function () {
         getBrand(jQuery(this).attr('id'));
     });
+}
+
+function getCardType(elementId) {
+    if (elementId.indexOf("voucher") >= 0) {
+        return "voucher";
+    }
+    return "credit";
 }

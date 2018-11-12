@@ -31,7 +31,8 @@ AbstractCheckoutModuleHandler.prototype.isHandlingNeeded = function () {
 //@Todo this method do not belongs to this class...
 AbstractCheckoutModuleHandler.prototype.hasCardInfo = function () {
 
-    var creditCardTokenDiv = '.'  + this.methodCode + "_creditcard_tokenDiv";
+    var type = (this.methodCode.indexOf("voucher") >= 0) ? 'voucher' : 'creditcard';
+    var creditCardTokenDiv = '.'  + this.methodCode + "_" + type + "_tokenDiv";
     var hasCardInfo = false;
     var _self = this;
 
@@ -57,7 +58,8 @@ AbstractCheckoutModuleHandler.prototype.handleTokenGenerationResponse = function
 
         //check if all tokens are generated.
         var canSave = true;
-        jQuery('.' + this.methodCode+ "_creditcard_tokenDiv").each(function(index,_element) {
+        var type = (this.methodCode.indexOf("voucher") >= 0) ? 'voucher' : 'creditcard';
+        jQuery('.' + this.methodCode + '_' + type + '_tokenDiv').each(function(index,_element) {
             if (_self.tokenCheckTable[_element.id] === false) {
                 canSave = false;
             }
