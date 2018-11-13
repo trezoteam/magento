@@ -108,8 +108,7 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Recurrence_Edit_Tab_Plan extends M
             'after_element_html' => '<button type="submit" style="margin-top: 10px;">Save</button>'
         ));
 
-
-        if (Mage::registry('template_data')){
+        if (Mage::registry('template_data')) {
             $form->setValues(Mage::registry('template_data'));
         }
 
@@ -117,5 +116,4 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Recurrence_Edit_Tab_Plan extends M
         $this->setForm($form);
         return parent::_prepareForm();
     }
-
 }

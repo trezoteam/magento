@@ -2,8 +2,8 @@
 
 class Mundipagg_Paymentmodule_Block_Adminhtml_Recurrence_Edit_Tab_Single extends Mage_Adminhtml_Block_Widget_Form
 {
-
-    protected function _prepareForm(){
+    protected function _prepareForm()
+    {
         $form = new Varien_Data_Form(array(
                 'id'        => 'single_form',
                 'action'    => $this->getUrl('*/*/saveSingle', array(
@@ -108,8 +108,7 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Recurrence_Edit_Tab_Single extends
             'after_element_html' => '<button type="submit" style="margin-top: 10px;">Save</button>'
         ));
 
-
-        if (Mage::registry('template_data')){
+        if (Mage::registry('template_data')) {
             $form->setValues(Mage::registry('template_data'));
         }
 
@@ -117,5 +116,4 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Recurrence_Edit_Tab_Single extends
         $this->setForm($form);
         return parent::_prepareForm();
     }
-
 }
