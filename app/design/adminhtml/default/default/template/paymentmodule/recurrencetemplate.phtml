@@ -1,1 +1,34 @@
-<h1>Recurrence</h1>
+<div id="edit_form"></div>
+
+<script type="text/javascript">
+    var installments = document.getElementsByClassName('installments');
+    for (var i = 0; i < installments.length; i++) {
+        installments[i].parentElement.parentElement.hidden = true;
+    }
+
+    var expiryType = document.getElementsByClassName('expiry_type');
+    for (var i = 0; i < expiryType.length; i++) {
+        var isExact = expiryType[i].value == "X";
+        var expiryDate = document.getElementsByClassName('expiry_date');
+        for (var i = 0; i < expiryDate.length; i++) {
+            expiryDate[i].parentElement.parentElement.hidden = !isExact;
+        }
+    }
+
+    function toogleInstallments(element) {
+        if (element.value == 'credit_card') {
+            var installments = document.getElementsByClassName('installments');
+            for (var i = 0; i < installments.length; i++) {
+                installments[i].parentElement.parentElement.hidden = !element.checked;
+            }
+        }
+    }
+
+    function toogleExpiryType(element) {
+        var isExact = element.value == "X";
+        var expiryDate = document.getElementsByClassName('expiry_date');
+        for (var i = 0; i < expiryDate.length; i++) {
+            expiryDate[i].parentElement.parentElement.hidden = !isExact;
+        }
+    }
+</script>

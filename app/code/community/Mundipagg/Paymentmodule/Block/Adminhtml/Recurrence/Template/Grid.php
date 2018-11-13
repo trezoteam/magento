@@ -19,7 +19,9 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Recurrence_Template_Grid extends M
     protected function _prepareCollection()
     {
         $model = Mage::getModel('paymentmodule/recurrencetemplate');
-        $collection = $model->getResourceCollection()->load();
+        $collection = $model->getResourceCollection()
+            ->addFieldToFilter('is_disabled', array('eq' => 0))
+            ->load();
 
         $this->setCollection($collection);
         parent::_prepareCollection();
@@ -34,7 +36,6 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Recurrence_Template_Grid extends M
     protected function _prepareColumns()
     {
         $helper = Mage::helper('paymentmodule/order');
-        $currency = (string) Mage::getStoreConfig(Mage_Directory_Model_Currency::XML_PATH_CURRENCY_BASE);
 
         $this->addColumn('id', array(
             'header' => $this->__('Id'),
@@ -47,28 +48,30 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Recurrence_Template_Grid extends M
             'header' => $this->__('Name'),
             'index'  => 'name',
             'filter' => false,
-            'sortable'  => true,
+            'sortable'  => false,
+        ));
+
+        $this->addColumn('type', array(
+            'header' => $this->__('Type'),
+            'index'  => 'type',
+            'filter' => false,
+            'sortable'  => false,
+            'renderer' => 'Mundipagg_Paymentmodule_Block_Adminhtml_Recurrence_Template_TemplateTypeColumn'
         ));
 
         $this->addColumn('description', array(
             'header' => $this->__('Description'),
             'index'  => 'description',
             'filter' => false,
-            'sortable'  => true,
+            'sortable'  => false,
         ));
 
         $this->addColumn('accept_credit_card', array(
-            'header' => $this->__('Accept credit card'),
-            'index'  => 'accept_credit_card',
+            'header' => $this->__('Payment Methods'),
+            'index'  => 'payment_methods',
             'filter' => false,
-            'sortable'  => true,
-        ));
-
-        $this->addColumn('accept_credit_boleto', array(
-            'header' => $this->__('Accept boleto'),
-            'index'  => 'accept_boleto',
-            'filter' => false,
-            'sortable'  => true,
+            'sortable'  => false,
+            'renderer' => 'Mundipagg_Paymentmodule_Block_Adminhtml_Recurrence_Template_PaymentMethodColumn'
         ));
 
         $this->addColumn('action_delete', array(
@@ -79,6 +82,10 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Recurrence_Template_Grid extends M
             'actions'   => array(
                 array(
                     'caption' => $this->__('Delete'),
+                    'url' => [
+                        'base' => 'adminhtml/recurrencetemplate/delete',
+                        'params' => ['id' => $this->getId()]
+                    ],
                     'field'   => 'id',
                     'class'   => 'form-button'
                 ),
@@ -97,6 +104,10 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Recurrence_Template_Grid extends M
             'actions'   => array(
                 array(
                     'caption' => $this->__('Edit'),
+                    'url' => [
+                        'base' => 'adminhtml/recurrencetemplate/edit',
+                        'params' => [ 'id' => $this->getId() ]
+                    ],
                     'field'   => 'id',
                     'class'   => 'form-button'
                 ),
