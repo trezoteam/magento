@@ -2,6 +2,10 @@
 $_code = $this->getMethodCode();
 $structure = $this->getStructure();
 $orderTotal = $this->getGrandTotal();
+
+$url = explode("?", Mage::getUrl(''));
+$url = $url[0];
+
 ?>
 
 <fieldset>
@@ -26,7 +30,7 @@ $orderTotal = $this->getGrandTotal();
 
                     </li>
                     <?php endforeach; ?>
-                    <input type="hidden" class="baseUrl" value="<?php echo Mage::getUrl('');?>"/>
+                    <input type="hidden" class="baseUrl" value="<?php echo $url;?>"/>
                 </ul>
             </div>
         </li>
