@@ -66,9 +66,24 @@ OSCCheckoutModuleHandler.prototype.init = function() {
 OSCCheckoutModuleHandler.prototype.setSavePaymentInterceptor = function () {
     var _self = this;
     if (Object.keys(MundiPagg.paymentMethods).length === 1) {
+        MundiPagg.paymentSent = false;
+        var originalResponders = Element.retrieve($(OSCForm.placeOrderButton), 'prototype_event_registry').get('click');
         OSCForm.placeOrderButton.stopObserving('click');
+        originalResponders.each(function(e){
+            OSCForm.placeOrderButton.observe('seeked',e.handler);
+        });
     }
     OSCForm.placeOrderButton.observe('click', function(){
+        var isMundipaggPaymentMethod = _self.getCurrentPaymentMethod().indexOf('paymentmodule_') > -1;
+
+        if (!isMundipaggPaymentMethod) {
+            if (!MundiPagg.paymentSent) {
+                MundiPagg.paymentSent = true;
+                OSCForm.placeOrderButton.dispatchEvent(new Event('seeked'));
+            }
+            return;
+        }
+
         if (OSCForm.validate()) {
 
             _self.resetBeforeCheckout(OSCForm.placeOrder,OSCForm);
@@ -76,7 +91,7 @@ OSCCheckoutModuleHandler.prototype.setSavePaymentInterceptor = function () {
                 return;
             }
 
-            code = _self.methodCode.split('_');
+            var code = _self.methodCode.split('_');
             methodName = code[1];
 
             if (!_self.hasCardInfo()) {
@@ -86,7 +101,8 @@ OSCCheckoutModuleHandler.prototype.setSavePaymentInterceptor = function () {
             _self.updateInputBalanceValues();
 
             //for each of creditcard forms
-            jQuery('.' + _self.methodCode + "_creditcard_tokenDiv").each(function(index, element) {
+            var type = (this.methodCode.indexOf("voucher") >= 0) ? 'voucher' : 'creditcard';
+            jQuery('.' + this.methodCode + '_' + type + '_tokenDiv').each(function(index, element) {
 
                 var elementId = element.id.replace('_tokenDiv', '');
                 if (isNewCard(elementId)) {
