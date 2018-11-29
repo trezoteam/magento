@@ -11,7 +11,7 @@ class Mundipagg_Paymentmodule_Model_Api_Voucher extends Mundipagg_Paymentmodule_
     {
         $monetary = Mage::helper('paymentmodule/monetary');
 
-        $result = [];
+        $result = array();
 
         foreach ($paymentInfo as $payment) {
             $paymentRequest = new CreatePaymentRequest();

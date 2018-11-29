@@ -26,9 +26,9 @@ class Mundipagg_Paymentmodule_Model_Voucher extends Mundipagg_Paymentmodule_Mode
 
     public function getPaymentStructure()
     {
-        return [
+        return array(
             'voucher'
-        ];
+        );
     }
 
     public function validatePaymentData($paymentData)

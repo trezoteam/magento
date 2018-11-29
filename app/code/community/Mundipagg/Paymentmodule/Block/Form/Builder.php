@@ -41,13 +41,13 @@ class Mundipagg_Paymentmodule_Block_Form_Builder extends Mundipagg_Paymentmodule
     {
         $grandTotal = $this->getGrandTotal();
         $retn = $this->getLayout();
-        $data = [
+        $data = array(
             'code' => $this->getMethodCode(),
             'element_index' => $this->getIndexFor($element),
             'show_value_input' => count($this->getStructure()) > 1,
             'grand_total' => number_format($grandTotal, "2", ",", ""),
             'parent_element' => $parentElement
-        ];
+            );
         if ($parentElement !== '') {
             $data ['parent_index'] = $this->getElementCount()[$parentElement];
         }
@@ -80,7 +80,7 @@ class Mundipagg_Paymentmodule_Block_Form_Builder extends Mundipagg_Paymentmodule
         $elementCount = $this->getElementCount();
 
         if ($elementCount == null) {
-           $elementCount = [];
+           $elementCount = array();
         }
 
         if (!isset($elementCount[$element])) {

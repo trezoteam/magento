@@ -28,7 +28,7 @@ class Mundipagg_Paymentmodule_Block_Checkout_Information extends Mundipagg_Payme
     {
         $paymentInformation = $this->getPaymentInformation();
 
-        $billetData = [];
+        $billetData = array();
         if (isset($paymentInformation['boleto'])) {
             $billetData = $paymentInformation['boleto'];
         }

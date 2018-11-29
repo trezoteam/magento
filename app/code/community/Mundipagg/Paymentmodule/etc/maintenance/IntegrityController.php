@@ -24,11 +24,11 @@ class IntegrityController
     public function __call($name, $arguments)
     {
         if (!$this->checkMaintenanceRouteAccessPermition()) {
-            throw new IntegrityException('HTTP/1.0 401 Unauthorized', 'Unauthorized', 401);
+            throw new  Mundipagg\Integrity\IntegrityException('HTTP/1.0 401 Unauthorized', 'Unauthorized', 401);
         }
 
         if (!method_exists($this, $name)) {
-            throw new IntegrityException('HTTP/1.0 404 Not Found', 'Method not found', 404);
+            throw new  Mundipagg\Integrity\IntegrityException('HTTP/1.0 404 Not Found', 'Method not found', 404);
         }
 
         return call_user_func_array([$this, $name], $arguments);
@@ -38,7 +38,7 @@ class IntegrityController
     {
         $orderId = $this->systemInfo->getRequestParam('orderID');
         if (empty($orderId)) {
-            throw new IntegrityException('HTTP/1.0 404 Not Found', 'Resource not found', 404);
+            throw new Mundipagg\Integrity\IntegrityException('HTTP/1.0 404 Not Found', 'Resource not found', 404);
         }
         $this->orderInfo->loadOrder($orderId);
 
@@ -95,17 +95,17 @@ class IntegrityController
     {
         $file = $this->systemInfo->getRequestParam('file');
         if (!$file) {
-            throw new IntegrityException('HTTP/1.0 404 Not Found', 'Resource not found', 404);
+            throw new  Mundipagg\Integrity\IntegrityException('HTTP/1.0 404 Not Found', 'Resource not found', 404);
         }
 
         $file = base64_decode($file);
 
         if (!is_readable($file) || !in_array($file, $this->listLogFiles())) {
-            throw new IntegrityException('HTTP/1.0 403 Forbidden', 'Forbidden', 403);
+            throw new  Mundipagg\Integrity\IntegrityException('HTTP/1.0 403 Forbidden', 'Forbidden', 403);
         }
 
         if (!$this->compactFile($file)) {
-            throw new IntegrityException(
+            throw new  Mundipagg\Integrity\IntegrityException(
                 'HTTP/1.0 500 Internal Server Error',
                 'Zip encoding failure',
                 500);

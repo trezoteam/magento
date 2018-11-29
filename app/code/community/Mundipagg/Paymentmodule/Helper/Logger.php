@@ -90,6 +90,6 @@ class Mundipagg_Paymentmodule_Helper_Logger extends Mage_Core_Helper_Abstract
 
     protected static function getAllowedFileExtensions()
     {
-        return ['log', 'txt', 'html', 'csv'];
+        return array('log', 'txt', 'html', 'csv');
     }
 }

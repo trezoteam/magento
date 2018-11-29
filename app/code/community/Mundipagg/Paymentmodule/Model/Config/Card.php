@@ -42,20 +42,20 @@ class Mundipagg_Paymentmodule_Model_Config_Card
     {
         $installmentsConfig = $this->getInstallmentsConfig();
 
-        return [
+        return array(
             'amex' => $installmentsConfig['amex_status'],
             'diners' => $installmentsConfig['diners_status'],
             'elo' => $installmentsConfig['elo_status'],
             'hipercard' => $installmentsConfig['hipercard_status'],
             'mastercard' => $installmentsConfig['mastercard_status'],
             'visa' => $installmentsConfig['visa_status']
-        ];
+        );
     }
 
     public function getEnabledBrands()
     {
         $brandStatuses = $this->getBrandStatuses();
-        $enabledBrands = [];
+        $enabledBrands = array();
 
         foreach ($brandStatuses as $brand => $status) {
             if ($status == 1) {
