@@ -24,7 +24,8 @@ class Mundipagg_Paymentmodule_Model_Standard extends Mage_Payment_Model_Method_A
 
     public function isAvailable($quote = null)
     {
-        return $this->getConfigModel()->isEnabled();
+        return $this->getConfigModel()->isEnabled() &&
+            $this->getGeneralConfig()->isEnabled();
     }
 
     public function getPaymentTitle()
@@ -222,5 +223,10 @@ class Mundipagg_Paymentmodule_Model_Standard extends Mage_Payment_Model_Method_A
     public function getOrderFromCheckoutSession()
     {
         return Mage::getSingleton('checkout/session');
+    }
+
+    protected function getGeneralConfig()
+    {
+        return Mage::getModel('paymentmodule/config_general');
     }
 }
