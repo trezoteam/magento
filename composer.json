@@ -29,10 +29,16 @@
     "integrity-check": "./integrityPrePushCheck.sh"
   },
 
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/mundipagg/module-maintenance"
+    }
+  ],
+
   "autoload": {
     "psr-4": {
-      "Mundipagg\\": "app/",
-      "Mundipagg\\Integrity\\": "app/code/community/Mundipagg/Paymentmodule/etc/maintenance/"
+      "Mundipagg\\": "app/"
     }
   },
 
@@ -41,6 +47,7 @@
   },
 
   "require": {
-    "mundipagg/mundiapi": "dev-master"
+    "mundipagg/mundiapi": "dev-master",
+    "mundipagg/module-maintenance" : "dev-develop"
   }
 }

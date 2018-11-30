@@ -4,6 +4,9 @@
  * doesn't allow 'get' usage in method names
  *
  */
+
+use Mundipagg\Integrity\IntegrityFileCommand;
+
 class RoboFile extends \Robo\Tasks
 {
     private $configXml = 'app/code/community/Mundipagg/Paymentmodule/etc/config.xml';
@@ -110,5 +113,18 @@ class RoboFile extends \Robo\Tasks
             ->regex("/<notes>[\s\S]*?<\/notes>/")
             ->to('<notes>' . $this->getReleaseChanges() . '</notes>')
             ->run();
+    }
+
+    public function generateIntegrity($dirIntegrity, $directoriesIgnored = "")
+    {
+
+        $dirIntegrity = __DIR__ . $dirIntegrity;
+
+        $directoriesIgnored = array_map('trim', explode(',', $directoriesIgnored));
+
+        $integrityCommand = new IntegrityFileCommand();
+        $integrityCommand->generateIntegrityFile($dirIntegrity, $directoriesIgnored);
+
+        return "Integrity check file generated";
     }
 }
