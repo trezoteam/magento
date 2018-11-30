@@ -117,7 +117,6 @@ class RoboFile extends \Robo\Tasks
 
     public function generateIntegrity($dirIntegrity, $directoriesIgnored = "")
     {
-
         $dirIntegrity = __DIR__ . $dirIntegrity;
 
         $directoriesIgnored = array_map('trim', explode(',', $directoriesIgnored));
