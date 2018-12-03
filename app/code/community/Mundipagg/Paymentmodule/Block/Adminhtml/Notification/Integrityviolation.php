@@ -17,7 +17,7 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Notification_Integrityviolation ex
             \Mage::helper('paymentmodule/MagentoSystemInfo'),
             \Mage::helper('paymentmodule/MagentoOrderInfo')
         );
-        $integrityCheck = $integrityController->getIntegrityCheck();
+        $integrityCheck = $integrityController->model->getIntegrityCheck();
 
         return
             count($integrityCheck['alteredFiles']) > 0 ||
