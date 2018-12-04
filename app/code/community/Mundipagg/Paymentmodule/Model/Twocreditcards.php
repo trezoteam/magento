@@ -26,10 +26,10 @@ class Mundipagg_Paymentmodule_Model_Twocreditcards extends Mundipagg_Paymentmodu
 
     public function getPaymentStructure()
     {
-        return [
+        return array(
             'creditcard',
             'creditcard'
-        ];
+        );
     }
 
     protected function getBaseKey()

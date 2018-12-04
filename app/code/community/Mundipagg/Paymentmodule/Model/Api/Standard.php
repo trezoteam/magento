@@ -47,7 +47,7 @@ abstract class Mundipagg_Paymentmodule_Model_Api_Standard
         $paymentMethod = $additionalInformation['mundipagg_payment_method'];
         $paymentInformation = $additionalInformation[$paymentMethod];
 
-        $result = [];
+        $result = array();
 
         foreach ($paymentInformation as $key => $value) {
             $paymentApi = Mage::getModel('paymentmodule/api_' . $key);

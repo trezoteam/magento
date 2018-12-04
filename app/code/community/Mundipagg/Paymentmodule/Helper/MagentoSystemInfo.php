@@ -23,10 +23,10 @@ class Mundipagg_Paymentmodule_Helper_MagentoSystemInfo implements SystemInfoInte
 
     public function getDirectoriesIgnored()
     {
-        return [
+        return array(
             "./lib/",
             "./var/connect/"
-        ];
+        );
     }
 
     public function getModmanPath()
@@ -51,10 +51,10 @@ class Mundipagg_Paymentmodule_Helper_MagentoSystemInfo implements SystemInfoInte
 
     public function getLogsDirs()
     {
-        return [
+        return array(
             'magentoLogsDirectory' => $this->getDefaultLogDir(),
             'moduleLogsDirectory' => $this->getModuleLogDir()
-        ];
+        );
     }
 
     public function getDefaultLogDir()
@@ -69,10 +69,10 @@ class Mundipagg_Paymentmodule_Helper_MagentoSystemInfo implements SystemInfoInte
 
     public function getDefaultLogFiles()
     {
-        return [
+        return array(
             \Mage::getStoreConfig('dev/log/file'),
             \Mage::getStoreConfig('dev/log/exception_file'),
-        ];
+        );
     }
 
     public function getModuleLogFilenamePrefix()

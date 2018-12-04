@@ -18,7 +18,7 @@ class Mundipagg_Paymentmodule_Model_Api_Boleto extends Mundipagg_Paymentmodule_M
         $instructions = $boletoConfig->getInstructions();
         $dueAt = $boletoConfig->getDueAt();
 
-        $result = [];
+        $result = array();
 
         foreach ($paymentInfo as $payment) {
             $paymentRequest = new CreatePaymentRequest();

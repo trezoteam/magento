@@ -32,7 +32,7 @@ class Mundipagg_Paymentmodule_Helper_Interest extends Mage_Core_Helper_Abstract
         $method = $additionalInformation['mundipagg_payment_method'];
         $paymentData = $additionalInformation[$method];
 
-        $creditCardData = [];
+        $creditCardData = array();
         if (isset($paymentData['creditcard'])) {
             $creditCardData = $paymentData['creditcard'];
         }

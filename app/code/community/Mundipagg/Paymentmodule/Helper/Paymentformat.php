@@ -17,7 +17,7 @@ class Mundipagg_Paymentmodule_Helper_Paymentformat extends Mage_Core_Helper_Abst
 
     protected function formatData($data, $paymentMethod)
     {
-        $result = [];
+        $result = array();
 
         foreach ($data as $key => $value) {
             $keys = explode($paymentMethod .'_', $key)[1];
@@ -27,7 +27,7 @@ class Mundipagg_Paymentmodule_Helper_Paymentformat extends Mage_Core_Helper_Abst
         }
 
         if (!$this->validate($result)) {
-            return [];
+            return array();
         }
 
         return $result;

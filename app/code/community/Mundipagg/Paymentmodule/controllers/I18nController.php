@@ -18,6 +18,11 @@ class Mundipagg_Paymentmodule_I18nController extends Mage_Core_Controller_Front_
         });
 
         $translateTable = (object) $translateTable;
-        echo json_encode($translateTable);
+
+        return $this->getResponse()
+            ->clearHeaders()
+            ->setHeader('HTTP/1.0', 200 , true)
+            ->setHeader('Content-Type', 'text/html')
+            ->setBody(json_encode($translateTable));
     }
 }

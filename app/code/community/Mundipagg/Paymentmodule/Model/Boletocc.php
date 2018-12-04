@@ -26,9 +26,9 @@ class Mundipagg_Paymentmodule_Model_Boletocc extends Mundipagg_Paymentmodule_Mod
 
     public function getPaymentStructure()
     {
-        return [
+        return array(
             'boleto',
             'creditcard'
-        ];
+        );
     }
 }

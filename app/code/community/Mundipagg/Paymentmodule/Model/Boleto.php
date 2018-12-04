@@ -26,9 +26,9 @@ class Mundipagg_Paymentmodule_Model_Boleto extends Mundipagg_Paymentmodule_Model
 
     public function getPaymentStructure()
     {
-        return [
+        return array(
             'boleto'
-        ];
+        );
     }
 
     public function validatePaymentData($paymentData)

@@ -30,7 +30,7 @@ class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_A
                 ->getAdditionalInformationForOrder($orderId);
 
         if (!isset($additionalInformation['mundipagg_payment_handled_transactions'])) {
-            $additionalInformation['mundipagg_payment_handled_transactions'] = [];
+            $additionalInformation['mundipagg_payment_handled_transactions'] = array();
         }
 
         if (!$this->isTransactionHandled($orderId,$transaction['id'])) {
@@ -47,7 +47,7 @@ class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_A
     public function addTransactionHistoryToOrder($orderId, $transaction, &$additionalInformation)
     {
         if (!isset($additionalInformation['mundipagg_payment_transaction_history'])) {
-            $additionalInformation['mundipagg_payment_transaction_history'] = [];
+            $additionalInformation['mundipagg_payment_transaction_history'] = array();
         }
 
         if (!$this->isTransactionHandled($orderId, $transaction['id'])) {

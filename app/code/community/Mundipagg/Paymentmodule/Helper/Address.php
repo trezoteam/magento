@@ -67,8 +67,8 @@ class Mundipagg_Paymentmodule_Helper_Address extends Mage_Core_Helper_Abstract
 
     protected function fillCustomerAddressArray($streetLines, $addressModel)
     {
-        $methods = ['getStreet','getNumber','getComplement','getNeighborhood'];
-        $customerAddress = [];
+        $methods = array('getStreet','getNumber','getComplement','getNeighborhood');
+        $customerAddress = array();
 
         array_walk($methods, function($method, $index)
             use (&$customerAddress, $addressModel, $streetLines) {

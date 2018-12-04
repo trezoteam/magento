@@ -8,6 +8,11 @@ class Mundipagg_Paymentmodule_Adminhtml_ChargeController extends Mage_Adminhtml_
         Mage::helper('paymentmodule/exception')->initExceptionHandler();
     }
 
+    protected function _isAllowed()
+    {
+        return true;
+    }
+
     public function indexAction()
     {
         $this->loadLayout();
