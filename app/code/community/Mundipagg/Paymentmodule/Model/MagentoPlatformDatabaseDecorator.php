@@ -1,6 +1,6 @@
 <?php
 
-use Mundipagg\Core\Repositories\Decorators\AbstractPlatformDatabaseDecorator;
+use MundipaggModuleBackend\Core\Repositories\Decorators\AbstractPlatformDatabaseDecorator;
 
 final class Mundipagg_Paymentmodule_Model_MagentoPlatformDatabaseDecorator
     extends AbstractPlatformDatabaseDecorator

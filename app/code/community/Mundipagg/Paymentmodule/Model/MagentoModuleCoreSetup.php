@@ -1,6 +1,6 @@
 <?php
 
-use Mundipagg\Core\AbstractMundipaggModuleCoreSetup as ConfigSingleton;
+use MundipaggModuleBackend\Core\AbstractMundipaggModuleCoreSetup as ConfigSingleton;
 
 use Mundipagg_Paymentmodule_Model_Boleto as MagentoPlatformCartDecorator;
 use Mundipagg_Paymentmodule_Model_MagentoPlatformDatabaseDecorator as MagentoPlatformDatabaseDecorator;

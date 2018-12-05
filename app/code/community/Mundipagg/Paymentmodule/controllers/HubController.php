@@ -2,7 +2,7 @@
 
 require_once Mage::getBaseDir('lib') . '/autoload.php';
 
-use \Mundipagg\HubIntegration\Services\HubIntegrationService;
+use \MundipaggModuleBackend\Hub\Services\HubIntegrationService;
 
 class Mundipagg_Paymentmodule_HubController
     extends Mage_Core_Controller_Front_Action
