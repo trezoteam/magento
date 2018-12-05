@@ -30,9 +30,7 @@ class InstallCommand extends AbstractCommand
             $this->getAccessToken()->getValue()
         );
 
-        $configRepo = new ConfigurationRepository(
-            MPSetup::getDatabaseAccessDecorator()
-        );
+        $configRepo = new ConfigurationRepository();
 
         $configRepo->save($moduleConfig);
     }

@@ -45,10 +45,7 @@ abstract class AbstractMundipaggModuleCoreSetup
 
             static::$platformRoot = $platformRoot;
 
-            $DBDecoratorClass = static::get(self::CONCRETE_DATABASE_DECORATOR_CLASS);
-            $configRepository = new ConfigurationRepository(
-                new $DBDecoratorClass(static::getDatabaseAccessObject())
-            );
+            $configRepository = new ConfigurationRepository();
 
             static::$moduleConfig = $configRepository->find(1);
         }

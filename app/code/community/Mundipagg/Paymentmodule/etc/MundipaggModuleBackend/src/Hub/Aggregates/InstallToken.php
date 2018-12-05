@@ -2,7 +2,7 @@
 
 namespace MundipaggModuleBackend\Hub\Aggregates;
 
-use MundipaggModuleBackend\Core\AggregateRootInterface;
+use MundipaggModuleBackend\Core\Interfaces\AggregateRootInterface;
 
 final class InstallToken implements AggregateRootInterface
 {

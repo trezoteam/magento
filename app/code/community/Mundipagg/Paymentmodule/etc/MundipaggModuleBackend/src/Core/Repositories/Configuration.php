@@ -25,7 +25,7 @@ class Configuration extends AbstractRep
             SELECT * FROM `" . $this->db->getTable('CONFIGURATION_TABLE') . "`;
         ";
 
-        $result = $this->db->query($query);
+        $result = $this->db->fetch($query);
 
         if ($result->num_rows == 0) {
             return $this->create($object);

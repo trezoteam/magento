@@ -2,7 +2,9 @@
 
 namespace MundipaggModuleBackend\Core\Interfaces;
 
-interface AggregateRootInterface
+use JsonSerializable;
+
+interface AggregateRootInterface extends JsonSerializable
 {
     public function isDisabled();
     public function setDisabled($disabled);

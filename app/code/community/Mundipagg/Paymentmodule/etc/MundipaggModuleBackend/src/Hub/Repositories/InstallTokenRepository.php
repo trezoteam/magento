@@ -87,7 +87,7 @@ class InstallTokenRepository extends AbstractRep
             $query .= " LIMIT $limit";
         }
 
-        $result = $this->db->query($query . ";");
+        $result = $this->db->fetch($query . ";");
 
         $factory = new InstallTokenFactory();
         $installTokens = [];
@@ -109,7 +109,7 @@ class InstallTokenRepository extends AbstractRep
         $query = "SELECT * FROM `" . $this->db->getTable('HUB_INSTALL_TOKEN') . "` as t ";
         $query .= "WHERE t.token = '$token';";
 
-        $result = $this->db->query($query );
+        $result = $this->db->fetch($query);
 
         if ($result->num_rows > 0) {
             $factory = new InstallTokenFactory();

@@ -35,6 +35,10 @@ abstract class AbstractPlatformDatabaseDecorator
     abstract protected function setTableArray();
     abstract protected function setTablePrefix();
     abstract protected function doQuery($query);
+
+    /**
+     * @return array
+     */
     abstract protected function doFetch($query);
     abstract protected function formatResults($query);
     abstract protected function setLastInsertId($insertId);

@@ -27,6 +27,6 @@ final class Mundipagg_Paymentmodule_Model_MagentoModuleCoreSetup extends ConfigS
 
     static protected function getPlatformHubAppPublicAppKey()
     {
-        return "magento";
+        return "2d2db409-fed0-4bd8-ac1e-43eeff33458d";
     }
 }

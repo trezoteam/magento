@@ -4,8 +4,8 @@ function initHub(hubPublicAppKey, languageCode, installId = null) {
         publicAppKey : hubPublicAppKey,
         redirectUrl :  encodeURIComponent(
             window.location.href.replace(
-                'extension/payment/mundipagg/settings',
-                'extension/payment/mundipagg/hub&action=validateInstall'
+                'index.php/admin/system_config/edit/section/mundipagg_config',
+                'index.php/mp-paymentmodule/hub/validateInstall'
             ).replace('/admin/','/')
         ),
         language: languageCode
@@ -26,7 +26,6 @@ function initHub(hubPublicAppKey, languageCode, installId = null) {
         jQuery(integrationButtonSelector).prop("onclick", null).off("click");
     }catch(e){}
     //disable settings form submit.
-    //usar domhtml
 
     // document.getElementById("mundipagg-hub").children[1]
     jQuery(integrationButtonSelector).attr('form','null');
@@ -48,19 +47,16 @@ function initHub(hubPublicAppKey, languageCode, installId = null) {
             return url;
         })(config);
 
-       // var userToken = jQuery('#form-mundipagg').attr('action').match(/user_token=\w+/)[0].match(/\w+/g)[1];
-
         jQuery('<i> </i>').addClass('fa fa-spinner fa-spin')
             .attr('id','mundipagg-integration-load-icon')
             .prependTo(jQuery(integrationButtonSelector));
         jQuery(integrationButtonSelector).attr('disabled','');
 
-
         if (installId === null) {
             jQuery.ajax({
-                url: "index.php?route=extension/payment/mundipagg/hub&action=generateIntegrationToken&user_token=" + userToken,
+                url: "/index.php/mp-paymentmodule/hub/generateintegrationtoken/",
                 success: function(result){
-                    hubUrl += '%26install_token%3D' + result;
+                    hubUrl += '%26install_token%2F' + result;
                     var popUp = window.open(hubUrl, null,'height=600,width=800');
                     if (window.focus) {popUp.focus()}
 
@@ -71,7 +67,7 @@ function initHub(hubPublicAppKey, languageCode, installId = null) {
                     //check hub status.
                     var checkHubStatus = function(){
                         jQuery.ajax({
-                            url: "index.php?route=extension/payment/mundipagg/hub&action=status&user_token=" + userToken,
+                            url: "/index.php/mp-paymentmodule/hub/status/",
                             success: function(result) {
                                 if (result === 'enabled') {
                                     window.location.reload(true);

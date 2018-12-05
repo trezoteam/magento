@@ -26,11 +26,20 @@ final class Mundipagg_Paymentmodule_Model_MagentoPlatformDatabaseDecorator
     }
     protected function formatResults($queryResult)
     {
-        return $queryResult;
+        $retn = new stdClass;
+        $retn->num_rows = count($queryResult);
+        $retn->row = array();
+        if (!empty($queryResult)) {
+            $retn->row = $queryResult[0];
+        }
+        $retn->rows = $queryResult;
+        return $retn;
     }
+
     protected function doFetch($query)
     {
         $connection = $this->db->getConnection('core_read');
+
         return $connection->fetchAll($query);
     }
     public function getLastId()
@@ -45,4 +54,5 @@ final class Mundipagg_Paymentmodule_Model_MagentoPlatformDatabaseDecorator
     {
         $this->db->lastInsertId = $lastInsertId;
     }
+
 }

@@ -16,26 +16,55 @@ class Mundipagg_Paymentmodule_HubController
 
     public function generateIntegrationTokenAction()
     {
-        $installSeed = "moises";
+        $installSeed = uniqid(); //@todo get seed from url
         $hubIntegrationService = new HubIntegrationService();
 
-        echo $hubIntegrationService->startHubIntegration($installSeed);
-        return;
+        return $this->setResponse(
+            $hubIntegrationService->startHubIntegration($installSeed)
+        );
     }
 
     public function validateInstallAction()
     {
+        $params = Mage::app()->getRequest()->getParams();
 
+        $installToken = $params['&install_token'];
+
+        $authorizationCode = $params['authorization_code'];
+
+        $webhookUrl = Mage::getUrl('paymentmodule/webhook');
+
+        $hubCallbackUrl = Mage::getUrl('paymentmodule/hub/command');
+
+        $hubIntegrationService = new HubIntegrationService();
+        $hubIntegrationService->endHubIntegration(
+            $installToken,
+            $authorizationCode,
+            $hubCallbackUrl,
+            $webhookUrl
+        );
     }
 
     public function statusAction()
     {
-
+        $hubIntegrationService = new HubIntegrationService();
+        return $this->setResponse(
+            $hubIntegrationService->getHubStatus()
+        );
     }
 
     public function commandAction()
     {
 
+    }
+
+    protected function setResponse($response, $status = 200)
+    {
+        return $this->getResponse()
+            ->clearHeaders()
+            ->setHeader('HTTP/1.0', $status , true)
+            ->setHeader('Content-Type', 'text/html') // can be changed to json, xml...
+            ->setBody($response);
     }
 
 }

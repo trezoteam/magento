@@ -3,7 +3,7 @@
 namespace MundipaggModuleBackend\Core\Aggregates;
 
 use Exception;
-use MundipaggModuleBackend\Aggregates\IAggregateRoot;
+use MundipaggModuleBackend\Core\Interfaces\AggregateRootInterface;
 use MundipaggModuleBackend\Core\Kernel\GatewayKey\AbstractGatewayKey;
 use MundipaggModuleBackend\Core\Kernel\GatewayKey\HubAccessTokenKey;
 use MundipaggModuleBackend\Core\Kernel\GatewayKey\PublicKey;
@@ -11,9 +11,9 @@ use MundipaggModuleBackend\Core\Kernel\GatewayKey\SecretKey;
 use MundipaggModuleBackend\Core\Kernel\GatewayKey\TestPublicKey;
 use MundipaggModuleBackend\Core\Kernel\GatewayKey\TestSecretKey;
 use MundipaggModuleBackend\Core\Kernel\GatewayId\GUID;
-use MundipaggModuleBackend\ValueObject\CardConfig;
+use MundipaggModuleBackend\Core\Kernel\Configuration\CardConfig;
 
-final class Configuration implements IAggregateRoot
+final class Configuration implements AggregateRootInterface
 {
     const CREDIT_CARD_BRAND_DEFAULT = 'Default';
     const CREDIT_CARD_BRAND_VISA = 'Visa';
