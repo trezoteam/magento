@@ -95,7 +95,7 @@ class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mundipagg_Pa
         $additionalInformation = $standard->getAdditionalInformationForOrder($orderId);
         $paymentMethod = $additionalInformation['mundipagg_payment_method'];
         $paymentInfo = $additionalInformation[$paymentMethod];
-        $boletosInfo = [];
+        $boletosInfo = array();
 
         if (isset($paymentInfo['boleto'])) {
             $boletosInfo = $paymentInfo['boleto'];
@@ -125,14 +125,14 @@ class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mundipagg_Pa
 
             $chargeOperations->setTransactionAsHandled(
                 $charge->code,
-                [
+                array(
                     'id' => $charge->lastTransaction->id,
                     'timestamp' => $charge->lastTransaction->updatedAt->getTimestamp(),
                     'amount' => $charge->lastTransaction->amount,
                     'type' => $charge->lastTransaction->operationType,
                     'chargeAmount' => $charge->amount,
                     'chargeId' => $charge->id,
-                ]
+                )
             );
         }
 
@@ -240,7 +240,7 @@ class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mundipagg_Pa
      */
     protected function getItemsInformation()
     {
-        $items = [];
+        $items = array();
 
         $standard = Mage::getModel('paymentmodule/standard');
         $checkoutSession = $standard->getCheckoutSession();
@@ -250,7 +250,7 @@ class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mundipagg_Pa
 
         foreach ($order->getAllItems() as $item) {
             if ($item->getParentItemId() === null) {
-                $itemInfo = [];
+                $itemInfo = array();
 
                 $itemInfo['amount'] = round($item->getPrice() * 100);
                 $itemInfo['quantity'] = (int) $item->getQtyOrdered();

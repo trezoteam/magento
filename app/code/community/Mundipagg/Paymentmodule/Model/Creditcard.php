@@ -26,9 +26,9 @@ class Mundipagg_Paymentmodule_Model_Creditcard extends Mundipagg_Paymentmodule_M
 
     public function getPaymentStructure()
     {
-        return [
+        return array(
             'creditcard'
-        ];
+        );
     }
 
     public function validatePaymentData($paymentData)

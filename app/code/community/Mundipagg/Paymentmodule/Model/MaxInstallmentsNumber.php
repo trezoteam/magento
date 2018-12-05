@@ -4,8 +4,7 @@ class Mundipagg_Paymentmodule_Model_MaxInstallmentsNumber
 {
     public function toOptionArray() 
     {
-        return
-            [
+        return array(
                 '1' => '1x',
                 '2' => '2x',
                 '3' => '3x',
@@ -18,7 +17,7 @@ class Mundipagg_Paymentmodule_Model_MaxInstallmentsNumber
                 '10' => '10x',
                 '11' => '11x',
                 '12' => '12x'
-            ];
+            );
     }
 
 }

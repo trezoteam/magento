@@ -51,14 +51,14 @@ class Mundipagg_Paymentmodule_WebhookController extends Mage_Core_Controller_Fro
                     $lastTransaction = $body->data->last_transaction;
                     $chargeOperations->setTransactionAsHandled(
                         $body->data->code,
-                        [
+                        array(
                             'id' => $lastTransaction->id,
                             'timestamp' => strtotime($lastTransaction->updated_at),
                             'amount' => $lastTransaction->amount,
                             'type' => $lastTransaction->operation_type,
                             'chargeAmount' => $body->data->amount,
                             'chargeId' => $body->data->id
-                        ]
+                        )
                     );
 
                     $this->webhookChargeUpdate($body->data, $webhookAction);
@@ -67,7 +67,11 @@ class Mundipagg_Paymentmodule_WebhookController extends Mage_Core_Controller_Fro
                     throw new \Exception('Invalid webhook');
             }
         }elseif (Mage::app()->getRequest()->isGet()) {
-            echo 'Webhook URL';
+            return $this->getResponse()
+                ->clearHeaders()
+                ->setHeader('HTTP/1.0', 200 , true)
+                ->setHeader('Content-Type', 'text/html')
+                ->setBody('Webhook URL');
         }
     }
 

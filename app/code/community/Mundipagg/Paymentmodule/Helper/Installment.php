@@ -39,7 +39,7 @@ class Mundipagg_Paymentmodule_Helper_Installment extends Mage_Core_Helper_Abstra
             );
         }
 
-        return [];
+        return array();
     }
 
     protected function getCardsInstallments($total, $cards = null)
@@ -71,7 +71,7 @@ class Mundipagg_Paymentmodule_Helper_Installment extends Mage_Core_Helper_Abstra
 
     protected function getInstallmentsWithoutInterest($total, $max)
     {
-        $installments = [];
+        $installments = array();
         $monetary = Mage::helper('paymentmodule/monetary');
         $currencySymbol = $monetary->getCurrentCurrencySymbol();
 

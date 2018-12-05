@@ -17,7 +17,7 @@ class Mundipagg_Paymentmodule_WalletController extends Mage_Core_Controller_Fron
             !$isUserLoggedIn ||
             !$savedCreditCardsHelper->isSavedCreditCardsEnabled()
         ) {
-            $this->_redirect('customer/account/', ['_secure' => true]);
+            $this->_redirect('customer/account/', array('_secure' => true));
             return;
         }
 
@@ -52,6 +52,6 @@ class Mundipagg_Paymentmodule_WalletController extends Mage_Core_Controller_Fron
             }
         }
 
-        $this->_redirect('mp-paymentmodule/wallet/', ['_secure' => true]);
+        $this->_redirect('mp-paymentmodule/wallet/', array('_secure' => true));
     }
 }

@@ -55,7 +55,7 @@ class Mundipagg_Paymentmodule_Helper_Invoice extends Mage_Core_Helper_Abstract
      */
     public function getInvoicesAllowedToCancel($order)
     {
-        $invoices= [];
+        $invoices = array();
 
         foreach ($order->getInvoiceCollection() as $invoice) {
             // We check if invoice can be refunded

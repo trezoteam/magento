@@ -35,16 +35,16 @@ class Mundipagg_Paymentmodule_Model_Config_Voucher
 
     public function getBrandStatuses()
     {
-        return [
+        return array(
             'vr' => $this->isVrEnabled(),
             'sodexo' => $this->isSodexoEnabled()
-        ];
+        );
     }
 
     public function getEnabledBrands()
     {
         $brandStatuses = $this->getBrandStatuses();
-        $enabledBrands = [];
+        $enabledBrands = array();
 
         foreach ($brandStatuses as $brand => $status) {
             if ($status == 1) {

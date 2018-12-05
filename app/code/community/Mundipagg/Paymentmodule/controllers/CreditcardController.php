@@ -25,6 +25,7 @@ class Mundipagg_Paymentmodule_CreditcardController extends Mage_Core_Controller_
                 ->getQuote()->getGrandTotal();
         }
 
+        $installments = array();
         if (!empty($brandName[0])) {
             $installments =
                 current(
@@ -33,9 +34,17 @@ class Mundipagg_Paymentmodule_CreditcardController extends Mage_Core_Controller_
                         $brandName
                     )
                 );
-            echo json_encode($installments);
-        } else {
-            echo "";
         }
+
+        $this->setResponse($installments);
+    }
+
+    public function setResponse($response)
+    {
+        return $this->getResponse()
+            ->clearHeaders()
+            ->setHeader('HTTP/1.0', 200 , true)
+            ->setHeader('Content-Type', 'text/html')
+            ->setBody(json_encode($response));
     }
 }

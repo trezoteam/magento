@@ -37,13 +37,13 @@ class Mundipagg_Paymentmodule_Block_Form_Partial_Creditcard extends Mundipagg_Pa
             return $savedCreditCardsHelper->getCurrentCustomerSavedCards();
         }
 
-        return [];
+        return array();
     }
 
     private function filterAllowedSavedCreditCardBrands($savedCards)
     {
         $enabledBrands = $this->getEnabledBrands();
-        $customerSavedCreditCards = [];
+        $customerSavedCreditCards = array();
 
         foreach ($savedCards as $card) {
             if (in_array(strtolower($card->getBrandName()), $enabledBrands)) {

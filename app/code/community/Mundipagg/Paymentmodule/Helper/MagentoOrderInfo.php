@@ -21,7 +21,7 @@ class Mundipagg_Paymentmodule_Helper_MagentoOrderInfo extends AbstractOrderInfo
     protected function _getOrderHistory()
     {
         $orderHistoryCollection = $this->order->getStatusHistoryCollection(true);
-        $orderHistory = [];
+        $orderHistory = array();
         foreach ($orderHistoryCollection as $history) {
             $orderHistory[] =  $history->getData();
         }
@@ -39,8 +39,8 @@ class Mundipagg_Paymentmodule_Helper_MagentoOrderInfo extends AbstractOrderInfo
     {
         $invoicesCollection = Mage::getModel('sales/order_invoice')
             ->getCollection()
-            ->addAttributeToFilter('order_id', ['eq' => $this->order->getEntityId()]);
-        $invoices = [];
+            ->addAttributeToFilter('order_id', array('eq' => $this->order->getEntityId()));
+        $invoices = array();
         foreach ($invoicesCollection as $invoice) {
             $invoices[] = $invoice->getData();
         }

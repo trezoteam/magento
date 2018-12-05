@@ -27,12 +27,12 @@ class Mundipagg_Paymentmodule_Helper_Savedcreditcard extends Mage_Core_Helper_Ab
         $paymentMethod = $additionalInformation['mundipagg_payment_method'];
 
         reset($additionalInformation[$paymentMethod]);
-        $cards = [];
+        $cards = array();
         array_walk(
             $additionalInformation[$paymentMethod],
             function($primitivePayments, $primitiveType) use (&$cards) {
                 foreach ($primitivePayments as $primitivePayment) {
-                    $payment = [];
+                    $payment = array();
                     if ($primitiveType === "creditcard") {
                         $payment = $primitivePayment;
                     }
@@ -112,7 +112,7 @@ class Mundipagg_Paymentmodule_Helper_Savedcreditcard extends Mage_Core_Helper_Ab
 
     public function getCurrentCustomerSavedCards() {
         //This function looks like an repository funcion...
-        $savedCreditCardCollection = [];
+        $savedCreditCardCollection = array();
 
         $session = Mage::getSingleton('customer/session');
 
@@ -143,7 +143,7 @@ class Mundipagg_Paymentmodule_Helper_Savedcreditcard extends Mage_Core_Helper_Ab
      */
     public function enabledSavedCreditCards($type = 'card')
     {
-        $enabledSavedCreditCards = [];
+        $enabledSavedCreditCards = array();
 
         $savedCreditCards = $this->getCurrentCustomerSavedCards();
         $enabledBrands = Mage::getModel('paymentmodule/config_' . $type)

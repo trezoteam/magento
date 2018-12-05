@@ -43,13 +43,13 @@ class Mundipagg_Paymentmodule_ChargeController extends Mage_Core_Controller_Fron
         $orderId = $body->orderId;
 
         $collection = Mage::getResourceModel('sales/order_collection')
-            ->join(['b' => 'sales/order_payment'],
+            ->join(array('b' => 'sales/order_payment'),
                 'main_table.entity_id = b.parent_id',
-                ['additional_information' => 'additional_information']
+                array('additional_information' => 'additional_information')
             )
             ->addFieldToFilter('main_table.entity_id', $orderId);
 
-        $additional = [];
+        $additional = array();
         foreach ($collection as $order) {
             $additional = unserialize($order->additional_information);
         }
@@ -137,14 +137,14 @@ class Mundipagg_Paymentmodule_ChargeController extends Mage_Core_Controller_Fron
                 $chargeOperations = Mage::helper('paymentmodule/chargeoperations');
                 $chargeOperations->setTransactionAsHandled(
                     $response->code,
-                    [
+                    array(
                         'id' => $response->lastTransaction->id,
                         'timestamp' => $response->lastTransaction->updatedAt->getTimestamp(),
                         'amount' => $response->lastTransaction->amount,
                         'type' => $response->lastTransaction->operationType,
                         'chargeAmount' => $response->amount,
                         'chargeId' => $response->id
-                    ]
+                    )
                 );
 
                 $this->setResponse('200','Success');

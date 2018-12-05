@@ -10,6 +10,11 @@ class Mundipagg_Paymentmodule_MultibuyerController extends Mage_Core_Controller_
     {
         $countryCode = $this->getRequest()->getParam('country_id');
         $regionCollection = Mage::getModel('directory/region_api')->items($countryCode);
-        echo json_encode($regionCollection);
+
+        $this->getResponse()
+            ->clearHeaders()
+            ->setHeader('HTTP/1.0', 200 , true)
+            ->setHeader('Content-Type', 'text/html')
+            ->setBody(json_encode($regionCollection));
     }
 }

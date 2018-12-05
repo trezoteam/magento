@@ -27,7 +27,7 @@ class Mundipagg_Paymentmodule_Model_Core_Base
      */
     protected function fromSnakeToCamel($snake)
     {
-        $result = [];
+        $result = array();
         $length = strlen($snake);
 
         for ($i = 0; $i < $length ; $i++) {
