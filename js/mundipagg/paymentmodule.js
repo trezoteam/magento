@@ -470,6 +470,10 @@ function getInstallments(baseUrl, brandName, argsObj) {
         value = '?value=' + tmp;
     }
 
+    if (MundiPagg.selectedInstallments == undefined) {
+        MundiPagg.selectedInstallments = {};
+    }
+    
     var selectedInstallment = jQuery("#" + argsObj.elementId + "_mundicheckout-creditCard-installments").val();
     MundiPagg.selectedInstallments[argsObj.elementId] = selectedInstallment;
 
