@@ -39,4 +39,5 @@ abstract class AbstractRep
     abstract public function delete(AggregateRootInterface $object);
     abstract public function find($objectId);
     abstract public function listEntities($limit, $listDisabled);
+    abstract public function findOrNew($objectId);
 }

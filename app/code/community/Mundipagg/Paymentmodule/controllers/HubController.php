@@ -11,7 +11,7 @@ class Mundipagg_Paymentmodule_HubController
     {
         parent::preDispatch();
         Mage::helper('paymentmodule/exception')->initExceptionHandler();
-        Mundipagg_Paymentmodule_Model_MagentoModuleCoreSetup::bootstrap($this);
+        Mundipagg_Paymentmodule_Model_MagentoModuleCoreSetup::bootstrap();
     }
 
     public function generateIntegrationTokenAction()
@@ -55,7 +55,10 @@ class Mundipagg_Paymentmodule_HubController
 
     public function commandAction()
     {
+        $body = json_decode(file_get_contents('php://input'));
 
+        $hubIntegrationService = new HubIntegrationService();
+        $hubIntegrationService->executeCommandFromPost($body);
     }
 
     protected function setResponse($response, $status = 200)

@@ -47,7 +47,7 @@ abstract class AbstractMundipaggModuleCoreSetup
 
             $configRepository = new ConfigurationRepository();
 
-            static::$moduleConfig = $configRepository->find(1);
+            static::$moduleConfig = $configRepository->findOrNew(1);
         }
     }
 

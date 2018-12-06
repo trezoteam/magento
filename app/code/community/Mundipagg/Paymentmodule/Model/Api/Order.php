@@ -10,9 +10,17 @@ require_once Mage::getBaseDir('lib') . '/autoload.php';
 use MundiAPILib\Models\CreateCancelChargeRequest;
 use MundiAPILib\Models\CreateCaptureChargeRequest;
 use MundiAPILib\MundiAPIClient;
+use MundiAPILib\Configuration as MundiAPILIBConfiguration;
+use MundipaggModuleBackend\Core\AbstractMundipaggModuleCoreSetup as MPSetup;
 
 class Mundipagg_Paymentmodule_Model_Api_Order
 {
+
+    public function __construct()
+    {
+        Mundipagg_Paymentmodule_Model_MagentoModuleCoreSetup::bootstrap();
+    }
+
     /**
      * @param Varien_Object $paymentInformation
      * @return mixed|string
@@ -91,11 +99,14 @@ class Mundipagg_Paymentmodule_Model_Api_Order
 
     protected function getMundiPaggApiClient()
     {
-        $generalConfig = Mage::getModel('paymentmodule/config_general');
+        MundiAPILIBConfiguration::$BASEURI = 'https://hubapi.mundipagg.com/core/v1';
+        MundiAPILIBConfiguration::$basicAuthPassword = '';
 
-        $secretKey = $generalConfig->getSecretKey();
-        $password = $generalConfig->getPassword();
+        $moduleConfig = MPSetup::getModuleConfiguration();
 
-        return new MundiAPIClient($secretKey, $password);
+        return new MundiAPIClient(
+            $moduleConfig->getSecretKey()->getValue(),
+            ''
+        );
     }
 }

@@ -118,4 +118,9 @@ class InstallTokenRepository extends AbstractRep
 
         return null;
     }
+
+    public function findOrNew($objectId)
+    {
+        // TODO: Implement findOrNew() method.
+    }
 }

@@ -49,7 +49,7 @@ class Configuration extends AbstractRep
         $query = "SELECT data FROM `" . $this->db->getTable('CONFIGURATION_TABLE') . "`";
         $query .= "WHERE id = 1;";
 
-        $result = $this->db->query($query);
+        $result = $this->db->fetch($query);
 
         $factory = new ConfigurationFactory();
 
@@ -63,5 +63,16 @@ class Configuration extends AbstractRep
     public function listEntities($limit, $listDisabled)
     {
         // TODO: Implement listEntities() method.
+    }
+
+    public function findOrNew($objectId)
+    {
+        $object = $this->find($objectId);
+        if ($object === null) {
+            $factory = new ConfigurationFactory();
+            $object = $factory->createEmpty();
+        }
+
+        return $object;
     }
 }
