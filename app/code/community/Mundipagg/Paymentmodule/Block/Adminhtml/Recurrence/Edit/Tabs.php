@@ -2,12 +2,17 @@
 
 class Mundipagg_Paymentmodule_Block_Adminhtml_Recurrence_Edit_Tabs extends Mage_Adminhtml_Block_Widget_Tabs
 {
+
+    protected $recurrenceConfig;
+
     public function __construct()
     {
         parent::__construct();
         $this->setId('recurrence_tabs');
         $this->setDestElementId('edit_form');
         $this->setTitle('Recurrence Template');
+
+        $this->recurrenceConfig = Mage::getModel('paymentmodule/config_recurrence');
     }
 
     protected function _beforeToHtml()
@@ -34,6 +39,10 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Recurrence_Edit_Tabs extends Mage_
 
     public function plan()
     {
+        if (!$this->recurrenceConfig->isPlanEnabled()) {
+            return;
+        }
+
         return $this->addTab('plan_section', array(
             'label'  => 'Plan',
             'title'  => 'Plan',
@@ -43,6 +52,10 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Recurrence_Edit_Tabs extends Mage_
 
     public function single()
     {
+        if (!$this->recurrenceConfig->isSingleEnabled()) {
+            return;
+        }
+
         return $this->addTab('single_section', array(
             'label'  => 'Single',
             'title'  => 'Single',
