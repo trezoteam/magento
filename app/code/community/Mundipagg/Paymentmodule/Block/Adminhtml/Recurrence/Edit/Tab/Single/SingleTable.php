@@ -10,7 +10,6 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Recurrence_Edit_Tab_Single_SingleT
     extends Mage_Adminhtml_Block_Widget
     implements Varien_Data_Form_Element_Renderer_Interface
 {
-
     /**
      * Initialize block
      */
