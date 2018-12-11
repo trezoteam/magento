@@ -12,7 +12,6 @@
     "behat/mink-goutte-driver": "~1.2",
     "behat/mink-selenium2-driver": "~1.2",
     "dmore/behat-chrome-extension": "^1.2",
-    "felipebool/crook": "^0.0.12",
     "knplabs/friendly-contexts": "@dev"
   },
   "repositories": [
@@ -38,7 +37,8 @@
   },
 
   "config": {
-    "vendor-dir": "lib/"
+    "vendor-dir": "lib/",
+    "discard-changes": true
   },
 
   "require": {
