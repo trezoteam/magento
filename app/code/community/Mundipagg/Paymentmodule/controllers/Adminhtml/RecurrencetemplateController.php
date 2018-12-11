@@ -72,6 +72,7 @@ class Mundipagg_Paymentmodule_Adminhtml_RecurrencetemplateController extends Mag
             'frequency' => $template->getRepetitions()[0]->getFrequency(),
             'type' => $template->getRepetitions()[0]->getIntervalType(),
             'trial' => $template->getTemplate()->getTrial(),
+            'id' => $template->getId()
         ];
     }
 
@@ -146,7 +147,7 @@ class Mundipagg_Paymentmodule_Adminhtml_RecurrencetemplateController extends Mag
         if (!$this->validatePostData($postData)) {
             Mage::getSingleton('adminhtml/session')
                 ->addError($this->errors['recurrency_plan_input_error']);
-            $this->_redirect('adminhtml/recurrencetemplate', ['_secure' => true]);
+            return  $this->_redirect('adminhtml/recurrencetemplate', ['_secure' => true]);
         }
 
         try {
@@ -170,7 +171,7 @@ class Mundipagg_Paymentmodule_Adminhtml_RecurrencetemplateController extends Mag
             $templateRepository->save($templateRoot);
         }catch(Exception $e) {
             Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
-            $this->_redirect('adminhtml/recurrencetemplate', ['_secure' => true]);
+            return $this->_redirect('adminhtml/recurrencetemplate', ['_secure' => true]);
         }
 
         $this->_redirect('adminhtml/recurrencetemplate', ['_secure' => true]);

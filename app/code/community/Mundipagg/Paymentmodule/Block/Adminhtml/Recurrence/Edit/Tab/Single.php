@@ -70,36 +70,15 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Recurrence_Edit_Tab_Single extends
                 }, range(1, 31)),
         ));
 
-        $fieldset->addField('cycle', 'text', array(
-            'label'     => 'Cycles',
-            'class'     => 'required-entry',
-            'required'  => true,
-            'name'      => 'intervals[0][cycles]',
-            'type'      => 'number'
+        $fieldset->addField('intervals', 'text', array(
+            'name'=>'intervals',
+            'class'=>'requried-entry',
+            'value'=> ''
         ));
 
-        $fieldset->addField('frequency', 'select', array(
-            'label'     => 'Interval',
-            'class'     => 'required-entry',
-            'required'  => true,
-            'name'      => 'intervals[0][frequency]',
-            'values'   =>/** @todo improve */
-                array_map(function ($value) {
-                    return ['value' => $value, 'label' => $value];
-                }, range(1, 12))
-        ));
-
-        $fieldset->addField('type', 'select', array(
-            'label'     => 'Interval Type',
-            'class'     => 'required-entry',
-            'required'  => true,
-            'name'      => 'intervals[0][type]',
-            'values'   => [/** @todo improve */
-                ['value' => 'W', 'label' => 'Weekly'],
-                ['value' => 'M', 'label' => 'Monthly'],
-                ['value' => 'Y', 'label' => 'Yearly']
-            ],
-        ));
+        $form->getElement('intervals')->setRenderer(
+            $this->getLayout()->createBlock('paymentmodule/adminhtml_recurrence_edit_tab_single_singleTable')
+        );
 
         $fieldset->addField('trial', 'text', array(
             'label'     => 'Trial',
