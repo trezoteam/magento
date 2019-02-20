@@ -1,6 +1,11 @@
 <?php
 
+require_once Mage::getBaseDir('lib') . '/autoload.php';
+
 use Mundipagg\Integrity\IntegrityController;
+use MundipaggModuleBackend\Core\Factories\Configuration as ConfigurationFactory;
+use MundipaggModuleBackend\Core\Repositories\Configuration;
+use MundipaggModuleBackend\Core\AbstractMundipaggModuleCoreSetup as MPSetup;
 
 class Mundipagg_Paymentmodule_Model_Observer extends Varien_Event_Observer
 {
@@ -118,5 +123,21 @@ class Mundipagg_Paymentmodule_Model_Observer extends Varien_Event_Observer
     private function checkModuleVersion()
     {
         //@todo
+    }
+
+    public function saveConfigurations($event)
+    {
+        Mundipagg_Paymentmodule_Model_MagentoModuleCoreSetup::bootstrap();
+
+        /** @var Mundipagg_Paymentmodule_Model_Config_General $generalConfig */
+        $generalConfig = Mage::getModel('paymentmodule/config_general');
+
+        $config = MPSetup::getModuleConfiguration();
+
+        /** @todo Set all configurations */
+        $config->setDisabled(!$generalConfig->isEnabled());
+
+        $configRepo = new Configuration();
+        $configRepo->save($config);
     }
 }

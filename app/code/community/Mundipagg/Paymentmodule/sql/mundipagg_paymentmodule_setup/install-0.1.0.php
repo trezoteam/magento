@@ -7,7 +7,7 @@ $installer->startSetup();
 $prefix = Mage::getConfig()->getTablePrefix();
 
 $installer->run("
-CREATE TABLE paymentmodule_savedcreditcard
+CREATE TABLE IF NOT EXISTS `". $prefix ."paymentmodule_savedcreditcard`
 (
   id                    INT AUTO_INCREMENT PRIMARY KEY,
   mundipagg_card_id     VARCHAR(255) NOT NULL,

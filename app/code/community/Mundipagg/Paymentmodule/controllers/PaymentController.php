@@ -1,34 +1,43 @@
 <?php
 
+require_once Mage::getBaseDir('lib') . '/autoload.php';
+
+use MundipaggModuleBackend\Core\AbstractMundipaggModuleCoreSetup as MPSetup;
+
 class Mundipagg_Paymentmodule_PaymentController extends Mage_Core_Controller_Front_Action
 {
     public function preDispatch()
     {
         parent::preDispatch();
         Mage::helper('paymentmodule/exception')->initExceptionHandler();
+        Mundipagg_Paymentmodule_Model_MagentoModuleCoreSetup::bootstrap();
     }
 
     public function processPaymentAction()
     {
-        $this->standard = Mage::getModel('paymentmodule/standard');
-        $this->orderId = Mage::getSingleton('checkout/session')->getLastOrderId();
-        $this->order = $this->standard->getOrderByOrderId($this->orderId);
+        if (MPSetup::getModuleConfiguration()->isHubEnabled()) {
 
-        $paymentMethod = $this->order->getPayment()
-            ->getMethodInstance()->getCode();
+            $this->standard = Mage::getModel('paymentmodule/standard');
+            $this->orderId = Mage::getSingleton('checkout/session')->getLastOrderId();
+            $this->order = $this->standard->getOrderByOrderId($this->orderId);
 
-        // @todo find a better name
-        $method = explode("_", $paymentMethod);
+            $paymentMethod = $this->order->getPayment()
+                ->getMethodInstance()->getCode();
 
-        $methodName = $method[1];
-        $methodModel = 'paymentmodule/paymentmethods_standard';
+            // @todo find a better name
+            $method = explode("_", $paymentMethod);
 
-        $model = Mage::getModel($methodModel);
+            $methodName = $method[1];
+            $methodModel = 'paymentmodule/paymentmethods_standard';
 
-        if ($model !== false) {
-            return $model->processPayment($methodName);
+            $model = Mage::getModel($methodModel);
+
+            if ($model !== false) {
+                return $model->processPayment($methodName);
+            }
         }
-
+        $helperLog = Mage::helper('paymentmodule/log');
+        $helperLog->error("Hub is not integrated!");
         $this->_redirect('checkout/onepage/failure', array('_secure' => true));
     }
 }
