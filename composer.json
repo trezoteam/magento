@@ -38,7 +38,8 @@
 
   "autoload": {
     "psr-4": {
-      "Mundipagg\\": "app/"
+      "Mundipagg\\": "app/",
+      "MundipaggModuleBackend\\": "app/code/community/Mundipagg/Paymentmodule/etc/MundipaggModuleBackend/src"
     }
   },
 

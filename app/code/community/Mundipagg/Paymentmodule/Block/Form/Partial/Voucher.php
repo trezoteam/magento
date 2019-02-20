@@ -1,5 +1,9 @@
 <?php
 
+require_once Mage::getBaseDir('lib') . '/autoload.php';
+
+use MundipaggModuleBackend\Core\AbstractMundipaggModuleCoreSetup as MPSetup;
+
 class Mundipagg_Paymentmodule_Block_Form_Partial_Voucher extends Mundipagg_Paymentmodule_Block_Base
 {
     protected function _construct()
@@ -10,8 +14,8 @@ class Mundipagg_Paymentmodule_Block_Form_Partial_Voucher extends Mundipagg_Payme
 
     public function getPublicKey()
     {
-        $generalConfig = Mage::getModel('paymentmodule/config_general');
-        return $generalConfig->getPublicKey();
+        $moduleConfig = MPSetup::getModuleConfiguration();
+        return $moduleConfig->getPublicKey()->getValue();
     }
 
     /**
