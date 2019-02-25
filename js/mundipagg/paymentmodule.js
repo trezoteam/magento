@@ -1,4 +1,4 @@
-var MundiPagg = {
+ var MundiPagg = {
     paymentMethods: {},
     grandTotal: ''
 };
@@ -311,7 +311,7 @@ function getFormData(elementId) {
         exp_month: document.getElementById(elementId + '_mundicheckout-expmonth').value,
         exp_year: document.getElementById(elementId + '_mundicheckout-expyear').value,
         cvv: clearCvv(document.getElementById(elementId + '_mundicheckout-cvv')),
-        holder_document: getCustomerDocument(elementId)
+        holder_document: getCustomerDocument(elementId).replace(/[\/.-]/g, "")
     };
 
     if (!isNewCard(elementId)) {

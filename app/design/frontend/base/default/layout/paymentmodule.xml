@@ -55,6 +55,18 @@
         </reference>
     </onestepcheckout_index_index>
 
+    <firecheckout_index_index translate="label">
+        <update handle="mundipagg_checkout_handle"/>
+        <reference name="before_body_end">
+            <block type="page/html_head" name="mp-paymentmodule-fc-handler" as="mp-paymentmodule-fc-handler" after="-" template="paymentmodule/extras.phtml">
+                <action method="addItem">
+                    <type>js</type>
+                    <name>mundipagg/FireCheckoutModuleHandler.js</name>
+                </action>
+            </block>
+        </reference>
+    </firecheckout_index_index>
+
     <onepagecheckout_index_index translate="label">
         <update handle="mundipagg_checkout_handle"/>
     </onepagecheckout_index_index>
