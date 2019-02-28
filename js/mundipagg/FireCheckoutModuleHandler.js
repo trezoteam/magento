@@ -13,55 +13,42 @@ FireCheckoutModuleHandler.prototype.getCurrentPaymentMethod = function() {
 };
 
 FireCheckoutModuleHandler.prototype.init = function() {
-    return;
-    OnestepcheckoutCore.updater.onRequestCompleteFn = function (transport) {
-        try {
-            var response = JSON.parse(transport.responseText.replace(/\n/g,""));
 
-        } catch(e) {
-            //error
-            var response = {
-                blocks: {}
-            };
+    var targetNode = jQuery('#checkout-review-load')[0];
+
+    var config = { attributes: true, childList: true, subtree: true };
+
+    var callback = function(mutationsList, observer) {
+        var grandTotalHtml = jQuery('#checkout-review-table tr.last .price').html();
+        if (grandTotalHtml == undefined) {
+            return;
         }
 
-        var action = this._getActionFromUrl(transport.request.url);
-        this.removeActionBlocksFromQueue(action, response);
-        this.currentRequest = null;
-        if (this.requestQueue.length > 0) {
-            this._clearQueue();
-            var args = this.requestQueue.shift();
-            this.runRequest(args[0], args[1]);
-        }
+        var grandTotal = grandTotalHtml.replace(/\D/g, '');
+        var grandTotal = parseFloat( grandTotal / 100).toFixed(2);
 
-        // payment form reload fix
-        OSCPayment.initObservers();
+        jQuery('.mundipaggMultiPaymentSubtotal span').html(grandTotalHtml);
 
-        // for Discount purpose...
-        // OSCShipment.switchToMethod();
+        jQuery('.mundipagg-grand-total').each(function () {
+            if(grandTotal > 0) {
+                jQuery(this).val(grandTotal);
+            }
+        });
 
-        if (Object.keys(response).includes('grand_total')) {
-            var grandTotal = response.grand_total.replace(/\D/g, '');
-            grandTotal = parseFloat(grandTotal/100).toFixed(2);
-            jQuery('.mundipaggMultiPaymentSubtotal span').html(response.grand_total);
+        jQuery('.savedCreditCardSelect').each(function () {
+            jQuery(this).change();
+        });
 
-            jQuery('.mundipagg-grand-total').each(function () {
-                if(grandTotal > 0) {
-                    jQuery(this).val(grandTotal);
-                }
-            });
-
-            jQuery('.savedCreditCardSelect').each(function () {
-                jQuery(this).change();
-            });
-
-            MundiPagg.grandTotal = grandTotal;
-            Object.keys(MundiPagg.paymentMethods).each(function(method){
-                MundiPagg.paymentMethods[method].setValueInputAutobalanceEvents();
-                MundiPagg.paymentMethods[method].updateInputBalanceValues();
-            });
-        }
+        MundiPagg.grandTotal = grandTotal;
+        Object.keys(MundiPagg.paymentMethods).each(function(method){
+            MundiPagg.paymentMethods[method].setValueInputAutobalanceEvents();
+            MundiPagg.paymentMethods[method].updateInputBalanceValues();
+        });
     };
+
+    var observer = new MutationObserver(callback);
+
+    observer.observe(targetNode, config);
 };
 
 FireCheckoutModuleHandler.prototype.setSavePaymentInterceptor = function () {
@@ -71,13 +58,13 @@ FireCheckoutModuleHandler.prototype.setSavePaymentInterceptor = function () {
 
         _self.resetBeforeCheckout(save);
 
-        code = _self.methodCode.split('_');
-        methodName = code[1];
-        if(!_self.isHandlingNeeded() || !_self.hasCardInfo()) {
+        if(!_self.isHandlingNeeded()) {
             return _self.placeOrderFunction();
         }
 
-        _self.updateInputBalanceValues();
+        if(!_self.hasCardInfo()) {
+            return _self.placeOrderFunction();
+        }
 
         //for each of creditcard forms
         var type = (_self.methodCode.indexOf("voucher") >= 0) ? 'voucher' : 'creditcard';
@@ -95,7 +82,17 @@ FireCheckoutModuleHandler.prototype.setSavePaymentInterceptor = function () {
                 return;
             }
             _self.tokenCheckTable[element.id] = true;
-            return _self.placeOrderFunction();
+            return;
         }.bind(_self));
+
+        var canSend = true;
+        Object.keys(_self.tokenCheckTable).each(function(key){
+            if (_self.tokenCheckTable[key] === false) {
+                canSend = false;
+            }
+        });
+        if (canSend) {
+            return _self.placeOrderFunction();
+        }
     }.bind(_self));
 };
