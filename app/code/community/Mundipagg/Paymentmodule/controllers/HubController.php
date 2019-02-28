@@ -32,11 +32,9 @@ class Mundipagg_Paymentmodule_HubController
 
         $authorizationCode = $params['authorization_code'];
 
-//        $webhookUrl = Mage::getUrl('paymentmodule/webhook');
-        $webhookUrl = "http://ceb5129d.ngrok.io/index.php/mp-paymentmodule/webhook";
+        $webhookUrl = Mage::getUrl('paymentmodule/webhook');
 
-//        $hubCallbackUrl = Mage::getUrl('paymentmodule/hub/command');
-        $hubCallbackUrl = "http://ceb5129d.ngrok.io/index.php/mp-paymentmodule/hub/command";
+        $hubCallbackUrl = Mage::getUrl('paymentmodule/hub/command');
 
         $hubIntegrationService = new HubIntegrationService();
         $hubIntegrationService->endHubIntegration(
