@@ -87,7 +87,8 @@ class Mundipagg_Paymentmodule_Helper_Paymentformat extends Mage_Core_Helper_Abst
 
     protected function validateOrderAmount($amount)
     {
-        return $amount == $this->getGrandTotalPerOrder();
+        return str_replace(['.', ','], '', $amount) ==
+            str_replace(['.', ','], '', $this->getGrandTotalPerOrder());
     }
 
     public function getGrandTotalPerOrder()
