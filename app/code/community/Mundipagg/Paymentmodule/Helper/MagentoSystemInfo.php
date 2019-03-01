@@ -1,9 +1,18 @@
 <?php
 
 use Mundipagg\Integrity\SystemInfoInterface;
+use Mundipagg_Paymentmodule_Model_MagentoModuleCoreSetup as CoreSetup;
 
 class Mundipagg_Paymentmodule_Helper_MagentoSystemInfo implements SystemInfoInterface
 {
+    private $moduleConfig;
+
+    public function __construct()
+    {
+        CoreSetup::bootstrap();
+        $this->moduleConfig = CoreSetup::getModuleConfiguration();
+    }
+
     public function getModuleVersion()
     {
         $data = \Mage::helper('paymentmodule')->getMetaData();
@@ -82,8 +91,7 @@ class Mundipagg_Paymentmodule_Helper_MagentoSystemInfo implements SystemInfoInte
 
     public function getSecretKey()
     {
-        $generalConfig = \Mage::getModel('paymentmodule/config_general');
-        return $generalConfig->getSecretKey();
+        return $this->moduleConfig->getSecretKey()->getValue();
     }
 
     public function getRequestParams()
