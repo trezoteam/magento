@@ -20,6 +20,7 @@
                     name="payment[<?php echo $elementId; ?>_value]"
                     title="Value (Ex: 100,50)"
                     class="required-entry multipayment-value-input"
+                    class="mundipagg-grand-total"
                     value="">
         </div>
     <?php else: ?>
@@ -28,7 +29,9 @@
                     type="hidden"
                     id="<?php echo $elementId; ?>_value"
                     name="payment[<?php echo $elementId; ?>_value]"
-                    value="<?php echo $grandTotal; ?>">
+                    value="<?php echo $grandTotal; ?>"
+                    class="mundipagg-grand-total"
+            >
         </div>
     <?php endif; ?>
 </div>

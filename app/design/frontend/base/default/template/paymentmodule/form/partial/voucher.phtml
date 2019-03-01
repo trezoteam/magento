@@ -63,7 +63,9 @@ $customerDocument = $this->getCustomerDocument();
                     type="hidden"
                     id="<?php echo $elementId; ?>_value"
                     name="payment[<?php echo $elementId; ?>_value]"
-                    value="<?php echo $grandTotal; ?>">
+                    value="<?php echo $grandTotal; ?>"
+                    class="mundipagg-grand-total"
+                    >
         </div>
     <?php endif; ?>
 
