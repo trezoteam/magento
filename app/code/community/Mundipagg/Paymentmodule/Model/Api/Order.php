@@ -11,7 +11,7 @@ use MundiAPILib\Models\CreateCancelChargeRequest;
 use MundiAPILib\Models\CreateCaptureChargeRequest;
 use MundiAPILib\MundiAPIClient;
 use MundiAPILib\Configuration as MundiAPILIBConfiguration;
-use MundipaggModuleBackend\Core\AbstractMundipaggModuleCoreSetup as MPSetup;
+use Mundipagg_Paymentmodule_Model_MagentoModuleCoreSetup as MPSetup;
 
 class Mundipagg_Paymentmodule_Model_Api_Order
 {

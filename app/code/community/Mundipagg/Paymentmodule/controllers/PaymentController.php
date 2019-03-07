@@ -2,7 +2,7 @@
 
 require_once Mage::getBaseDir('lib') . '/autoload.php';
 
-use MundipaggModuleBackend\Core\AbstractMundipaggModuleCoreSetup as MPSetup;
+use Mundipagg_Paymentmodule_Model_MagentoModuleCoreSetup as MPSetup;
 
 class Mundipagg_Paymentmodule_PaymentController extends Mage_Core_Controller_Front_Action
 {

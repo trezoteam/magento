@@ -12,6 +12,7 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Notification_Integrityviolation ex
 
     public function isViolated()
     {
+        return false; // @todo implementar com x9 do core
         require_once Mage::getBaseDir('lib') . '/autoload.php';
         $integrityController = new IntegrityController(
             \Mage::helper('paymentmodule/MagentoSystemInfo'),

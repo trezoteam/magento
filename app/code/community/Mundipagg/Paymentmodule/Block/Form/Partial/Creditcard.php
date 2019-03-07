@@ -2,7 +2,7 @@
 
 require_once Mage::getBaseDir('lib') . '/autoload.php';
 
-use MundipaggModuleBackend\Core\AbstractMundipaggModuleCoreSetup as MPSetup;
+use Mundipagg_Paymentmodule_Model_MagentoModuleCoreSetup as MPSetup;
 
 class Mundipagg_Paymentmodule_Block_Form_Partial_Creditcard extends Mundipagg_Paymentmodule_Block_Base
 {
