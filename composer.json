@@ -31,6 +31,7 @@
   "autoload": {
     "psr-4": {
       "Mundipagg\\": "app/",
+      "Mundipagg\\Magento\\": "app/code/community/Mundipagg/Paymentmodule/",
       "MundipaggModuleBackend\\": "app/code/community/Mundipagg/Paymentmodule/etc/MundipaggModuleBackend/src"
     }
   },

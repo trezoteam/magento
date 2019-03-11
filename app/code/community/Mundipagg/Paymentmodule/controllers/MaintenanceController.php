@@ -6,7 +6,7 @@ use Mundipagg\Core\Maintenance\Services\InfoBuilderService;
 use \Mundipagg\Integrity\IntegrityException;
 use \Mundipagg\Integrity\IntegrityController;
 
-use Mundipagg_Paymentmodule_Model_MagentoModuleCoreSetup as MagentoModuleCoreSetup;
+use \Mundipagg\Magento\Concrete\MagentoModuleCoreSetup;
 
 class Mundipagg_Paymentmodule_MaintenanceController extends Mage_Core_Controller_Front_Action
 {
@@ -19,7 +19,7 @@ class Mundipagg_Paymentmodule_MaintenanceController extends Mage_Core_Controller
     public function versionAction()
     {
         try {
-            MagentoModuleCoreSetup::bootstrap($this);
+            MagentoModuleCoreSetup::bootstrap();
 
             $infoBuilderService = new InfoBuilderService();
             $infos = $infoBuilderService->buildInfoFromQueryArray(

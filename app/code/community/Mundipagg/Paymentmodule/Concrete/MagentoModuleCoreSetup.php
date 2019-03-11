@@ -1,5 +1,8 @@
 <?php
 
+namespace Mundipagg\Magento\Concrete;
+
+use Mage;
 use Mundipagg\Core\Kernel\Abstractions\AbstractModuleCoreSetup;
 use Mundipagg\Core\Kernel\Factories\ConfigurationFactory;
 use Mundipagg\Core\Kernel\Repositories\ConfigurationRepository;
@@ -9,7 +12,7 @@ use Mundipagg_Paymentmodule_Model_MagentoPlatformDatabaseDecorator as MagentoPla
 use Mundipagg_Paymentmodule_Model_Boleto as MagentoPlatformProductDecorator;
 use Mundipagg_Paymentmodule_Model_Boleto as MagentoPlatformFormatService;
 
-final class Mundipagg_Paymentmodule_Model_MagentoModuleCoreSetup extends AbstractModuleCoreSetup
+final class MagentoModuleCoreSetup extends AbstractModuleCoreSetup
 {
     static protected function setConfig()
     {
@@ -17,7 +20,9 @@ final class Mundipagg_Paymentmodule_Model_MagentoModuleCoreSetup extends Abstrac
             AbstractModuleCoreSetup::CONCRETE_CART_DECORATOR_CLASS => MagentoPlatformCartDecorator::class,
             AbstractModuleCoreSetup::CONCRETE_DATABASE_DECORATOR_CLASS => MagentoPlatformDatabaseDecorator::class,
             AbstractModuleCoreSetup::CONCRETE_PRODUCT_DECORATOR_CLASS => MagentoPlatformProductDecorator::class,
-            AbstractModuleCoreSetup::CONCRETE_FORMAT_SERVICE => MagentoPlatformFormatService::class
+            AbstractModuleCoreSetup::CONCRETE_FORMAT_SERVICE => MagentoPlatformFormatService::class,
+            AbstractModuleCoreSetup::CONCRETE_PLATFORM_ORDER_DECORATOR_CLASS => MagentoOrderDecorator::class,
+            AbstractModuleCoreSetup::CONCRETE_PLATFORM_INVOICE_DECORATOR_CLASS => MagentoInvoiceDecorator::class
         ];
     }
 
