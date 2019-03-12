@@ -1,0 +1,120 @@
+<?php $_htmlId      = $this->getElement()->getHtmlId() ?>
+<?php $_htmlClass   = $this->getElement()->getClass() ?>
+<?php $_htmlName    = $this->getElement()->getName() ?>
+<tr>
+    <td class="label"><?php echo $this->getElement()->getLabel() ?></td>
+    <td colspan="16" class="grid tier">
+    <table cellspacing="0" class="data border" id="tiers_table">
+        <col width="100" />
+        <col width="75" />
+        <col width="80" />
+        <col width="60"/>
+        <col width="20" />
+        <col width="1" />
+        <thead>
+            <tr class="headings">
+                <th><?php echo Mage::helper('sales')->__('Cycles') ?></th>
+                <th><?php echo Mage::helper('catalog')->__('Interval') ?></th>
+                <th></th>
+                <th><?php echo Mage::helper('catalog')->__('Discount') ?></th>
+                <th><?php echo Mage::helper('catalog')->__('Type') ?></th>
+                <th class="last"><?php echo Mage::helper('catalog')->__('Action') ?></th>
+            </tr>
+        </thead>
+        <tbody id="<?php echo $_htmlId ?>_container"></tbody>
+        <tfoot>
+            <tr>
+                <td></td>
+                <td colspan="5" class="a-right"><?php echo $this->getAddButtonHtml() ?></td>
+            </tr>
+        </tfoot>
+    </table>
+
+<script type="text/javascript">
+//<![CDATA[
+var tierPriceRowTemplate = '<tr>'
+    + '<td>'
+    + '<input type="number" min="1" class="<?php echo $_htmlClass ?> required-entry validate-greater-than-zero" name="<?php echo $_htmlName ?>[{{index}}][cycles]" id="mp-recurrency-{{index}}-cycles">'
+    + '</td>'
+
+    + '<td><select class="<?php echo $_htmlClass ?> required-entry" name="<?php echo $_htmlName ?>[{{index}}][frequency]" id="mp-recurrency-{{index}}-frequency">'
+    <?php foreach (range(1, 12) as $int): ?>
+    + '<option value="<?php echo $int ?>"><?php echo $this->jsQuoteEscape($this->escapeHtml($int )) ?></option>'
+    <?php endforeach ?>
+    + '</select></td>'
+
+    + '<td><select class="<?php echo $_htmlClass ?> required-entry" name="<?php echo $_htmlName ?>[{{index}}][type]" id="mp-recurrency-{{index}}-type">'
+    <?php foreach ($this->getIntervalTypesArray() as $type): ?>
+    + '<option value="<?php echo $type['code'] ?>"><?php echo $this->jsQuoteEscape($this->escapeHtml($type['name'])) ?></option>'
+    <?php endforeach ?>
+    + '</select></td>'
+
+    + '<td>'
+    + '<input type="number" min="1" class="<?php echo $_htmlClass ?> required-entry validate-greater-than-zero" name="<?php echo $_htmlName ?>[{{index}}][discountValue]" value="{{qty}}" id="mp-recurrency-{{index}}-discountValue" />'
+    + '</td>'
+
+    + '<td><select class="<?php echo $_htmlClass ?> required-entry" name="<?php echo $_htmlName ?>[{{index}}][discountType]" id="mp-recurrency-{{index}}-discountType">'
+    <?php foreach ($this->getDiscountTypesArray() as $type): ?>
+    + '<option value="<?php echo $type['code'] ?>"><?php echo $this->jsQuoteEscape($this->escapeHtml($type['name'])) ?></option>'
+    <?php endforeach ?>
+    + '</select></td>'
+
+    + '<td class="last">'
+    + '<button title="<?php echo Mage::helper('core')->jsQuoteEscape(Mage::helper('catalog')->__("Delete Cycle")) ?>" type="button" class="scalable delete icon-btn delete-product-option" id="tier_price_row_{{index}}_delete_button" onclick="return tierPriceControl.deleteItem(event);">'
+    + '<span><span><span><?php echo Mage::helper('core')->jsQuoteEscape(Mage::helper('catalog')->__("Delete")) ?></span></span></span></button></td>'
+    + '</tr>';
+
+var tierPriceControl = {
+    template: new Template(tierPriceRowTemplate, new RegExp('(^|.|\\r|\\n)({{\\s*(\\w+)\\s*}})', "")),
+    itemsCount: 0,
+    addItem : function () {
+        var data = {
+            cycles: '',
+            frequency: '',
+            type: '',
+            discountValue: '',
+            discountType: '',
+            index: this.itemsCount++
+        };
+
+        if(arguments.length >= 5) {
+            data.cycles = arguments[0];
+            data.frequency      = arguments[1];
+            data.type        = arguments[2];
+            data.discountValue      = arguments[3];
+            data.discountType      = arguments[4];
+        }
+
+        Element.insert($('<?php echo $_htmlId ?>_container'), {
+            bottom : this.template.evaluate(data)
+        });
+
+        $('mp-recurrency-' + data.index + '-cycles').value = data.cycles;
+        $('mp-recurrency-' + data.index + '-frequency').value    = data.frequency;
+        $('mp-recurrency-' + data.index + '-type').value    = data.type;
+        $('mp-recurrency-' + data.index + '-discountValue').value    = data.discountValue;
+        $('mp-recurrency-' + data.index + '-discountType').value    = data.discountType;
+
+        $('<?php echo $_htmlId ?>_container').select('input', 'select').each(function(el){ Event.observe(el, 'change', el.setHasChanges.bind(el)); });
+    },
+    deleteItem: function(event) {
+        var tr = Event.findElement(event, 'tr');
+        if (tr) {
+            Element.remove(tr);
+        }
+        return false;
+    }
+};
+
+<?php foreach ($this->getEditData() as $_item): ?>
+tierPriceControl.addItem(
+    '<?php echo $_item->getCycles() ?>',
+    '<?php echo $_item->getFrequency() ?>',
+    '<?php echo $_item->getIntervalType() ?>',
+    '<?php echo $_item->getDiscountValue() ?>',
+    '<?php echo $_item->getDiscountType() ?>',
+);
+<?php endforeach; ?>
+//]]>
+</script>
+</td></tr>

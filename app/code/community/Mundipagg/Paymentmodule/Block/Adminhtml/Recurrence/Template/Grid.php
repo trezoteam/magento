@@ -74,6 +74,38 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Recurrence_Template_Grid extends M
             'renderer' => 'Mundipagg_Paymentmodule_Block_Adminhtml_Recurrence_Template_PaymentMethodColumn'
         ));
 
+        $this->addColumn('due_date', array(
+            'header' => $this->__('Due Date'),
+            'index'  => 'due_date',
+            'filter' => false,
+            'sortable'  => false,
+            'renderer' => 'Mundipagg_Paymentmodule_Block_Adminhtml_Recurrence_Template_DueDateColumn'
+        ));
+
+        $this->addColumn('cycles', array(
+            'header' => $this->__('Cycles'),
+            'index'  => 'cycles',
+            'filter' => false,
+            'sortable'  => false,
+            'renderer' => 'Mundipagg_Paymentmodule_Block_Adminhtml_Recurrence_Template_CyclesColumn'
+        ));
+
+        $this->addColumn('discounts', array(
+            'header' => $this->__('Discounts'),
+            'index'  => 'discounts',
+            'filter' => false,
+            'sortable'  => false,
+            'renderer' => 'Mundipagg_Paymentmodule_Block_Adminhtml_Recurrence_Template_DiscountColumn'
+        ));
+
+        $this->addColumn('installment', array(
+            'header' => $this->__('Installment'),
+            'index'  => 'installment',
+            'filter' => false,
+            'sortable'  => false,
+            'renderer' => 'Mundipagg_Paymentmodule_Block_Adminhtml_Recurrence_Template_InstallmentColumn'
+        ));
+
         $this->addColumn('action_delete', array(
             'header' => $helper->__(''),
             'width'     => '5%',

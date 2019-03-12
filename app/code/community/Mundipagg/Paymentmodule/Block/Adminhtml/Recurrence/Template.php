@@ -8,7 +8,16 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Recurrence_Template extends Mage_A
         $this->_controller = 'adminhtml_recurrence_template';
         $this->_headerText = Mage::helper('paymentmodule')
             ->__('Recurrence templates');
- 
+
         parent::__construct();
+
+        $recurrenceConfig = Mage::getModel('paymentmodule/config_recurrence');
+
+        if (
+            !$recurrenceConfig->isSingleEnabled() &&
+            !$recurrenceConfig->isPlanEnabled()
+        ) {
+            $this->_removeButton('add');
+        }
     }
 }
