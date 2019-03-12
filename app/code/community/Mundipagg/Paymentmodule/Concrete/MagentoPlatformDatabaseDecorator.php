@@ -1,21 +1,25 @@
 <?php
 
-use MundipaggModuleBackend\Core\Repositories\Decorators\AbstractPlatformDatabaseDecorator;
+namespace Mundipagg\Magento\Concrete;
 
-final class Mundipagg_Paymentmodule_Model_MagentoPlatformDatabaseDecorator
-    extends AbstractPlatformDatabaseDecorator
+use Mage;
+use Mundipagg\Core\Kernel\Abstractions\AbstractDatabaseDecorator;
+
+final class MagentoPlatformDatabaseDecorator extends AbstractDatabaseDecorator
 {
     protected function setTableArray()
     {
         $this->tableArray = [
-            "CONFIGURATION_TABLE" =>  $this->table_prefix . "paymentmodule_configuration",
+            AbstractDatabaseDecorator::TABLE_MODULE_CONFIGURATION =>
+                $this->table_prefix . "paymentmodule_configuration",
+
+            AbstractDatabaseDecorator::TABLE_HUB_INSTALL_TOKEN =>
+                $this->table_prefix . "paymentmodule_hub_install_token",
 
             "TEMPLATE_TABLE" =>  $this->table_prefix . "paymentmodule_recurrencetemplate",
             "TEMPLATE_REPETITION_TABLE" =>  $this->table_prefix . "paymentmodule_recurrencetemplaterepetition",
             "RECURRENCY_PRODUCT_TABLE" => $this->table_prefix . "paymentmodule_recurrenceproduct",
             "RECURRENCY_SUBPRODUCT_TABLE" => $this->table_prefix . "paymentmodule_recurrencesubproduct",
-
-            "HUB_INSTALL_TOKEN" => $this->table_prefix . "paymentmodule_hub_install_token"
         ];
     }
     protected function doQuery($query)
@@ -26,7 +30,7 @@ final class Mundipagg_Paymentmodule_Model_MagentoPlatformDatabaseDecorator
     }
     protected function formatResults($queryResult)
     {
-        $retn = new stdClass;
+        $retn = new \StdClass;
         $retn->num_rows = count($queryResult);
         $retn->row = array();
         if (!empty($queryResult)) {

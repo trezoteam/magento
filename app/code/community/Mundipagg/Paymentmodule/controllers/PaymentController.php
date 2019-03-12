@@ -2,7 +2,7 @@
 
 require_once Mage::getBaseDir('lib') . '/autoload.php';
 
-use MundipaggModuleBackend\Core\AbstractMundipaggModuleCoreSetup as MPSetup;
+use Mundipagg\Magento\Concrete\MagentoModuleCoreSetup as MPSetup;
 
 class Mundipagg_Paymentmodule_PaymentController extends Mage_Core_Controller_Front_Action
 {
@@ -10,7 +10,7 @@ class Mundipagg_Paymentmodule_PaymentController extends Mage_Core_Controller_Fro
     {
         parent::preDispatch();
         Mage::helper('paymentmodule/exception')->initExceptionHandler();
-        Mundipagg_Paymentmodule_Model_MagentoModuleCoreSetup::bootstrap();
+        MPSetup::bootstrap();
     }
 
     public function processPaymentAction()

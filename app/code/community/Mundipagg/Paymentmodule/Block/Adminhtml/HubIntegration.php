@@ -2,14 +2,14 @@
 
 require_once Mage::getBaseDir('lib') . '/autoload.php';
 
-use MundipaggModuleBackend\Core\AbstractMundipaggModuleCoreSetup as MPSetup;
+use Mundipagg\Magento\Concrete\MagentoModuleCoreSetup as MPSetup;
 
 class Mundipagg_Paymentmodule_Block_Adminhtml_HubIntegration
     extends Mage_Adminhtml_Block_System_Config_Form_Field
 {
     protected function _getElementHtml(Varien_Data_Form_Element_Abstract $element)
     {
-        Mundipagg_Paymentmodule_Model_MagentoModuleCoreSetup::bootstrap();
+        MPSetup::bootstrap();
 
         $moduleConfig = MPSetup::getModuleConfiguration();
         $hubPublicAppKey = MPSetup::getHubAppPublicAppKey();

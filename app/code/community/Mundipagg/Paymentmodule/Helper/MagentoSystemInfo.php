@@ -1,7 +1,7 @@
 <?php
 
 use Mundipagg\Integrity\SystemInfoInterface;
-use Mundipagg_Paymentmodule_Model_MagentoModuleCoreSetup as CoreSetup;
+use Mundipagg\Magento\Concrete\MagentoModuleCoreSetup as CoreSetup;
 
 class Mundipagg_Paymentmodule_Helper_MagentoSystemInfo implements SystemInfoInterface
 {

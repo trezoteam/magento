@@ -1,5 +1,9 @@
 <?php
 
+require_once Mage::getBaseDir('lib') . '/autoload.php';
+
+use Mundipagg\Core\Maintenance\Services\IntegrityInfoRetrieverService;
+use Mundipagg\Magento\Concrete\MagentoModuleCoreSetup;
 use Mundipagg\Integrity\IntegrityController;
 
 class Mundipagg_Paymentmodule_Block_Adminhtml_Notification_Integrityviolation extends Mage_Adminhtml_Block_Template
@@ -12,17 +16,27 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Notification_Integrityviolation ex
 
     public function isViolated()
     {
-        require_once Mage::getBaseDir('lib') . '/autoload.php';
-        $integrityController = new IntegrityController(
-            \Mage::helper('paymentmodule/MagentoSystemInfo'),
-            \Mage::helper('paymentmodule/MagentoOrderInfo')
-        );
-        $integrityCheck = $integrityController->model->getIntegrityCheck();
+        MagentoModuleCoreSetup::bootstrap();
+        $integrityService = new IntegrityInfoRetrieverService();
+        $integrity = $integrityService->retrieveInfo("");
 
+        return $this->isModuleViolated($integrity->module) ||
+            $this->isModuleCoreViolated($integrity->core);
+    }
+
+    public function isModuleViolated($moduleInfo)
+    {
         return
-            count($integrityCheck['alteredFiles']) > 0 ||
-            count($integrityCheck['newFiles']) > 0 ||
-            count($integrityCheck['unreadableFiles']) > 0
-        ;
+            count($moduleInfo->altered) > 0 ||
+            count($moduleInfo->removed) > 0 ||
+            count($moduleInfo->added) > 0;
+    }
+
+    public function isModuleCoreViolated($moduleCoreInfo)
+    {
+        return
+            count($moduleCoreInfo->altered) > 0 ||
+            count($moduleCoreInfo->removed) > 0 ||
+            count($moduleCoreInfo->added) > 0;
     }
 }

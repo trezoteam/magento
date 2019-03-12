@@ -2,8 +2,11 @@
 
 require_once Mage::getBaseDir('lib') . '/autoload.php';
 
+use Mundipagg\Core\Maintenance\Services\InfoBuilderService;
 use \Mundipagg\Integrity\IntegrityException;
 use \Mundipagg\Integrity\IntegrityController;
+
+use \Mundipagg\Magento\Concrete\MagentoModuleCoreSetup;
 
 class Mundipagg_Paymentmodule_MaintenanceController extends Mage_Core_Controller_Front_Action
 {
@@ -16,11 +19,25 @@ class Mundipagg_Paymentmodule_MaintenanceController extends Mage_Core_Controller
     public function versionAction()
     {
         try {
-            $this->getIntegrityController()->renderSystemInfo();
+            MagentoModuleCoreSetup::bootstrap();
+
+            $infoBuilderService = new InfoBuilderService();
+            $infos = $infoBuilderService->buildInfoFromQueryArray(
+                \Mage::app()->getRequest()->getParams()
+            );
+
+            $output = json_encode($infos, JSON_PRETTY_PRINT);
+            if (is_string($infos)) {
+                $output = $infos;
+            }
+
+            return $this->getResponse()
+                ->setBody($output);
+
         } catch (IntegrityException $e) {
             $this->getResponse()
-                    ->setBody($e->getMessage())
-                    ->setHeader($e->getHeader(), $e->getCode(), true);
+                ->setBody($e->getMessage())
+                ->setHeader($e->getHeader(), $e->getCode(), true);
             return;
         }
     }
