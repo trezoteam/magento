@@ -11,14 +11,14 @@ use MundiAPILib\Models\CreateCancelChargeRequest;
 use MundiAPILib\Models\CreateCaptureChargeRequest;
 use MundiAPILib\MundiAPIClient;
 use MundiAPILib\Configuration as MundiAPILIBConfiguration;
-use Mundipagg_Paymentmodule_Model_MagentoModuleCoreSetup as MPSetup;
+use Mundipagg\Magento\Concrete\MagentoModuleCoreSetup as MPSetup;
 
 class Mundipagg_Paymentmodule_Model_Api_Order
 {
 
     public function __construct()
     {
-        Mundipagg_Paymentmodule_Model_MagentoModuleCoreSetup::bootstrap();
+        MPSetup::bootstrap();
     }
 
     /**

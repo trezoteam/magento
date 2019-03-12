@@ -8,7 +8,6 @@ use Mundipagg\Core\Kernel\Factories\ConfigurationFactory;
 use Mundipagg\Core\Kernel\Repositories\ConfigurationRepository;
 
 use Mundipagg_Paymentmodule_Model_Boleto as MagentoPlatformCartDecorator;
-use Mundipagg_Paymentmodule_Model_MagentoPlatformDatabaseDecorator as MagentoPlatformDatabaseDecorator;
 use Mundipagg_Paymentmodule_Model_Boleto as MagentoPlatformProductDecorator;
 use Mundipagg_Paymentmodule_Model_Boleto as MagentoPlatformFormatService;
 

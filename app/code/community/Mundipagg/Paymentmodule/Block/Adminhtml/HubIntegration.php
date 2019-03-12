@@ -2,7 +2,7 @@
 
 require_once Mage::getBaseDir('lib') . '/autoload.php';
 
-use Mundipagg_Paymentmodule_Model_MagentoModuleCoreSetup as MPSetup;
+use Mundipagg\Magento\Concrete\MagentoModuleCoreSetup as MPSetup;
 
 class Mundipagg_Paymentmodule_Block_Adminhtml_HubIntegration
     extends Mage_Adminhtml_Block_System_Config_Form_Field

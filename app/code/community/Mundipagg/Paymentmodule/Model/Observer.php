@@ -2,7 +2,7 @@
 
 require_once Mage::getBaseDir('lib') . '/autoload.php';
 
-use Mundipagg_Paymentmodule_Model_MagentoModuleCoreSetup as MPSetup;
+use Mundipagg\Magento\Concrete\MagentoModuleCoreSetup as MPSetup;
 use Mundipagg\Core\Kernel\Repositories\ConfigurationRepository;
 
 

@@ -1,9 +1,11 @@
 <?php
 
+namespace Mundipagg\Magento\Concrete;
+
+use Mage;
 use Mundipagg\Core\Kernel\Abstractions\AbstractDatabaseDecorator;
 
-final class Mundipagg_Paymentmodule_Model_MagentoPlatformDatabaseDecorator
-    extends AbstractDatabaseDecorator
+final class MagentoPlatformDatabaseDecorator extends AbstractDatabaseDecorator
 {
     protected function setTableArray()
     {
@@ -28,7 +30,7 @@ final class Mundipagg_Paymentmodule_Model_MagentoPlatformDatabaseDecorator
     }
     protected function formatResults($queryResult)
     {
-        $retn = new stdClass;
+        $retn = new \StdClass;
         $retn->num_rows = count($queryResult);
         $retn->row = array();
         if (!empty($queryResult)) {
