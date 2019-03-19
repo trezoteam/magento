@@ -1,4 +1,4 @@
-function initHub(hubPublicAppKey, languageCode, installId = null) {
+function initHub(hubPublicAppKey, languageCode, installId = null, storeId = 0) {
     // hub config
     var config = {
         publicAppKey : hubPublicAppKey,
@@ -54,9 +54,10 @@ function initHub(hubPublicAppKey, languageCode, installId = null) {
 
         if (installId === null) {
             jQuery.ajax({
-                url: "/index.php/mp-paymentmodule/hub/generateintegrationtoken/",
+                url: "/index.php/mp-paymentmodule/hub/generateintegrationtoken/?storeId=" + storeId,
                 success: function(result){
                     hubUrl += '%26install_token%2F' + result;
+                    hubUrl += '%2FstoreId%2F' + storeId;
                     var popUp = window.open(hubUrl, null,'height=600,width=800');
                     if (window.focus) {popUp.focus()}
 
@@ -67,7 +68,7 @@ function initHub(hubPublicAppKey, languageCode, installId = null) {
                     //check hub status.
                     var checkHubStatus = function(){
                         jQuery.ajax({
-                            url: "/index.php/mp-paymentmodule/hub/status/",
+                            url: "/index.php/mp-paymentmodule/hub/status/?storeId=" + storeId,
                             success: function(result) {
                                 if (result === 'enabled') {
                                     window.location.reload(true);
@@ -82,6 +83,7 @@ function initHub(hubPublicAppKey, languageCode, installId = null) {
             });
         }
         else {
+
             var popUp = window.open(hubUrl, null,'height=600,width=800');
             if (window.focus) {popUp.focus()}
 

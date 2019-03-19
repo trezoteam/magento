@@ -37,22 +37,30 @@ final class MagentoModuleCoreSetup extends AbstractModuleCoreSetup
 
     protected static function loadModuleConfiguration()
     {
+        $store = Mage::getSingleton('adminhtml/config_data')->getScopeId();
+        if ($store === null) {
+            $store = Mage::app()->getStore()->getId();
+        }
+
         $configurationRepository = new ConfigurationRepository;
 
-        $savedConfig = $configurationRepository->find(1);
+        $savedConfig = $configurationRepository->findByStore($store);
         if ($savedConfig !== null) {
             self::$moduleConfig = $savedConfig;
             return;
         }
 
-        $moduleConfig = self::getModuleConfigDataViaReflection();
-
         $configData = new \stdClass;
-        $configData->boletoEnabled = $moduleConfig["boleto_status"] === '1';
-        $configData->creditCardEnabled = $moduleConfig["credit_card_status"] === '1';
-        $configData->boletoCreditCardEnabled = $moduleConfig["boletoCreditCard_status"] === '1';
-        $configData->twoCreditCardsEnabled = $moduleConfig["credit_card_two_credit_cards_enabled"] === 'true';
+        $configData->boletoEnabled =
+            Mage::getModel('paymentmodule/config_boleto')->isEnabled();
+        $configData->creditCardEnabled =
+            Mage::getModel('paymentmodule/config_card')->isEnabled();
+        $configData->boletoCreditCardEnabled =
+            Mage::getModel('paymentmodule/config_boletocc')->isEnabled();
+        $configData->twoCreditCardsEnabled =
+            Mage::getModel('paymentmodule/config_twocreditcards')->isEnabled();
         $configData->hubInstallId = null;
+        $configData->storeId = $store;
 
         $configData->cardConfigs = [];//self::getCardConfigs($storeConfig);
 
@@ -62,6 +70,17 @@ final class MagentoModuleCoreSetup extends AbstractModuleCoreSetup
         );
 
         self::$moduleConfig = $config;
+    }
+
+
+    public static function loadModuleConfigurationByStore($storeId)
+    {
+        $configurationRepository = new ConfigurationRepository;
+
+        $savedConfig = $configurationRepository->findByStore($storeId);
+        if ($savedConfig !== null) {
+            return $savedConfig;
+        }
     }
 
     protected static function setModuleVersion()
@@ -91,32 +110,4 @@ final class MagentoModuleCoreSetup extends AbstractModuleCoreSetup
     {
         // TODO: Implement _formatToCurrency() method.
     }
-
-    private static function getModuleConfigDataViaReflection()
-    {
-        try {
-            $config = self::$platformRoot->config;
-            $configReflection = new \ReflectionClass(Config::class);
-
-            $dataProperty = $configReflection->getProperty('data');
-            $dataProperty->setAccessible(true);
-
-            $data = $dataProperty->getValue($config);
-            $dataProperty->setAccessible(true);
-            $moduleConfig = [];
-
-            foreach ($data as $key => $value)
-            {
-                if (strpos($key, 'payment_mundipagg') !== false) {
-                    $moduleConfig[str_replace('payment_mundipagg_', '', $key)] = $value;
-                }
-            }
-
-            return $moduleConfig;
-
-        } catch (\Exception $e) {
-            return [];
-        }
-    }
-
 }

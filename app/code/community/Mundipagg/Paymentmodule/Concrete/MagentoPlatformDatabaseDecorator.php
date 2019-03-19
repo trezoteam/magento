@@ -11,15 +11,15 @@ final class MagentoPlatformDatabaseDecorator extends AbstractDatabaseDecorator
     {
         $this->tableArray = [
             AbstractDatabaseDecorator::TABLE_MODULE_CONFIGURATION =>
-                $this->table_prefix . "paymentmodule_configuration",
+                $this->tablePrefix . "paymentmodule_configuration",
 
             AbstractDatabaseDecorator::TABLE_HUB_INSTALL_TOKEN =>
-                $this->table_prefix . "paymentmodule_hub_install_token",
+                $this->tablePrefix . "paymentmodule_hub_install_token",
 
-            "TEMPLATE_TABLE" =>  $this->table_prefix . "paymentmodule_recurrencetemplate",
-            "TEMPLATE_REPETITION_TABLE" =>  $this->table_prefix . "paymentmodule_recurrencetemplaterepetition",
-            "RECURRENCY_PRODUCT_TABLE" => $this->table_prefix . "paymentmodule_recurrenceproduct",
-            "RECURRENCY_SUBPRODUCT_TABLE" => $this->table_prefix . "paymentmodule_recurrencesubproduct",
+            "TEMPLATE_TABLE" =>  $this->tablePrefix . "paymentmodule_recurrencetemplate",
+            "TEMPLATE_REPETITION_TABLE" =>  $this->tablePrefix . "paymentmodule_recurrencetemplaterepetition",
+            "RECURRENCY_PRODUCT_TABLE" => $this->tablePrefix . "paymentmodule_recurrenceproduct",
+            "RECURRENCY_SUBPRODUCT_TABLE" => $this->tablePrefix . "paymentmodule_recurrencesubproduct",
         ];
     }
     protected function doQuery($query)
