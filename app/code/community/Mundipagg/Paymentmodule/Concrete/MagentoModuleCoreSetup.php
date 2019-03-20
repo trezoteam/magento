@@ -110,4 +110,9 @@ final class MagentoModuleCoreSetup extends AbstractModuleCoreSetup
     {
         // TODO: Implement _formatToCurrency() method.
     }
+
+    protected static function setPlatformVersion()
+    {
+        // TODO: Implement setPlatformVersion() method.
+    }
 }

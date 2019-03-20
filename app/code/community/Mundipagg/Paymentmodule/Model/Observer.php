@@ -2,6 +2,8 @@
 
 require_once Mage::getBaseDir('lib') . '/autoload.php';
 
+use Mundipagg\Core\Kernel\Aggregates\Configuration;
+use Mundipagg\Core\Kernel\Factories\ConfigurationFactory;
 use Mundipagg\Magento\Concrete\MagentoModuleCoreSetup as MPSetup;
 use Mundipagg\Core\Kernel\Repositories\ConfigurationRepository;
 
@@ -128,15 +130,66 @@ class Mundipagg_Paymentmodule_Model_Observer extends Varien_Event_Observer
     {
         MPSetup::bootstrap();
 
+        $params = Mage::app()->getRequest()->getParams();
+
         /** @var Mundipagg_Paymentmodule_Model_Config_General $generalConfig */
         $generalConfig = Mage::getModel('paymentmodule/config_general');
 
         $config = MPSetup::getModuleConfiguration();
 
         /** @todo Set all configurations */
-        $config->setDisabled(!$generalConfig->isEnabled());
+        $config->setEnabled($generalConfig->isEnabled());
+
+        $defaultConfig = $this->getDefaultConfigBySaveConfigurations($config, $params['groups']);
+
+        $config->setDefaultConfiguration($defaultConfig->configuration);
+
+        $config->addDefaultAttributes($defaultConfig->attributes);
 
         $configRepo = new ConfigurationRepository();
         $configRepo->save($config);
+    }
+
+    protected function getDefaultConfigBySaveConfigurations(Configuration $config, $params)
+    {
+        $defaultConfig = MPSetup::loadModuleConfigurationByStore(0);
+
+        $attributes = []; // Atributos que usarao o default
+        $defaultValues = []; // Valores dos attributos da config default
+
+
+        $oReflectionClass = new ReflectionClass(Configuration::class);
+        foreach ( $oReflectionClass->getProperties() as $item) {
+            $attributes[$item->getName()] = false;
+        };
+
+        // get general config
+        $generalConfig = $params['general_group']['fields'];
+        foreach ($generalConfig as $key => $value) {
+            if ($key == 'hub_integration') {
+
+                // definindo o atributo para usar a config default
+                $attributes['getSecretKey'] = true;
+                $attributes['getPublicKey'] = true;
+                $attributes['getHubInstallId'] = true;
+                $attributes['isHubEnabled'] = true;
+
+                // pegando o valor da config default para criar um objeto de configuração default
+                $defaultValues['keys'][Configuration::KEY_SECRET] = $defaultConfig->getSecretKey();
+                $defaultValues['keys'][Configuration::KEY_PUBLIC] = $defaultConfig->getPublicKey();
+                $defaultValues['hubInstallId'] = $defaultConfig->getHubInstallId();
+            }
+        }
+
+        //Criar configuração default para a store
+        $configFactory = new ConfigurationFactory();
+        $configuration = $configFactory->createFromJsonData(json_encode($defaultValues));
+
+        $result = new \StdClass();
+        $result->attributes = $attributes;
+        $result->configuration = $configuration;
+
+
+        return $result;
     }
 }
