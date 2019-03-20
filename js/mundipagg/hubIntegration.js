@@ -33,13 +33,13 @@ function initHub(hubPublicAppKey, languageCode, installId = null) {
         //getting formUrl;
         var hubUrl = (function(config){
             var hub = new Hub(config);
-            var url = hub.urlToIntegrate;
+            var url = (hub.language == "pt-br") ? hub.urlToIntegratePtBr : hub.urlToIntegrate;
             url = url.replace("{language}", hub.locations[hub.language].language);
             url = url.replace("{publicAppKey}", config.publicAppKey);
             url = url.replace("{redirectUrl}", config.redirectUrl);
 
             if (config.installId) {
-                url = hub.urlToView;
+                url = (hub.language == "pt-br") ? hub.urlToViewPtBr : hub.urlToView;
                 url = url.replace("{language}", hub.language);
                 url = url.replace("{publicAppKey}", config.publicAppKey);
                 url = url.replace("{installId}", config.installId);
