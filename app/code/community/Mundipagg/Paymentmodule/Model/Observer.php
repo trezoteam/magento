@@ -152,16 +152,11 @@ class Mundipagg_Paymentmodule_Model_Observer extends Varien_Event_Observer
 
     protected function getDefaultConfigBySaveConfigurations(Configuration $config, $params)
     {
-        $defaultConfig = MPSetup::loadModuleConfigurationByStore(0);
+        $defaultConfig = MPSetup::loadModuleConfigurationByStore(Configuration::DEFAULT_STORE);
 
-        $attributes = []; // Atributos que usarao o default
+        $attributes = []; // metodos que usarao o default  **mudar nome
         $defaultValues = []; // Valores dos attributos da config default
 
-
-        $oReflectionClass = new ReflectionClass(Configuration::class);
-        foreach ( $oReflectionClass->getProperties() as $item) {
-            $attributes[$item->getName()] = false;
-        };
 
         // get general config
         $generalConfig = $params['general_group']['fields'];
@@ -188,7 +183,6 @@ class Mundipagg_Paymentmodule_Model_Observer extends Varien_Event_Observer
         $result = new \StdClass();
         $result->attributes = $attributes;
         $result->configuration = $configuration;
-
 
         return $result;
     }
