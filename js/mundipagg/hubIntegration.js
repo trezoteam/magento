@@ -1,13 +1,17 @@
 function initHub(hubPublicAppKey, languageCode, installId = null) {
+
+    var endpointHub = "index.php/mp-paymentmodule/hub/validateInstall/";
+    var redirectUrl = window.location.origin + "/" + endpointHub;
+
+    if (window.location.href.indexOf("index.php") > 0) {
+        redirectUrl = window.location.href.split("index.php");
+        redirectUrl = redirectUrl[0] + endpointHub;
+    }
+
     // hub config
     var config = {
         publicAppKey : hubPublicAppKey,
-        redirectUrl :  encodeURIComponent(
-            window.location.href.replace(
-                'index.php/admin/system_config/edit/section/mundipagg_config',
-                'index.php/mp-paymentmodule/hub/validateInstall'
-            ).replace('/admin/','/')
-        ),
+        redirectUrl :  encodeURIComponent(redirectUrl),
         language: languageCode
     };
 
