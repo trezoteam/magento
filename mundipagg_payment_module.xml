@@ -1,5 +1,5 @@
 <_>
-   <form_key>PfusBhMqVcjfLXYN</form_key>
+   <form_key>5W0EW1OWosUt05Ap</form_key>
    <name>Mundipagg_Payment_Module</name>
    <channel>community</channel>
    <version_ids>
@@ -15,9 +15,9 @@ IMPORTANTE
 Em qualquer procedimento de instalação ou update existem riscos, aconselhamos sempre criar backups de sua loja e efetuar qualquer procedimento em ambiente de desenvolvimento antes, nunca diretamente em produção. Não nos responsabilizamos por eventuais incidentes causados por negligenciar este alerta ou por uso de produtos ou serviços de terceiros.</description>
    <license>MIT</license>
    <license_uri/>
-   <version>2.1.0</version>
+   <version>2.1.1</version>
    <stability>beta</stability>
-   <notes>- Compatibility with firecheckout</notes>
+   <notes>- Fix Hub integration URL</notes>
    <authors>
       <name>
          <name>mundipagg</name>
@@ -46,7 +46,7 @@ Em qualquer procedimento de instalação ou update existem riscos, aconselhamos 
             <max/>
          </max>
          <files>
-            <files>                                                                      </files>
+            <files>                                                                             </files>
          </files>
       </package>
       <extension>
