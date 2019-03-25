@@ -100,7 +100,13 @@ jobs:
               "chown -R www-data:root /app/"
             docker exec -it newimage /bin/sh -c "echo Step 9"
             docker exec -i newimage sh -c \
-              "cd /app/.modman/magento && composer update --no-dev -vvv && /root/bin/modman repair --force"
+              "cd /app/.modman/magento"
+            docker exec -it newimage /bin/sh -c "echo Step 10"
+            docker exec -i newimage sh -c \
+              "composer update --no-dev -vvv"
+            docker exec -it newimage /bin/sh -c "echo Step 11"
+            docker exec -i newimage sh -c \
+              "/root/bin/modman repair --force"
       - run:
           name: Clear useless files
           command: |
