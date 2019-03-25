@@ -37,10 +37,7 @@ final class MagentoModuleCoreSetup extends AbstractModuleCoreSetup
 
     protected static function loadModuleConfiguration()
     {
-        $store = Mage::getSingleton('adminhtml/config_data')->getScopeId();
-        if ($store === null) {
-            $store = Mage::app()->getStore()->getId();
-        }
+        $store = self::getCurrentStoreId();
 
         $configurationRepository = new ConfigurationRepository;
 
@@ -114,5 +111,24 @@ final class MagentoModuleCoreSetup extends AbstractModuleCoreSetup
     protected static function setPlatformVersion()
     {
         // TODO: Implement setPlatformVersion() method.
+    }
+
+
+    protected static function getCurrentStoreId()
+    {
+        $store = Mage::getSingleton('adminhtml/config_data')->getScopeId();
+        if ($store === null) {
+            $store = Mage::app()->getStore()->getId();
+        }
+
+        return $store;
+    }
+
+    protected static function getDefaultStoreId()
+    {
+        return Mage::app()
+            ->getWebsite(0)
+            ->getDefaultGroup()
+            ->getDefaultStoreId();
     }
 }

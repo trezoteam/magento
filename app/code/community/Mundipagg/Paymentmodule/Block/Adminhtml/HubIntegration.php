@@ -73,6 +73,7 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_HubIntegration
                         }
                     }
                     initScript(useDefault, hasHubCurrentStore);
+                    document.querySelector("#mundipagg_config_general_group_hub_integration").value = 1;
 
                 }
 

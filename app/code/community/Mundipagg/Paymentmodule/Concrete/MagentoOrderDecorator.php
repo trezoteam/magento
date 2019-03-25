@@ -8,6 +8,10 @@ use Mundipagg\Core\Kernel\Interfaces\PlatformInvoiceInterface;
 use Mundipagg\Core\Kernel\ValueObjects\Id\OrderId;
 use Mundipagg\Core\Kernel\ValueObjects\OrderState;
 use Mundipagg\Core\Kernel\ValueObjects\OrderStatus;
+use Mundipagg\Core\Payment\Aggregates\Customer;
+use Mundipagg\Core\Payment\Aggregates\Item;
+use Mundipagg\Core\Payment\Aggregates\Payments\AbstractPayment;
+use Mundipagg\Core\Payment\Aggregates\Shipping;
 
 final class MagentoOrderDecorator extends AbstractPlatformOrderDecorator
 {
@@ -208,5 +212,49 @@ final class MagentoOrderDecorator extends AbstractPlatformOrderDecorator
         return [
             $this->getPlatformOrder()->getPayment()->getData()
         ];
+    }
+
+    protected function setStatusAfterLog(OrderStatus $status)
+    {
+        throw new \Exception(__METHOD__ . ' not implemented!'); // @TODO: Implement setStatusAfterLog() method.
+    }
+
+    protected function setStateAfterLog(OrderState $state)
+    {
+        throw new \Exception(__METHOD__ . ' not implemented!'); // @TODO: Implement setStateAfterLog() method.
+    }
+
+    public function getBaseTaxAmount()
+    {
+        throw new \Exception(__METHOD__ . ' not implemented!'); // @TODO: Implement getBaseTaxAmount() method.
+    }
+
+    /** @return Customer */
+    public function getCustomer()
+    {
+        throw new \Exception(__METHOD__ . ' not implemented!'); // @TODO: Implement getCustomer() method.
+    }
+
+    /** @return Item[] */
+    public function getItemCollection()
+    {
+        throw new \Exception(__METHOD__ . ' not implemented!'); // @TODO: Implement getItemCollection() method.
+    }
+
+    /** @return AbstractPayment[] */
+    public function getPaymentMethodCollection()
+    {
+        throw new \Exception(__METHOD__ . ' not implemented!'); // @TODO: Implement getPaymentMethodCollection() method.
+    }
+
+    /** @return null|Shipping */
+    public function getShipping()
+    {
+        throw new \Exception(__METHOD__ . ' not implemented!'); // @TODO: Implement getShipping() method.
+    }
+
+    public function setPlatformOrder($platformOrder)
+    {
+        throw new \Exception(__METHOD__ . ' not implemented!'); // @TODO: Implement setPlatformOrder() method.
     }
 }

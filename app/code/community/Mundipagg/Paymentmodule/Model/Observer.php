@@ -140,50 +140,31 @@ class Mundipagg_Paymentmodule_Model_Observer extends Varien_Event_Observer
         /** @todo Set all configurations */
         $config->setEnabled($generalConfig->isEnabled());
 
-        $defaultConfig = $this->getDefaultConfigBySaveConfigurations($config, $params['groups']);
-
-        $config->setDefaultConfiguration($defaultConfig->configuration);
-
-        $config->addDefaultAttributes($defaultConfig->attributes);
+        if (!is_null($config->getParentId())) {
+            $methodsInherited = $this->getMethodsInheritedBySaveConfigurations($params['groups']);
+            $config->setMethodsInherited($methodsInherited);
+        }
 
         $configRepo = new ConfigurationRepository();
         $configRepo->save($config);
     }
 
-    protected function getDefaultConfigBySaveConfigurations(Configuration $config, $params)
+    protected function getMethodsInheritedBySaveConfigurations($params)
     {
-        $defaultConfig = MPSetup::loadModuleConfigurationByStore(Configuration::DEFAULT_STORE);
+        $methods = [];
 
-        $attributes = []; // metodos que usarao o default  **mudar nome
-        $defaultValues = []; // Valores dos attributos da config default
-
-
-        // get general config
         $generalConfig = $params['general_group']['fields'];
         foreach ($generalConfig as $key => $value) {
             if ($key == 'hub_integration') {
-
-                // definindo o atributo para usar a config default
-                $attributes['getSecretKey'] = true;
-                $attributes['getPublicKey'] = true;
-                $attributes['getHubInstallId'] = true;
-                $attributes['isHubEnabled'] = true;
-
-                // pegando o valor da config default para criar um objeto de configuração default
-                $defaultValues['keys'][Configuration::KEY_SECRET] = $defaultConfig->getSecretKey();
-                $defaultValues['keys'][Configuration::KEY_PUBLIC] = $defaultConfig->getPublicKey();
-                $defaultValues['hubInstallId'] = $defaultConfig->getHubInstallId();
+                $methods = [
+                    'getSecretKey',
+                    'getPublicKey',
+                    'getHubInstallId',
+                    'isHubEnabled'
+                ];
             }
         }
 
-        //Criar configuração default para a store
-        $configFactory = new ConfigurationFactory();
-        $configuration = $configFactory->createFromJsonData(json_encode($defaultValues));
-
-        $result = new \StdClass();
-        $result->attributes = $attributes;
-        $result->configuration = $configuration;
-
-        return $result;
+        return $methods;
     }
 }
