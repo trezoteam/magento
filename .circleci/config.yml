@@ -98,10 +98,7 @@ jobs:
             docker exec -it newimage /bin/sh -c "echo Step 8"
             docker exec -it newimage /bin/sh -c \
               "chown -R www-data:root /app/"
-#            docker exec -it newimage /bin/sh -c "echo Step 9"
-#            docker exec -i newimage sh -c \
-#              "cd /app/.modman/magento && composer update --no-dev -vvv"
-            docker exec -it newimage /bin/sh -c "echo Step 10"
+            docker exec -it newimage /bin/sh -c "echo Step 9"
             docker exec -i newimage sh -c \
               "/root/bin/modman repair --force"
       - run:
