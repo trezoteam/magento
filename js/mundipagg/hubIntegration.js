@@ -1,13 +1,17 @@
 function initHub(hubPublicAppKey, languageCode, installId = null, storeId = 0) {
+
+    var endpointHub = "index.php/mp-paymentmodule/hub/validateInstall/";
+    var redirectUrl = window.location.origin + "/" + endpointHub;
+
+    if (window.location.href.indexOf("index.php") > 0) {
+        redirectUrl = window.location.href.split("index.php");
+        redirectUrl = redirectUrl[0] + endpointHub;
+    }
+
     // hub config
     var config = {
         publicAppKey : hubPublicAppKey,
-        redirectUrl :  encodeURIComponent(
-            window.location.href.replace(
-                'index.php/admin/system_config/edit/section/mundipagg_config',
-                'index.php/mp-paymentmodule/hub/validateInstall'
-            ).replace('/admin/','/')
-        ),
+        redirectUrl :  encodeURIComponent(redirectUrl),
         language: languageCode
     };
 
@@ -33,13 +37,13 @@ function initHub(hubPublicAppKey, languageCode, installId = null, storeId = 0) {
         //getting formUrl;
         var hubUrl = (function(config){
             var hub = new Hub(config);
-            var url = hub.urlToIntegrate;
+            var url = (hub.language == "pt-br") ? hub.urlToIntegratePtBr : hub.urlToIntegrate;
             url = url.replace("{language}", hub.locations[hub.language].language);
             url = url.replace("{publicAppKey}", config.publicAppKey);
             url = url.replace("{redirectUrl}", config.redirectUrl);
 
             if (config.installId) {
-                url = hub.urlToView;
+                url = (hub.language == "pt-br") ? hub.urlToViewPtBr : hub.urlToView;
                 url = url.replace("{language}", hub.language);
                 url = url.replace("{publicAppKey}", config.publicAppKey);
                 url = url.replace("{installId}", config.installId);
