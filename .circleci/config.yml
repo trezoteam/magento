@@ -75,21 +75,30 @@ jobs:
       - run:
           name: Activate and setup Plugin
           command: |
+            docker exec -it newimage /bin/sh -c "echo Step 1"
             docker exec -it newimage /root/bin/modman repair --force
+            docker exec -it newimage /bin/sh -c "echo Step 2"
             docker exec -it newimage /bin/sh -c "ls"
+            docker exec -it newimage /bin/sh -c "echo Step 3"
             docker exec -it newimage php index.php
+            docker exec -it newimage /bin/sh -c "echo Step 4"
             docker exec -it newimage /bin/sh -c \
               "mysql magento < /app/.modman/magento/magento_module_install.sql"
+            docker exec -it newimage /bin/sh -c "echo Step 5"
             docker exec -it newimage /bin/sh -c \
                            "mysql magento < /app/.modman/magento/brazilian_states.sql"
+            docker exec -it newimage /bin/sh -c "echo Step 6"
             docker exec -it newimage mysql magento -e \
               "INSERT INTO magento.core_config_data (scope, scope_id, path, value) VALUES \
               ('default', 0, 'mundipagg_config/general_group/sk_test', '${API_TEST_SECRET_KEY}'), \
               ('default', 0, 'mundipagg_config/general_group/pk_test', '${API_TEST_PUBLIC_KEY}');"
+            docker exec -it newimage /bin/sh -c "echo Step 7"
             docker exec -it newimage /bin/sh -c \
               "mv /app/errors/local.xml.sample /app/errors/local.xml"
+            docker exec -it newimage /bin/sh -c "echo Step 8"
             docker exec -it newimage /bin/sh -c \
               "chown -R www-data:root /app/"
+            docker exec -it newimage /bin/sh -c "echo Step 9"
             docker exec -i newimage sh -c \
               "cd /app/.modman/magento && composer update --no-dev -vvv && /root/bin/modman repair --force"
       - run:
