@@ -237,13 +237,8 @@ workflows:
   build_publish_deploy:
     jobs:
       - build
-      - test:
-          requires:
-            - build
       - publish:
           context: DockerRegistry
-          requires:
-            - test
           filters:
             branches:
               only: develop
