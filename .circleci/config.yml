@@ -239,6 +239,8 @@ workflows:
       - build
       - publish:
           context: DockerRegistry
+          requires:
+            - build
           filters:
             branches:
               only: develop
