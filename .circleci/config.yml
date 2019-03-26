@@ -241,12 +241,6 @@ workflows:
           context: DockerRegistry
           requires:
             - build
-          filters:
-            branches:
-              only: develop
       - deploy_staging:
           requires:
             - publish
-          filters:
-            branches:
-              only: develop
