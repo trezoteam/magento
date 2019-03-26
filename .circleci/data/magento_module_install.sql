@@ -19,8 +19,8 @@ CREATE TABLE IF NOT EXISTS `paymentmodule_configuration` (
   PRIMARY KEY (`id`)
 );
 
-INSERT INTO paymentmodule_configuration (data, store_id) VALUES
-('{"enabled":null,"antifraudEnabled":false,"antifraudMinAmount":0,"boletoEnabled":false,"creditCardEnabled":true,"twoCreditCardsEnabled":false,"boletoCreditCardEnabled":false,"testMode":true,"hubInstallId":"f09d7191-4349-4ac6-8ec7-17435b439cd5","addressAttributes":null,"keys":{"KEY_SECRET":"6a0dad395c2cf940027f23262c6f9247ab191c5b613dcf590e3e4a0cc12963b2","KEY_PUBLIC":"pk_test_yDo83Ls3rta3Z2jp"},"cardOperation":null,"installmentsEnabled":false,"cardStatementDescriptor":null,"boletoInstructions":null,"cardConfigs":[],"storeId":0,"methodsInherited":null,"parentId":null}', 0);
+INSERT INTO magento.paymentmodule_configuration (data, store_id) VALUES
+('{"enabled":null,"antifraudEnabled":false,"antifraudMinAmount":0,"boletoEnabled":false,"creditCardEnabled":true,"twoCreditCardsEnabled":false,"boletoCreditCardEnabled":false,"testMode":true,"hubInstallId":"f09d7191-4349-4ac6-8ec7-17435b439cd5","addressAttributes":null,"keys":{"KEY_SECRET":"6a0dad395c2cf940027f23262c6f9247ab191c5b613dcf590e3e4a0cc12963b2","KEY_PUBLIC":"pk_test_yDo83Ls3rta3Z2jp"},"cardOperation":null,"installmentsEnabled":false,"cardStatementDescriptor":null,"boletoInstructions":null,"cardConfigs":[],"storeId":0,"methodsInherited":null,"parentId":null}', '0');
 
 
 INSERT INTO magento.core_config_data (scope, scope_id, path, value) VALUES
