@@ -1,17 +1,6 @@
 INSERT INTO magento.core_config_data (config_id, scope, scope_id, path, value)
 VALUES (NULL , 'default', '0', 'dev/template/allow_symlink', '1');
 
-
-
-CREATE TABLE IF NOT EXISTS `magento.paymentmodule_hub_install_token` (
-    `id` INT NOT NULL AUTO_INCREMENT,
-    `token` TEXT NOT NULL,
-    `used` TINYINT(1) NOT NULL,
-    `created_at_timestamp` INT NOT NULL,
-    `expire_at_timestamp` INT NOT NULL,
-    PRIMARY KEY (`id`)
-);
-
 INSERT INTO magento.core_config_data (scope, scope_id, path, value) VALUES
 -- module
 ('default', 0, 'mundipagg_config/general_group/module_status', '1'),
