@@ -14,7 +14,9 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_HubIntegration
         $moduleConfig = MPSetup::getModuleConfiguration();
         $hubPublicAppKey = MPSetup::getHubAppPublicAppKey();
 
-        $hubDefaultConfig = MPSetup::loadModuleConfigurationByStore(0);
+        $hubDefaultConfig = MPSetup::loadModuleConfigurationByStore(
+            MPSetup::getDefaultStoreId()
+        );
 
         $storeId = Mage::getSingleton('adminhtml/config_data')->getScopeId();
 

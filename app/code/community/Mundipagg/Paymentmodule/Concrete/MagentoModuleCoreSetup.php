@@ -110,7 +110,7 @@ final class MagentoModuleCoreSetup extends AbstractModuleCoreSetup
 
     protected static function setPlatformVersion()
     {
-        // TODO: Implement setPlatformVersion() method.
+        self::$platformVersion = Mage::getVersion();
     }
 
 
@@ -124,7 +124,7 @@ final class MagentoModuleCoreSetup extends AbstractModuleCoreSetup
         return $store;
     }
 
-    protected static function getDefaultStoreId()
+    public static function getDefaultStoreId()
     {
         return Mage::app()
             ->getWebsite(0)
