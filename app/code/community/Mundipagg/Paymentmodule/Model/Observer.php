@@ -140,7 +140,7 @@ class Mundipagg_Paymentmodule_Model_Observer extends Varien_Event_Observer
         /** @todo Set all configurations */
         $config->setEnabled($generalConfig->isEnabled());
 
-        if (!is_null($config->getParentId())) {
+        if ($config->getParentId() !== null) {
             $methodsInherited = $this->getMethodsInheritedBySaveConfigurations($params['groups']);
             $config->setMethodsInherited($methodsInherited);
         }
