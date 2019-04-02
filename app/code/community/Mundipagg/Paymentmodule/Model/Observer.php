@@ -144,6 +144,7 @@ class Mundipagg_Paymentmodule_Model_Observer extends Varien_Event_Observer
             $methodsInherited = $this->getMethodsInheritedBySaveConfigurations($params['groups']);
             $config->setMethodsInherited($methodsInherited);
         }
+        $config->setInheritAll(false);
 
         $configRepo = new ConfigurationRepository();
         $configRepo->save($config);
