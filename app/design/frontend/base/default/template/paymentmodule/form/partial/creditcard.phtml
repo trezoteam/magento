@@ -184,7 +184,7 @@
                 name="payment[<?php echo "$elementId"?>_creditCardInstallments]"
                 id="<?php echo "$elementId"?>_mundicheckout-creditCard-installments"
                 onchange="getFormData('<?php echo $elementId?>');"
-                class="required-entry"
+                class="required-entry mp-card-installment-select"
         >
             <option value=""><?php echo $this->__('Fill the card number'); ?></option>
         </select>
@@ -194,7 +194,7 @@
     <label
         for="<?php echo "$elementId"?>_mundicheckout-cvv"
         class="newCreditCard-<?php echo $elementId?>"
-        <?php echo $new; ?>
+    <?php echo $new; ?>
     >CVV<span class="required">*</span></label>
     <div class="input-box newCreditCard-<?php echo $elementId?>" <?php echo $new; ?>>
         <input
@@ -212,7 +212,7 @@
         $isLogged = $this->helper('customer')->isLoggedIn();
         if ($isLogged && $isSavedCreditCardsEnabled) :
     ?>
-    <div class="input-box newCreditCard-<?php echo $elementId?>" <?php echo $new; ?>>
+            <div class="input-box newCreditCard-<?php echo $elementId?>" <?php echo $new; ?>>
         <br>
         <input
                 type="checkbox"
@@ -223,7 +223,7 @@
         <label for="<?php echo "$elementId"?>_mundicheckout-save-credit-card"><?php echo $this->__('Save this card to future orders'); ?></label>
         <br>
     </div>
-    <?php endif; ?>
+        <?php endif; ?>
 
     <input
             type="hidden"
@@ -237,3 +237,4 @@
     <?php echo $this->__('Invalid credit card'); ?>
 </div>
 </p>
+

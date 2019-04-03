@@ -18,6 +18,8 @@ FireCheckoutModuleHandler.prototype.init = function() {
 
     var config = { attributes: true, childList: true, subtree: true };
 
+    var paymentMethod = this.getCurrentPaymentMethod();
+
     var callback = function(mutationsList, observer) {
         var grandTotalHtml = jQuery('#checkout-review-table tr.last .price').html();
         if (grandTotalHtml == undefined) {
@@ -44,7 +46,39 @@ FireCheckoutModuleHandler.prototype.init = function() {
             MundiPagg.paymentMethods[method].setValueInputAutobalanceEvents();
             MundiPagg.paymentMethods[method].updateInputBalanceValues();
         });
-    };
+
+        jQuery('.mp-card-installment-select').each(function () {
+
+            var elementId = jQuery(this).attr('id');
+            var parentFormId = elementId.replace('_mundicheckout-creditCard-installments','');
+
+            if (elementId.indexOf(payment.currentMethod) < 0) {
+                return;
+            }
+
+            var bin = jQuery('#' + parentFormId + '_mundicheckout-number').val();
+            var baseValue =  jQuery('#' + parentFormId + '_value').val();
+
+            var hash = parentFormId + baseValue + bin;
+
+            if (
+                typeof MundiPagg.installmentCache !== 'undefined' &&
+                typeof MundiPagg.installmentCache[hash] !== 'undefined'
+            ) {
+                //debugger;
+                var data = MundiPagg.installmentCache[hash].data;
+                MundiPagg.selectedInstallments[parentFormId] =
+                    MundiPagg.selectedInstallments[parentFormId];
+
+                var argsObj = {
+                    elementId: parentFormId,
+                    installmentsBaseValue: baseValue
+                };
+                switchInstallments(data, argsObj)
+            }
+        });
+
+    }.bind(paymentMethod);
 
     var observer = new MutationObserver(callback);
 
