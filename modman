@@ -29,3 +29,4 @@ mundipagg_payment_module.xml                                    var/connect/
 
 #this file
 modman .modman/magento/app/code/community/Mundipagg/Paymentmodule/etc/maintenance/modman
+modman .modman/magento/app/code/community/Mundipagg/Paymentmodule/Concrete/modman

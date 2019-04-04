@@ -2,7 +2,8 @@
 
 require_once Mage::getBaseDir('lib') . '/autoload.php';
 
-use \MundipaggModuleBackend\Hub\Services\HubIntegrationService;
+use Mundipagg\Core\Hub\Services\HubIntegrationService;
+use Mundipagg\Magento\Concrete\MagentoModuleCoreSetup as MPSetup;
 
 class Mundipagg_Paymentmodule_HubController
     extends Mage_Core_Controller_Front_Action
@@ -11,16 +12,23 @@ class Mundipagg_Paymentmodule_HubController
     {
         parent::preDispatch();
         Mage::helper('paymentmodule/exception')->initExceptionHandler();
-        Mundipagg_Paymentmodule_Model_MagentoModuleCoreSetup::bootstrap();
+
+        $params = Mage::app()->getRequest()->getParams();
+        if (isset($params['storeId'])) {
+            Mage::app()->setCurrentStore($params['storeId']);
+        }
+
+        MPSetup::bootstrap();
     }
 
     public function generateIntegrationTokenAction()
     {
         $installSeed = uniqid(); //@todo get seed from url
         $hubIntegrationService = new HubIntegrationService();
+        $installToken = $hubIntegrationService->startHubIntegration($installSeed);
 
         return $this->setResponse(
-            $hubIntegrationService->startHubIntegration($installSeed)
+            $installToken->getValue()
         );
     }
 
@@ -32,9 +40,9 @@ class Mundipagg_Paymentmodule_HubController
 
         $authorizationCode = $params['authorization_code'];
 
-        $webhookUrl = Mage::getUrl('paymentmodule/webhook');
+        $webhookUrl = Mage::getUrl('paymentmodule/webhook') . "?storeId=" . $params['storeId'];
 
-        $hubCallbackUrl = Mage::getUrl('paymentmodule/hub/command');
+        $hubCallbackUrl = Mage::getUrl('paymentmodule/hub/command') . "?storeId=" . $params['storeId'];
 
         $hubIntegrationService = new HubIntegrationService();
         $hubIntegrationService->endHubIntegration(

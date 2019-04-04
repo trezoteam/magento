@@ -5,7 +5,8 @@
  *
  */
 
-use Mundipagg\Integrity\IntegrityFileCommand;
+use Mundipagg\Core\Kernel\Abstractions\AbstractModuleCoreSetup;
+use Mundipagg\Core\Maintenance\Services\IntegrityInfoRetrieverService;
 
 class RoboFile extends \Robo\Tasks
 {
@@ -115,14 +116,28 @@ class RoboFile extends \Robo\Tasks
             ->run();
     }
 
-    public function generateIntegrity($dirIntegrity, $directoriesIgnored = "")
+    public function generateIntegrity($coreClass = null)
     {
-        $dirIntegrity = __DIR__ . $dirIntegrity;
 
-        $directoriesIgnored = array_map('trim', explode(',', $directoriesIgnored));
+        require_once './lib/autoload.php';
 
-        $integrityCommand = new IntegrityFileCommand();
-        $integrityCommand->generateIntegrityFile($dirIntegrity, $directoriesIgnored);
+        if (!class_exists($coreClass)) {
+            die('Invalid concrete core class!');
+        }
+
+        $concretePlatformCoreSetupClass = $coreClass;
+
+        $moduleCoreSetupReflection = new ReflectionClass($concretePlatformCoreSetupClass);
+        $concreteCoreSetupFilename = $moduleCoreSetupReflection->getFileName();
+        $concreteDir = explode(DIRECTORY_SEPARATOR, $concreteCoreSetupFilename);
+        array_pop($concreteDir);
+        $concreteDir = implode(DIRECTORY_SEPARATOR, $concreteDir);
+
+        AbstractModuleCoreSetup::setModuleConcreteDir($concreteDir);
+
+        $integrityInfoService = new IntegrityInfoRetrieverService();
+        $integrityInfoService->generateCoreIntegrityFile();
+        $integrityInfoService->generateModuleIntegrityFile();
 
         return "Integrity check file generated";
     }

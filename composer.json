@@ -19,10 +19,6 @@
     {
       "type": "vcs",
       "url": "https://github.com/aitboudad/FriendlyContexts.git"
-    },
-    {
-      "type": "vcs",
-      "url": "https://github.com/mundipagg/module-maintenance"
     }
   ],
 
@@ -35,6 +31,7 @@
   "autoload": {
     "psr-4": {
       "Mundipagg\\": "app/",
+      "Mundipagg\\Magento\\": "app/code/community/Mundipagg/Paymentmodule/",
       "MundipaggModuleBackend\\": "app/code/community/Mundipagg/Paymentmodule/etc/MundipaggModuleBackend/src"
     }
   },
@@ -44,7 +41,7 @@
   },
 
   "require": {
-    "mundipagg/mundiapi": "dev-master",
-    "mundipagg/module-maintenance" : "dev-develop"
+    "mundipagg/mundiapi": "^3.0",
+    "mundipagg/ecommerce-module-core" : "1.6.1"
   }
 }
