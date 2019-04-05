@@ -1,3 +1,4 @@
 /vendor/
 /lib/
 app/code/community/Mundipagg/Paymentmodule/etc/maintenance/modman
+failureScreenshots/

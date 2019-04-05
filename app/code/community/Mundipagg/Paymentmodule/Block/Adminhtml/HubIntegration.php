@@ -14,6 +14,12 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_HubIntegration
         $moduleConfig = MPSetup::getModuleConfiguration();
         $hubPublicAppKey = MPSetup::getHubAppPublicAppKey();
 
+        $hubDefaultConfig = MPSetup::loadModuleConfigurationByStore(
+            MPSetup::getDefaultStoreId()
+        );
+
+        $storeId = Mage::getSingleton('adminhtml/config_data')->getScopeId();
+
         $locale = strtolower(
             str_replace("_", "-", Mage::app()->getLocale()->getLocaleCode())
         );
@@ -24,11 +30,11 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_HubIntegration
                 '$locale'
         ";
 
-        if ($moduleConfig->isHubEnabled()) {
-            $initHubScript .= ",'". $moduleConfig->getHubInstallId()->getValue() . "'";
-        }
+        $installScript = $this->getInstallScript($initHubScript, $storeId);
+        $defaultInstallScript = $this->getDefaultInstallScript($initHubScript, $hubDefaultConfig);
+        $storeInstallScript = $this->getStoreInstallScript($initHubScript, $moduleConfig, $storeId);
 
-        $initHubScript .= ');';
+        $isHubEnable = $moduleConfig->isHubEnabled();
 
         return '
                 <div id="hub-integation-button-container">
@@ -48,11 +54,88 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_HubIntegration
                 }
             </style>
             <script>
-                document.addEventListener("DOMContentLoaded", function(event) {
-                  ' . $initHubScript . '
-                });
-                document.querySelector("#mundipagg_config_general_group_hub_integration").value = 1
+
+                window.onload = function() {
+
+                    var checkbox = document.getElementById("mundipagg_config_general_group_hub_integration_inherit");
+                    var hasHubCurrentStore = ' . intval($isHubEnable).';
+                    var useDefault = false;
+
+                    if (checkbox !== null ) {
+                        checkbox.onchange = function (e) {
+                            useDefault = e.target.checked;
+                            initScript(useDefault, hasHubCurrentStore);
+                        };
+
+                        if (checkbox.checked) {
+                            useDefault = true;
+                        }
+                    }
+                    initScript(useDefault, hasHubCurrentStore);
+                    document.querySelector("#mundipagg_config_general_group_hub_integration").value = 1;
+                }
+
+                var initScript = function (useDefault, hasInstalationStore) {
+
+                    if(useDefault) {
+                        ' . $defaultInstallScript . '
+                        return;
+                    }
+
+                    if (hasInstalationStore) {
+                         ' . $storeInstallScript . '
+                         return;
+                    }
+
+                    ' . $installScript . '
+                    return;
+                }
             </script>
         ';
+    }
+
+    public function getInstallScript($initHubScript, $storeId)
+    {
+        if ($storeId !== null) {
+            $initHubScript .= ",null,". $storeId;
+        }
+
+        $initHubScript .= ');';
+
+        return $initHubScript;
+    }
+
+    public function getDefaultInstallScript($initHubScript, $hubDefaultConfig)
+    {
+        if($hubDefaultConfig !== null) {
+            $hubDefaultId = "null";
+            if ($hubDefaultConfig->isHubEnabled()) {
+                $hubDefaultId = "'" . $hubDefaultConfig->getHubInstallId()->getValue() . "'";
+            }
+
+            $initHubScript .= ",". $hubDefaultId;
+        }
+        $initHubScript .= ',0);';
+
+        return $initHubScript;
+
+    }
+
+    public function getStoreInstallScript($initHubScript, $moduleConfig, $storeId)
+    {
+        $isHubEnable = $moduleConfig->isHubEnabled();
+
+        if ($isHubEnable) {
+            $initHubScript .= ",'". $moduleConfig->getHubInstallId()->getValue() . "'";
+        }
+
+        if ($storeId !== null) {
+            $withHub = !$isHubEnable ? ',null': "";
+            $initHubScript .= $withHub . ",". $storeId;
+        }
+
+        $initHubScript .= ');';
+
+        return $initHubScript;
     }
 }

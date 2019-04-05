@@ -656,6 +656,7 @@ function getCustomerDocument(elementId) {
     ) {
         return jQuery('#' + elementId + '_mundicheckout-cpf').val();
     }
+    return "";
 }
 
 function verifyFilledCreditCardFields() {

@@ -2,6 +2,8 @@
 
 require_once Mage::getBaseDir('lib') . '/autoload.php';
 
+use Mundipagg\Core\Kernel\Aggregates\Configuration;
+use Mundipagg\Core\Kernel\Factories\ConfigurationFactory;
 use Mundipagg\Magento\Concrete\MagentoModuleCoreSetup as MPSetup;
 use Mundipagg\Core\Kernel\Repositories\ConfigurationRepository;
 
@@ -128,15 +130,42 @@ class Mundipagg_Paymentmodule_Model_Observer extends Varien_Event_Observer
     {
         MPSetup::bootstrap();
 
+        $params = Mage::app()->getRequest()->getParams();
+
         /** @var Mundipagg_Paymentmodule_Model_Config_General $generalConfig */
         $generalConfig = Mage::getModel('paymentmodule/config_general');
 
         $config = MPSetup::getModuleConfiguration();
 
         /** @todo Set all configurations */
-        $config->setDisabled(!$generalConfig->isEnabled());
+        $config->setEnabled($generalConfig->isEnabled());
+
+        if ($config->getParentId() !== null) {
+            $methodsInherited = $this->getMethodsInheritedBySaveConfigurations($params['groups']);
+            $config->setMethodsInherited($methodsInherited);
+        }
+        $config->setInheritAll(false);
 
         $configRepo = new ConfigurationRepository();
         $configRepo->save($config);
+    }
+
+    protected function getMethodsInheritedBySaveConfigurations($params)
+    {
+        $methods = [];
+
+        $generalConfig = $params['general_group']['fields'];
+        foreach ($generalConfig as $key => $value) {
+            if ($key == 'hub_integration') {
+                $methods = [
+                    'getSecretKey',
+                    'getPublicKey',
+                    'getHubInstallId',
+                    'isHubEnabled'
+                ];
+            }
+        }
+
+        return $methods;
     }
 }

@@ -12,6 +12,12 @@ class Mundipagg_Paymentmodule_HubController
     {
         parent::preDispatch();
         Mage::helper('paymentmodule/exception')->initExceptionHandler();
+
+        $params = Mage::app()->getRequest()->getParams();
+        if (isset($params['storeId'])) {
+            Mage::app()->setCurrentStore($params['storeId']);
+        }
+
         MPSetup::bootstrap();
     }
 
@@ -34,9 +40,9 @@ class Mundipagg_Paymentmodule_HubController
 
         $authorizationCode = $params['authorization_code'];
 
-        $webhookUrl = Mage::getUrl('paymentmodule/webhook');
+        $webhookUrl = Mage::getUrl('paymentmodule/webhook') . "?storeId=" . $params['storeId'];
 
-        $hubCallbackUrl = Mage::getUrl('paymentmodule/hub/command');
+        $hubCallbackUrl = Mage::getUrl('paymentmodule/hub/command') . "?storeId=" . $params['storeId'];
 
         $hubIntegrationService = new HubIntegrationService();
         $hubIntegrationService->endHubIntegration(
