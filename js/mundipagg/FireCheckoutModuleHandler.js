@@ -59,13 +59,12 @@ FireCheckoutModuleHandler.prototype.init = function() {
             var bin = jQuery('#' + parentFormId + '_mundicheckout-number').val();
             var baseValue =  jQuery('#' + parentFormId + '_value').val();
 
-            var hash = parentFormId + baseValue + bin;
+            var hash = parentFormId + "_" +baseValue + bin;
 
             if (
                 typeof MundiPagg.installmentCache !== 'undefined' &&
                 typeof MundiPagg.installmentCache[hash] !== 'undefined'
             ) {
-                //debugger;
                 var data = MundiPagg.installmentCache[hash].data;
                 MundiPagg.selectedInstallments[parentFormId] =
                     MundiPagg.selectedInstallments[parentFormId];
@@ -74,7 +73,14 @@ FireCheckoutModuleHandler.prototype.init = function() {
                     elementId: parentFormId,
                     installmentsBaseValue: baseValue
                 };
-                switchInstallments(data, argsObj)
+
+                var selectedInstallment = MundiPagg.installmentCache[hash]['selectedInstallment'];
+                switchInstallments(data, argsObj);
+
+                //reset installment select to the previously selected.
+                installmentsSelect =
+                    "#" + parentFormId + "_mundicheckout-creditCard-installments";
+                jQuery(installmentsSelect).val(selectedInstallment);
             }
         });
 

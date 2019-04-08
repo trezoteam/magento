@@ -297,6 +297,23 @@ function validateCreditCardExpiration(year, month) {
     return true;
 }
 
+function updateInstallmentCache(elementId, selectedInstallment)
+{
+    if (
+        typeof MundiPagg.installmentCache === 'undefined' ||
+        selectedInstallment === ""
+    ) {
+        return;
+    }
+
+    jQuery.each(MundiPagg.installmentCache, function(index, value) {
+        if (value.indexOf(elementId) !== -1) {
+            MundiPagg.installmentCache[value]['selectedInstallment'] = selectedInstallment;
+        }
+
+    }. bind(elementId, selectedInstallment));
+}
+
 //form data
 function getFormData(elementId) {
 
@@ -304,8 +321,21 @@ function getFormData(elementId) {
         toTokenApi[elementId] = { card:{} };
     }
 
-    var selectedInstallment = jQuery("#"+elementId+"_mundicheckout-creditCard-installments").val()
+    var selector =  "#"+elementId+"_mundicheckout-creditCard-installments";
+    var selectedInstallment = jQuery(selector).val();
+
+    if (typeof MundiPagg.installmentCache !== 'undefined' && selectedInstallment === '') {
+        jQuery.each(MundiPagg.installmentCache, function(index, value) {
+            if (value.indexOf(elementId) !== -1) {
+                selectedInstallment = MundiPagg.installmentCache[value]['selectedInstallment'];
+                jQuery(selector).val(selectedInstallment);
+            }
+
+        }. bind(elementId, selectedInstallment));
+    }
+
     MundiPagg.selectedInstallments[elementId] = selectedInstallment;
+    updateInstallmentCache(elementId, selectedInstallment);
 
     var customerDoc = getCustomerDocument(elementId);
     if (customerDoc) {
@@ -509,7 +539,7 @@ function switchInstallments(data, argsObj) {
         }
 
         var hash =
-            argsObj.elementId +
+            argsObj.elementId + "_" +
             argsObj.installmentsBaseValue +
             (jQuery('#' + argsObj.elementId + '_mundicheckout-number').val());
 
