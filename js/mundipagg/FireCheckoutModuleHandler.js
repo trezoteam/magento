@@ -88,11 +88,25 @@ FireCheckoutModuleHandler.prototype.init = function() {
 
     var observer = new MutationObserver(callback);
 
+
     observer.observe(targetNode, config);
 };
 
 FireCheckoutModuleHandler.prototype.setSavePaymentInterceptor = function () {
     var _self = this;
+
+    if (typeof window.originalValidator === "undefined") {
+        window.originalValidator = Validation.prototype.validate;
+        Validation.prototype.validate = Validation.prototype.validate.wrap(function(validate)
+        {
+            console.log(_self.getCurrentPaymentMethod(), _self.isHandlingNeeded(), _self.methodCode);
+            if (_self.isHandlingNeeded()) {
+                return window.originalValidator();
+            }
+            return true;
+        });
+        //_self.validateIntercepted = true;
+    }
 
     FireCheckout.prototype.save = FireCheckout.prototype.save.wrap(function(save) {
 
