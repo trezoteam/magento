@@ -568,8 +568,6 @@ function switchInstallments(data, argsObj) {
             jQuery("#" + argsObj.elementId + '_disabled_brand_message').show();
         }
     }
-
-
 }
 
 function fillInstallments(data) {
