@@ -13,10 +13,19 @@ FireCheckoutModuleHandler.prototype.getCurrentPaymentMethod = function() {
 };
 
 FireCheckoutModuleHandler.prototype.init = function() {
+    var _self = this;
+    if (typeof window.MPObservingUpdates === 'undefined') {
+        document.observe('firecheckout:updateAfter', function(event){
+            _self.refillInstallments();
+        });
+        window.MPObservingUpdates = true;
+    }
 
     var targetNode = jQuery('#checkout-review-load')[0];
 
     var config = { attributes: true, childList: true, subtree: true };
+
+    var paymentMethod = this.getCurrentPaymentMethod();
 
     var callback = function(mutationsList, observer) {
         var grandTotalHtml = jQuery('#checkout-review-table tr.last .price').html();
@@ -44,7 +53,10 @@ FireCheckoutModuleHandler.prototype.init = function() {
             MundiPagg.paymentMethods[method].setValueInputAutobalanceEvents();
             MundiPagg.paymentMethods[method].updateInputBalanceValues();
         });
-    };
+
+        _self.refillInstallments();
+
+    }.bind(paymentMethod);
 
     var observer = new MutationObserver(callback);
 
@@ -95,4 +107,44 @@ FireCheckoutModuleHandler.prototype.setSavePaymentInterceptor = function () {
             return _self.placeOrderFunction();
         }
     }.bind(_self));
+};
+
+FireCheckoutModuleHandler.prototype.refillInstallments = function()
+{
+    jQuery('.mp-card-installment-select').each(function () {
+
+        var elementId = jQuery(this).attr('id');
+        var parentFormId = elementId.replace('_mundicheckout-creditCard-installments','');
+
+        if (elementId.indexOf(payment.currentMethod) < 0) {
+            return;
+        }
+
+        var bin = jQuery('#' + parentFormId + '_mundicheckout-number').val();
+        var baseValue =  jQuery('#' + parentFormId + '_value').val();
+
+        var hash = parentFormId + "_" +baseValue + bin;
+
+        if (
+            typeof MundiPagg.installmentCache !== 'undefined' &&
+            typeof MundiPagg.installmentCache[hash] !== 'undefined'
+        ) {
+            var data = MundiPagg.installmentCache[hash].data;
+            MundiPagg.selectedInstallments[parentFormId] =
+                MundiPagg.selectedInstallments[parentFormId];
+
+            var argsObj = {
+                elementId: parentFormId,
+                installmentsBaseValue: baseValue
+            };
+
+            var selectedInstallment = MundiPagg.installmentCache[hash]['selectedInstallment'];
+            switchInstallments(data, argsObj);
+
+            //reset installment select to the previously selected.
+            installmentsSelect =
+                "#" + parentFormId + "_mundicheckout-creditCard-installments";
+            jQuery(installmentsSelect).val(selectedInstallment);
+        }
+    });
 };

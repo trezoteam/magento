@@ -297,11 +297,49 @@ function validateCreditCardExpiration(year, month) {
     return true;
 }
 
+function updateInstallmentCache(elementId, selectedInstallment)
+{
+    if (
+        typeof MundiPagg.installmentCache === 'undefined' ||
+        selectedInstallment === ""
+    ) {
+        return;
+    }
+
+    jQuery.each(MundiPagg.installmentCache, function(index, value) {
+        if (value.indexOf(elementId) !== -1) {
+            MundiPagg.installmentCache[value]['selectedInstallment'] = selectedInstallment;
+        }
+
+    }. bind(elementId, selectedInstallment));
+}
+
 //form data
 function getFormData(elementId) {
 
     if (typeof toTokenApi[elementId] === 'undefined') {
         toTokenApi[elementId] = { card:{} };
+    }
+
+    var selector =  "#"+elementId+"_mundicheckout-creditCard-installments";
+    var selectedInstallment = jQuery(selector).val();
+
+    if (typeof MundiPagg.installmentCache !== 'undefined' && selectedInstallment === '') {
+        jQuery.each(MundiPagg.installmentCache, function(index, value) {
+            if (value.indexOf(elementId) !== -1) {
+                selectedInstallment = MundiPagg.installmentCache[value]['selectedInstallment'];
+                jQuery(selector).val(selectedInstallment);
+            }
+
+        }. bind(elementId, selectedInstallment));
+    }
+
+    MundiPagg.selectedInstallments[elementId] = selectedInstallment;
+    updateInstallmentCache(elementId, selectedInstallment);
+
+    var customerDoc = getCustomerDocument(elementId);
+    if (customerDoc) {
+        customerDoc = customerDoc.replace(/[\/.-]/g, "")
     }
 
     toTokenApi[elementId].card = {
@@ -311,7 +349,7 @@ function getFormData(elementId) {
         exp_month: document.getElementById(elementId + '_mundicheckout-expmonth').value,
         exp_year: document.getElementById(elementId + '_mundicheckout-expyear').value,
         cvv: clearCvv(document.getElementById(elementId + '_mundicheckout-cvv')),
-        holder_document: getCustomerDocument(elementId).replace(/[\/.-]/g, "")
+        holder_document: customerDoc
     };
 
     if (!isNewCard(elementId)) {
@@ -495,14 +533,33 @@ function switchInstallments(data, argsObj) {
     jQuery('.disabledBrandMessage').hide();
 
     if (data) {
-        var withoutInterest = MundiPagg.Locale.getTranslaction("without interest");
+
+        if (typeof MundiPagg.installmentCache === 'undefined') {
+            MundiPagg.installmentCache = {};
+        }
+
+        var hash =
+            argsObj.elementId + "_" +
+            argsObj.installmentsBaseValue +
+            (jQuery('#' + argsObj.elementId + '_mundicheckout-number').val());
+
+        MundiPagg.installmentCache[hash] = { data };
+
+        var installment = MundiPagg.selectedInstallments[argsObj.elementId];
+        if (installment !== null && installment !== "") {
+            MundiPagg.installmentCache[hash].selectedInstallment = installment;
+        }
+
         var html;
 
         html = fillInstallments(data);
 
         jQuery("#"+ argsObj.elementId + "_mundicheckout-creditCard-installments").html(html);
 
-        if (MundiPagg.selectedInstallments[argsObj.elementId] != "" ) {
+        if (
+            MundiPagg.selectedInstallments[argsObj.elementId] != "" &&
+            MundiPagg.selectedInstallments[argsObj.elementId] != null
+        ) {
             jQuery("#"+ argsObj.elementId + "_mundicheckout-creditCard-installments")
                 .val(MundiPagg.selectedInstallments[argsObj.elementId]);
         }
