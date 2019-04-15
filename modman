@@ -24,6 +24,7 @@ app/locale/pt_BR/mundipagg_frontend_locale.csv                  app/locale/pt_BR
 
 #Others
 lib/*                                                           lib/
+js/lib/*                                                        js/lib/
 js/mundipagg/*                                                  js/mundipagg/
 mundipagg_payment_module.xml                                    var/connect/
 
