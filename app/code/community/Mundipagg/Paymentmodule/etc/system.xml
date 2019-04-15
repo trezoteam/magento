@@ -19,7 +19,7 @@
                     <comment>
                         <![CDATA[
                             <a href="http://www.mundipagg.com.br" target="_blank">
-                                <img title="MundiPagg" alt="MundiPagg" width="200" src="/skin/adminhtml/default/default/images/mundipagg/mundipagg-colorida.svg"/>
+                                <img class='skin-img' title="MundiPagg" alt="MundiPagg" width="200" src="/skin/adminhtml/default/default/images/mundipagg/mundipagg-colorida.svg"/>
                             </a>
                             <br>
                             <br>
@@ -39,7 +39,7 @@
         </payment>
 
         <mundipagg_config translate="label" module="paymentmodule">
-            <label><![CDATA[<div style="position: absolute;"><img id="magepal_block" alt="" border="0" width="16" /> &nbsp;Mundipagg</div>&nbsp;<script>$("magepal_block").src = "/skin/adminhtml/default/default/images/mundipagg/icons/logo-mundipagg-icon.png";</script>]]></label>
+            <label><![CDATA[<div style="position: absolute;"><img id="magepal_block" class='skin-img' alt="" border="0" width="16" src="/skin/adminhtml/default/default/images/mundipagg/icons/logo-mundipagg-icon.png"/> &nbsp;Mundipagg</div>&nbsp;]]></label>
             <tab>paymentmoduleconfig</tab>
             <sort_order>1000</sort_order>
             <show_in_default>1</show_in_default>
@@ -55,7 +55,7 @@
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                     <comment>
-                        <![CDATA[<br><a href="http://www.mundipagg.com.br" target="_blank"><img title="MundiPagg" alt="MundiPagg" width="200" src="/skin/adminhtml/default/default/images/mundipagg/mundipagg-colorida.svg"/></a><br><br><br>]]>
+                        <![CDATA[<br><a href="http://www.mundipagg.com.br" target="_blank"><img title="MundiPagg" alt="MundiPagg" width="200" class='skin-img' src="/skin/adminhtml/default/default/images/mundipagg/mundipagg-colorida.svg"/></a><br><br><br>]]>
                     </comment>
                     <fields>
                         <hub_integration translate="label">
@@ -584,7 +584,7 @@
 
                         <!-- VISA -->
                         <visa_configuration translate="label">
-                            <label><![CDATA[<img title='Visa' alt='Visa' width='32' src='/skin/adminhtml/default/default/images/mundipagg/icons/visa.jpg'/> <div style='margin:-29px 0 13px 40px'> Visa configuration</div>]]></label>
+                            <label><![CDATA[<img title='Visa' alt='Visa' width='32' class='skin-img' src='/skin/adminhtml/default/default/images/mundipagg/icons/visa.jpg'/> <div style='margin:-29px 0 13px 40px'> Visa configuration</div>]]></label>
                             <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
                             <sort_order>6</sort_order>
                             <show_in_default>1</show_in_default>
@@ -653,7 +653,7 @@
 
                         <!-- MASTERCARD -->
                         <mastercard_configuration translate="label">
-                            <label><![CDATA[<img title='Mastercard' alt='Mastercard' width='32' src='/skin/adminhtml/default/default/images/mundipagg/icons/mastercard.jpg'/> <div style='margin:-29px 0 13px 40px'> Mastercard configuration</div>]]></label>
+                            <label><![CDATA[<img title='Mastercard' alt='Mastercard' width='32' class='skin-img' src='/skin/adminhtml/default/default/images/mundipagg/icons/mastercard.jpg'/> <div style='margin:-29px 0 13px 40px'> Mastercard configuration</div>]]></label>
                             <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
                             <sort_order>20</sort_order>
                             <show_in_default>1</show_in_default>
@@ -722,7 +722,7 @@
 
                         <!-- HIPERCARD -->
                         <hipercard_configuration translate="label">
-                            <label><![CDATA[<img title='Hipercard' alt='Hipercard' width='32' src='/skin/adminhtml/default/default/images/mundipagg/icons/hipercard.jpg'/> <div style='margin:-29px 0 13px 40px'> Hipercard configuration</div>]]></label>
+                            <label><![CDATA[<img title='Hipercard' alt='Hipercard' width='32' class='skin-img' src='/skin/adminhtml/default/default/images/mundipagg/icons/hipercard.jpg'/> <div style='margin:-29px 0 13px 40px'> Hipercard configuration</div>]]></label>
                             <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
                             <sort_order>30</sort_order>
                             <show_in_default>1</show_in_default>
@@ -791,7 +791,7 @@
 
                         <!-- DINERS-->
                         <diners_configuration translate="label">
-                            <label><![CDATA[<img title='Diners' alt='Diners' width='32' src='/skin/adminhtml/default/default/images/mundipagg/icons/diners.jpg'/> <div style='margin:-29px 0 13px 40px'> Diners configuration</div>]]></label>
+                            <label><![CDATA[<img title='Diners' alt='Diners' width='32' class='skin-img' src='/skin/adminhtml/default/default/images/mundipagg/icons/diners.jpg'/> <div style='margin:-29px 0 13px 40px'> Diners configuration</div>]]></label>
                             <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
                             <sort_order>40</sort_order>
                             <show_in_default>1</show_in_default>
@@ -860,7 +860,7 @@
 
                         <!-- AMEX -->
                         <amex_configuration translate="label">
-                            <label><![CDATA[<img title='Amex' alt='Amex' width='32' src='/skin/adminhtml/default/default/images/mundipagg/icons/amex.jpg'/> <div style='margin:-29px 0 13px 40px'>Amex configuration</div>]]></label>
+                            <label><![CDATA[<img title='Amex' alt='Amex' width='32' class='skin-img' src='/skin/adminhtml/default/default/images/mundipagg/icons/amex.jpg'/> <div style='margin:-29px 0 13px 40px'>Amex configuration</div>]]></label>
                             <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
                             <sort_order>50</sort_order>
                             <show_in_default>1</show_in_default>
@@ -929,7 +929,7 @@
 
                         <!-- ELO -->
                         <elo_configuration translate="label">
-                            <label><![CDATA[<img title='Elo' alt='Elo' width='32' src='/skin/adminhtml/default/default/images/mundipagg/icons/elo.jpg'/> <div style='margin:-29px 0 13px 40px'>Elo configuration</div>]]></label>
+                            <label><![CDATA[<img title='Elo' alt='Elo' width='32' class='skin-img' src='/skin/adminhtml/default/default/images/mundipagg/icons/elo.jpg'/> <div style='margin:-29px 0 13px 40px'>Elo configuration</div>]]></label>
                             <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
                             <sort_order>60</sort_order>
                             <show_in_default>1</show_in_default>
@@ -1075,7 +1075,7 @@
                     <fields>
                         <!-- VR -->
                         <vr_configuration translate="label">
-                            <label><![CDATA[<img title='VR' alt='VR' width='32' src='/skin/adminhtml/default/default/images/mundipagg/icons/vr.jpg'/> <div style='margin:-29px 0 13px 40px'> VR configuration</div>]]></label>
+                            <label><![CDATA[<img title='VR' alt='VR' width='32' class='skin-img' src='/skin/adminhtml/default/default/images/mundipagg/icons/vr.jpg'/> <div style='margin:-29px 0 13px 40px'> VR configuration</div>]]></label>
                             <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
                             <sort_order>0</sort_order>
                             <show_in_default>1</show_in_default>
@@ -1094,7 +1094,7 @@
 
                         <!-- SODEXO -->
                         <sodexo_configuration translate="label">
-                            <label><![CDATA[<img title='Sodexo' alt='Sodexo' width='32' src='/skin/adminhtml/default/default/images/mundipagg/icons/sodexo.jpg'/> <div style='margin:-29px 0 13px 40px'> Sodexo configuration</div>]]></label>
+                            <label><![CDATA[<img title='Sodexo' alt='Sodexo' width='32' class='skin-img' src='/skin/adminhtml/default/default/images/mundipagg/icons/sodexo.jpg'/> <div style='margin:-29px 0 13px 40px'> Sodexo configuration</div>]]></label>
                             <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
                             <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>

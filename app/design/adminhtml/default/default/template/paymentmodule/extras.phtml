@@ -1,2 +1,33 @@
+
 <?php echo $this->getCssJsHtml(); ?>
 
+<script>
+    //adjusting images src to absolute path
+    jQuery(document).ready(function()
+    {
+        window.mundipagg_skin_base_url = '<?php echo $this->getSkinUrl(''); ?>';
+
+        jQuery('.skin-img').each(function(){
+            var src = jQuery(this).attr('src');
+            if (src.match(/^\/skin/) !== null) {
+                jQuery(this).attr(
+                    'src',
+                    combineByCommon(window.mundipagg_skin_base_url, src)
+                );
+            }
+        });
+    });
+
+    var combineByCommon = function (base, end) {
+        var baseCurrentIndex = 0;
+        while (
+                end.indexOf(base.substring(baseCurrentIndex)) == -1 &&
+                baseCurrentIndex < base.length
+            ) {
+            baseCurrentIndex++;
+        }
+        var common = base.substring(baseCurrentIndex);
+        return end.replace(common, base);
+    };
+
+</script>
