@@ -106,7 +106,7 @@
         <input
                 type="text"
                 data-mundicheckout-input="<?php echo "$elementId"?>_number"
-                class="required-entry validate-cc-number mundipaggInput"
+                class="required-entry validate-cc-number mp-validate-cc-number-length mundipaggInput "
                 id="<?php echo "$elementId"?>_mundicheckout-number"
                 onkeyup="getFormData('<?php echo $elementId?>'); getBrand('<?php echo $elementId?>');"
                 onchange="getFormData('<?php echo $elementId?>'); getBrand('<?php echo $elementId?>');"
@@ -129,7 +129,7 @@
         <input
                 type="text"
                 data-mundicheckout-input="<?php echo "$elementId"?>_holder_name"
-                class="required-entry"
+                class="required-entry mp-validate-cc-holder-name-length"
                 id="<?php echo "$elementId"?>_mundicheckout-holdername"
                 onkeyup="getFormData('<?php echo $elementId?>');"
                 name="payment[<?php echo "$elementId"?>_holderName]"><br>
@@ -143,7 +143,7 @@
     <div class="input-box newCreditCard-<?php echo $elementId?>" <?php echo $new; ?>>
         <div class="v-fix">
             <select
-                    class="required-entry"
+                    class="required-entry mp-validate-cc-exp-month"
                     id="<?php echo "$elementId"?>_mundicheckout-expmonth"
                     onchange="getFormData('<?php echo $elementId?>');"
                     name="payment[<?php echo "$elementId"?>_expMonth]"
@@ -161,7 +161,7 @@
         </div>
         <div class="v-fix">
             <select
-                    class="required-entry"
+                    class="required-entry mp-validate-cc-exp-year"
                     id="<?php echo "$elementId"?>_mundicheckout-expyear"
                     onchange="getFormData('<?php echo $elementId?>');"
                     name="payment[<?php echo "$elementId"?>_expYear]"
@@ -200,7 +200,7 @@
         <input
                 type="text"
                 data-mundicheckout-input="<?php echo "$elementId"?>_cvv"
-                class="required-entry validate-number"
+                class="required-entry validate-number mp-validate-cc-cvv-length"
                 id="<?php echo "$elementId"?>_mundicheckout-cvv"
                 onkeyup="getFormData('<?php echo $elementId?>');"
                 maxlength="4"

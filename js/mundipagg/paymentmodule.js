@@ -155,20 +155,55 @@ function getCreditCardToken(pkKey, elementId, callback) {
  */
 function validateCreditCardData(elementId) {
     if(
-        toTokenApi[elementId].card.number.length > 14 &&
-        toTokenApi[elementId].card.number.length < 22 &&
-        toTokenApi[elementId].card.holder_name.length > 2 &&
-        toTokenApi[elementId].card.holder_name.length < 51 &&
-        toTokenApi[elementId].card.exp_month > 0 &&
-        toTokenApi[elementId].card.exp_month < 13 &&
-        toTokenApi[elementId].card.exp_year >= getCurrentYear() &&
-        toTokenApi[elementId].card.cvv.length > 2 &&
-        toTokenApi[elementId].card.cvv.length < 5
+        validateCCNumberLength(toTokenApi[elementId].card.number) &&
+        validateHolderNameLength(toTokenApi[elementId].card.holder_name) &&
+        validateExpMonth(toTokenApi[elementId].card.exp_month) &&
+        validateExpYear(toTokenApi[elementId].card.exp_year) &&
+        validateCVVLength(toTokenApi[elementId].card.cvv)
     ){
         return true;
     }else{
         return false;
     }
+}
+
+function validateCCNumberLength(value)
+{
+    return (
+        value.length > 14 &&
+        value.length < 22
+    );
+}
+
+function validateHolderNameLength(value)
+{
+    return (
+        value.length > 2 &&
+        value.length < 51
+    );
+}
+
+function validateExpMonth(value)
+{
+    return (
+        value > 0 &&
+        value < 13
+    );
+}
+
+function validateExpYear(value)
+{
+    return (
+        value >= getCurrentYear()
+    );
+}
+
+function validateCVVLength(value)
+{
+    return (
+        value.length > 2 &&
+        value.length < 5
+    );
 }
 
 function getCurrentYear() {
