@@ -11,6 +11,22 @@ use Mundipagg_Paymentmodule_Helper_Address as AddressHelper;
 
 abstract class Mundipagg_Paymentmodule_Model_Api_Standard
 {
+    const SESSION_ID = 'mp_session_id';
+
+    protected function getMageSessionId()
+    {
+        $session = Mage::getSingleton('customer/session');
+
+        $sessionId = $session->getData(self::SESSION_ID);
+
+        if (is_null($sessionId) || $sessionId == false || empty($sessionId)) {
+            $sessionId = uniqid('mpm1-');
+            $session->setData(self::SESSION_ID, $sessionId);
+        }
+
+        return $sessionId;
+    }
+
     protected function getCurrentCurrencyCode()
     {
         return Mage::app()->getStore()->getCurrentCurrencyCode();
@@ -32,6 +48,7 @@ abstract class Mundipagg_Paymentmodule_Model_Api_Standard
         $orderRequest->metadata = $paymentInformation->getMetainfo();
         $orderRequest->shipping = $this->getShippingRequest($paymentInformation->getShippingInfo());
         $orderRequest->antifraudEnabled = $paymentInformation->getSendToAntiFraud();
+        $orderRequest->sessionId = $this->getMageSessionId();
 
         return $orderRequest;
     }
