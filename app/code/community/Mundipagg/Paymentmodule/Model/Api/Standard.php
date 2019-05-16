@@ -168,37 +168,7 @@ abstract class Mundipagg_Paymentmodule_Model_Api_Standard
             return $this->getCustomerFromMultiBuyer($payment);
         }
 
-        return $this->getCustomerFromSession();
-    }
-
-    /**
-     * @return CreateCustomerRequest
-     */
-    protected function getCustomerFromSession()
-    {
-        $customerRequest = new CreateCustomerRequest();
-        $standard = Mage::getModel('paymentmodule/standard');
-        $customer = $standard->getCustomerSession();
-
-        $customerRequest->name = $customer->getName();
-        $customerRequest->address = $this->getAddressFromSession();
-        $customerRequest->type = 'individual';
-        $customerRequest->email = $customer->getEmail();
-        $customerRequest->document = $customer->getDocument();
-
-        //loading order to get addresses and phone.
-        $checkoutSession = $standard->getCheckoutSession();
-        $orderId = $checkoutSession->getLastRealOrderId();
-        $order = $standard->getOrderByIncrementOrderId($orderId);
-
-        //filtering numbers from phone number
-        $rawBillingPhone = $order->getBillingAddress()->getTelephone();
-        $phoneHelper = Mage::helper('paymentmodule/phone');
-        $phoneInfo = $phoneHelper->extractPhoneVarienFromRawPhoneNumber($rawBillingPhone);
-
-        $customerRequest->phones = $this->getCreatePhonesRequest($phoneInfo);
-
-        return $customerRequest;
+        return null;
     }
 
     /**
@@ -228,6 +198,11 @@ abstract class Mundipagg_Paymentmodule_Model_Api_Standard
      */
     protected function getCustomerFromMultiBuyer($customer)
     {
+        $multiBuyerConfig = Mage::getModel('paymentmodule/config_multibuyer');
+        if (!$multiBuyerConfig->isEnabled()) {
+            return null;
+        }
+
         $customerRequest = new CreateCustomerRequest();
 
         $document = preg_replace('/[^0-9]/', '', $customer['multiBuyerTaxvat']);
