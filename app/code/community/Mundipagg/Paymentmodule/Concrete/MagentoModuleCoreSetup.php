@@ -113,8 +113,7 @@ final class MagentoModuleCoreSetup extends AbstractModuleCoreSetup
         self::$platformVersion = Mage::getVersion();
     }
 
-
-    protected static function getCurrentStoreId()
+    public static function getCurrentStoreId()
     {
         $store = Mage::getSingleton('adminhtml/config_data')->getScopeId();
         if ($store === null) {
@@ -130,5 +129,20 @@ final class MagentoModuleCoreSetup extends AbstractModuleCoreSetup
             ->getWebsite(0)
             ->getDefaultGroup()
             ->getDefaultStoreId();
+    }
+
+    public static function loadModuleConfigurationFromPlatform()
+    {
+        // TODO: Implement loadModuleConfigurationFromPlatform() method.
+    }
+
+    /**
+     * @since 1.7.1
+     *
+     * @return \DateTimeZone
+     */
+    protected function getPlatformStoreTimezone()
+    {
+        //@TODO: Implement getPlatformStoreTimezone() method.
     }
 }

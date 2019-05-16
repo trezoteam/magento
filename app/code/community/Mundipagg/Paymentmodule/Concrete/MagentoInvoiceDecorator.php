@@ -64,4 +64,12 @@ final class MagentoInvoiceDecorator
     {
         return $this->platformInvoice->getData();
     }
+
+    /**
+     * @since 1.7.2
+     */
+    protected function addMPComment($comment)
+    {
+        // TODO: Implement addMPComment() method.
+    }
 }
