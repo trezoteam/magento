@@ -35,7 +35,7 @@ final class MagentoModuleCoreSetup extends AbstractModuleCoreSetup
         return "2d2db409-fed0-4bd8-ac1e-43eeff33458d";
     }
 
-    protected static function loadModuleConfiguration()
+    public static function loadModuleConfigurationFromPlatform()
     {
         $store = self::getCurrentStoreId();
 
@@ -129,11 +129,6 @@ final class MagentoModuleCoreSetup extends AbstractModuleCoreSetup
             ->getWebsite(0)
             ->getDefaultGroup()
             ->getDefaultStoreId();
-    }
-
-    public static function loadModuleConfigurationFromPlatform()
-    {
-        // TODO: Implement loadModuleConfigurationFromPlatform() method.
     }
 
     /**
