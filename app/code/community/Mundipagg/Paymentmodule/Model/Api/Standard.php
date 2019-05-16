@@ -19,7 +19,7 @@ abstract class Mundipagg_Paymentmodule_Model_Api_Standard
 
         $sessionId = $session->getData(self::SESSION_ID);
 
-        if (is_null($sessionId) || $sessionId == false || empty($sessionId)) {
+        if (empty($sessionId)) {
             $sessionId = uniqid('mpm1-');
             $session->setData(self::SESSION_ID, $sessionId);
         }
