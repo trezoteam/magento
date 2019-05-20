@@ -1,5 +1,5 @@
 <_>
-   <form_key>oO0ObP9TGqsFhyGT</form_key>
+   <form_key>v1PMNDUbJlJUWK5V</form_key>
    <name>Mundipagg_Payment_Module</name>
    <channel>community</channel>
    <version_ids>
@@ -46,7 +46,7 @@ Em qualquer procedimento de instalação ou update existem riscos, aconselhamos 
             <max/>
          </max>
          <files>
-            <files>                                                                                  </files>
+            <files>                                                                                   </files>
          </files>
       </package>
       <extension>
@@ -84,6 +84,10 @@ Em qualquer procedimento de instalação ou update existem riscos, aconselhamos 
          <target>magelocale</target>
          <target>magelocale</target>
          <target>magelocale</target>
+         <target>mage</target>
+         <target>magelib</target>
+         <target>magelib</target>
+         <target>magelib</target>
       </target>
       <path>
          <path/>
@@ -107,6 +111,10 @@ Em qualquer procedimento de instalação ou update existem riscos, aconselhamos 
          <path>en_US/mundipagg_frontend_locale.csv</path>
          <path>pt_BR/mundipagg_adminhtml_locale.csv</path>
          <path>pt_BR/mundipagg_frontend_locale.csv</path>
+         <path>js/lib/jquery</path>
+         <path>guzzlehttp</path>
+         <path>nelmio</path>
+         <path>ralouphie</path>
       </path>
       <type>
          <type>file</type>
@@ -130,8 +138,16 @@ Em qualquer procedimento de instalação ou update existem riscos, aconselhamos 
          <type>file</type>
          <type>file</type>
          <type>file</type>
+         <type>dir</type>
+         <type>dir</type>
+         <type>dir</type>
+         <type>dir</type>
       </type>
       <include>
+         <include/>
+         <include/>
+         <include/>
+         <include/>
          <include/>
          <include/>
          <include/>
@@ -176,6 +192,14 @@ Em qualquer procedimento de instalação ou update existem riscos, aconselhamos 
          <ignore/>
          <ignore/>
          <ignore/>
+         <ignore/>
+         <ignore/>
+         <ignore/>
+         <ignore/>
       </ignore>
    </contents>
+   <page>1</page>
+   <limit>200</limit>
+   <folder/>
+   <package/>
 </_>
