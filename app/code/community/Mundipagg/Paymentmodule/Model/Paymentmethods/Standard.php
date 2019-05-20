@@ -205,6 +205,7 @@ class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mundipagg_Pa
         $shipping->setAmount($monetaryHelper->toCents($amount));
         $shipping->setDescription($order->getShippingDescription());
         $shipping->setAddress($this->getShippingAddressInformation($order));
+        $shipping->setMethod($order->getShippingMethod());
 
         return $shipping;
     }

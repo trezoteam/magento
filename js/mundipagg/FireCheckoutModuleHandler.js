@@ -61,6 +61,15 @@ FireCheckoutModuleHandler.prototype.init = function() {
     var observer = new MutationObserver(callback);
 
     observer.observe(targetNode, config);
+
+    //add Validators
+    Validation.addAllThese([
+        ['mp-validate-cc-number-length', 'Invalid card number length.', validateCCNumberLength],
+        ['mp-validate-cc-holder-name-length', 'Invalid holder name length.', validateHolderNameLength],
+        ['mp-validate-cc-exp-month', 'Invalid month.', validateExpMonth],
+        ['mp-validate-cc-exp-year', 'Invalid year.', validateExpYear],
+        ['mp-validate-cc-cvv-length', 'Invalid CVV length.', validateCVVLength]
+    ]);
 };
 
 FireCheckoutModuleHandler.prototype.setSavePaymentInterceptor = function () {
