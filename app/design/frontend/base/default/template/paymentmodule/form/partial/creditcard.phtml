@@ -8,6 +8,7 @@
     $savedCreditCards = $this->getSavedCreditCards();
     $isSavedCreditCardsEnabled = $this->isSavedCreditCardsEnabled();
     $enabledBrands = $this->getEnabledBrands();
+    $customerDocument = $this->getCustomerDocument();
 
     $new = '';
     if ($savedCreditCards) {
@@ -112,6 +113,8 @@
                 onchange="getFormData('<?php echo $elementId?>'); getBrand('<?php echo $elementId?>');"
                 maxlength="19"
         >
+
+        <input type="hidden" id="<?php echo "$elementId"?>_mundicheckout-cpf" value="<?php echo $customerDocument; ?>" />
 
         <div
                 id="<?php echo "$elementId"?>_disabled_brand_message"

@@ -1,5 +1,7 @@
 <?php
 
+require_once Mage::getBaseDir('lib') . '/autoload.php';
+
 use Mundipagg\Integrity\SystemInfoInterface;
 use Mundipagg\Magento\Concrete\MagentoModuleCoreSetup as CoreSetup;
 
