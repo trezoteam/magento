@@ -1,5 +1,6 @@
 <_>
-   <form_key>v1PMNDUbJlJUWK5V</form_key>
+   <form_key>EFWS4DIg6ZSPQyim</form_key>
+   <_create/>
    <name>Mundipagg_Payment_Module</name>
    <channel>community</channel>
    <version_ids>
@@ -8,11 +9,11 @@
    <summary>MundiPagg payment gateway integration extension / Integração com o gateway de pagamentos MundiPagg.</summary>
    <description>MundiPagg Payment Gateway
 
-IMPORTANT
-Always install our extension in your development environment before going live. We do not take any responsibility and we are not liable for any damage caused through use of products or services.
+      IMPORTANT
+      Always install our extension in your development environment before going live. We do not take any responsibility and we are not liable for any damage caused through use of products or services.
 
-IMPORTANTE
-Em qualquer procedimento de instalação ou update existem riscos, aconselhamos sempre criar backups de sua loja e efetuar qualquer procedimento em ambiente de desenvolvimento antes, nunca diretamente em produção. Não nos responsabilizamos por eventuais incidentes causados por negligenciar este alerta ou por uso de produtos ou serviços de terceiros.</description>
+      IMPORTANTE
+      Em qualquer procedimento de instalação ou update existem riscos, aconselhamos sempre criar backups de sua loja e efetuar qualquer procedimento em ambiente de desenvolvimento antes, nunca diretamente em produção. Não nos responsabilizamos por eventuais incidentes causados por negligenciar este alerta ou por uso de produtos ou serviços de terceiros.</description>
    <license>MIT</license>
    <license_uri/>
    <version>2.1.3</version>
@@ -46,7 +47,7 @@ Em qualquer procedimento de instalação ou update existem riscos, aconselhamos 
             <max/>
          </max>
          <files>
-            <files>                                                                                   </files>
+            <files>                                                                                      </files>
          </files>
       </package>
       <extension>
@@ -111,7 +112,7 @@ Em qualquer procedimento de instalação ou update existem riscos, aconselhamos 
          <path>en_US/mundipagg_frontend_locale.csv</path>
          <path>pt_BR/mundipagg_adminhtml_locale.csv</path>
          <path>pt_BR/mundipagg_frontend_locale.csv</path>
-         <path>js/lib/jquery</path>
+         <path>js/lib/jquery/mp-jquery-1.12.0.min.js</path>
          <path>guzzlehttp</path>
          <path>nelmio</path>
          <path>ralouphie</path>
@@ -138,7 +139,7 @@ Em qualquer procedimento de instalação ou update existem riscos, aconselhamos 
          <type>file</type>
          <type>file</type>
          <type>file</type>
-         <type>dir</type>
+         <type>file</type>
          <type>dir</type>
          <type>dir</type>
          <type>dir</type>
@@ -198,8 +199,4 @@ Em qualquer procedimento de instalação ou update existem riscos, aconselhamos 
          <ignore/>
       </ignore>
    </contents>
-   <page>1</page>
-   <limit>200</limit>
-   <folder/>
-   <package/>
 </_>
