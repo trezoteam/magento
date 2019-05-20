@@ -29,12 +29,10 @@
                 <action method="addJs">
                     <script>lib/jquery/mp-jquery-1.12.0.min.js</script>
                 </action>
-                <action method="addJs"><script>lib/jquery/noconflict.js</script></action>
                 <action method="addItem">
                     <type>js</type>
                     <name>mundipagg/hubIntegration.js</name>
                 </action>
-
             </block>
         </reference>
     </adminhtml_system_config_edit>
