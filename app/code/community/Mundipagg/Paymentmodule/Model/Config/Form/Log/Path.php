@@ -1,10 +1,17 @@
 <?php
 
+require_once Mage::getBaseDir('lib') . '/autoload.php';
+
+use Mundipagg\Magento\Concrete\MagentoModuleCoreSetup as MPSetup;
+
 class Mundipagg_Paymentmodule_Model_Config_Form_Log_Path extends Mage_Core_Model_Config_Data
 {
     public function save()
     {
-        if (Mage::getStoreConfig('mundipagg_config/log_group/non_default_dir') == '1') {
+        MPSetup::bootstrap();
+        $storeId = MPSetup::getCurrentStoreId();
+
+        if (Mage::getStoreConfig('mundipagg_config/log_group/non_default_dir', $storeId) == '1') {
             $logPath = $this->getValue();
 
             $checkLogFile = $logPath . DS . 'mundipagg_checklogfile';
@@ -35,14 +42,17 @@ class Mundipagg_Paymentmodule_Model_Config_Form_Log_Path extends Mage_Core_Model
 
     public function getCommentText($element, $currentValue)
     {
+        MPSetup::bootstrap();
+        $storeId = MPSetup::getCurrentStoreId();
+
         $comment = 'Directory in which log files will be saved.';
 
         $permissionWarning = "<br /><br /><span style='color:red;'>Warning! The server user does not have write ";
         $permissionWarning .= " permissions on directory <strong>'%s'</strong>!<br />";
         $permissionWarning .= "To enable the correct saving of the log files, please change this permission.</span>";
 
-        if (Mage::getStoreConfig('mundipagg_config/log_group/non_default_dir') == '1') {
-            $logPath = Mage::getStoreConfig('mundipagg_config/log_group/log_path');
+        if (Mage::getStoreConfig('mundipagg_config/log_group/non_default_dir', $storeId) == '1') {
+            $logPath = Mage::getStoreConfig('mundipagg_config/log_group/log_path', $storeId);
 
             $checkLogFile = $logPath . DS . 'mundipagg_checklogfile';
 

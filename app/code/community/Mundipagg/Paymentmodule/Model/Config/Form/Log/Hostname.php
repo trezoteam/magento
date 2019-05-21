@@ -1,15 +1,25 @@
 <?php
 
+require_once Mage::getBaseDir('lib') . '/autoload.php';
+
+use Mundipagg\Magento\Concrete\MagentoModuleCoreSetup as MPSetup;
+
 class Mundipagg_Paymentmodule_Model_Config_Form_Log_Hostname extends Mage_Core_Model_Config_Data
 {
     public function getCommentText($element, $currentValue)
     {
+        MPSetup::bootstrap();
+        $storeId = MPSetup::getCurrentStoreId();
+
         $comment  = 'Enabling this option will add the host name to the log filename. ';
         $comment .= "With the host name being '<strong>%s</strong>', ";
         $comment .= 'the log file will be saved with the following name: <br /><br />';
         $comment .= '<span id="mundipagg_log_file_name_example"></span>/';
 
-        $isNonDefaultDir = Mage::getStoreConfig('mundipagg_config/log_group/non_default_dir') == '1';
+        $isNonDefaultDir = Mage::getStoreConfig(
+            'mundipagg_config/log_group/non_default_dir',
+                $storeId
+            ) == '1';
         $isNonDefaultDir = $isNonDefaultDir ? 'true' : 'false';
 
         $hostname = gethostname();
