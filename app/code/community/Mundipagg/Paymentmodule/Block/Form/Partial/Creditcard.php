@@ -69,4 +69,10 @@ class Mundipagg_Paymentmodule_Block_Form_Partial_Creditcard extends Mundipagg_Pa
         return Mage::getModel('paymentmodule/config_card')
             ->getEnabledBrands();
     }
+
+    public function getCustomerDocument()
+    {
+        $customer = Mage::getSingleton('customer/session')->getCustomer();
+        return $customer->getData('taxvat');
+    }
 }
