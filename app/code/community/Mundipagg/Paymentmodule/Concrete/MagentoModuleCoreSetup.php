@@ -116,6 +116,13 @@ final class MagentoModuleCoreSetup extends AbstractModuleCoreSetup
     public static function getCurrentStoreId()
     {
         $store = Mage::getSingleton('adminhtml/config_data')->getScopeId();
+
+        //to fix hub endpoint issue
+        $params = Mage::app()->getRequest()->getParams();
+        if (isset($params['storeId'])) {
+            $store = intval($params['storeId']);
+        }
+
         if ($store === null) {
             $store = Mage::app()->getStore()->getId();
         }
