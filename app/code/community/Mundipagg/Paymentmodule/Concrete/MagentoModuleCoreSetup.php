@@ -13,7 +13,7 @@ use Mundipagg_Paymentmodule_Model_Boleto as MagentoPlatformFormatService;
 
 final class MagentoModuleCoreSetup extends AbstractModuleCoreSetup
 {
-    static protected function setConfig()
+    protected function setConfig()
     {
         self::$config = [
             AbstractModuleCoreSetup::CONCRETE_CART_DECORATOR_CLASS => MagentoPlatformCartDecorator::class,
