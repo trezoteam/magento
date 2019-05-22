@@ -9,6 +9,9 @@ final class MagentoPlatformDatabaseDecorator extends AbstractDatabaseDecorator
 {
     protected function setTableArray()
     {
+        //@todo when adding or changing tables, we must remember to create
+        //      the migration files to it, fitting with the data
+        //      structure of the core repositories.
         $this->tableArray = [
             AbstractDatabaseDecorator::TABLE_MODULE_CONFIGURATION =>
                 $this->tablePrefix . "paymentmodule_configuration",
