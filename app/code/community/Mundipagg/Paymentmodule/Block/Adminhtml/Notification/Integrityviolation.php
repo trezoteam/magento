@@ -2,8 +2,6 @@
 
 require_once Mage::getBaseDir('lib') . '/autoload.php';
 
-use Mundipagg\Core\Maintenance\Services\IntegrityInfoRetrieverService;
-use Mundipagg\Magento\Concrete\MagentoModuleCoreSetup;
 use Mundipagg\Integrity\IntegrityController;
 
 class Mundipagg_Paymentmodule_Block_Adminhtml_Notification_Integrityviolation extends Mage_Adminhtml_Block_Template
@@ -16,12 +14,15 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Notification_Integrityviolation ex
 
     public function isViolated()
     {
+        return false; //disabling integrity violation functionality;
+        /**
         MagentoModuleCoreSetup::bootstrap();
         $integrityService = new IntegrityInfoRetrieverService();
         $integrity = $integrityService->retrieveInfo("");
 
         return $this->isModuleViolated($integrity->module) ||
             $this->isModuleCoreViolated($integrity->core);
+         */
     }
 
     public function isModuleViolated($moduleInfo)
