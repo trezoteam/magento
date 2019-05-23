@@ -1,7 +1,13 @@
 <?php
- 
+
+require_once Mage::getBaseDir('lib') . '/autoload.php';
+
+use Mundipagg\Magento\Concrete\MagentoModuleCoreSetup as MPSetup;
+
 class Mundipagg_Paymentmodule_Block_Adminhtml_Order_Charge_Grid extends Mage_Adminhtml_Block_Widget_Grid
 {
+    protected $storeId;
+
     public function __construct()
     {
         parent::__construct();
@@ -9,6 +15,9 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Order_Charge_Grid extends Mage_Adm
         $this->setFilterVisibility(false);
         $this->setPagerVisibility(false);
         $this->setSaveParametersInSession(true);
+
+        MPSetup::bootstrap();
+        $this->storeId = MPSetup::getCurrentStoreId();
     }
 
     public function getRowUrl($row)
@@ -108,7 +117,10 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Order_Charge_Grid extends Mage_Adm
     protected function _prepareColumns()
     {
         $helper = Mage::helper('paymentmodule/order');
-        $currency = (string) Mage::getStoreConfig(Mage_Directory_Model_Currency::XML_PATH_CURRENCY_BASE);
+        $currency = (string) Mage::getStoreConfig(
+            Mage_Directory_Model_Currency::XML_PATH_CURRENCY_BASE,
+            $this->storeId
+        );
  
         $this->addColumn('id', array(
             'header' => $this->__('Charge Id'),

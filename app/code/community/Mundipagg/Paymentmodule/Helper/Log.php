@@ -1,5 +1,9 @@
 <?php
 
+require_once Mage::getBaseDir('lib') . '/autoload.php';
+
+use Mundipagg\Magento\Concrete\MagentoModuleCoreSetup as MPSetup;
+
 class Mundipagg_Paymentmodule_Helper_Log extends Mage_Core_Helper_Abstract
 {
     protected $level;
@@ -8,15 +12,28 @@ class Mundipagg_Paymentmodule_Helper_Log extends Mage_Core_Helper_Abstract
     protected $addHostName = false;
     protected $logger;
     protected $logPath;
+    protected $storeId;
 
     public function __construct($method = '')
     {
+        MPSetup::bootstrap();
+        $this->storeId = MPSetup::getCurrentStoreId();
+
         $this->method = $method;
-        $this->addHostName = Mage::getStoreConfig('mundipagg_config/log_group/host_name') == '1';
+        $this->addHostName = Mage::getStoreConfig(
+            'mundipagg_config/log_group/host_name',
+            $this->storeId
+        ) == '1';
         $this->logger = Mage::helper('paymentmodule/logger');
 
-        $this->logPath = Mage::getStoreConfig('mundipagg_config/log_group/log_path');
-        if (Mage::getStoreConfig('mundipagg_config/log_group/non_default_dir') != '1') {
+        $this->logPath = Mage::getStoreConfig(
+            'mundipagg_config/log_group/log_path',
+            $this->storeId
+        );
+        if (Mage::getStoreConfig(
+            'mundipagg_config/log_group/non_default_dir',
+            $this->storeId
+        ) != '1') {
             $this->logPath = Mage::getBaseDir('var') . DS . 'log';
         }
     }
@@ -74,7 +91,10 @@ class Mundipagg_Paymentmodule_Helper_Log extends Mage_Core_Helper_Abstract
 
     protected function write($msg)
     {
-        $logIsEnabled = boolval(Mage::getStoreConfig('mundipagg_config/log_group/enabled'));
+        $logIsEnabled = boolval(Mage::getStoreConfig(
+            'mundipagg_config/log_group/enabled',
+            $this->storeId
+        ));
 
         if ($logIsEnabled === false) {
             return;

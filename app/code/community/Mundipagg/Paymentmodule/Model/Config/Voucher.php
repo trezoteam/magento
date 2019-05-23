@@ -1,15 +1,22 @@
 <?php
 
 class Mundipagg_Paymentmodule_Model_Config_Voucher
+    extends Mundipagg_Paymentmodule_Model_Config_AbstractConfigModel
 {
     public function isEnabled()
     {
-        return Mage::getStoreConfig('mundipagg_config/voucher_group/voucher_config_status');
+        return Mage::getStoreConfig(
+            'mundipagg_config/voucher_group/voucher_config_status',
+                $this->storeId
+            );
     }
 
     public function getTitle()
     {
-        return Mage::getStoreConfig('mundipagg_config/voucher_group/voucher_payment_title');
+        return Mage::getStoreConfig(
+            'mundipagg_config/voucher_group/voucher_payment_title',
+                $this->storeId
+            );
     }
 
     public function getPaymentTitle()
@@ -19,12 +26,18 @@ class Mundipagg_Paymentmodule_Model_Config_Voucher
 
     public function getInvoiceName()
     {
-        return Mage::getStoreConfig('mundipagg_config/voucher_group/invoice_name');
+        return Mage::getStoreConfig(
+            'mundipagg_config/voucher_group/invoice_name',
+                $this->storeId
+            );
     }
 
     public function getOperationType()
     {
-        return Mage::getStoreConfig('mundipagg_config/voucher_group/operation_type');
+        return Mage::getStoreConfig(
+            'mundipagg_config/voucher_group/operation_type',
+                $this->storeId
+            );
     }
 
     public function getOperationTypeFlag()
@@ -57,11 +70,17 @@ class Mundipagg_Paymentmodule_Model_Config_Voucher
 
     public function isVrEnabled()
     {
-        return Mage::getStoreConfig('mundipagg_config/voucher_brands_group/vr_status');
+        return Mage::getStoreConfig(
+            'mundipagg_config/voucher_brands_group/vr_status',
+                $this->storeId
+            );
     }
 
     public function isSodexoEnabled()
     {
-        return Mage::getStoreConfig('mundipagg_config/voucher_brands_group/sodexo_status');
+        return Mage::getStoreConfig(
+            'mundipagg_config/voucher_brands_group/sodexo_status',
+                $this->storeId
+            );
     }
 }
