@@ -47,10 +47,27 @@ abstract class Mundipagg_Paymentmodule_Model_Api_Standard
         $orderRequest->code = $orderId;
         $orderRequest->metadata = $paymentInformation->getMetainfo();
         $orderRequest->shipping = $this->getShippingRequest($paymentInformation->getShippingInfo());
-        $orderRequest->antifraudEnabled = $paymentInformation->getSendToAntiFraud();
+        $orderRequest->antifraudEnabled = $this->shouldSendToAntiFraud($paymentInformation);
         $orderRequest->sessionId = $this->getMageSessionId();
 
         return $orderRequest;
+    }
+
+    protected function shouldSendToAntiFraud($paymentInformation)
+    {
+        $standard = Mage::getModel('paymentmodule/standard');
+        $checkoutSession = $standard->getCheckoutSession();
+        $orderId = $checkoutSession->getLastOrderId();
+        $order = $standard->getOrderByOrderId($orderId);
+
+        $antiFraudConfig = Mage::getModel('paymentmodule/config_antifraud');
+        $moneyHelper = Mage::helper('paymentmodule/monetary');
+
+        $grandTotal = $moneyHelper->formatDecimals($order->getGrandTotal());
+        $grandTotalInCents =
+            (Mage::helper('paymentmodule/monetary'))->toCents($grandTotal);
+
+        return $antiFraudConfig->shouldApplyAntifraud($grandTotalInCents);
     }
 
     protected function getPayments()
