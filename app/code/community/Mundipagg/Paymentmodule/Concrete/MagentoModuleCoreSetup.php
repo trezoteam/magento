@@ -39,7 +39,7 @@ final class MagentoModuleCoreSetup extends AbstractModuleCoreSetup
         return "2d2db409-fed0-4bd8-ac1e-43eeff33458d";
     }
 
-    public static function loadModuleConfigurationFromPlatform()
+    public function loadModuleConfigurationFromPlatform()
     {
         static::fixDefaultStoreDbPlaceHolders();
 
@@ -81,7 +81,7 @@ final class MagentoModuleCoreSetup extends AbstractModuleCoreSetup
      *
      * @throws \Exception
      */
-    private static function fixDefaultStoreDbPlaceHolders()
+    protected static function fixDefaultStoreDbPlaceHolders()
     {
         $dbDecorator = new MagentoPlatformDatabaseDecorator(
             self::getDatabaseAccessObject()
@@ -110,35 +110,35 @@ final class MagentoModuleCoreSetup extends AbstractModuleCoreSetup
         }
     }
 
-    protected static function setModuleVersion()
+    protected function setModuleVersion()
     {
         $data = \Mage::helper('paymentmodule')->getMetaData();
         self::$moduleVersion = $data['module_version'];
     }
 
-    protected static function setLogPath()
+    protected function setLogPath()
     {
         self::$logPath = [
             \Mage::getBaseDir('log')
         ];
     }
 
-    protected static function _getDashboardLanguage()
+    protected function _getDashboardLanguage()
     {
         // TODO: Implement _getDashboardLanguage() method.
     }
 
-    protected static function _getStoreLanguage()
+    protected function _getStoreLanguage()
     {
         // TODO: Implement _getStoreLanguage() method.
     }
 
-    protected static function _formatToCurrency($price)
+    protected function _formatToCurrency($price)
     {
         // TODO: Implement _formatToCurrency() method.
     }
 
-    protected static function setPlatformVersion()
+    protected function setPlatformVersion()
     {
         self::$platformVersion = Mage::getVersion();
     }

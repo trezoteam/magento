@@ -333,7 +333,7 @@ class Mundipagg_Paymentmodule_Model_Config_Card
     public function getEloInterest()
     {
         return Mage::getStoreConfig(
-            'mundipagg_config/installments_group/default_interest',
+            'mundipagg_config/installments_group/elo_interest',
                 $this->storeId
         );
     }
