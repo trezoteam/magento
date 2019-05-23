@@ -3,6 +3,7 @@
 namespace Mundipagg\Magento\Concrete;
 
 use Mage;
+use Mundipagg\Core\Kernel\Abstractions\AbstractDatabaseDecorator;
 use Mundipagg\Core\Kernel\Abstractions\AbstractModuleCoreSetup;
 use Mundipagg\Core\Kernel\Factories\ConfigurationFactory;
 use Mundipagg\Core\Kernel\Repositories\ConfigurationRepository;
@@ -10,9 +11,12 @@ use Mundipagg\Core\Kernel\Repositories\ConfigurationRepository;
 use Mundipagg_Paymentmodule_Model_Boleto as MagentoPlatformCartDecorator;
 use Mundipagg_Paymentmodule_Model_Boleto as MagentoPlatformProductDecorator;
 use Mundipagg_Paymentmodule_Model_Boleto as MagentoPlatformFormatService;
+use MundipaggModuleBackend\Core\Repositories\Decorators\AbstractPlatformDatabaseDecorator;
 
 final class MagentoModuleCoreSetup extends AbstractModuleCoreSetup
 {
+    const DEFAULT_STORE_DB_PLACEHOLDER = '(mp_default_store_id)';
+
     protected function setConfig()
     {
         self::$config = [
@@ -37,6 +41,8 @@ final class MagentoModuleCoreSetup extends AbstractModuleCoreSetup
 
     public static function loadModuleConfigurationFromPlatform()
     {
+        static::fixDefaultStoreDbPlaceHolders();
+
         $store = self::getCurrentStoreId();
 
         $configurationRepository = new ConfigurationRepository;
@@ -69,6 +75,30 @@ final class MagentoModuleCoreSetup extends AbstractModuleCoreSetup
         self::$moduleConfig = $config;
     }
 
+    /**
+     * Set all configuration table store_id that are the default value to the defaultStoreId.
+     * In other words, fix all the entries in this table that were created without the store_id.
+     *
+     * @throws \Exception
+     */
+    private static function fixDefaultStoreDbPlaceHolders()
+    {
+        $dbDecorator = new MagentoPlatformDatabaseDecorator(
+            self::getDatabaseAccessObject()
+        );
+        $table = $dbDecorator->getTable(
+            AbstractDatabaseDecorator::TABLE_MODULE_CONFIGURATION
+        );
+        $defaultStoreId = self::getDefaultStoreId();
+        $defaultStoreDbPlaceHolder = self::DEFAULT_STORE_DB_PLACEHOLDER;
+
+        $query = "
+          UPDATE $table 
+            SET store_id = '$defaultStoreId' 
+          WHERE store_id = '$defaultStoreDbPlaceHolder';
+        ";
+        $dbDecorator->query($query);
+    }
 
     public static function loadModuleConfigurationByStore($storeId)
     {
