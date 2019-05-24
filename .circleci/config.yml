@@ -98,10 +98,43 @@ jobs:
               "mysql magento < /app/.modman/magento/magento_module_install.sql"
             docker exec -it newimage /bin/sh -c \
                            "mysql magento < /app/.modman/magento/brazilian_states.sql"
-            docker exec -it newimage mysql magento -e \
-              "INSERT INTO magento.core_config_data (scope, scope_id, path, value) VALUES \
-              ('default', 0, 'mundipagg_config/general_group/sk_test', '${API_TEST_SECRET_KEY}'), \
-              ('default', 0, 'mundipagg_config/general_group/pk_test', '${API_TEST_PUBLIC_KEY}');"
+            docker exec -it newimage mysql magento -e "DELETE FROM magento.paymentmodule_configuration;"
+            docker exec -it newimage mysql magento -e  "INSERT INTO magento \
+              .paymentmodule_configuration (data, store_id) VALUES ('\
+              {\
+               \"enabled\":null,\
+               \"antifraudEnabled\":false,\
+               \"antifraudMinAmount\":0,\
+               \"boletoEnabled\":true,\
+               \"creditCardEnabled\":true,\
+               \"saveCards\":false,\
+               \"multiBuyer\":false,\
+               \"twoCreditCardsEnabled\":true,\
+               \"boletoCreditCardEnabled\":true,\
+               \"testMode\":true,\
+               \"hubInstallId\":\"${HUB_INSTALL_ID}\",\
+               \"addressAttributes\":null,\
+               \"keys\":{\
+                  \"KEY_SECRET\":\"${HUB_ACCESS_TOKEN}\",\
+                  \"KEY_PUBLIC\":\"${API_TEST_PUBLIC_KEY}\"\
+               },\
+               \"cardOperation\":null,\
+               \"installmentsEnabled\":false,\
+               \"cardStatementDescriptor\":null,\
+               \"boletoInstructions\":null,\
+               \"cardConfigs\":[\
+              \
+               ],\
+               \"storeId\":\"0\",\
+               \"methodsInherited\":[\
+              \
+               ],\
+               \"parentId\":null,\
+               \"parent\":null,\
+               \"inheritAll\":false,\
+               \"recurrenceConfig\":null\
+              }\
+              ', 0);"
             docker exec -it newimage /bin/sh -c \
               "mv /app/errors/local.xml.sample /app/errors/local.xml"
             docker exec -it newimage /bin/sh -c \
@@ -201,11 +234,44 @@ jobs:
             docker exec -it newimage /bin/sh -c \
               "mysql magento < /app/.modman/magento/magento_module_install.sql"
             docker exec -it newimage /bin/sh -c \
-                           "mysql magento < /app/.modman/magento/brazilian_states.sql"
-            docker exec -it newimage mysql magento -e \
-              "INSERT INTO magento.core_config_data (scope, scope_id, path, value) VALUES \
-              ('default', 0, 'mundipagg_config/general_group/sk_test', '${API_TEST_SECRET_KEY}'), \
-              ('default', 0, 'mundipagg_config/general_group/pk_test', '${API_TEST_PUBLIC_KEY}');"
+                          "mysql magento < /app/.modman/magento/brazilian_states.sql"
+            docker exec -it newimage mysql magento -e "DELETE FROM magento .paymentmodule_configuration;"
+            docker exec -it newimage mysql magento -e  "INSERT INTO magento \
+              .paymentmodule_configuration (data, store_id) VALUES (' \
+                {\
+                 \"enabled\":null,\
+                 \"antifraudEnabled\":false,\
+                 \"antifraudMinAmount\":0,\
+                 \"boletoEnabled\":true,\
+                 \"creditCardEnabled\":true,\
+                 \"saveCards\":false,\
+                 \"multiBuyer\":false,\
+                 \"twoCreditCardsEnabled\":true,\
+                 \"boletoCreditCardEnabled\":true,\
+                 \"testMode\":true,\
+                 \"hubInstallId\":\"${HUB_INSTALL_ID}\",\
+                 \"addressAttributes\":null,\
+                 \"keys\":{\
+                    \"KEY_SECRET\":\"${HUB_ACCESS_TOKEN}\",\
+                    \"KEY_PUBLIC\":\"${API_TEST_PUBLIC_KEY}\"\
+                 },\
+                 \"cardOperation\":null,\
+                 \"installmentsEnabled\":false,\
+                 \"cardStatementDescriptor\":null,\
+                 \"boletoInstructions\":null,\
+                 \"cardConfigs\":[\
+                \
+                 ],\
+                 \"storeId\":\"0\",\
+                 \"methodsInherited\":[\
+                \
+                 ],\
+                 \"parentId\":null,\
+                 \"parent\":null,\
+                 \"inheritAll\":false,\
+                 \"recurrenceConfig\":null\
+                }\
+              ', 0);"
             docker exec -it newimage mysql magento -e \
               "UPDATE magento.core_config_data SET value = 'https://${STG_URL}/'\
                WHERE path IN ('web/unsecure/base_url','web/secure/base_url');"
