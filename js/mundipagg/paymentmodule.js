@@ -479,8 +479,10 @@ function fillBrandData(data, argsObj) {
             "_mundicheckout-creditCard-installments";
 
         if(jQuery(installmentsSelect).html() != undefined) {
-            getInstallments(jQuery(".baseUrl").val(), data.brandName, argsObj);
+            var selected = jQuery(installmentsSelect).val();
             jQuery(installmentsSelect).html('');
+            getInstallments(jQuery(".baseUrl").val(), data.brandName, argsObj);
+            jQuery(installmentsSelect).val(selected);
         }
 
         jQuery("#" + argsObj.elementId + "_brand_name").val(data.brandName);
@@ -506,6 +508,15 @@ function getBrandList(argsObj) {
 
 function clearBrand(elementId){
     MundiPagg.brand = null;
+
+    try {
+        if (jQuery("#" + elementId + "_mundicheckout-SavedCreditCard").val() !== "new") {
+            return;
+        }
+    }catch(e) {
+
+    }
+
     if(jQuery("#" + elementId + "_mundicheckout-number").val().length < 6) {
         jQuery("#" + elementId + "_brandDiv").children('img').removeClass("half-opacity");
         jQuery("#"+elementId+"_mundicheckout-creditCard-installments").html("");
@@ -554,6 +565,19 @@ function getInstallments(baseUrl, brandName, argsObj) {
         return;
     }
 
+    if (typeof MundiPagg.installmentCache === 'undefined') {
+        MundiPagg.installmentCache = {};
+    }
+
+    var installmentCacheKey = getInstallmentCacheKey(brandName, value);
+    argsObj.installmentCacheKey = installmentCacheKey;
+
+    if (typeof MundiPagg.installmentCache[installmentCacheKey] !== 'undefined') {
+        var data = MundiPagg.installmentCache[installmentCacheKey];
+        switchInstallments(data, argsObj);
+        return;
+    }
+
     apiRequest(
         baseUrl + '/mp-paymentmodule/creditcard/getinstallments/' + brandName + value,
         '',
@@ -564,7 +588,18 @@ function getInstallments(baseUrl, brandName, argsObj) {
     );
 }
 
+function getInstallmentCacheKey(brandName, value)
+{
+    return brandName + '_' + value;
+}
+
 function switchInstallments(data, argsObj) {
+    if (typeof MundiPagg.installmentCache === 'undefined') {
+        MundiPagg.installmentCache = {};
+    }
+
+    MundiPagg.installmentCache[argsObj.installmentCacheKey] = data;
+
     jQuery('.disabledBrandMessage').hide();
 
     if (data) {

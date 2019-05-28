@@ -24,11 +24,11 @@ Feature: Create order with two credit card
     And I fill in "paymentmodule_twocreditcards_creditcard_1_value" with "100"
     And I fill first credit card data
     And I use jquery to click on element "#<payment_method_code>_creditcard_1_mundicheckout-save-credit-card"
-    And I wait for 10 seconds
+    And I wait for 20 seconds
     And I select "6x of $16,67 with 1% of interest , Total: $101,00" from "paymentmodule_twocreditcards_creditcard_1_mundicheckout-creditCard-installments"
     # Fill Second Credit Card Data
     And I fill second credit card data
-    And I wait for 10 seconds
+    And I wait for 20 seconds
     And I select "1x of $200,00 without interest , Total: $200,00" from "paymentmodule_twocreditcards_creditcard_2_mundicheckout-creditCard-installments"
     And I wait for 5 seconds
 #    And I use jquery to click on element "#p_method_paymentmodule_boleto"
@@ -58,14 +58,14 @@ Feature: Create order with two credit card
     And I wait for 1 seconds
     And I fill in "paymentmodule_twocreditcards_creditcard_1_value" with "100"
     And I fill first credit card data
-    And I wait for 15 seconds
+    And I wait for 20 seconds
     And I select "10x of $10,00 with 5% of interest , Total: $105,00" from "paymentmodule_twocreditcards_creditcard_1_mundicheckout-creditCard-installments"
     # Fill multibuyer
     And I wait for text "Fill other buyer data" to appear, for 120 seconds
     And I fill the first multibuyer form inputs
     # Second Card is saved.
     And I select "Visa xxxx-xxxx-xxxx-6377" from "<payment_method_code>_creditcard_2_mundicheckout-SavedCreditCard"
-    And I wait for 15 seconds
+    And I wait for 20 seconds
     And I select "7x of $28,57 with 2% of interest , Total: $204,00" from "paymentmodule_twocreditcards_creditcard_2_mundicheckout-creditCard-installments"
     And I wait for 5 seconds
     And I use jquery to click on element "#payment-buttons-container button"
@@ -94,11 +94,11 @@ Feature: Create order with two credit card
     And I wait for 1 seconds
     And I fill in "paymentmodule_twocreditcards_creditcard_1_value" with "100"
     And I fill first credit card data
-    And I wait for 15 seconds
+    And I wait for 20 seconds
     And I select "1x of $100,00 without interest , Total: $100,00" from "paymentmodule_twocreditcards_creditcard_1_mundicheckout-creditCard-installments"
     # Fill Second Credit Card Data
     And I fill second credit card data
-    And I wait for 15 seconds
+    And I wait for 20 seconds
     And I select "1x of $200,00 without interest , Total: $200,00" from "paymentmodule_twocreditcards_creditcard_2_mundicheckout-creditCard-installments"
     # Fill multibuyer
     And I wait for text "Fill other buyer data" to appear, for 120 seconds
@@ -129,14 +129,14 @@ Feature: Create order with two credit card
     And I wait for 1 seconds
     And I fill in "paymentmodule_twocreditcards_creditcard_1_value" with "100"
     And I fill first credit card data
-    And I wait for 15 seconds
+    And I wait for 20 seconds
     And I select "1x of $100,00 without interest , Total: $100,00" from "paymentmodule_twocreditcards_creditcard_1_mundicheckout-creditCard-installments"
     # Fill multibuyer
     And I wait for text "Fill other buyer data" to appear, for 120 seconds
     And I fill the first multibuyer form inputs
     # Fill Second Credit Card Data
     And I fill second credit card data
-    And I wait for 15 seconds
+    And I wait for 20 seconds
     And I select "1x of $200,00 without interest , Total: $200,00" from "paymentmodule_twocreditcards_creditcard_2_mundicheckout-creditCard-installments"
     # Fill multibuyer
     And I wait for text "Fill other buyer data" to appear, for 120 seconds
@@ -168,11 +168,11 @@ Feature: Create order with two credit card
     And I wait for 1 seconds
     And I fill in "paymentmodule_twocreditcards_creditcard_1_value" with "100"
     And I fill first credit card data
-    And I wait for 10 seconds
+    And I wait for 20 seconds
     And I select "1x of $100,00 without interest , Total: $100,00" from "paymentmodule_twocreditcards_creditcard_1_mundicheckout-creditCard-installments"
     # Fill Second Credit Card Data
     And I fill second credit card data
-    And I wait for 10 seconds
+    And I wait for 20 seconds
     And I select "1x of $200,00 without interest , Total: $200,00" from "paymentmodule_twocreditcards_creditcard_2_mundicheckout-creditCard-installments"
     And I wait for 5 seconds
 #    And I use jquery to click on element "#p_method_paymentmodule_boleto"
@@ -199,14 +199,14 @@ Feature: Create order with two credit card
     And I wait for 1 seconds
     And I fill in "paymentmodule_twocreditcards_creditcard_1_value" with "100"
     And I fill first credit card data
-    And I wait for 10 seconds
+    And I wait for 20 seconds
     And I select "1x of $100,00 without interest , Total: $100,00" from "paymentmodule_twocreditcards_creditcard_1_mundicheckout-creditCard-installments"
     # Fill multibuyer
     And I wait for text "Fill other buyer data" to appear, for 120 seconds
     And I fill the first multibuyer form inputs
     # Fill Second Credit Card Data
     And I fill second credit card data
-    And I wait for 10 seconds
+    And I wait for 20 seconds
     And I select "1x of $200,00 without interest , Total: $200,00" from "paymentmodule_twocreditcards_creditcard_2_mundicheckout-creditCard-installments"
     And I wait for 5 seconds
     And I use jquery to click on element "#payment-buttons-container button"
@@ -232,11 +232,11 @@ Feature: Create order with two credit card
     And I wait for 1 seconds
     And I fill in "paymentmodule_twocreditcards_creditcard_1_value" with "100"
     And I fill first credit card data
-    And I wait for 10 seconds
+    And I wait for 20 seconds
     And I select "1x of $100,00 without interest , Total: $100,00" from "paymentmodule_twocreditcards_creditcard_1_mundicheckout-creditCard-installments"
     # Fill Second Credit Card Data
     And I fill second credit card data
-    And I wait for 10 seconds
+    And I wait for 20 seconds
     And I select "1x of $200,00 without interest , Total: $200,00" from "paymentmodule_twocreditcards_creditcard_2_mundicheckout-creditCard-installments"
     # Fill multibuyer
     And I wait for text "Fill other buyer data" to appear, for 120 seconds
@@ -266,14 +266,14 @@ Feature: Create order with two credit card
     And I wait for 1 seconds
     And I fill in "paymentmodule_twocreditcards_creditcard_1_value" with "100"
     And I fill first credit card data
-    And I wait for 10 seconds
+    And I wait for 20 seconds
     And I select "1x of $100,00 without interest , Total: $100,00" from "paymentmodule_twocreditcards_creditcard_1_mundicheckout-creditCard-installments"
     # Fill multibuyer
     And I wait for text "Fill other buyer data" to appear, for 120 seconds
     And I fill the first multibuyer form inputs
     # Fill Second Credit Card Data
     And I fill second credit card data
-    And I wait for 10 seconds
+    And I wait for 20 seconds
     And I select "1x of $200,00 without interest , Total: $200,00" from "paymentmodule_twocreditcards_creditcard_2_mundicheckout-creditCard-installments"
     # Fill multibuyer
     And I wait for text "Fill other buyer data" to appear, for 120 seconds
@@ -305,11 +305,11 @@ Feature: Create order with two credit card
     And I wait for 1 seconds
     And I fill in "paymentmodule_twocreditcards_creditcard_1_value" with "100"
     And I fill first credit card data
-    And I wait for 10 seconds
+    And I wait for 20 seconds
     And I select "1x of $100,00 without interest , Total: $100,00" from "paymentmodule_twocreditcards_creditcard_1_mundicheckout-creditCard-installments"
     # Fill Second Credit Card Data
     And I fill second credit card data
-    And I wait for 10 seconds
+    And I wait for 20 seconds
     And I select "1x of $200,00 without interest , Total: $200,00" from "paymentmodule_twocreditcards_creditcard_2_mundicheckout-creditCard-installments"
     And I wait for 5 seconds
 #    And I use jquery to click on element "#p_method_paymentmodule_boleto"
@@ -336,14 +336,14 @@ Feature: Create order with two credit card
     And I wait for 1 seconds
     And I fill in "paymentmodule_twocreditcards_creditcard_1_value" with "100"
     And I fill first credit card data
-    And I wait for 10 seconds
+    And I wait for 20 seconds
     And I select "1x of $100,00 without interest , Total: $100,00" from "paymentmodule_twocreditcards_creditcard_1_mundicheckout-creditCard-installments"
     # Fill multibuyer
     And I wait for text "Fill other buyer data" to appear, for 120 seconds
     And I fill the first multibuyer form inputs
     # Fill Second Credit Card Data
     And I fill second credit card data
-    And I wait for 10 seconds
+    And I wait for 20 seconds
     And I select "1x of $200,00 without interest , Total: $200,00" from "paymentmodule_twocreditcards_creditcard_2_mundicheckout-creditCard-installments"
     And I wait for 5 seconds
     And I use jquery to click on element "#payment-buttons-container button"
@@ -369,11 +369,11 @@ Feature: Create order with two credit card
     And I wait for 1 seconds
     And I fill in "paymentmodule_twocreditcards_creditcard_1_value" with "100"
     And I fill first credit card data
-    And I wait for 10 seconds
+    And I wait for 20 seconds
     And I select "1x of $100,00 without interest , Total: $100,00" from "paymentmodule_twocreditcards_creditcard_1_mundicheckout-creditCard-installments"
     # Fill Second Credit Card Data
     And I fill second credit card data
-    And I wait for 10 seconds
+    And I wait for 20 seconds
     And I select "1x of $200,00 without interest , Total: $200,00" from "paymentmodule_twocreditcards_creditcard_2_mundicheckout-creditCard-installments"
     # Fill multibuyer
     And I wait for text "Fill other buyer data" to appear, for 120 seconds
@@ -403,14 +403,14 @@ Feature: Create order with two credit card
     And I wait for 1 seconds
     And I fill in "paymentmodule_twocreditcards_creditcard_1_value" with "100"
     And I fill first credit card data
-    And I wait for 10 seconds
+    And I wait for 20 seconds
     And I select "1x of $100,00 without interest , Total: $100,00" from "paymentmodule_twocreditcards_creditcard_1_mundicheckout-creditCard-installments"
     # Fill multibuyer
     And I wait for text "Fill other buyer data" to appear, for 120 seconds
     And I fill the first multibuyer form inputs
     # Fill Second Credit Card Data
     And I fill second credit card data
-    And I wait for 10 seconds
+    And I wait for 20 seconds
     And I select "1x of $200,00 without interest , Total: $200,00" from "paymentmodule_twocreditcards_creditcard_2_mundicheckout-creditCard-installments"
     # Fill multibuyer
     And I wait for text "Fill other buyer data" to appear, for 120 seconds
