@@ -165,7 +165,15 @@ jobs:
               "cd /app/.modman/magento && \
               composer config --global github-oauth.github.com "${GITHUB_TOKEN}" && \
               composer update -vvv && /root/bin/modman repair --force"
-
+      - run:
+          name: Clear Image Cart Data
+          command: |
+            docker exec -it newimage mysql magento -e "\
+               SET FOREIGN_KEY_CHECKS=0; \
+               truncate sales_flat_quote_shipping_rate; \
+               truncate sales_flat_quote_address; \
+               truncate sales_flat_quote; \
+               SET FOREIGN_KEY_CHECKS=1;"
       - run:
           name: Run Functional Tests
           command: |
