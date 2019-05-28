@@ -479,8 +479,10 @@ function fillBrandData(data, argsObj) {
             "_mundicheckout-creditCard-installments";
 
         if(jQuery(installmentsSelect).html() != undefined) {
+            var selected = jQuery(installmentsSelect).val();
             jQuery(installmentsSelect).html('');
             getInstallments(jQuery(".baseUrl").val(), data.brandName, argsObj);
+            jQuery(installmentsSelect).val(selected);
         }
 
         jQuery("#" + argsObj.elementId + "_brand_name").val(data.brandName);
@@ -506,6 +508,15 @@ function getBrandList(argsObj) {
 
 function clearBrand(elementId){
     MundiPagg.brand = null;
+
+    try {
+        if (jQuery("#" + elementId + "_mundicheckout-SavedCreditCard").val() !== "new") {
+            return;
+        }
+    }catch(e) {
+
+    }
+
     if(jQuery("#" + elementId + "_mundicheckout-number").val().length < 6) {
         jQuery("#" + elementId + "_brandDiv").children('img').removeClass("half-opacity");
         jQuery("#"+elementId+"_mundicheckout-creditCard-installments").html("");
