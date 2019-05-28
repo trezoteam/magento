@@ -112,11 +112,11 @@ jobs:
                \"twoCreditCardsEnabled\":true,\
                \"boletoCreditCardEnabled\":true,\
                \"testMode\":true,\
-               \"hubInstallId\":\"${HUB_INSTALL_ID}\",\
+               \"hubInstallId\":\"${CI_HUB_INSTALL_ID}\",\
                \"addressAttributes\":null,\
                \"keys\":{\
-                  \"KEY_SECRET\":\"${HUB_ACCESS_TOKEN}\",\
-                  \"KEY_PUBLIC\":\"${API_TEST_PUBLIC_KEY}\"\
+                  \"KEY_SECRET\":\"${CI_HUB_ACCESS_TOKEN}\",\
+                  \"KEY_PUBLIC\":\"${CI_API_TEST_PUBLIC_KEY}\"\
                },\
                \"cardOperation\":null,\
                \"installmentsEnabled\":false,\
