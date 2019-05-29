@@ -257,4 +257,10 @@ final class MagentoOrderDecorator extends AbstractPlatformOrderDecorator
     {
         throw new \Exception(__METHOD__ . ' not implemented!'); // @TODO: Implement setPlatformOrder() method.
     }
+
+    /** @since  1.6.5 */
+    public function getTotalCanceled()
+    {
+        //@TODO: Implement getTotalCanceled() method.
+    }
 }

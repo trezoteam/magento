@@ -6,7 +6,8 @@ Feature: Partial Scenarios
     Given I am on "/index.php/aviator-sunglasses.html"
     Then I wait for text "Gunmetal" to appear, for 15 seconds
     And I submit the form with id "#product_addtocart_form"
-    And I wait for text "SHOPPING CART" to appear, for 30 seconds
+    And I wait for 3 seconds
+    Given I am on "/index.php/checkout/cart/"
     And I click in element ".btn-proceed-checkout"
 
   #fill in billing address info
@@ -20,6 +21,7 @@ Feature: Partial Scenarios
     And I select "Brazil" from "billing:country_id"
     And I select "Rio de Janeiro" from "billing[region_id]"
     And I fill in "billing:postcode" with "200000000"
+    And I fill in "billing:vat_id" with "08944984441"
     And I fill in "billing:telephone" with "2125222222"
 
   #pre register user

@@ -21,7 +21,7 @@ Feature: Create order with boleto and credit card
     And I fill in "<payment_method_code>_boleto_1_value" with "100"
     # Fill Second Credit Card Data
     And I fill first credit card data
-    And I wait for 10 seconds
+    And I wait for 20 seconds
     And I select "1x of $200,00 without interest , Total: $200,00" from "<payment_method_code>_creditcard_1_mundicheckout-creditCard-installments"
     And I wait for 5 seconds
     And I use jquery to click on element "#payment-buttons-container button"
@@ -49,7 +49,7 @@ Feature: Create order with boleto and credit card
     And I fill in "<payment_method_code>_boleto_1_value" with "100"
     # Fill Second Credit Card Data
     And I fill first credit card data
-    And I wait for 10 seconds
+    And I wait for 20 seconds
     And I select "1x of $200,00 without interest , Total: $200,00" from "<payment_method_code>_creditcard_1_mundicheckout-creditCard-installments"
     And I wait for 5 seconds
     And I use jquery to click on element "#payment-buttons-container button"
@@ -78,7 +78,7 @@ Feature: Create order with boleto and credit card
     And I fill first credit card data
     And I wait for text "Fill other buyer data" to appear, for 40 seconds
     And I fill the first multibuyer form inputs
-    And I wait for 10 seconds
+    And I wait for 20 seconds
     And I select "1x of $200,00 without interest , Total: $200,00" from "<payment_method_code>_creditcard_1_mundicheckout-creditCard-installments"
     And I wait for 5 seconds
     And I use jquery to click on element "#payment-buttons-container button"
@@ -107,7 +107,7 @@ Feature: Create order with boleto and credit card
     And I fill in "<payment_method_code>_boleto_1_value" with "100"
     # Fill Second Credit Card Data
     And I fill first credit card data
-    And I wait for 10 seconds
+    And I wait for 20 seconds
     And I select "1x of $200,00 without interest , Total: $200,00" from "<payment_method_code>_creditcard_1_mundicheckout-creditCard-installments"
     And I wait for 5 seconds
     And I use jquery to click on element "#payment-buttons-container button"
@@ -135,7 +135,7 @@ Feature: Create order with boleto and credit card
     And I fill in "<payment_method_code>_boleto_1_value" with "100"
     # Fill Second Credit Card Data
     And I fill first credit card data
-    And I wait for 10 seconds
+    And I wait for 20 seconds
     And I select "1x of $200,00 without interest , Total: $200,00" from "<payment_method_code>_creditcard_1_mundicheckout-creditCard-installments"
     And I wait for 5 seconds
     And I use jquery to click on element "#payment-buttons-container button"
@@ -164,7 +164,7 @@ Feature: Create order with boleto and credit card
     And I fill first credit card data
     And I wait for text "Fill other buyer data" to appear, for 40 seconds
     And I fill the first multibuyer form inputs
-    And I wait for 10 seconds
+    And I wait for 20 seconds
     And I select "1x of $200,00 without interest , Total: $200,00" from "<payment_method_code>_creditcard_1_mundicheckout-creditCard-installments"
     And I wait for 5 seconds
     And I use jquery to click on element "#payment-buttons-container button"
@@ -195,7 +195,7 @@ Feature: Create order with boleto and credit card
     # Fill Second Credit Card Data
     And I fill first credit card data
     And I use jquery to click on element "#<payment_method_code>_creditcard_1_mundicheckout-save-credit-card"
-    And I wait for 10 seconds
+    And I wait for 20 seconds
     And I select "7x of $28,57 with 2% of interest , Total: $204,00" from "<payment_method_code>_creditcard_1_mundicheckout-creditCard-installments"
     And I wait for 5 seconds
     And I use jquery to click on element "#payment-buttons-container button"
@@ -228,7 +228,7 @@ Feature: Create order with boleto and credit card
     And I fill the first multibuyer form inputs
     # Select the saved creditcard
     And I select "Visa xxxx-xxxx-xxxx-6377" from "<payment_method_code>_creditcard_1_mundicheckout-SavedCreditCard"
-    And I wait for 10 seconds
+    And I wait for 20 seconds
     And I select "1x of $179,00 without interest , Total: $179,00" from "<payment_method_code>_creditcard_1_mundicheckout-creditCard-installments"
     And I wait for 5 seconds
     And I use jquery to click on element "#payment-buttons-container button"

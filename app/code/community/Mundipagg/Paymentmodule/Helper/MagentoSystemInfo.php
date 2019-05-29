@@ -8,11 +8,14 @@ use Mundipagg\Magento\Concrete\MagentoModuleCoreSetup as CoreSetup;
 class Mundipagg_Paymentmodule_Helper_MagentoSystemInfo implements SystemInfoInterface
 {
     private $moduleConfig;
+    private $storeId;
 
     public function __construct()
     {
         CoreSetup::bootstrap();
         $this->moduleConfig = CoreSetup::getModuleConfiguration();
+
+        $this->storeId = CoreSetup::getCurrentStoreId();
     }
 
     public function getModuleVersion()
@@ -81,8 +84,8 @@ class Mundipagg_Paymentmodule_Helper_MagentoSystemInfo implements SystemInfoInte
     public function getDefaultLogFiles()
     {
         return array(
-            \Mage::getStoreConfig('dev/log/file'),
-            \Mage::getStoreConfig('dev/log/exception_file'),
+            \Mage::getStoreConfig('dev/log/file', $this->storeId),
+            \Mage::getStoreConfig('dev/log/exception_file', $this->storeId),
         );
     }
 

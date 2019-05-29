@@ -3,6 +3,7 @@
 namespace Mundipagg\Magento\Concrete;
 
 use Mage;
+use Mundipagg\Core\Kernel\Abstractions\AbstractDatabaseDecorator;
 use Mundipagg\Core\Kernel\Abstractions\AbstractModuleCoreSetup;
 use Mundipagg\Core\Kernel\Factories\ConfigurationFactory;
 use Mundipagg\Core\Kernel\Repositories\ConfigurationRepository;
@@ -10,10 +11,13 @@ use Mundipagg\Core\Kernel\Repositories\ConfigurationRepository;
 use Mundipagg_Paymentmodule_Model_Boleto as MagentoPlatformCartDecorator;
 use Mundipagg_Paymentmodule_Model_Boleto as MagentoPlatformProductDecorator;
 use Mundipagg_Paymentmodule_Model_Boleto as MagentoPlatformFormatService;
+use MundipaggModuleBackend\Core\Repositories\Decorators\AbstractPlatformDatabaseDecorator;
 
 final class MagentoModuleCoreSetup extends AbstractModuleCoreSetup
 {
-    static protected function setConfig()
+    const DEFAULT_STORE_DB_PLACEHOLDER = '(mp_default_store_id)';
+
+    protected function setConfig()
     {
         self::$config = [
             AbstractModuleCoreSetup::CONCRETE_CART_DECORATOR_CLASS => MagentoPlatformCartDecorator::class,
@@ -35,8 +39,10 @@ final class MagentoModuleCoreSetup extends AbstractModuleCoreSetup
         return "2d2db409-fed0-4bd8-ac1e-43eeff33458d";
     }
 
-    protected static function loadModuleConfiguration()
+    public function loadModuleConfigurationFromPlatform()
     {
+        static::fixDefaultStoreDbPlaceHolders();
+
         $store = self::getCurrentStoreId();
 
         $configurationRepository = new ConfigurationRepository;
@@ -69,6 +75,30 @@ final class MagentoModuleCoreSetup extends AbstractModuleCoreSetup
         self::$moduleConfig = $config;
     }
 
+    /**
+     * Set all configuration table store_id that are the default value to the defaultStoreId.
+     * In other words, fix all the entries in this table that were created without the store_id.
+     *
+     * @throws \Exception
+     */
+    protected static function fixDefaultStoreDbPlaceHolders()
+    {
+        $dbDecorator = new MagentoPlatformDatabaseDecorator(
+            self::getDatabaseAccessObject()
+        );
+        $table = $dbDecorator->getTable(
+            AbstractDatabaseDecorator::TABLE_MODULE_CONFIGURATION
+        );
+        $defaultStoreId = self::getDefaultStoreId();
+        $defaultStoreDbPlaceHolder = self::DEFAULT_STORE_DB_PLACEHOLDER;
+
+        $query = "
+          UPDATE $table 
+            SET store_id = '$defaultStoreId' 
+          WHERE store_id = '$defaultStoreDbPlaceHolder';
+        ";
+        $dbDecorator->query($query);
+    }
 
     public static function loadModuleConfigurationByStore($storeId)
     {
@@ -80,43 +110,49 @@ final class MagentoModuleCoreSetup extends AbstractModuleCoreSetup
         }
     }
 
-    protected static function setModuleVersion()
+    protected function setModuleVersion()
     {
         $data = \Mage::helper('paymentmodule')->getMetaData();
         self::$moduleVersion = $data['module_version'];
     }
 
-    protected static function setLogPath()
+    protected function setLogPath()
     {
         self::$logPath = [
             \Mage::getBaseDir('log')
         ];
     }
 
-    protected static function _getDashboardLanguage()
+    protected function _getDashboardLanguage()
     {
         // TODO: Implement _getDashboardLanguage() method.
     }
 
-    protected static function _getStoreLanguage()
+    protected function _getStoreLanguage()
     {
         // TODO: Implement _getStoreLanguage() method.
     }
 
-    protected static function _formatToCurrency($price)
+    protected function _formatToCurrency($price)
     {
         // TODO: Implement _formatToCurrency() method.
     }
 
-    protected static function setPlatformVersion()
+    protected function setPlatformVersion()
     {
         self::$platformVersion = Mage::getVersion();
     }
 
-
-    protected static function getCurrentStoreId()
+    public static function getCurrentStoreId()
     {
         $store = Mage::getSingleton('adminhtml/config_data')->getScopeId();
+
+        //to fix hub endpoint issue
+        $params = Mage::app()->getRequest()->getParams();
+        if (isset($params['storeId'])) {
+            $store = intval($params['storeId']);
+        }
+
         if ($store === null) {
             $store = Mage::app()->getStore()->getId();
         }
@@ -130,5 +166,15 @@ final class MagentoModuleCoreSetup extends AbstractModuleCoreSetup
             ->getWebsite(0)
             ->getDefaultGroup()
             ->getDefaultStoreId();
+    }
+
+    /**
+     * @since 1.7.1
+     *
+     * @return \DateTimeZone
+     */
+    protected function getPlatformStoreTimezone()
+    {
+        //@TODO: Implement getPlatformStoreTimezone() method.
     }
 }

@@ -98,15 +98,29 @@ class Mundipagg_Paymentmodule_Model_Standard extends Mage_Payment_Model_Method_A
         return Mage::getModel('checkout/session');
     }
 
+    protected function getCustomerDocument($order)
+    {
+        $taxVat = $order->getCustomerTaxvat();
+        $vatId = "";
+        try {
+            $vatId = $order->getBillingAddress()->getVatId();
+        } catch(Exception $e) {
+        }
+        return !empty($vatId)? $vatId : $taxVat;
+    }
+
     public function getCustomerSession()
     {
-
         $orderId = Mage::getModel('checkout/session')->getLastOrderId();
         $order = Mage::getModel("sales/order")->load($orderId);
 
         $customer = new Varien_Object();
 
-        $document = preg_replace('/[^0-9]/', '',$order->getCustomerTaxvat());
+        $document = preg_replace(
+            '/[^0-9]/',
+            '',
+            $this->getCustomerDocument($order)
+        );
 
         $name = $order->getCustomerFirstname();
         $name .= ' ' .  $order->getCustomerMiddlename();

@@ -1,7 +1,13 @@
 <?php
 
+require_once Mage::getBaseDir('lib') . '/autoload.php';
+
+use Mundipagg\Magento\Concrete\MagentoModuleCoreSetup as MPSetup;
+
 class Mundipagg_Paymentmodule_Helper_Logger extends Mage_Core_Helper_Abstract
 {
+
+
     /**
      * @param string $message
      * @param integer $level
@@ -11,14 +17,17 @@ class Mundipagg_Paymentmodule_Helper_Logger extends Mage_Core_Helper_Abstract
      */
     public static function log($message, $level = null, $file = '', $logDir = null, $forceLog = false)
     {
+        MPSetup::bootstrap();
+        $storeId = MPSetup::getCurrentStoreId();
+
         if (!Mage::getConfig()) {
             return;
         }
 
         try {
-            $logActive = Mage::getStoreConfig('dev/log/active');
+            $logActive = Mage::getStoreConfig('dev/log/active', $storeId);
             if (empty($file)) {
-                $file = Mage::getStoreConfig('dev/log/file');
+                $file = Mage::getStoreConfig('dev/log/file', $storeId);
             }
         }
         catch (Exception $e) {
