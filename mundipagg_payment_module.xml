@@ -1,6 +1,5 @@
 <_>
-   <form_key>hRhnbSw18jWk0e9a</form_key>
-   <_create/>
+   <form_key>UDU7azhZUJSdarZz</form_key>
    <name>Mundipagg_Payment_Module</name>
    <channel>community</channel>
    <version_ids>
@@ -16,16 +15,16 @@
       Em qualquer procedimento de instalação ou update existem riscos, aconselhamos sempre criar backups de sua loja e efetuar qualquer procedimento em ambiente de desenvolvimento antes, nunca diretamente em produção. Não nos responsabilizamos por eventuais incidentes causados por negligenciar este alerta ou por uso de produtos ou serviços de terceiros.</description>
    <license>MIT</license>
    <license_uri/>
-   <version>2.1.4</version>
+   <version>2.1.5</version>
    <stability>stable</stability>
-   <notes>- Fix multibuyer data always being sent.
-      - Fix some jQuery issues
-      - Fix relative URLs
-      - Fix validations erros on Firecheckout
-      - Added Shipping type on order creation request
-      - Added fingerprint on order creation request
-      - Added new dependencies on Magento package info
-   </notes>
+   <notes>- Fix multistore suport
+- Fix encoding issues on I18N endpoint
+- Fix migration methods
+- Fix taxvat sending
+- Fix antifraud flag sending
+- Fix metadata sending
+- Removed module violation messages
+</notes>
    <authors>
       <name>
          <name>mundipagg</name>
@@ -54,7 +53,7 @@
             <max/>
          </max>
          <files>
-            <files>                                                                                        </files>
+            <files>                                                                                           </files>
          </files>
       </package>
       <extension>
