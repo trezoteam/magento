@@ -1,3 +1,8 @@
+## For correct install process, follow the install section DON'T download this repository
+
+## Para executar corretamente o processo de instalação, siga para a seção Install. NÃO baixe esse repositório
+
+
 [![CircleCI](https://circleci.com/gh/mundipagg/magento.svg?style=shield)](https://circleci.com/gh/mundipagg/magento)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/eedd85c187d14bc6b79958a3e39c5e8a)](https://www.codacy.com/app/mundipagg/magento?utm_source=github.com&utm_medium=referral&utm_content=mundipagg/magento&utm_campaign=badger)
 [![Maintainability](https://api.codeclimate.com/v1/badges/f79be193872380945e80/maintainability)](https://codeclimate.com/github/mundipagg/magento/maintainability)
@@ -6,9 +11,7 @@
 
 This is the official Magento module for new Mundipagg API integration.
 
-**For correct install process, follow the install section DON'T download this repository**
 
-**Para executar corretamente o processo de instalação, siga para a seção Install. NÃO baixe esse repositório**
 
 # Documentation
 Refer to [module documentation](https://github.com/mundipagg/magento/wiki)
