@@ -22,7 +22,7 @@ This module supports Magento version 1.9.3+
 # Install
 There are two different ways to install our module
 
-## Using Magento Connect Manager (recomended)
+## Using Magento Connect Manager (recommended)
 
 Download the Mundipagg_Payment_Module-X.X.X.tgz file of our [last module relase](https://github.com/mundipagg/magento/releases/latest)
 
@@ -41,7 +41,7 @@ modman init
 modman clone https://github.com/mundipagg/magento
 ```
 
-## Updating module version
+## Updating module version at develop environment 
 Use `composer robo version` with the following options
 
 `get` get current module version    	
