@@ -6,8 +6,9 @@
 
 This is the official Magento module for new Mundipagg API integration.
 
-*This module is in development. For a functional module, visit our
-[actual Magento module](https://github.com/mundipagg/magento-module)
+**For correct install process, follow the install section DON'T download this repository**
+
+**Para executar corretamente o processo de instalação, siga para a seção Install. NÃO baixe esse repositório**
 
 # Documentation
 Refer to [module documentation](https://github.com/mundipagg/magento/wiki)
@@ -20,6 +21,15 @@ This module supports Magento version 1.9.3+
 
 # Install
 There are two different ways to install our module
+
+## Using Magento Connect Manager (recomended)
+
+Download the Mundipagg_Payment_Module-X.X.X.tgz file of our [last module relase](https://github.com/mundipagg/magento/releases/latest)
+
+Access your Mgento admin panel and go to System > Magento Connect > Magento Connect Manager 
+
+Upload the downloaded file
+
 
 ## Using modman
 Modman is a project which helps developers to centralize extension code when
