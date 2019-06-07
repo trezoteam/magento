@@ -41,6 +41,14 @@ class Mundipagg_Paymentmodule_Model_Config_Card
         );
     }
 
+    public function getSortOrder()
+    {
+        return Mage::getStoreConfig(
+            'mundipagg_config/creditcard_group/sort_order',
+            $this->storeId
+        );
+    }
+
     public function getOperationTypeFlag()
     {
         return $this->getOperationType() === 'AuthAndCapture';

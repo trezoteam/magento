@@ -79,4 +79,12 @@ class Mundipagg_Paymentmodule_Model_Config_Boletocc
     {
         return $this->getOperationType() === 'AuthAndCapture';
     }
+
+    public function getSortOrder()
+    {
+        return Mage::getStoreConfig(
+            'mundipagg_config/boletocreditcard_group/sort_order',
+            $this->storeId
+        );
+    }
 }
