@@ -146,6 +146,9 @@ class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mundipagg_Pa
             );
         }
 
+        $order = $standard->getOrderByIncrementOrderId($orderId);
+        $order->sendNewOrderEmail();
+
         //Update magento order status
         $orderHelper->updateStatus($response, $response->status);
     }

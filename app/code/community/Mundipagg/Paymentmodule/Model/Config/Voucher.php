@@ -83,4 +83,12 @@ class Mundipagg_Paymentmodule_Model_Config_Voucher
                 $this->storeId
             );
     }
+
+    public function getSortOrder()
+    {
+        return Mage::getStoreConfig(
+            'mundipagg_config/voucher_group/sort_order',
+            $this->storeId
+        );
+    }
 }
