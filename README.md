@@ -44,6 +44,15 @@ modman init
 modman clone https://github.com/mundipagg/magento
 ```
 
+After clone the repository, run the following commands into the cloned project directory (.modman/magento):
+
+```bash
+composer update -vvv
+modman repair --force
+```
+These commands will get all dependencies and put into lib directory.
+After that, you will need to enable the symlink in magento.
+
 ## Updating module version at develop environment 
 Use `composer robo version` with the following options
 
