@@ -56,4 +56,12 @@ class Mundipagg_Paymentmodule_Model_Config_Boleto
                 $this->storeId
         );
     }
+
+    public function getSortOrder()
+    {
+        return Mage::getStoreConfig(
+            'mundipagg_config/boleto_group/sort_order',
+            $this->storeId
+        );
+    }
 }
