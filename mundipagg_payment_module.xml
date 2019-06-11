@@ -1,5 +1,5 @@
 <_>
-   <form_key>UDU7azhZUJSdarZz</form_key>
+   <form_key>f1EjRc2vgVx1rI9f</form_key>
    <name>Mundipagg_Payment_Module</name>
    <channel>community</channel>
    <version_ids>
@@ -15,16 +15,10 @@
       Em qualquer procedimento de instalação ou update existem riscos, aconselhamos sempre criar backups de sua loja e efetuar qualquer procedimento em ambiente de desenvolvimento antes, nunca diretamente em produção. Não nos responsabilizamos por eventuais incidentes causados por negligenciar este alerta ou por uso de produtos ou serviços de terceiros.</description>
    <license>MIT</license>
    <license_uri/>
-   <version>2.1.5</version>
+   <version>2.2.0</version>
    <stability>stable</stability>
-   <notes>- Fix multistore suport
-- Fix encoding issues on I18N endpoint
-- Fix migration methods
-- Fix taxvat sending
-- Fix antifraud flag sending
-- Fix metadata sending
-- Removed module violation messages
-</notes>
+   <notes>-Fix the email send when has a new order
+-Create sort order to payment methods</notes>
    <authors>
       <name>
          <name>mundipagg</name>
@@ -53,7 +47,7 @@
             <max/>
          </max>
          <files>
-            <files>                                                                                           </files>
+            <files>                                                                                            </files>
          </files>
       </package>
       <extension>
