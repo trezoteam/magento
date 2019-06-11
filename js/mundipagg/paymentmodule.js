@@ -35,7 +35,7 @@ MundiPagg.Locale = {
             var url = baseUrl + '/mp-paymentmodule/i18n/getTable';
             apiRequest(url,'',function(data){
                 if(data !== false) {
-                    this.translactionTable = data;
+                    this.translactionTable = JSON.parse(data);
                     posInitializationCallback();
                 }
             }.bind(this));

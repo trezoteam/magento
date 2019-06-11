@@ -243,4 +243,13 @@ class Mundipagg_Paymentmodule_Model_Standard extends Mage_Payment_Model_Method_A
     {
         return Mage::getModel('paymentmodule/config_general');
     }
+
+    public function getConfigData($field, $storeId = null)
+    {
+        if ($field == 'sort_order') {
+            return $this->getConfigModel()->getSortOrder();
+        }
+
+        return parent::getConfigData($field, $storeId);
+    }
 }

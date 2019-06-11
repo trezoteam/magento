@@ -1,7 +1,7 @@
 <config>
     <modules>
         <Mundipagg_Paymentmodule>
-            <version>2.1.5</version>
+            <version>2.2.0</version>
         </Mundipagg_Paymentmodule>
     </modules>
 
@@ -228,12 +228,23 @@
                <boleto_status>0</boleto_status>
                <boleto_payment_title>Boleto</boleto_payment_title>
                <boleto_due_at>3</boleto_due_at>
+                <sort_order>2</sort_order>
             </boleto_group>
             <creditcard_group>
                 <cards_config_status>0</cards_config_status>
                 <creditcard_payment_title>Credit card</creditcard_payment_title>
                 <operation_type>AuthAndCapture</operation_type>
+                <sort_order>1</sort_order>
             </creditcard_group>
+            <twocreditcards_group>
+                <sort_order>3</sort_order>
+            </twocreditcards_group>
+            <boletocreditcard_group>
+                <sort_order>4</sort_order>
+            </boletocreditcard_group>
+            <voucher_group>
+                <sort_order>5</sort_order>
+            </voucher_group>
         </mundipagg_config>
 
         <payment>
