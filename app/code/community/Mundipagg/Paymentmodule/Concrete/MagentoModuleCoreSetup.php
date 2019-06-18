@@ -171,7 +171,6 @@ final class MagentoModuleCoreSetup extends AbstractModuleCoreSetup
     /**
      * @since 1.7.1
      *
-     * @return \DateTimeZone
      */
     protected function getPlatformStoreTimezone()
     {
