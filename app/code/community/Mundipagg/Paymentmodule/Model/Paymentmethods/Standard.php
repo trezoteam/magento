@@ -256,6 +256,7 @@ class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mundipagg_Pa
             if ($item->getParentItemId() === null) {
                 $itemInfo = array();
 
+                $itemInfo['code'] = substr($item->getId(), 0, 52);
                 $itemInfo['amount'] = round($item->getPrice() * 100);
                 $itemInfo['quantity'] = (int) $item->getQtyOrdered();
                 $itemInfo['description'] = $item->getName();
