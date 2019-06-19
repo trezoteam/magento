@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9d3072b9441aa4a02b12cb702fe6cfb0",
+    "content-hash": "798651af05600c95a5e7d5ad39ddcef6",
     "packages": [
         {
             "name": "apimatic/jsonmapper",
@@ -177,16 +177,16 @@
         },
         {
             "name": "mundipagg/ecommerce-module-core",
-            "version": "1.9.0",
+            "version": "1.10.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mundipagg/ecommerce-module-core.git",
-                "reference": "f3e1c71d1d103dc23c394f26859ed88b626a87d5"
+                "reference": "851e51448421b6b8fea79d640e5e78c795762641"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mundipagg/ecommerce-module-core/zipball/f3e1c71d1d103dc23c394f26859ed88b626a87d5",
-                "reference": "f3e1c71d1d103dc23c394f26859ed88b626a87d5",
+                "url": "https://api.github.com/repos/mundipagg/ecommerce-module-core/zipball/851e51448421b6b8fea79d640e5e78c795762641",
+                "reference": "851e51448421b6b8fea79d640e5e78c795762641",
                 "shasum": ""
             },
             "require": {
@@ -210,7 +210,7 @@
                     "email": "embeddables@mundipagg.com"
                 }
             ],
-            "time": "2019-05-27T18:46:25+00:00"
+            "time": "2019-06-19T18:07:39+00:00"
         },
         {
             "name": "mundipagg/mundiapi",
@@ -5903,16 +5903,16 @@
         },
         {
             "name": "theseer/tokenizer",
-            "version": "1.1.2",
+            "version": "1.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/theseer/tokenizer.git",
-                "reference": "1c42705be2b6c1de5904f8afacef5895cab44bf8"
+                "reference": "11336f6f84e16a720dae9d8e6ed5019efa85a0f9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/theseer/tokenizer/zipball/1c42705be2b6c1de5904f8afacef5895cab44bf8",
-                "reference": "1c42705be2b6c1de5904f8afacef5895cab44bf8",
+                "url": "https://api.github.com/repos/theseer/tokenizer/zipball/11336f6f84e16a720dae9d8e6ed5019efa85a0f9",
+                "reference": "11336f6f84e16a720dae9d8e6ed5019efa85a0f9",
                 "shasum": ""
             },
             "require": {
@@ -5939,7 +5939,7 @@
                 }
             ],
             "description": "A small library for converting tokenized PHP source code into XML and potentially other formats",
-            "time": "2019-04-04T09:56:43+00:00"
+            "time": "2019-06-13T22:48:21+00:00"
         },
         {
             "name": "webmozart/assert",
