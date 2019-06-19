@@ -15,7 +15,7 @@
       Em qualquer procedimento de instalação ou update existem riscos, aconselhamos sempre criar backups de sua loja e efetuar qualquer procedimento em ambiente de desenvolvimento antes, nunca diretamente em produção. Não nos responsabilizamos por eventuais incidentes causados por negligenciar este alerta ou por uso de produtos ou serviços de terceiros.</description>
    <license>MIT</license>
    <license_uri/>
-   <version>2.2.0</version>
+   <version>2.2.1</version>
    <stability>stable</stability>
    <notes>-Fix the email send when has a new order
 -Create sort order to payment methods</notes>

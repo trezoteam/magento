@@ -64,8 +64,7 @@ abstract class Mundipagg_Paymentmodule_Model_Api_Standard
         $moneyHelper = Mage::helper('paymentmodule/monetary');
 
         $grandTotal = $moneyHelper->formatDecimals($order->getGrandTotal());
-        $grandTotalInCents =
-            (Mage::helper('paymentmodule/monetary'))->toCents($grandTotal);
+        $grandTotalInCents = $moneyHelper->toCents($grandTotal);
 
         return $antiFraudConfig->shouldApplyAntifraud($grandTotalInCents);
     }
@@ -263,6 +262,4 @@ abstract class Mundipagg_Paymentmodule_Model_Api_Standard
 
         return $addressRequest;
     }
-
-
 }
