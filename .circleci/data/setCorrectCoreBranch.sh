@@ -12,6 +12,8 @@ if [ $? -eq 0 ]; then
     startDir=$(pwd)
     echo "Detected branch: '$branch'"
 
+   $branch = 'develop';
+
     cd lib/mundipagg
     rm -rf ecommerce-module-core
     git clone https://github.com/mundipagg/ecommerce-module-core.git
