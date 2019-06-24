@@ -26,7 +26,7 @@ app/locale/pt_BR/mundipagg_frontend_locale.csv                  app/locale/pt_BR
 lib/*                                                           lib/
 js/lib/jquery/mp-jquery-1.12.0.min.js                           js/lib/jquery/mp-jquery-1.12.0.min.js
 js/mundipagg/*                                                  js/mundipagg/
-mundipagg_payment_module.xml                                    var/connect/
+mundipagg_payment_module.xml                                    var/connect/mundipagg_payment_module.xml
 
 #this file
 modman .modman/magento/app/code/community/Mundipagg/Paymentmodule/etc/maintenance/modman
