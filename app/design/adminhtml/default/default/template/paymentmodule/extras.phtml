@@ -6,7 +6,7 @@
     jQuery(document).ready(function()
     {
         window.mundipagg_skin_base_url = '<?php echo $this->getSkinUrl(''); ?>';
-        window.mundipagg_base_url = '<?php echo Mage::getBaseUrl(); ?>';
+        window.mundipagg_base_url = '<?php echo $this->getStoreUrl(); ?>';
 
         jQuery('.skin-img').each(function(){
             var src = jQuery(this).attr('src');

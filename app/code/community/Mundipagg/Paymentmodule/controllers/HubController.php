@@ -40,9 +40,17 @@ class Mundipagg_Paymentmodule_HubController
 
         $authorizationCode = $params['authorization_code'];
 
-        $webhookUrl = Mage::getUrl('paymentmodule/webhook') . "?storeId=" . $params['storeId'];
+        $storeUrlHelper =  Mage::helper('paymentmodule/storeUrl');
 
-        $hubCallbackUrl = Mage::getUrl('paymentmodule/hub/command') . "?storeId=" . $params['storeId'];
+        $webhookUrl = $storeUrlHelper->getBaseUrlByWebsiteId($params['storeId'], 'paymentmodule/webhook');
+        $webhookUrl .= "?storeId=" . $params['storeId'];
+
+        $hubCallbackUrl = $storeUrlHelper->getBaseUrlByWebsiteId($params['storeId'], 'paymentmodule/hub/command');
+        $hubCallbackUrl .= "?storeId=" . $params['storeId'];
+
+        $helperLog = Mage::helper('paymentmodule/log');
+        $helperLog->info("WebhookUrl: " . $webhookUrl);
+        $helperLog->info("HubUrl: " . $hubCallbackUrl);
 
         $hubIntegrationService = new HubIntegrationService();
         $hubIntegrationService->endHubIntegration(

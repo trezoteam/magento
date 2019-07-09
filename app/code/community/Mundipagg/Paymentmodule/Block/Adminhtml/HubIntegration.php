@@ -18,7 +18,7 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_HubIntegration
             MPSetup::getDefaultStoreId()
         );
 
-        $storeId = Mage::getSingleton('adminhtml/config_data')->getScopeId();
+        $storeId = MPSetup::getCurrentStoreId();
 
         $locale = strtolower(
             str_replace("_", "-", Mage::app()->getLocale()->getLocaleCode())
