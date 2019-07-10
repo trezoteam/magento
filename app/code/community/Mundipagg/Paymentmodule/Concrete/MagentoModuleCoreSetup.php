@@ -178,7 +178,6 @@ final class MagentoModuleCoreSetup extends AbstractModuleCoreSetup
             ->getWebsite(0)
             ->getDefaultGroup()
             ->getDefaultStoreId();
-
     }
 
     /**
