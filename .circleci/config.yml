@@ -158,6 +158,10 @@ jobs:
           name: Install and run Functional Tests dependencies
           command: |
             docker exec -i newimage sh -c \
+              apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys B188E2B695BD4743 && \
+              apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 65FFB764 && \
+              apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 5072E1F5
+            docker exec -i newimage sh -c \
               "wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
               echo 'deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main' | tee /etc/apt/sources.list.d/google-chrome.list && \
               apt-get -y update && apt-get -y install google-chrome-unstable"
