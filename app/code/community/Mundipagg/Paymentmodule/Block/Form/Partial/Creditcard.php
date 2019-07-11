@@ -15,7 +15,10 @@ class Mundipagg_Paymentmodule_Block_Form_Partial_Creditcard extends Mundipagg_Pa
     public function getPublicKey()
     {
         $moduleConfig = MPSetup::getModuleConfiguration();
-        return $moduleConfig->getPublicKey()->getValue();
+        if (!empty($moduleConfig->getPublicKey())) {
+            return $moduleConfig->getPublicKey()->getValue();
+        }
+        return null;
     }
 
     /**

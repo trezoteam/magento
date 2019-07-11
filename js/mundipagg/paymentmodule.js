@@ -137,6 +137,11 @@ function apiCallback(xhr, callback, callbackArgsObj) {
 }
 
 function getCreditCardToken(pkKey, elementId, callback) {
+    if (pkKey == 'undefined' || pkKey == "") {
+        alert("Payment module Mundipagg is not integrated!");
+        return false;
+    }
+
     if(validateCreditCardData(elementId)){
         apiRequest(
             'https://api.mundipagg.com/core/v1/tokens?appId=' + pkKey,

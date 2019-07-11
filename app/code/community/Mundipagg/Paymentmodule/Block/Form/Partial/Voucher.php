@@ -15,8 +15,12 @@ class Mundipagg_Paymentmodule_Block_Form_Partial_Voucher extends Mundipagg_Payme
     public function getPublicKey()
     {
         $moduleConfig = MPSetup::getModuleConfiguration();
-        return $moduleConfig->getPublicKey()->getValue();
+        if (!empty($moduleConfig->getPublicKey())) {
+            return $moduleConfig->getPublicKey()->getValue();
+        }
+        return null;
     }
+
 
     /**
      * Return saved cards for logged in customers

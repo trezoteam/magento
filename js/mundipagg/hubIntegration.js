@@ -1,10 +1,6 @@
 function initHub(hubPublicAppKey, languageCode, installId = null, storeId = 0) {
     var baseUrl = window.mundipagg_base_url;
 
-    if (typeof window.BASE_URL !== 'undefined') {
-        baseUrl = window.BASE_URL.split('index.php')[0] + 'index.php/';
-    }
-
     var endpointHub = "mp-paymentmodule/hub/validateInstall/";
     var redirectUrl =  baseUrl + endpointHub;
 
