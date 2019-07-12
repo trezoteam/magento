@@ -6,7 +6,10 @@
     jQuery(document).ready(function()
     {
         window.mundipagg_skin_base_url = '<?php echo $this->getSkinUrl(''); ?>';
-        window.mundipagg_base_url = '<?php echo Mage::getBaseUrl(); ?>';
+        window.mundipagg_base_url = '<?php echo $this->getStoreUrl(); ?>';
+        window.mundipagg_hub_validate = '<?php echo $this->getHubValidateUrl(); ?>';
+        window.mundipagg_hub_status = '<?php echo $this->getHubStatusUrl(); ?>';
+        window.mundipagg_hub_generate_integration = '<?php echo $this->getHubGenerateIntegrationUrl(); ?>';
 
         jQuery('.skin-img').each(function(){
             var src = jQuery(this).attr('src');
