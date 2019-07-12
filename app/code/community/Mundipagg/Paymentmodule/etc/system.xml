@@ -19,7 +19,7 @@
                     <comment>
                         <![CDATA[
                             <a href="http://www.mundipagg.com.br" target="_blank">
-                                <img class='skin-img' title="MundiPagg" alt="MundiPagg" width="200" src="/skin/adminhtml/default/default/images/mundipagg/mundipagg-colorida.svg"/>
+                                <img title="MundiPagg" alt="MundiPagg" width="200" src="https://dashboard.mundipagg.com/images/nova-logo-mundipagg.png"/>
                             </a>
                             <br>
                             <br>
@@ -65,7 +65,7 @@
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                     <comment>
-                        <![CDATA[<br><a href="http://www.mundipagg.com.br" target="_blank"><img title="MundiPagg" alt="MundiPagg" width="200" class='skin-img' src="https://dashboard.mundipagg.com/images/nova-logo-mundipagg.png"/></a><br><br><br>]]>
+                        <![CDATA[<br><a href="http://www.mundipagg.com.br" target="_blank"><img title="MundiPagg" alt="MundiPagg" width="200" src="https://dashboard.mundipagg.com/images/nova-logo-mundipagg.png"/></a><br><br><br>]]>
                     </comment>
                     <fields>
                         <hub_integration translate="label">

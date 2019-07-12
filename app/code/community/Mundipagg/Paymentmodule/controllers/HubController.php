@@ -40,9 +40,21 @@ class Mundipagg_Paymentmodule_HubController
 
         $authorizationCode = $params['authorization_code'];
 
-        $webhookUrl = Mage::getUrl('paymentmodule/webhook') . "?storeId=" . $params['storeId'];
+        $storeUrlHelper =  Mage::helper('paymentmodule/storeUrl');
 
-        $hubCallbackUrl = Mage::getUrl('paymentmodule/hub/command') . "?storeId=" . $params['storeId'];
+        $webhookUrl = $this->addStoreId(
+            $storeUrlHelper->getBaseUrlByWebsiteId($params['storeId'], 'paymentmodule/webhook'),
+            $params['storeId']
+        );
+
+        $hubCallbackUrl = $this->addStoreId(
+            $storeUrlHelper->getBaseUrlByWebsiteId($params['storeId'], 'paymentmodule/hub/command'),
+            $params['storeId']
+        );
+
+        $helperLog = Mage::helper('paymentmodule/log');
+        $helperLog->info("WebhookUrl: " . $webhookUrl);
+        $helperLog->info("HubUrl: " . $hubCallbackUrl);
 
         $hubIntegrationService = new HubIntegrationService();
         $hubIntegrationService->endHubIntegration(
@@ -51,6 +63,15 @@ class Mundipagg_Paymentmodule_HubController
             $hubCallbackUrl,
             $webhookUrl
         );
+    }
+
+    public function addStoreId($url, $storeId)
+    {
+        if (strpos($url, "?")) {
+            return $url . "&storeId=" . $storeId;
+        }
+
+        return $url . "?storeId=" . $storeId;
     }
 
     public function statusAction()
