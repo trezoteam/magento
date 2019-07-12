@@ -169,6 +169,7 @@ jobs:
               apt-get -y update && apt-get -y install google-chrome-unstable"
             docker exec -i newimage sh -c \
               "cd /app/.modman/magento && \
+              composer config --global github-oauth.github.com "${GITHUB_TOKEN}" && \
               composer update -vvv && /root/bin/modman repair --force"
       - run:
           name: Clear Image Cart Data
