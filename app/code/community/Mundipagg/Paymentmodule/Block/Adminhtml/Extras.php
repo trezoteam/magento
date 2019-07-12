@@ -34,6 +34,21 @@ class Mundipagg_Paymentmodule_Block_Adminhtml_Extras extends Mage_Page_Block_Htm
         );
     }
 
+    public function getHubValidateUrl()
+    {
+        return $this->getStoreUrl() . "mp-paymentmodule/hub/validateInstall/";
+    }
+
+    public function getHubStatusUrl()
+    {
+        return $this->getStoreUrl() . "mp-paymentmodule/hub/status/";
+    }
+
+    public function getHubGenerateIntegrationUrl()
+    {
+        return $this->getStoreUrl() . "mp-paymentmodule/hub/generateintegrationtoken/";
+    }
+
     public function cleanUrl($url)
     {
         return str_replace(

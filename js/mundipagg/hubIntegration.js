@@ -1,8 +1,8 @@
 function initHub(hubPublicAppKey, languageCode, installId = null, storeId = 0) {
     var baseUrl = window.mundipagg_base_url;
-
-    var endpointHub = "mp-paymentmodule/hub/validateInstall/";
-    var redirectUrl =  baseUrl + endpointHub;
+    var redirectUrl =  window.mundipagg_hub_validate;
+    var statusUrl = window.mundipagg_hub_status;
+    var generateIntegrarion = window.mundipagg_hub_generate_integration;
 
     // hub config
     var config = {
@@ -54,7 +54,7 @@ function initHub(hubPublicAppKey, languageCode, installId = null, storeId = 0) {
 
         if (installId === null) {
             jQuery.ajax({
-                url:  baseUrl + "mp-paymentmodule/hub/generateintegrationtoken/?storeId=" + storeId,
+                url:  generateIntegrarion + "?storeId=" + storeId,
                 success: function(result){
                     hubUrl += '%26install_token%2F' + result;
                     hubUrl += '%2FstoreId%2F' + storeId;
@@ -68,7 +68,7 @@ function initHub(hubPublicAppKey, languageCode, installId = null, storeId = 0) {
                     //check hub status.
                     var checkHubStatus = function(){
                         jQuery.ajax({
-                            url: baseUrl + "mp-paymentmodule/hub/status/?storeId=" + storeId,
+                            url: statusUrl + "?storeId=" + storeId,
                             success: function(result) {
                                 if (result === 'enabled') {
                                     window.location.reload(true);

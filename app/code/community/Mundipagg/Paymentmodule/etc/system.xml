@@ -19,7 +19,7 @@
                     <comment>
                         <![CDATA[
                             <a href="http://www.mundipagg.com.br" target="_blank">
-                                <img class='skin-img' title="MundiPagg" alt="MundiPagg" width="200" src="/skin/adminhtml/default/default/images/mundipagg/mundipagg-colorida.svg"/>
+                                <img title="MundiPagg" alt="MundiPagg" width="200" src="https://dashboard.mundipagg.com/images/nova-logo-mundipagg.png"/>
                             </a>
                             <br>
                             <br>
@@ -39,7 +39,17 @@
         </payment>
 
         <mundipagg_config translate="label" module="paymentmodule">
-            <label><![CDATA[<div style="position: absolute;"><img id="magepal_block" class='skin-img' alt="" border="0" width="16" src="/skin/adminhtml/default/default/images/mundipagg/icons/logo-mundipagg-icon.png"/> &nbsp;Mundipagg</div>&nbsp;]]></label>
+            <label>
+                <![CDATA[<div style="position: absolute;"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16px" height="16px" viewBox="0 0 30 34" version="1.1">
+                    <!-- Generator: Sketch 55.2 (78181) - https://sketchapp.com -->
+                    <title>logo/icon/default</title>
+                    <desc>Created with Sketch.</desc>
+                    <g id="logo/icon/default" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                        <path d="M27.8529439,0.37328215 L13.3363004,14.9691363 C12.2212332,16.0902879 12.2212332,17.9097121 13.3363004,19.0308637 L27.8529439,33.6267179 C28.1086694,33.885144 28.4241076,34 28.7343533,34 C29.3808067,34 30,33.4948944 30,32.7326679 L30,1.26863724 C30,0.505105566 29.3808067,0 28.7343533,0 C28.4241076,0 28.1086694,0.114856046 27.8529439,0.37328215" id="Fill-14" fill="#00B7B4" fill-rule="nonzero"></path>
+                        <path d="M12.7851552,20.7990176 C10.7298947,18.7054959 10.7298947,15.2950396 12.7851552,13.2015179 L13.75,12.2187113 L2.12060852,0.374129786 C1.33771317,-0.424645299 0,0.140501125 0,1.2681836 L0,32.7336571 C0,33.8600344 1.33771317,34.4238756 2.12060852,33.6264057 L13.75,21.7818242 L12.7851552,20.7990176 Z" id="Fill-17" fill="#178176" fill-rule="nonzero"></path>
+                    </g>
+                </svg> &nbsp;Mundipagg</div>&nbsp;]]>
+            </label>
             <tab>paymentmoduleconfig</tab>
             <sort_order>1000</sort_order>
             <show_in_default>1</show_in_default>
@@ -55,7 +65,7 @@
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                     <comment>
-                        <![CDATA[<br><a href="http://www.mundipagg.com.br" target="_blank"><img title="MundiPagg" alt="MundiPagg" width="200" class='skin-img' src="/skin/adminhtml/default/default/images/mundipagg/mundipagg-colorida.svg"/></a><br><br><br>]]>
+                        <![CDATA[<br><a href="http://www.mundipagg.com.br" target="_blank"><img title="MundiPagg" alt="MundiPagg" width="200" src="https://dashboard.mundipagg.com/images/nova-logo-mundipagg.png"/></a><br><br><br>]]>
                     </comment>
                     <fields>
                         <hub_integration translate="label">
@@ -628,7 +638,7 @@
 
                         <!-- VISA -->
                         <visa_configuration translate="label">
-                            <label><![CDATA[<img title='Visa' alt='Visa' width='32' class='skin-img' src='/skin/adminhtml/default/default/images/mundipagg/icons/visa.jpg'/> <div style='margin:-29px 0 13px 40px'> Visa configuration</div>]]></label>
+                            <label><![CDATA[<img title='Visa' alt='Visa' width='35' src='https://dashboard.mundipagg.com/emb/images/brands/visa.jpg'/> <div style='margin:-23px 0 13px 40px'> Visa configuration</div>]]></label>
                             <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
                             <sort_order>6</sort_order>
                             <show_in_default>1</show_in_default>
@@ -697,7 +707,7 @@
 
                         <!-- MASTERCARD -->
                         <mastercard_configuration translate="label">
-                            <label><![CDATA[<img title='Mastercard' alt='Mastercard' width='32' class='skin-img' src='/skin/adminhtml/default/default/images/mundipagg/icons/mastercard.jpg'/> <div style='margin:-29px 0 13px 40px'> Mastercard configuration</div>]]></label>
+                            <label><![CDATA[<img title='Mastercard' alt='Mastercard' width='35' src='https://dashboard.mundipagg.com/emb/images/brands/mastercard.jpg'/> <div style='margin:-23px 0 13px 40px'> Mastercard configuration</div>]]></label>
                             <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
                             <sort_order>20</sort_order>
                             <show_in_default>1</show_in_default>
@@ -766,7 +776,7 @@
 
                         <!-- HIPERCARD -->
                         <hipercard_configuration translate="label">
-                            <label><![CDATA[<img title='Hipercard' alt='Hipercard' width='32' class='skin-img' src='/skin/adminhtml/default/default/images/mundipagg/icons/hipercard.jpg'/> <div style='margin:-29px 0 13px 40px'> Hipercard configuration</div>]]></label>
+                            <label><![CDATA[<img title='Hipercard' alt='Hipercard' width='35' src='https://dashboard.mundipagg.com/emb/images/brands/hipercard.jpg'/> <div style='margin:-23px 0 13px 40px'> Hipercard configuration</div>]]></label>
                             <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
                             <sort_order>30</sort_order>
                             <show_in_default>1</show_in_default>
@@ -835,7 +845,7 @@
 
                         <!-- DINERS-->
                         <diners_configuration translate="label">
-                            <label><![CDATA[<img title='Diners' alt='Diners' width='32' class='skin-img' src='/skin/adminhtml/default/default/images/mundipagg/icons/diners.jpg'/> <div style='margin:-29px 0 13px 40px'> Diners configuration</div>]]></label>
+                            <label><![CDATA[<img title='Diners' alt='Diners' width='35' src='https://dashboard.mundipagg.com/emb/images/brands/diners.jpg'/> <div style='margin:-23px 0 13px 40px'> Diners configuration</div>]]></label>
                             <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
                             <sort_order>40</sort_order>
                             <show_in_default>1</show_in_default>
@@ -904,7 +914,7 @@
 
                         <!-- AMEX -->
                         <amex_configuration translate="label">
-                            <label><![CDATA[<img title='Amex' alt='Amex' width='32' class='skin-img' src='/skin/adminhtml/default/default/images/mundipagg/icons/amex.jpg'/> <div style='margin:-29px 0 13px 40px'>Amex configuration</div>]]></label>
+                            <label><![CDATA[<img title='Amex' alt='Amex' width='35' src='https://dashboard.mundipagg.com/emb/images/brands/amex.jpg'/> <div style='margin:-23px 0 13px 40px'>Amex configuration</div>]]></label>
                             <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
                             <sort_order>50</sort_order>
                             <show_in_default>1</show_in_default>
@@ -973,7 +983,7 @@
 
                         <!-- ELO -->
                         <elo_configuration translate="label">
-                            <label><![CDATA[<img title='Elo' alt='Elo' width='32' class='skin-img' src='/skin/adminhtml/default/default/images/mundipagg/icons/elo.jpg'/> <div style='margin:-29px 0 13px 40px'>Elo configuration</div>]]></label>
+                            <label><![CDATA[<img title='Elo' alt='Elo' width='35' src='https://dashboard.mundipagg.com/emb/images/brands/elo.jpg'/> <div style='margin:-23px 0 13px 40px'>Elo configuration</div>]]></label>
                             <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
                             <sort_order>60</sort_order>
                             <show_in_default>1</show_in_default>
@@ -1130,7 +1140,7 @@
                     <fields>
                         <!-- VR -->
                         <vr_configuration translate="label">
-                            <label><![CDATA[<img title='VR' alt='VR' width='32' class='skin-img' src='/skin/adminhtml/default/default/images/mundipagg/icons/vr.jpg'/> <div style='margin:-29px 0 13px 40px'> VR configuration</div>]]></label>
+                            <label><![CDATA[<img title='VR' alt='VR' width='35' src='https://dashboard.mundipagg.com/emb/images/brands/vr.jpg'/> <div style='margin:-23px 0 13px 40px'> VR configuration</div>]]></label>
                             <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
                             <sort_order>0</sort_order>
                             <show_in_default>1</show_in_default>
@@ -1149,7 +1159,7 @@
 
                         <!-- SODEXO -->
                         <sodexo_configuration translate="label">
-                            <label><![CDATA[<img title='Sodexo' alt='Sodexo' width='32' class='skin-img' src='/skin/adminhtml/default/default/images/mundipagg/icons/sodexo.jpg'/> <div style='margin:-29px 0 13px 40px'> Sodexo configuration</div>]]></label>
+                            <label><![CDATA[<img title='Sodexo' alt='Sodexo' width='35' src='https://dashboard.mundipagg.com/emb/images/brands/sodexo.jpg'/> <div style='margin:-23px 0 13px 40px'> Sodexo configuration</div>]]></label>
                             <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
                             <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
