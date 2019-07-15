@@ -21,7 +21,7 @@
 
     <adminhtml_system_config_edit translate="label">
         <reference name="before_body_end">
-            <block type="page/html_head" name="mp-paymentmodule-config" as="mp-paymentmodule-config" after="-" template="paymentmodule/extras.phtml">
+            <block type="paymentmodule/adminhtml_extras" name="mp-payment-config"  as="mp-payment-config" after="-">
                 <action method="addItem">
                     <type>js</type>
                     <name>mundipagg/hub.min.js</name>
