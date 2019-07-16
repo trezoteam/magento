@@ -27,14 +27,15 @@ class Mundipagg_Paymentmodule_Helper_Installment extends Mage_Core_Helper_Abstra
             $max = $cardConfig->getDefaultMaxInstallmentNumber();
             $interest = $cardConfig->getDefaultInterest();
             $inc = $cardConfig->getDefaultIncrementalInterest();
+            $minAmount = $cardConfig->getDefaultMinAmount();
 
             $maxWithout =
                 $cardConfig->getDefaultMaxInstallmentNumberWithoutInterest();
 
             return array(
                 'default' => array_merge(
-                    $this->getInstallmentsWithoutInterest($total, $maxWithout),
-                    $this->getInstallmentsWithInterest($total, $maxWithout, $max, $interest, $inc)
+                    $this->getInstallmentsWithoutInterest($total, $maxWithout, $minAmount),
+                    $this->getInstallmentsWithInterest($total, $maxWithout, $max, $interest, $inc, $minAmount)
                 )
             );
         }
