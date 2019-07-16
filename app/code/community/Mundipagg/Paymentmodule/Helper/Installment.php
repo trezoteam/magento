@@ -63,7 +63,14 @@ class Mundipagg_Paymentmodule_Helper_Installment extends Mage_Core_Helper_Abstra
 
                 $installments[$card] = array_merge(
                     $this->getInstallmentsWithoutInterest($total, $maxWithout, $minAmount),
-                    $this->getInstallmentsWithInterest($total, $maxWithout, $max, $interest, $inc, $minAmount)
+                    $this->getInstallmentsWithInterest(
+                        $total,
+                        $maxWithout,
+                        $max,
+                        $interest,
+                        $inc,
+                        $minAmount
+                    )
                 );
             }
         }
@@ -109,8 +116,14 @@ class Mundipagg_Paymentmodule_Helper_Installment extends Mage_Core_Helper_Abstra
         return false;
     }
 
-    protected function getInstallmentsWithInterest($total, $maxWithout, $max, $interest, $increment = 0, $minAmount)
-    {
+    protected function getInstallmentsWithInterest(
+        $total,
+        $maxWithout,
+        $max,
+        $interest,
+        $increment = 0,
+        $minAmount
+    ) {
         $installments = array();
         $monetary = Mage::helper('paymentmodule/monetary');
         $minAmount = $monetary->formatDecimals($minAmount);

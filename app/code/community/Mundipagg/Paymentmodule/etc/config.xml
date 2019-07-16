@@ -237,14 +237,40 @@
                 <sort_order>1</sort_order>
             </creditcard_group>
             <twocreditcards_group>
+                <twocreditcards_payment_title>Two Credit Cards</twocreditcards_payment_title>
                 <sort_order>3</sort_order>
             </twocreditcards_group>
             <boletocreditcard_group>
+                <boleto_creditcard_payment_title>Boleto + Credit card</boleto_creditcard_payment_title>
                 <sort_order>4</sort_order>
             </boletocreditcard_group>
             <voucher_group>
+                <voucher_payment_title>Voucher</voucher_payment_title>
                 <sort_order>5</sort_order>
             </voucher_group>
+            <installments_group>
+                <default_min_amount>0</default_min_amount>
+                <default_interest>0</default_interest>
+                <default_incremental_interest>0</default_incremental_interest>
+                <visa_min_amount>0</visa_min_amount>
+                <visa_interest>0</visa_interest>
+                <visa_incremental_interest>0</visa_incremental_interest>
+                <mastercard_min_amount>0</mastercard_min_amount>
+                <master_interest>0</master_interest>
+                <mastercard_incremental_interest>0</mastercard_incremental_interest>
+                <hipercard_min_amount>0</hipercard_min_amount>
+                <hipercard_interest>0</hipercard_interest>
+                <hipercard_incremental_interest>0</hipercard_incremental_interest>
+                <diners_min_amount>0</diners_min_amount>
+                <diners_interest>0</diners_interest>
+                <diners_incremental_interest>0</diners_incremental_interest>
+                <amex_min_amount>0</amex_min_amount>
+                <amex_interest>0</amex_interest>
+                <amex_incremental_interest>0</amex_incremental_interest>
+                <elo_min_amount>0</elo_min_amount>
+                <elo_interest>0</elo_interest>
+                <elo_incremental_interest>0</elo_incremental_interest>
+            </installments_group>
         </mundipagg_config>
 
         <payment>
