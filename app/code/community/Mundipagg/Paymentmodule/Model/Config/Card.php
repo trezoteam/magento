@@ -106,6 +106,14 @@ class Mundipagg_Paymentmodule_Model_Config_Card
         );
     }
 
+    public function getDefaultMinAmount()
+    {
+        return Mage::getStoreConfig(
+            'mundipagg_config/installments_group/default_min_amount',
+            $this->storeId
+        );
+    }
+
     public function getDefaultMaxInstallmentNumberWithoutInterest()
     {
         return Mage::getStoreConfig(
@@ -162,6 +170,14 @@ class Mundipagg_Paymentmodule_Model_Config_Card
         );
     }
 
+    public function getVisaMinAmount()
+    {
+        return Mage::getStoreConfig(
+            'mundipagg_config/installments_group/visa_min_amount',
+            $this->storeId
+        );
+    }
+
     public function getVisaIncrementalInterest()
     {
         return Mage::getStoreConfig(
@@ -199,6 +215,14 @@ class Mundipagg_Paymentmodule_Model_Config_Card
         return Mage::getStoreConfig(
             'mundipagg_config/installments_group/mastercard_max_installments',
                 $this->storeId
+        );
+    }
+
+    public function getMastercardMinAmount()
+    {
+        return Mage::getStoreConfig(
+            'mundipagg_config/installments_group/mastercard_min_amount',
+            $this->storeId
         );
     }
 
@@ -242,6 +266,14 @@ class Mundipagg_Paymentmodule_Model_Config_Card
         );
     }
 
+    public function getHipercardMinAmount()
+    {
+        return Mage::getStoreConfig(
+            'mundipagg_config/installments_group/hipercard_min_amount',
+            $this->storeId
+        );
+    }
+
     public function getHipercardIncrementalInterest()
     {
         return Mage::getStoreConfig(
@@ -279,6 +311,14 @@ class Mundipagg_Paymentmodule_Model_Config_Card
         return Mage::getStoreConfig(
             'mundipagg_config/installments_group/diners_max_installments',
                 $this->storeId
+        );
+    }
+
+    public function getDinersMinAmount()
+    {
+        return Mage::getStoreConfig(
+            'mundipagg_config/installments_group/diners_min_amount',
+            $this->storeId
         );
     }
 
@@ -322,6 +362,14 @@ class Mundipagg_Paymentmodule_Model_Config_Card
         );
     }
 
+    public function getAmexMinAmount()
+    {
+        return Mage::getStoreConfig(
+            'mundipagg_config/installments_group/amex_min_amount',
+            $this->storeId
+        );
+    }
+
     public function getAmexIncrementalInterest()
     {
         return Mage::getStoreConfig(
@@ -359,6 +407,14 @@ class Mundipagg_Paymentmodule_Model_Config_Card
         return Mage::getStoreConfig(
             'mundipagg_config/installments_group/elo_max_installments',
                 $this->storeId
+        );
+    }
+
+    public function getEloMinAmount()
+    {
+        return Mage::getStoreConfig(
+            'mundipagg_config/installments_group/elo_min_amount',
+            $this->storeId
         );
     }
 
