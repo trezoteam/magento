@@ -30,9 +30,8 @@ class Mundipagg_Paymentmodule_Helper_MagentoOrderInfo extends AbstractOrderInfo
 
     protected function _getOrderCharges()
     {
-        return $this->order
-                ->getPayment()
-                ->getAdditionalInformation('mundipagg_payment_module_charges');
+        $payment = Mage::helper('paymentmodule/order')->getOrderPayment($this->order->getId());
+        return $payment->getAdditionalInformation('mundipagg_payment_module_charges');
     }
 
     protected function _getOrderInvoices()

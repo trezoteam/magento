@@ -3,7 +3,7 @@ $_code = $this->getMethodCode();
 $structure = $this->getStructure();
 $orderTotal = $this->getGrandTotal();
 
-$url = explode("?", Mage::getUrl(''));
+$url = explode("?", Mage::getUrl('', array('_secure'=>true)));
 $url = $url[0];
 
 ?>

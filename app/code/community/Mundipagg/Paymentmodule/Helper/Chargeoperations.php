@@ -21,10 +21,7 @@ class Mundipagg_Paymentmodule_Helper_Chargeoperations extends Mage_Core_Helper_A
 
     public function setTransactionAsHandled($orderId, $transaction)
     {
-        $payment =
-            Mage::getModel('paymentmodule/standard')
-                ->getOrderByIncrementOrderId($orderId)
-                ->getPayment();
+        $payment = Mage::helper('paymentmodule/order')->getOrderPayment($orderId);
         $additionalInformation =
             Mage::getModel('paymentmodule/standard')
                 ->getAdditionalInformationForOrder($orderId);

@@ -74,11 +74,25 @@ abstract class Mundipagg_Paymentmodule_Model_Api_Standard
         $standard = Mage::getModel('paymentmodule/standard');
 
         $checkoutSession = $standard->getCheckoutSession();
-        $orderId = $checkoutSession->getLastRealOrderId();
-        $additionalInformation = $standard->getAdditionalInformationForOrder($orderId);
+        /** @var Mage_Sales_Model_Order $order */
+        $order = $checkoutSession->getLastRealOrder();
+        $payment = Mage::helper('paymentmodule/order')->getOrderPayment($order->getId());
+        $billingAddress = $order->getBillingAddress();
+        $additionalInformation = $payment->getAdditionalInformation();
 
         $paymentMethod = $additionalInformation['mundipagg_payment_method'];
         $paymentInformation = $additionalInformation[$paymentMethod];
+        $method = explode('_', $paymentMethod);
+
+        foreach ($paymentInformation[$method[1]] as $key => $value) {
+            $paymentInformation[$method[1]][$key]['billing'] = array(
+                'zip_code' => str_replace('-', '', $billingAddress->getPostcode()),
+                'city' => $billingAddress->getCity(),
+                'state' => $billingAddress->getRegionCode(),
+                'country' => $billingAddress->getCountry(),
+                'line_1' => preg_replace('/\r|\n/', ',', trim($billingAddress->getStreetFull()))
+            );
+        }
 
         $result = array();
 
@@ -182,6 +196,13 @@ abstract class Mundipagg_Paymentmodule_Model_Api_Standard
             $payment['multiBuyerEnabled'] === 'on'
         ) {
             return $this->getCustomerFromMultiBuyer($payment);
+        }
+
+        if ($customer = Mage::helper('customer')->getCustomer()) {
+            return array(
+                'name' => $customer->getName(),
+                'email' => $customer->getEmail()
+            );
         }
 
         return null;

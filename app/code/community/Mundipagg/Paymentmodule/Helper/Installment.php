@@ -2,6 +2,8 @@
 
 class Mundipagg_Paymentmodule_Helper_Installment extends Mage_Core_Helper_Abstract
 {
+    const MINIMAL_INSTALLMENT_VALUE = 35;
+
     public function getInstallments($total, $cards = null)
     {
         $cardConfig = Mage::getModel('paymentmodule/config_card');
@@ -79,6 +81,10 @@ class Mundipagg_Paymentmodule_Helper_Installment extends Mage_Core_Helper_Abstra
             $totalAmount = $monetary->formatDecimals($total);
             $amount = $monetary->formatDecimals($total / $i);
 
+            if ($i > 1 && $amount < self::MINIMAL_INSTALLMENT_VALUE) {
+                continue;
+            }
+
             $installments[] = array(
                 'amount' =>  $currencySymbol . $amount,
                 'times' => $i,
@@ -99,6 +105,10 @@ class Mundipagg_Paymentmodule_Helper_Installment extends Mage_Core_Helper_Abstra
             $totalAmount = $monetary->formatDecimals($total * (1 + ($interest / 100)));
             $amount = $monetary->formatDecimals($total / $i);
             $currencySymbol = $monetary->getCurrentCurrencySymbol();
+
+            if ($i > 1 && $amount < self::MINIMAL_INSTALLMENT_VALUE) {
+                continue;
+            }
 
             $interest = round($interest,2);
             $installments[] = array(

@@ -16,7 +16,7 @@ class Mundipagg_Paymentmodule_Model_Standard extends Mage_Payment_Model_Method_A
             ->getCollection()
             ->addFieldToFilter('path','currency/options/allow')
             ->getData();
-        
+
         $currenciesArray = explode(',', $currencyCode[0]['value']);
 
         return $currenciesArray;
@@ -165,9 +165,9 @@ class Mundipagg_Paymentmodule_Model_Standard extends Mage_Payment_Model_Method_A
     */
     public function getAdditionalInformationForOrder($orderId)
     {
-        $order = $this->getOrderByIncrementOrderId($orderId);
+        $payment = Mage::helper('paymentmodule/order')->getOrderPayment($orderId);
 
-        return $order->getPayment()->getAdditionalInformation();
+        return $payment->getAdditionalInformation();
     }
 
     /**
@@ -177,8 +177,7 @@ class Mundipagg_Paymentmodule_Model_Standard extends Mage_Payment_Model_Method_A
      */
     public function addChargeInfoToAdditionalInformation($charges, $orderId)
     {
-        $order   = Mage::getModel('sales/order')->loadByIncrementId($orderId);
-        $payment = $order->getPayment();
+        $payment = Mage::helper('paymentmodule/order')->getOrderPayment($orderId);
         $moduleCharges =
             $payment->getAdditionalInformation('mundipagg_payment_module_charges');
 
@@ -218,9 +217,9 @@ class Mundipagg_Paymentmodule_Model_Standard extends Mage_Payment_Model_Method_A
      */
     public function getPaymentFromOrder($orderId)
     {
-        $order = $this->getOrderByOrderId($orderId);
+        $payment = Mage::helper('paymentmodule/order')->getOrderPayment($orderId);
 
-        return $order->getPayment();
+        return $payment;
     }
 
     /**

@@ -109,6 +109,7 @@
                 data-mundicheckout-input="<?php echo "$elementId"?>_number"
                 class="required-entry validate-cc-number mp-validate-cc-number-length mundipaggInput "
                 id="<?php echo "$elementId"?>_mundicheckout-number"
+                name="payment[<?php echo "$elementId"?>_number]"
                 onkeyup="getFormData('<?php echo $elementId?>'); getBrand('<?php echo $elementId?>');"
                 onchange="getFormData('<?php echo $elementId?>'); getBrand('<?php echo $elementId?>');"
                 maxlength="19"
@@ -205,6 +206,7 @@
                 data-mundicheckout-input="<?php echo "$elementId"?>_cvv"
                 class="required-entry validate-number mp-validate-cc-cvv-length"
                 id="<?php echo "$elementId"?>_mundicheckout-cvv"
+                name="payment[<?php echo "$elementId"?>_cvv]"
                 onkeyup="getFormData('<?php echo $elementId?>');"
                 maxlength="4"
         >

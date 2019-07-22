@@ -76,6 +76,14 @@
 
     <opc_index_index translate="label">
         <update handle="mundipagg_checkout_handle"/>
+        <reference name="before_body_end">
+            <block type="page/html_head" name="mp-paymentmodule-op-handler" as="mp-paymentmodule-op-handler" after="-" template="paymentmodule/extras.phtml">
+                <action method="addItem">
+                    <type>js</type>
+                    <name>mundipagg/OnepageCheckoutModuleHandler.js</name>
+                </action>
+            </block>
+        </reference>
     </opc_index_index>
 
     <idecheckoutvm_index_index translate="label">

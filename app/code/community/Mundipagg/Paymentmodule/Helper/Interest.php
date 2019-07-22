@@ -27,7 +27,8 @@ class Mundipagg_Paymentmodule_Helper_Interest extends Mage_Core_Helper_Abstract
 
     public function getTotalInterestFromOrder($order)
     {
-        $additionalInformation = $order->getPayment()->getAdditionalInformation();
+        $payment = Mage::helper('paymentmodule/order')->getOrderPayment($order->getId());
+        $additionalInformation = $payment->getAdditionalInformation();
 
         $method = $additionalInformation['mundipagg_payment_method'];
         $paymentData = $additionalInformation[$method];

@@ -276,7 +276,7 @@ class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mundipagg_Pa
     )
     {
         $additionalInformation[$paymentMethod]['boleto'] = $boletosInfo;
-        $payment = $standard->getOrderByIncrementOrderId($orderId)->getPayment();
+        $payment = Mage::helper('paymentmodule/order')->getOrderPayment($orderId);
         $payment->setAdditionalInformation(
             $paymentMethod,
             $additionalInformation[$paymentMethod]

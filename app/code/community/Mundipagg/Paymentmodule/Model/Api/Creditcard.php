@@ -24,6 +24,14 @@ class Mundipagg_Paymentmodule_Model_Api_Creditcard extends Mundipagg_Paymentmodu
             $creditCardPaymentRequest->cardToken = '';
             $creditCardPaymentRequest->capture = $this->getCaptureValue();
 
+            $creditCardPaymentRequest->card = array(
+                'number' => $payment['number'],
+                'holder_name' => $payment['holderName'],
+                'exp_month' => $payment['expMonth'],
+                'exp_year' => $payment['expYear'],
+                'cvv' => $payment['cvv']
+            );
+
             if (isset($payment['token'])) {
                 $creditCardPaymentRequest->cardToken = $payment['token'];
             }

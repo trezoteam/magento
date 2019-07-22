@@ -28,6 +28,7 @@ class Mundipagg_Paymentmodule_Model_Api_Boleto extends Mundipagg_Paymentmodule_M
             $boletoPaymentRequest->bank = $bank;
             $boletoPaymentRequest->instructions = $instructions;
             $boletoPaymentRequest->dueAt = $dueAt;
+            $boletoPaymentRequest->billingAddress = $payment['billing'];
 
             $paymentRequest->paymentMethod = 'boleto';
             $paymentRequest->boleto = $boletoPaymentRequest;

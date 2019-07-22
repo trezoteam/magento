@@ -8,7 +8,7 @@ class Mundipagg_Paymentmodule_Helper_Monetary extends Mage_Core_Helper_Abstract
 
     public function toFloat($amount)
     {
-        return preg_replace('/[^0-9]/', '', $amount) / 100;
+        return floatval(str_replace(',', '.', $amount));
     }
 
     public function toCurrencyFormat($amountInCents)

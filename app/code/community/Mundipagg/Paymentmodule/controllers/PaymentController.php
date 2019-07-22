@@ -19,10 +19,9 @@ class Mundipagg_Paymentmodule_PaymentController extends Mage_Core_Controller_Fro
 
             $this->standard = Mage::getModel('paymentmodule/standard');
             $this->orderId = Mage::getSingleton('checkout/session')->getLastOrderId();
-            $this->order = $this->standard->getOrderByOrderId($this->orderId);
+            $payment = Mage::helper('paymentmodule/order')->getOrderPayment($this->orderId);
 
-            $paymentMethod = $this->order->getPayment()
-                ->getMethodInstance()->getCode();
+            $paymentMethod = $payment->getData('method');
 
             // @todo find a better name
             $method = explode("_", $paymentMethod);

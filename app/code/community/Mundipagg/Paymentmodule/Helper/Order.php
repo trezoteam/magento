@@ -12,4 +12,13 @@ class Mundipagg_Paymentmodule_Helper_Order extends Mage_Core_Helper_Abstract
             //@todo do something with the error
         }
     }
+
+    public function getOrderPayment($orderId)
+    {
+        $payment = Mage::getResourceSingleton('sales/order_payment_collection')
+            ->setOrderFilter($orderId)
+            ->getFirstItem();
+
+        return $payment;
+    }
 }
