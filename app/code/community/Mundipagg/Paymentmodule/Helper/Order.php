@@ -15,7 +15,7 @@ class Mundipagg_Paymentmodule_Helper_Order extends Mage_Core_Helper_Abstract
 
     public function getOrderPayment($orderId)
     {
-        $payment = Mage::getResourceSingleton('sales/order_payment_collection')
+        $payment = Mage::getResourceModel('sales/order_payment_collection')
             ->setOrderFilter($orderId)
             ->getFirstItem();
 

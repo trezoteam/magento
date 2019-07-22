@@ -90,6 +90,12 @@
         <update handle="mundipagg_checkout_handle"/>
     </idecheckoutvm_index_index>
 
+    <checkout_onepage_success translate="label">
+        <reference name="content">
+            <block type="paymentmodule/onepage_success" name="mp-checkout-success" template="paymentmodule/onepage/success.phtml"/>
+        </reference>
+    </checkout_onepage_success>
+
     <!-- CreditCard Wallet  ################################################ -->
     <creditcard_wallet_menu_item_handle translate="label">
         <reference name="customer_account_navigation">

@@ -1,0 +1,11 @@
+<?php
+/**
+ * @var Mundipagg_Paymentmodule_Block_Info_Boleto $this
+ */
+?>
+<p><strong><?php echo $this->escapeHtml($this->getMethod()->getTitle()) ?></strong></p>
+<?php if ($boletoData = $this->getPrintUrl()) : ?>
+    <p>
+        <a href="<?php echo $boletoData['url']; ?>" target="_blank"><?php echo Mage::helper('paymentmodule')->__('Print boleto'); ?></a>
+    </p>
+<?php endif; ?>

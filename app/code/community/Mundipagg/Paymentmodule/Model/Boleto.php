@@ -4,6 +4,7 @@ class Mundipagg_Paymentmodule_Model_Boleto extends Mundipagg_Paymentmodule_Model
 {
     protected $_code = 'paymentmodule_boleto';
     protected $_formBlockType = 'paymentmodule/form_builder';
+    protected $_infoBlockType = 'paymentmodule/info_boleto';
     protected $_isGateway = true;
     protected $_canOrder  = true;
     protected $_canAuthorize = true;
