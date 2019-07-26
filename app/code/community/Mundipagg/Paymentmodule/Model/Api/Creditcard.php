@@ -29,7 +29,8 @@ class Mundipagg_Paymentmodule_Model_Api_Creditcard extends Mundipagg_Paymentmodu
                 'holder_name' => $payment['holderName'],
                 'exp_month' => $payment['expMonth'],
                 'exp_year' => $payment['expYear'],
-                'cvv' => $payment['cvv']
+                'cvv' => $payment['cvv'],
+                'billing_address' => $payment['billing']
             );
 
             if (isset($payment['token'])) {
@@ -37,6 +38,7 @@ class Mundipagg_Paymentmodule_Model_Api_Creditcard extends Mundipagg_Paymentmodu
             }
 
             if (
+                array_key_exists('SavedCreditCard', $payment) &&
                 $payment['SavedCreditCard'] &&
                 $this->validateSavedCreditCard($payment['SavedCreditCard'])
             ) {

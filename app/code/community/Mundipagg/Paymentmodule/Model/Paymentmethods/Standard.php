@@ -92,7 +92,8 @@ class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mundipagg_Pa
         //get additional information about boleto payments
         $standard = Mage::getModel('paymentmodule/standard');
         $orderId = $response->code;
-        $additionalInformation = $standard->getAdditionalInformationForOrder($orderId);
+        $order = $this->getOrderByIncrementOrderId($orderId);
+        $additionalInformation = $standard->getAdditionalInformationForOrder($order->getId());
         $paymentMethod = $additionalInformation['mundipagg_payment_method'];
         $paymentInfo = $additionalInformation[$paymentMethod];
         $boletosInfo = array();
@@ -129,7 +130,7 @@ class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mundipagg_Pa
                     'id' => $charge->lastTransaction->id,
                     'timestamp' => $charge->lastTransaction->updatedAt->getTimestamp(),
                     'amount' => $charge->lastTransaction->amount,
-                    'type' => $charge->lastTransaction->operationType,
+                    'type' => $charge->lastTransaction->operationType ?? '',
                     'chargeAmount' => $charge->amount,
                     'chargeId' => $charge->id,
                 )
@@ -142,11 +143,10 @@ class Mundipagg_Paymentmodule_Model_Paymentmethods_Standard extends Mundipagg_Pa
                 $additionalInformation,
                 $boletosInfo,
                 $standard,
-                $orderId
+                $order->getId()
             );
         }
 
-        $order = $standard->getOrderByIncrementOrderId($orderId);
         $order->sendNewOrderEmail();
 
         //Update magento order status

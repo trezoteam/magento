@@ -82,15 +82,40 @@ abstract class Mundipagg_Paymentmodule_Model_Api_Standard
 
         $paymentMethod = $additionalInformation['mundipagg_payment_method'];
         $paymentInformation = $additionalInformation[$paymentMethod];
-        $method = explode('_', $paymentMethod);
+        $method = null;
 
-        foreach ($paymentInformation[$method[1]] as $key => $value) {
-            $paymentInformation[$method[1]][$key]['billing'] = array(
+        switch ($paymentMethod) {
+            case Mundipagg_Paymentmodule_Model_Boleto::CODE:
+                $method = 'boleto';
+                break;
+            case Mundipagg_Paymentmodule_Model_Boletocc::CODE:
+                $method = 'boletocc';
+                break;
+            case Mundipagg_Paymentmodule_Model_Creditcard::CODE:
+                $method = 'creditcard';
+                break;
+            case Mundipagg_Paymentmodule_Model_Twocreditcards::CODE:
+                $method = 'creditcard';
+                break;
+            case Mundipagg_Paymentmodule_Model_Voucher::CODE:
+                $method = 'voucher';
+                break;
+            default:
+                $method = explode('_', $paymentMethod);
+                $method = $method[1];
+                break;
+        }
+
+        $addressLines = preg_replace('/\r|\n/', ',', trim($billingAddress->getStreetFull()));
+        $addressLines = explode(',', $addressLines);
+
+        foreach ($paymentInformation[$method] as $key => $value) {
+            $paymentInformation[$method][$key]['billing'] = array(
                 'zip_code' => str_replace('-', '', $billingAddress->getPostcode()),
                 'city' => $billingAddress->getCity(),
                 'state' => $billingAddress->getRegionCode(),
                 'country' => $billingAddress->getCountry(),
-                'line_1' => preg_replace('/\r|\n/', ',', trim($billingAddress->getStreetFull()))
+                'line_1' => $addressLines[1] . ',' . $addressLines[0] . ',' . $addressLines[3]
             );
         }
 
@@ -120,7 +145,8 @@ abstract class Mundipagg_Paymentmodule_Model_Api_Standard
         return $customerRequest;
     }
 
-    protected function getShippingRequest($shippingInformation) {
+    protected function getShippingRequest($shippingInformation)
+    {
 
         /*
          * In case of a virtual product, the shipping address does not exists.
@@ -225,6 +251,7 @@ abstract class Mundipagg_Paymentmodule_Model_Api_Standard
         $addressRequest->state = $address->getState();
         $addressRequest->country = $address->getCountry();
         $addressRequest->zipCode = $address->getZipCode();
+        $addressRequest->line1 = $address->getData('line_1');
 
         return $addressRequest;
     }

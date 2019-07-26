@@ -2,7 +2,9 @@
 
 class Mundipagg_Paymentmodule_Model_Creditcard extends Mundipagg_Paymentmodule_Model_Standard
 {
-    protected $_code = 'paymentmodule_creditcard';
+    const CODE = 'paymentmodule_creditcard';
+
+    protected $_code = self::CODE;
     protected $_formBlockType = 'paymentmodule/form_builder';
     protected $_isGateway = true;
     protected $_canOrder  = true;

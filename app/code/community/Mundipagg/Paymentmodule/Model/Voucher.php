@@ -2,7 +2,9 @@
 
 class Mundipagg_Paymentmodule_Model_Voucher extends Mundipagg_Paymentmodule_Model_Standard
 {
-    protected $_code = 'paymentmodule_voucher';
+    const CODE = 'paymentmodule_voucher';
+
+    protected $_code = self::CODE;
     protected $_formBlockType = 'paymentmodule/form_builder';
     protected $_isGateway = true;
     protected $_canOrder  = true;

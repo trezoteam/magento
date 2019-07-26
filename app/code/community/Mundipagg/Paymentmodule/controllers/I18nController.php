@@ -14,7 +14,7 @@ class Mundipagg_Paymentmodule_I18nController extends Mage_Core_Controller_Front_
 
         //ignore lines starting with # in the translate.csv file
         $translateTable = array_filter($translateTable,function($line) {
-            return $line[0] !== '#';
+            return substr($line, 0, 1) !== '#';
         });
 
         //fix encoding errors;

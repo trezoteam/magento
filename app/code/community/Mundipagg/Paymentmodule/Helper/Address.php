@@ -47,6 +47,7 @@ class Mundipagg_Paymentmodule_Helper_Address extends Mage_Core_Helper_Abstract
         $address->setCountry($baseAddress->getCountryId());
         $address->setZipCode($baseAddress->getPostcode());
         $address->setMetadata(null);
+        $address->setData('line_1', $customerAddress[1] . ',' . $customerAddress[0] . ',' . $customerAddress[3]);
 
         return $address;
     }

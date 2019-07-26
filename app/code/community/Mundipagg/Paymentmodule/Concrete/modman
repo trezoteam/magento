@@ -6,6 +6,7 @@ app/etc/modules/Mundipagg_Paymentmodule.xml                     app/etc/modules/
 
 app/design/frontend/base/default/template/paymentmodule         app/design/frontend/base/default/template/paymentmodule
 app/design/adminhtml/default/default/template/paymentmodule     app/design/adminhtml/default/default/template/paymentmodule
+app/design/adminhtml/base/default/template/paymentmodule        app/design/adminhtml/base/default/template/paymentmodule
 
 #app/design/frontend/base/default/layout/paymentmodule.xml      app/design/frontend/base/default/layout/paymentmodule.xml
 app/design/frontend/base/default/layout/paymentmodule.xml       app/design/frontend/base/default/layout/paymentmodule.xml

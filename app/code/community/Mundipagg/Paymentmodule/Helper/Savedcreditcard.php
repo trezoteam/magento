@@ -22,8 +22,9 @@ class Mundipagg_Paymentmodule_Helper_Savedcreditcard extends Mage_Core_Helper_Ab
         $customerId = $session->getCustomer()->getId();
         $standard = Mage::getModel('paymentmodule/standard');
         $orderId‌ = $response->code;
+        $order = Mage::getModel('sales/order')->loadByIncrementId($orderId‌);
 
-        $additionalInformation = $standard->getAdditionalInformationForOrder($orderId‌);
+        $additionalInformation = $standard->getAdditionalInformationForOrder($order->getId());
         $paymentMethod = $additionalInformation['mundipagg_payment_method'];
 
         reset($additionalInformation[$paymentMethod]);
