@@ -8,6 +8,6 @@ $boletoData = $this->getPrintUrl();
 <p><strong><?php echo $this->escapeHtml($this->getMethod()->getTitle()) ?></strong></p>
 <?php if ($boletoData && array_key_exists('url', $boletoData)) : ?>
     <p>
-        <a href="<?php echo $boletoData['url']; ?>" target="_blank"><?php echo Mage::helper('paymentmodule')->__('Print boleto'); ?></a>
+        <a href="<?php echo $boletoData['url']; ?>" target="_blank"><?php echo Mage::helper('paymentmodule')->__('Print Boleto'); ?></a>
     </p>
 <?php endif; ?>

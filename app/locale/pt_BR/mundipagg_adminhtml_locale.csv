@@ -5,7 +5,6 @@
 "No","Não"
 "Close","Fechar"
 "Version","Versão"
-
 "##### Charges","##############################################################"
 "Charges", "Cobranças"
 "Charge", "Cobrança"
@@ -24,7 +23,6 @@
 "Value to <span class='charge-operation'></span>","Valor para <span class='charge-operation'></span>"
 "<span class='charge-operation'></span> Charge","<span class='charge-operation'></span> Cobrança"
 "To continue this operation, please enter your password","Para continuar esta operação, por favor confirme sua senha"
-
 "##### Configuração básica do módulo","########################################"
 "Module Basic Configuration","Configuração básica do módulo"
 "General configuration","Configuração Geral"
@@ -34,26 +32,23 @@
 "Public key [production]","Chave pública [produção]"
 "Public key [test]","Chave pública [teste]"
 "Test mode","Modo de teste"
-
 "##### Configuração de antifraude","###########################################"
 "Anti-fraud configuration","Configuração do anti-fraude"
 "Minimum value","Valor mínimo"
-
 "##### Configuração de Boleto","###############################################"
 "<img title='Billet' alt='Billet' width='32' style='margin-top:9px;' src='/skin/adminhtml/default/default/images/mundipagg/icons/boleto.png'/> <div style='margin:-29px 0 13px 40px'> Billet configuration</div>",<img title='Boleto' alt='Boleto' width='32' style='margin-top:9px;' src='/skin/adminhtml/default/default/images/mundipagg/icons/boleto.png'/> <div style='margin:-29px 0 13px 40px'> Configuração de Boleto</div>
 "Billet configuration","Configuração de Boleto"
+"Print Boleto","Imprimir Boleto"
 "Name","Nome"
 "Select bank","Selecione o banco"
 "Due at","Dias para vencimento"
 "Instructions","Instruções"
-
 "##### Configurações de cartão de crédito","###################################"
 "General credit card configuration","Configuração geral de Cartão de Crédito"
 "Invoice's name","Nome na fatura"
 "Operation type","Tipo de operação"
 "Select operation type","Selecione o tipo de operação"
 "Enable Saved CreditCards","Habilitar cartões salvos"
-
 "##### Configurações de dois cartões","########################################"
 "Two credit cards configuration","Configurações de dois cartões"
 "<img title='Creditcard' alt='Creditcard' width='32' style='margin-top:9px;' src='/skin/adminhtml/default/default/images/mundipagg/icons/creditcard.png'/> <div style='margin:-29px 0 13px 40px'> General credit card configuration</div>'","<img title='Cartão de Crédito' alt='Cartão de Crédito' width='32' style='margin-top:9px;' src='/skin/adminhtml/default/default/images/mundipagg/icons/creditcard.png'/> <div style='margin:-29px 0 13px 40px'> Configuração geral de Cartão de Crédito</div>'"
@@ -64,7 +59,6 @@
 "CreditCard configuration","Configuração de Cartão de Crédito"
 "General voucher configuration","Configuração de Voucher"
 "Voucher brands configuration","Configuração de Bandeiras de Voucher"
-
 "##### Configurações de parcelas","############################################"
 "Installments configuration","Configuração de parcelas"
 "Default configuration - Applicable to all brands","Configuração padrão - Aplicável a todas as bandeiras"
@@ -81,6 +75,5 @@
 "<img title='Elo' alt='Elo' width='32' src='/skin/adminhtml/default/default/images/mundipagg/icons/elo.jpg'/> <div style='margin:-29px 0 13px 40px'>Elo configuration</div>","<img title='Elo' alt='Elo' width='32' src='/skin/adminhtml/default/default/images/mundipagg/icons/elo.jpg'/> <div style='margin:-29px 0 13px 40px'> Configuração para Elo</div>"
 "<img title='VR' alt='VR' width='32' src='/skin/adminhtml/default/default/images/mundipagg/icons/vr.jpg'/> <div style='margin:-29px 0 13px 40px'> VR configuration</div>","<img title='VR' alt='VR' width='32' src='/skin/adminhtml/default/default/images/mundipagg/icons/vr.jpg'/> <div style='margin:-29px 0 13px 40px'> Configuração para VR</div>"
 "<img title='Sodexo' alt='Sodexo' width='32' src='/skin/adminhtml/default/default/images/mundipagg/icons/sodexo.jpg'/> <div style='margin:-29px 0 13px 40px'> Sodexo configuration</div>","<img title='Sodexo' alt='Sodexo' width='32' src='/skin/adminhtml/default/default/images/mundipagg/icons/sodexo.jpg'/> <div style='margin:-29px 0 13px 40px'> Configuração para Sodexo</div>"
-
 "#### Configuração de multicomprador","########################################"
 "Multi-Buyer configuration","Configuração de Multi-Comprador"

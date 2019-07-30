@@ -9,12 +9,11 @@
 "% of interest","% de juros"
 "Fill the value for this card","Preencha o valor para este cartão"
 "Invalid payment data", "Dados de pagamento inválidos"
-
 "####### Boleto","#############################################################"
-"Billet", "Boleto",
-"Tax/VAT", "CPF ou CNPJ",
-"Invalid CPF","CPF inválido",
-
+"Billet", "Boleto"
+"Tax/VAT", "CPF ou CNPJ"
+"Invalid CPF","CPF inválido"
+"Print Boleto","Imprimir Boleto"
 "####### Cartão de crédito","##################################################"
 "Credit Card", "Cartão de Crédito"
 "Select a Card", "Selecionar um cartão"
@@ -27,10 +26,8 @@
 "Save this card to future orders","Salvar este cartão para compras futuras"
 "Invalid Credit Card", "Cartão de crédito inválido"
 "Unavailable brand", "Bandeira indisponível"
-
 "####### Informações extras de checkout","#####################################"
 "Click <a href='%s' target='__blank'>here</a> to show your billet for <strong>%s %s</strong> payment.", "Clique <a href='%s' target='__blank'>aqui</a> para mostrar seu boleto para o pagamento de <strong>%s %s</strong>."
-
 "####### Multi buyer","##################################################"
 "Fill other buyer data", "Informar dados de outro comprador"
 "Full name", "Nome completo"
@@ -43,5 +40,5 @@
 "State", "Estado"
 "Country", "País"
 "Select an Country", "Selecione um País"
-"Select", "Selecione",
+"Select", "Selecione"
 "Subtotal", "Subtotal"
